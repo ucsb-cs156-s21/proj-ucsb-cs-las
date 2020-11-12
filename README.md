@@ -1,6 +1,6 @@
 # demo-spring-react-minimal
 
-[![codecov](https://codecov.io/gh/ucsb-cs156-f20/demo-spring-react-minimal/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/demo-spring-react-minimal)
+[![codecov](https://codecov.io/gh/ucsb-cs156-f20/proj-ucsb-cs-las/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/proj-ucsb-cs-las)
 
 ## Purpose
 
