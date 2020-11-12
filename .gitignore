@@ -49,7 +49,7 @@ javascript/# production
 javascript/build
 javascript/# misc
 javascript/.DS_Store
-javascript/.env*
+javascript/.env.*
 javascript/production.env
 javascript/# debug
 javascript/npm-debug.log*
