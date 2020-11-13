@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import useSWR from "swr";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchWithToken } from "main/utils/fetch";
+
+
 
 const CourseEditForm = ({ item, update }) => {
+  const { getAccessTokenSilently: getToken } = useAuth0();
+  const { data: roleInfo } = useSWR(
+    ["/api/myRole", getToken],
+    fetchWithToken
+  );
+  const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(item.name);
   const [quarter, setQuarter] = useState(item.quarter);
@@ -78,7 +89,9 @@ const CourseEditForm = ({ item, update }) => {
         value={instructorEmail}
         onChange={(e) => setInstructorEmail(e.target.value)}
       />
+      { isAdmin &&
       <Button onClick={handleOnClickOrSubmit}>{buttonName}</Button>
+      }
     </Form>
   );
 };

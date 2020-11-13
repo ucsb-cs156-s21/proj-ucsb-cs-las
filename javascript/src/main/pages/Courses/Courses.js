@@ -11,6 +11,12 @@ import { sortCourses } from "../../utils/courseHelpers";
 
 const CourseList = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const { data: roleInfo } = useSWR(
+    ["/api/myRole", getToken],
+    fetchWithToken
+  );
+  const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
+  // const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { data: courseList, error, mutate: mutateCourses } = useSWR(
     ["/api/courses", getToken],
     fetchWithToken
@@ -76,7 +82,9 @@ const CourseList = () => {
   return (
     <>
       <CourseHeader name={user.name} />
+      { isAdmin && 
       <CourseForm addCourse={saveCourse} />
+      }
       <ListGroup> {items} </ListGroup>
     </>
   );
