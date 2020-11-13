@@ -51,8 +51,20 @@ describe("Course Edit Form tests", () => {
     const editButton = getByText("Edit");
     userEvent.click(editButton);
     const input = getByDisplayValue(item.name);
+    const input2 = getByDisplayValue(item.quarter);
+    const input3 = getByDisplayValue(item.instructorFirstName);
+    const input4 = getByDisplayValue(item.instructorLastName);
+    const input5 = getByDisplayValue(item.instructorEmail);
     userEvent.clear(input);
+    userEvent.clear(input2);
+    userEvent.clear(input3);
+    userEvent.clear(input4);
+    userEvent.clear(input5);
     userEvent.type(input, updatedItem.name);
+    userEvent.type(input2, updatedItem.quarter);
+    userEvent.type(input3, updatedItem.instructorFirstName);
+    userEvent.type(input4, updatedItem.instructorLastName);
+    userEvent.type(input5, updatedItem.instructorEmail);
 
     const doneButton = getByText("Done");
     userEvent.click(doneButton);
