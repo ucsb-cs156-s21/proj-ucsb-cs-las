@@ -3,6 +3,7 @@ import { ListGroup, Button, Row, Col } from "react-bootstrap";
 import CourseEditForm from "./CourseEditForm";
 
 export function CourseItem({ item, index, updateCourse, deleteCourse }) {
+  const backgroundColor = "#fff";
 
   return (
     <ListGroup.Item style={{ backgroundColor }}>
