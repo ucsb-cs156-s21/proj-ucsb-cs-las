@@ -49,16 +49,16 @@ public class CourseControllerTests {
   @Test
   public void testGetCourses() throws Exception {
     List<Course> expectedCourses = new ArrayList<Course>();
-    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email", "123456"));
+    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
 
-    when(mockCourseRepository.findByUserId("123456")).thenReturn(expectedCourses);
+    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
     MvcResult response =
         mockMvc
             .perform(get("/api/courses").contentType("application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
             .andExpect(status().isOk()).andReturn();
 
-    verify(mockCourseRepository, times(1)).findByUserId("123456");
+    verify(mockCourseRepository, times(1)).findAll();
 
     String responseString = response.getResponse().getContentAsString();
     List<Course> actualCourses =
@@ -69,7 +69,7 @@ public class CourseControllerTests {
 
   @Test
   public void testSaveCourse() throws Exception {
-    Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email", "123456");
+    Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedCourse);
     when(mockCourseRepository.save(any())).thenReturn(expectedCourse);
@@ -88,8 +88,8 @@ public class CourseControllerTests {
 
   @Test
   public void testUpdateCourse_courseExists_updateValues() throws Exception {
-    Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email", "123456");
-    Course savedCourse = new Course(1L, "old course 1", "F20", "fname", "lname", "email", "123456");
+    Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email");
+    Course savedCourse = new Course(1L, "old course 1", "F20", "fname", "lname", "email");
     String body = objectMapper.writeValueAsString(inputCourse);
 
     when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
@@ -111,7 +111,7 @@ public class CourseControllerTests {
 
   @Test
   public void testUpdateCourse_courseNotFound() throws Exception {
-    Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email", "123456");
+    Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email");
     String body = objectMapper.writeValueAsString(inputCourse);
 
     when(mockCourseRepository.findById(1L)).thenReturn(Optional.empty());
@@ -124,8 +124,8 @@ public class CourseControllerTests {
 
   @Test
   public void testUpdateCourse_courseAtPathOwned_butTryingToOverwriteAnotherCourse() throws Exception {
-    Course inputCourse = new Course(1L, "new course 1 trying to overwrite at id 1", "F20", "fname", "lname", "email", "123456");
-    Course savedCourse = new Course(2L, "new course 1", "F20", "fname", "lname", "email", "123456");
+    Course inputCourse = new Course(1L, "new course 1 trying to overwrite at id 1", "F20", "fname", "lname", "email");
+    Course savedCourse = new Course(2L, "new course 1", "F20", "fname", "lname", "email");
     String body = objectMapper.writeValueAsString(inputCourse);
     when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
     mockMvc.perform(put("/api/courses/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -135,36 +135,36 @@ public class CourseControllerTests {
     verify(mockCourseRepository, times(0)).save(any(Course.class));
   }
 
-  @Test
-  public void testUpdateCourse_courseAtPathOwned_butTryingToInjectCourseForAnotherUser()
-      throws Exception {
-    Course inputCourse = new Course(1L, "new course 1 trying to inject to user id 654321", "F20", "fname", "lname", "email","654321");
-    Course savedCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email","123456");
-    String body = objectMapper.writeValueAsString(inputCourse);
-    when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
-    mockMvc.perform(put("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-        .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())
-        .content(body)).andExpect(status().isBadRequest()).andReturn();
-    verify(mockCourseRepository, times(1)).findById(1L);
-    verify(mockCourseRepository, times(0)).save(any(Course.class));
-  }
+  // @Test
+  // public void testUpdateCourse_courseAtPathOwned_butTryingToInjectCourseForAnotherUser()
+  //     throws Exception {
+  //   Course inputCourse = new Course(1L, "new course 1 trying to inject to user id 654321", "F20", "fname", "lname", "email");
+  //   Course savedCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email");
+  //   String body = objectMapper.writeValueAsString(inputCourse);
+  //   when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
+  //   mockMvc.perform(put("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+  //       .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())
+  //       .content(body)).andExpect(status().isBadRequest()).andReturn();
+  //   verify(mockCourseRepository, times(1)).findById(1L);
+  //   verify(mockCourseRepository, times(0)).save(any(Course.class));
+  // }
 
-  @Test
-  public void testUpdateCourse_courseAtPathNotOwned() throws Exception {
-    Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email", "123456");
-    Course savedCourse = new Course(2L, "new course 1", "F20", "fname", "lname", "email", "NOT YOURS");
-    String body = objectMapper.writeValueAsString(inputCourse);
-    when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
-    mockMvc.perform(put("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-        .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())
-        .content(body)).andExpect(status().isNotFound()).andReturn();
-    verify(mockCourseRepository, times(1)).findById(1L);
-    verify(mockCourseRepository, times(0)).save(any(Course.class));
-  }
+  // @Test
+  // public void testUpdateCourse_courseAtPathNotOwned() throws Exception {
+  //   Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email");
+  //   Course savedCourse = new Course(2L, "new course 1", "F20", "fname", "lname", "email");
+  //   String body = objectMapper.writeValueAsString(inputCourse);
+  //   when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
+  //   mockMvc.perform(put("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+  //       .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())
+  //       .content(body)).andExpect(status().isNotFound()).andReturn();
+  //   verify(mockCourseRepository, times(1)).findById(1L);
+  //   verify(mockCourseRepository, times(0)).save(any(Course.class));
+  // }
 
   @Test
   public void testDeleteCourse_courseExists() throws Exception {
-    Course expectedCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email", "123456");
+    Course expectedCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email");
     when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(expectedCourse));
     MvcResult response = mockMvc
         .perform(delete("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -190,15 +190,15 @@ public class CourseControllerTests {
     verify(mockCourseRepository, times(0)).deleteById(id);
   }
 
-  @Test
-  public void testDeleteCourse_courseNotOwned() throws Exception {
-    Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email", "NOT YOURS");
-    when(mockCourseRepository.findById(expectedCourse.getId())).thenReturn(Optional.of(expectedCourse));
-    mockMvc
-        .perform(delete("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-        .andExpect(status().isNotFound()).andReturn();
-    verify(mockCourseRepository, times(1)).findById(expectedCourse.getId());
-    verify(mockCourseRepository, times(0)).deleteById(expectedCourse.getId());
-  }
+  // @Test
+  // public void testDeleteCourse_courseNotOwned() throws Exception {
+  //   Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+  //   when(mockCourseRepository.findById(expectedCourse.getId())).thenReturn(Optional.of(expectedCourse));
+  //   mockMvc
+  //       .perform(delete("/api/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+  //           .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+  //       .andExpect(status().isNotFound()).andReturn();
+  //   verify(mockCourseRepository, times(1)).findById(expectedCourse.getId());
+  //   verify(mockCourseRepository, times(0)).deleteById(expectedCourse.getId());
+  // }
 }

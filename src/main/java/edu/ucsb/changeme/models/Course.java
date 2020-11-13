@@ -22,25 +22,22 @@ public class Course {
   private String instructorLastName;
   @Column(nullable = false)
   private String instructorEmail;
-  @Column(nullable = false)
-  private String userId;
 
   public Course() {
   }
 
-  public Course(Long id, String name, String quarter, String instructorFirstName, String instructorLastName, String instructorEmail, String userId) {
+  public Course(Long id, String name, String quarter, String instructorFirstName, String instructorLastName, String instructorEmail) {
     this.id = id;
     this.name = name;
     this.quarter = quarter;
     this.instructorFirstName = instructorFirstName;
     this.instructorLastName = instructorLastName;
     this.instructorEmail = instructorEmail;
-    this.userId = userId;
   }
 
   @Override
   public String toString() {
-    return String.format("Course[ id=%d, name=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s, userId=%s ]", id, name, quarter, instructorFirstName, instructorLastName, instructorEmail, userId);
+    return String.format("Course[ id=%d, name=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s ]", id, name, quarter, instructorFirstName, instructorLastName, instructorEmail);
   }
 
   @Override
@@ -57,7 +54,7 @@ public class Course {
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, other.id).append(name, other.name).append(quarter, other.quarter)
       .append(instructorFirstName, other.instructorFirstName)
-      .append(instructorLastName, other.instructorLastName).append(instructorEmail, other.instructorEmail).append(userId, other.userId);
+      .append(instructorLastName, other.instructorLastName).append(instructorEmail, other.instructorEmail);
     return builder.isEquals();
   }
 
@@ -107,13 +104,5 @@ public class Course {
 
   public void setInstructorEmail(String instructorEmail) {
     this.instructorEmail = instructorEmail;
-  }
-
-  public String getUserId() {
-    return userId;
-  }
-
-  public void setUserId(String userId) {
-    this.userId = userId;
   }
 }

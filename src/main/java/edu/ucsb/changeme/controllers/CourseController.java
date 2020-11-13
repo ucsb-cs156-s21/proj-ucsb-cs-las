@@ -36,7 +36,7 @@ public class CourseController {
   public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
       @RequestBody @Valid Course course) throws JsonProcessingException {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
-    course.setUserId(jwt.getSubject());
+    // course.setUserId(jwt.getSubject());
     Course savedCourse = courseRepository.save(course);
     String body = mapper.writeValueAsString(savedCourse);
     return ResponseEntity.ok().body(body);
@@ -48,11 +48,11 @@ public class CourseController {
       throws JsonProcessingException {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
     Optional<Course> course = courseRepository.findById(id);
-    if (!course.isPresent() || !course.get().getUserId().equals(jwt.getSubject())) {
+    if (!course.isPresent()) {
       return ResponseEntity.notFound().build();
     }
 
-    if (!incomingCourse.getId().equals(id) || !incomingCourse.getUserId().equals(jwt.getSubject())) {
+    if (!incomingCourse.getId().equals(id)) {
       return ResponseEntity.badRequest().build();
     }
 
@@ -66,7 +66,7 @@ public class CourseController {
       @PathVariable("id") Long id) {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
     Optional<Course> course = courseRepository.findById(id);
-    if (!course.isPresent() || !course.get().getUserId().equals(jwt.getSubject())) {
+    if (!course.isPresent()) {
       return ResponseEntity.notFound().build();
     }
     courseRepository.deleteById(id);
@@ -77,7 +77,7 @@ public class CourseController {
   public ResponseEntity<String> getUserCourses(@RequestHeader("Authorization") String authorization)
       throws JsonProcessingException {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
-    List<Course> courseList = courseRepository.findByUserId(jwt.getSubject());
+    List<Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);
