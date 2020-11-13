@@ -34,7 +34,7 @@ describe("CourseList test", () => {
   const mutateSpy = jest.fn();
   beforeEach(() => {
     useAuth0.mockReturnValue({
-      user,
+      admin,
       getAccessTokenSilently: getAccessTokenSilentlySpy,
     });
     useSWR.mockReturnValue({

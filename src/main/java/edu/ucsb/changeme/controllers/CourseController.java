@@ -32,7 +32,7 @@ public class CourseController {
 
   private ObjectMapper mapper = new ObjectMapper();
 
-  @PostMapping(value = "/api/courses", produces = "application/json")
+  @PostMapping(value = "/api/admin/courses", produces = "application/json")
   public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
       @RequestBody @Valid Course course) throws JsonProcessingException {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
@@ -42,7 +42,7 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
-  @PutMapping(value = "/api/courses/{id}", produces = "application/json")
+  @PutMapping(value = "/api/admin/courses/{id}", produces = "application/json")
   public ResponseEntity<String> updateCourse(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id, @RequestBody @Valid Course incomingCourse)
       throws JsonProcessingException {
@@ -61,7 +61,7 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
  
-  @DeleteMapping(value = "/api/courses/{id}", produces = "application/json")
+  @DeleteMapping(value = "/api/admin/courses/{id}", produces = "application/json")
   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
@@ -73,10 +73,9 @@ public class CourseController {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping(value = "/api/courses", produces = "application/json")
-  public ResponseEntity<String> getUserCourses(@RequestHeader("Authorization") String authorization)
+  @GetMapping(value = "/api/public/courses", produces = "application/json")
+  public ResponseEntity<String> getUserCourses()
       throws JsonProcessingException {
-    DecodedJWT jwt = JWT.decode(authorization.substring(7));
     List<Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
 

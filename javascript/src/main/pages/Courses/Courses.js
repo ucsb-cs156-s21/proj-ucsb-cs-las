@@ -11,14 +11,8 @@ import { sortCourses } from "../../utils/courseHelpers";
 
 const CourseList = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
-  const { data: roleInfo } = useSWR(
-    ["/api/myRole", getToken],
-    fetchWithToken
-  );
-  const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
-  // const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { data: courseList, error, mutate: mutateCourses } = useSWR(
-    ["/api/courses", getToken],
+    ["/api/public/courses", getToken],
     fetchWithToken
   );
   if (error) {
@@ -30,7 +24,7 @@ const CourseList = () => {
     return <Loading />;
   }
   const updateCourse = async (item, id) => {
-    await fetchWithToken(`/api/courses/${id}`, getToken, {
+    await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -40,7 +34,7 @@ const CourseList = () => {
     await mutateCourses();
   };
   const deleteCourse = async (id) => {
-    await fetchWithToken(`/api/courses/${id}`, getToken, {
+    await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
@@ -51,7 +45,7 @@ const CourseList = () => {
   };
 
   const saveCourse = async (courseText1, courseText2, courseText3, courseText4, courseText5) => {
-    await fetchWithToken(`/api/courses/`, getToken, {
+    await fetchWithToken(`/api/admin/courses/`, getToken, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -82,9 +76,7 @@ const CourseList = () => {
   return (
     <>
       <CourseHeader name={user.name} />
-      { isAdmin && 
       <CourseForm addCourse={saveCourse} />
-      }
       <ListGroup> {items} </ListGroup>
     </>
   );
@@ -92,20 +84,3 @@ const CourseList = () => {
 
 export default CourseList;
 
-
-
-
-// import React from "react";
-// import { Jumbotron } from "react-bootstrap";
-// const Courses = () => {
-//   return (
-//     <Jumbotron>
-//       <h1>This is 127.0.0.1 (aka home)</h1>
-//       <div className="text-left">
-//         <p>Course List Page</p>
-//       </div>
-//     </Jumbotron>
-//   );
-// };
-
-// export default Courses;
