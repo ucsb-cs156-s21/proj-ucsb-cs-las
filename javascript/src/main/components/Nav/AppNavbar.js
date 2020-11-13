@@ -19,7 +19,7 @@ function AppNavbar() {
   return (
     <Navbar bg="dark" variant="dark">
       <LinkContainer to={""}>
-        <Navbar.Brand data-testid="brand">Changeme To App Name</Navbar.Brand>
+        <Navbar.Brand data-testid="brand">UCSB CS LAs</Navbar.Brand>
       </LinkContainer>
       <Nav>
         { isAdmin &&
@@ -29,6 +29,9 @@ function AppNavbar() {
         }
         <LinkContainer to={"/about"}>
             <Nav.Link>About</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to={"/courses"}>
+            <Nav.Link>Courses</Nav.Link>
         </LinkContainer>
         <ProfileNav />
       </Nav>

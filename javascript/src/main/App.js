@@ -10,6 +10,7 @@ import AppFooter from "main/components/Footer/AppFooter";
 import About from "main/pages/About/About";
 import Home from "main/pages/Home/Home";
 import Profile from "main/pages/Profile/Profile";
+import Courses from "main/pages/Courses/Courses";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
@@ -36,6 +37,7 @@ function App() {
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
           <Route path="/about" component={About} />
+          <Route path="/courses" component={Courses} />
         </Switch>
       </Container>
       <AppFooter />
