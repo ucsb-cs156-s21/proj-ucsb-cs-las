@@ -21,7 +21,7 @@ describe("AppNavbar tests", () => {
         <AppNavbar />
       </Router>
     );
-    const brandElement = getByText(/Changeme To App Name/);
+    const brandElement = getByText(/UCSB CS LAs/);
     expect(brandElement).toBeInTheDocument();
   });
   test("should have the correct links in the navbar", () => {
