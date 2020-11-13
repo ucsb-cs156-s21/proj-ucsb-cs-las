@@ -1,4 +1,4 @@
-# demo-spring-react-minimal
+# proj-ucsb-cs-las
 
 [![codecov](https://codecov.io/gh/ucsb-cs156-f20/proj-ucsb-cs-las/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/proj-ucsb-cs-las)
 
@@ -6,7 +6,9 @@
 
 This app is a course project of <https://ucsb-cs156.github.io>, a course at [UC Santa Barbara](https://ucsb.edu).
 
-This repo is intended to be starter code for apps that have a
+This repo is intended to be starter code for the UCSB Computer Science LA infomation page. 
+
+It contains:
 * Spring Boot Backend
 * React Front end
 * Auth0 authentication using Google
