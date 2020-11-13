@@ -14,6 +14,9 @@ import Courses from "main/pages/Courses/Courses";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
+import EditCourse from "main/pages/Courses/EditCourse";
+import NewCourse from "main/pages/Courses/NewCourse";
+import ShowCourse from "main/pages/Courses/ShowCourse";
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {

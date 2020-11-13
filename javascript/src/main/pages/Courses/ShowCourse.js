@@ -35,27 +35,26 @@ const NewCourse = () => {
     await mutateCourses();
   };
 
-  const saveCourse = async (courseText1, courseText2, courseText3, courseText4, courseText5) => {
-    await fetchWithToken(`/api/admin/courses/`, getToken, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        name: courseText1,
-        quarter: courseText2,
-        instructorFirstName: courseText3,
-        instructorLastName: courseText4,
-        instructorEmail: courseText5,
-      }),
-    });
-    await mutateCourses();
-  };
-
+  // const saveCourse = async (courseText1, courseText2, courseText3, courseText4, courseText5) => {
+  //   await fetchWithToken(`/api/admin/courses/`, getToken, {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       name: courseText1,
+  //       quarter: courseText2,
+  //       instructorFirstName: courseText3,
+  //       instructorLastName: courseText4,
+  //       instructorEmail: courseText5,
+  //     }),
+  //   });
+  //   await mutateCourses();
+  // };
   return (
     <>
       <h1>Show Course</h1>
-      <CourseForm addCourse={saveCourse} />
+      <CourseForm />
     </>
   );
 };

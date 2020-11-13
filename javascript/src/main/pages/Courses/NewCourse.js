@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import { sortCourses } from "../../utils/courseHelpers";
 import CourseTable from "../../components/Courses/CourseTable"
+import {saveCourse} from "main/services/Courses/CourseService";
 
 const NewCourse = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -52,10 +53,12 @@ const NewCourse = () => {
     await mutateCourses();
   };
 
+  const createCourse = saveCourse(getToken, mutateCourses);
+
   return (
     <>
       <h1>Add New Course</h1>
-      <CourseForm addCourse={saveCourse} />
+      <CourseForm createCourse={createCourse} />
     </>
   );
 };

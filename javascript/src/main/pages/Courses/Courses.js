@@ -10,6 +10,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import { sortCourses } from "../../utils/courseHelpers";
 import CourseTable from "../../components/Courses/CourseTable"
+import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+
 
 const CourseList = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -25,44 +27,10 @@ const CourseList = () => {
   if (!courseList) {
     return <Loading />;
   }
-  const updateCourse = async (item, id) => {
-    await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(item),
-    });
-    await mutateCourses();
-  };
-  const deleteCourse = async (id) => {
-    await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-      },
-      noJSON: true,
-    });
-    await mutateCourses();
-  };
-
-  const saveCourse = async (courseText1, courseText2, courseText3, courseText4, courseText5) => {
-    await fetchWithToken(`/api/admin/courses/`, getToken, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        name: courseText1,
-        quarter: courseText2,
-        instructorFirstName: courseText3,
-        instructorLastName: courseText4,
-        instructorEmail: courseText5,
-      }),
-    });
-    await mutateCourses();
-  };
-  var items = sortCourses(courseList).map((item, index) => {
+  const updateCourse = buildUpdateCourse(getToken, mutateCourses);
+  const deleteCourse = buildDeleteCourse(getToken, mutateCourses);
+  const createCourse = buildCreateCourse(getToken, mutateCourses);
+  const items = sortCourses(courseList).map((item, index) => {
     console.log(item);
     return (
       <CourseItem
@@ -78,7 +46,7 @@ const CourseList = () => {
   return (
     <>
       <CourseHeader name={user.name} />
-      <CourseForm addCourse={saveCourse} />
+      <CourseForm createCourse={createCourse} />
       <ListGroup> {items} </ListGroup>
       <CourseTable courses={courseList || []} />
     </>
