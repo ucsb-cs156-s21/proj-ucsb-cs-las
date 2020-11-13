@@ -16,7 +16,7 @@ export const CourseForm = ({ addCourse }) => {
         const text3 = value3.trim();
         const text4 = value4.trim();
         const text5 = value5.trim();
-        text1 && addCourse(text1, text2, text3, text4, text5);
+        text1 && text2 && text3 && text4 && text5 && addCourse(text1, text2, text3, text4, text5);
         setName("");
         setQuarter("");
         setInstructorFirstName("");

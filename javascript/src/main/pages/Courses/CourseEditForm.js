@@ -14,7 +14,7 @@ const CourseEditForm = ({ item, update }) => {
 
   const handleOnClickOrSubmit = (event) => {
     event.preventDefault();
-    if (name.trim().length === 0) {
+    if (name.trim().length === 0 || quarter.trim().length === 0 || instructorFirstName.trim().length === 0 || instructorLastName.trim().length === 0 || instructorEmail.trim().length === 0) {
       return;
     }
     if (editMode) {
@@ -36,7 +36,7 @@ const CourseEditForm = ({ item, update }) => {
       <Form.Control
         style={{ width: "30%" }}
         type="text"
-        placeholder="course name"
+        placeholder="edit course name"
         readOnly={!editMode}
         plaintext={!editMode}
         value={name}
@@ -45,7 +45,7 @@ const CourseEditForm = ({ item, update }) => {
       <Form.Control
         style={{ width: "10%" }}
         type="text"
-        placeholder="quarter"
+        placeholder="edit quarter"
         readOnly={!editMode}
         plaintext={!editMode}
         value={quarter}
@@ -54,7 +54,7 @@ const CourseEditForm = ({ item, update }) => {
       <Form.Control
         style={{ width: "15%" }}
         type="text"
-        placeholder="fname"
+        placeholder="edit fname"
         readOnly={!editMode}
         plaintext={!editMode}
         value={instructorFirstName}
@@ -63,7 +63,7 @@ const CourseEditForm = ({ item, update }) => {
       <Form.Control
         style={{ width: "15%" }}
         type="text"
-        placeholder="lname"
+        placeholder="edit lname"
         readOnly={!editMode}
         plaintext={!editMode}
         value={instructorLastName}

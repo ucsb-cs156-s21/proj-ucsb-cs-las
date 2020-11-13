@@ -89,7 +89,7 @@ public class CourseControllerTests {
   @Test
   public void testUpdateCourse_courseExists_updateValues() throws Exception {
     Course inputCourse = new Course(1L, "new course 1", "F20", "fname", "lname", "email");
-    Course savedCourse = new Course(1L, "old course 1", "F20", "fname", "lname", "email");
+    Course savedCourse = new Course(1L, "old course 1", "W21", "first name", "last name", "myemail");
     String body = objectMapper.writeValueAsString(inputCourse);
 
     when(mockCourseRepository.findById(any(Long.class))).thenReturn(Optional.of(savedCourse));
