@@ -21,5 +21,6 @@ const columns = [{
     text: 'Email'
 }];
 
+
 export default (props) =>
     <BootstrapTable keyField='id' data={props.courses} columns={columns} />
