@@ -50,6 +50,8 @@ javascript/build
 javascript/# misc
 javascript/.DS_Store
 javascript/.env.*
+!javascript/.env.local.SAMPLE
+!javascript/.env.production.SAMPLE
 javascript/production.env
 javascript/# debug
 javascript/npm-debug.log*
