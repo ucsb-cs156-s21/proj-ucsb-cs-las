@@ -16,7 +16,6 @@ import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
-import ShowCourse from "main/pages/Courses/ShowCourse";
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {
@@ -40,7 +39,6 @@ function App() {
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses/:courseId" exact component={ShowCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/edit" exact component={EditCourse} authorizedRoles={["admin"]} />
           <Route path="/about" component={About} />

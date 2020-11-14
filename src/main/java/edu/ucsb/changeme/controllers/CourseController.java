@@ -74,7 +74,7 @@ public class CourseController {
   }
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
-  public ResponseEntity<String> getUserCourses()
+  public ResponseEntity<String> getCourses()
       throws JsonProcessingException {
     List<Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
@@ -82,4 +82,18 @@ public class CourseController {
     String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
   }
+
+  @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
+  public ResponseEntity<String> getCourse(@PathVariable("id") Long id)
+      throws JsonProcessingException {
+    Optional<Course> course = courseRepository.findById(id);
+    if (course.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+    String body = mapper.writeValueAsString(course.get());
+    return ResponseEntity.ok().body(body);
+  }
+
 }

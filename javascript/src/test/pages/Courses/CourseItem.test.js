@@ -1,6 +1,5 @@
 import React from "react";
 import { screen, render } from "@testing-library/react";
-import { CourseItem } from "main/pages/Courses/CourseItem";
 import userEvent from "@testing-library/user-event";
 
 describe("CourseItem tests", () => {
