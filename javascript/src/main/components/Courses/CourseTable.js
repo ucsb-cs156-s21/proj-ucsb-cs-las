@@ -11,13 +11,13 @@ export default ({courses,admin,deleteCourse}) => {
 
     const renderEditButton = (id) => {
         return (
-            <Button onClick={() => { history.push(`/courses/edit/${id}`) }}>Edit</Button>
+            <Button data-testid="edit-button" onClick={() => { history.push(`/courses/edit/${id}`) }}>Edit</Button>
         )
     }
 
     const renderDeleteButton = (id) => {
         return (
-            <Button variant="danger" onClick={() => deleteCourse(id)}>Delete</Button>
+            <Button variant="danger" data-testid="delete-button" onClick={() => deleteCourse(id)}>Delete</Button>
         )
     }
 
@@ -44,14 +44,19 @@ export default ({courses,admin,deleteCourse}) => {
     if (admin) {
         columns.push({
             text: "Edit",
+            isDummyField: true,
+            dataField: "edit",
             formatter: (cell, row) => renderEditButton(row.id)
         });
         columns.push({
             text: "Delete",
+            isDummyField: true,
+            dataField: "delete",
             formatter: (cell, row) => renderDeleteButton(row.id)
         });
     }
 
+    console.log(`courses=${courses} columns=${columns}`)
     return (
         <BootstrapTable keyField='id' data={courses} columns={columns} />
     );

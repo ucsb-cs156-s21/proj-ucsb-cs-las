@@ -14,7 +14,10 @@ function AppNavbar() {
     ["/api/myRole", getToken],
     fetchWithToken
   );
+  console.log(`roleInfo=${roleInfo}`);
+
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
+  console.log(`isAdmin=${isAdmin}`);
 
   return (
     <Navbar bg="dark" variant="dark">

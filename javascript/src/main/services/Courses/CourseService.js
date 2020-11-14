@@ -60,6 +60,4 @@ const buildDeleteCourse = (getToken, onSuccess, onError) => {
   return func;
 }
 
-
-
 export { buildCreateCourse, buildDeleteCourse, buildUpdateCourse };

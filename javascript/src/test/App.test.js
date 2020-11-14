@@ -9,6 +9,21 @@ import useSWR from "swr";
 jest.mock("swr");
 
 describe("App tests", () => {
+
+  const setupSWRMocks = (mockRole) => {
+    useSWR.mockImplementation( (firstParam, fetchWithToken) => { 
+      const coursesResult = {
+        data: []
+      };
+      const roleResult = {
+        data: {
+          role: mockRole
+        }
+      };
+      return ( firstParam === "/api/public/courses" ) ? coursesResult : roleResult;
+    });
+  };
+
   beforeEach(() => {
     useAuth0.mockReturnValue({
       isAuthenticated: true,
@@ -17,11 +32,7 @@ describe("App tests", () => {
       loginWithRedirect: jest.fn(),
       getAccessTokenSilently: jest.fn(),
     });
-    useSWR.mockReturnValue({
-      data: {
-        role: "guest"
-      }
-    });
+    setupSWRMocks("guest");
   });
 
   test("renders without crashing", () => {
@@ -47,11 +58,7 @@ describe("App tests", () => {
 
     // Unfortunately, there is no way to verify that the admin route is available or not. As a result, this test verifies another side-effect of being an admin.
   test("renders admin route when user is admin", async () => {
-    useSWR.mockReturnValue({
-      data: {
-        role: "admin"
-      }
-    });
+    setupSWRMocks("admin");
     const history = createMemoryHistory();
     const { getByText } = render(
       <Router history={history}>

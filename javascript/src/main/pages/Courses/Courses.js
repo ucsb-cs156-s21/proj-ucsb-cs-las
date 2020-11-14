@@ -13,7 +13,7 @@ import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/se
 import {useHistory} from "react-router-dom";
 
 
-const CourseList = () => {
+const Courses = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { data: courseList, error, mutate: mutateCourses } = useSWR(
@@ -40,5 +40,5 @@ const CourseList = () => {
   );
 };
 
-export default CourseList;
+export default Courses;
 

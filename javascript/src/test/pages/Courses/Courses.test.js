@@ -4,27 +4,38 @@ import useSWR from "swr";
 jest.mock("swr");
 import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
-import CourseList from "main/pages/Courses/Courses";
+import Courses from "main/pages/Courses/Courses";
 import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-describe("CourseList test", () => {
+import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+jest.mock("main/services/Courses/CourseService", () => ({
+  buildCreateCourse: jest.fn(),
+  buildDeleteCourse: jest.fn(),
+  buildUpdateCourse: jest.fn()
+}) );
+import { useHistory } from "react-router-dom";
+jest.mock("react-router-dom", () => ({
+  useHistory: jest.fn(),
+}));
+
+describe("Courses page test", () => {
   const courses = [
     {
-      name: "name",
+      name: "CMPSC 156",
       id: 1,
-      quarter: "quarter",
-      instructorFirstName: "instrfname",
-      instructorLastName: "instrlname",
-      instructorEmail: "instremail",
+      quarter: "F20",
+      instructorFirstName: "Phill",
+      instructorLastName: "Conrad",
+      instructorEmail: "phtcon@ucsb.edu",
     },
     {
-      name: "name2",
+      name: "CMPSC 148",
       id: 2,
-      quarter: "quarter",
-      instructorFirstName: "instrfname",
-      instructorLastName: "instrlname",
-      instructorEmail: "instremail",
+      quarter: "F20",
+      instructorFirstName: "Chandra",
+      instructorLastName: "Krintz",
+      instructorEmail: "krintz@example.org",
     },
   ];
   const user = {
@@ -32,10 +43,12 @@ describe("CourseList test", () => {
   };
   const getAccessTokenSilentlySpy = jest.fn();
   const mutateSpy = jest.fn();
+
   beforeEach(() => {
     useAuth0.mockReturnValue({
-      admin,
+      admin: undefined,
       getAccessTokenSilently: getAccessTokenSilentlySpy,
+      user: user
     });
     useSWR.mockReturnValue({
       data: courses,
@@ -43,8 +56,17 @@ describe("CourseList test", () => {
       mutate: mutateSpy,
     });
   });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("dummy test", () => {
+    
+  });
+
   test("renders without crashing", () => {
-    render(<CourseList />);
+    render(<Courses courses={courses}/>);
   });
 
   test("renders loading while course list is undefined", () => {
@@ -53,7 +75,7 @@ describe("CourseList test", () => {
       error: undefined,
       mutate: mutateSpy,
     });
-    const { getByAltText } = render(<CourseList />);
+    const { getByAltText } = render(<Courses courses={courses}/>);
     const loading = getByAltText("Loading");
     expect(loading).toBeInTheDocument();
   });
@@ -64,95 +86,35 @@ describe("CourseList test", () => {
       error: new Error("this is an error"),
       mutate: mutateSpy,
     });
-    const { getByText } = render(<CourseList />);
+    const { getByText } = render(<Courses courses={courses}/>);
     const error = getByText(/error/);
     expect(error).toBeInTheDocument();
   });
 
-  test("can't submit blank course", () => {
-    const { getByPlaceholderText, getByText } = render(<CourseList />);
-    const name = getByPlaceholderText("add course");
-    const input2 = getByPlaceholderText("quarter");
-    const input3 = getByPlaceholderText("instructor first name");
-    const input4 = getByPlaceholderText("instructor last name");
-    const input5 = getByPlaceholderText("instructor email");
-    const submit = getByText("Submit");
-    userEvent.type(name, "");
-    userEvent.type(input2, "");
-    userEvent.type(input3, "");
-    userEvent.type(input4, "");
-    userEvent.type(input5, "");
-    userEvent.click(submit);
-    expect(mutateSpy).toHaveBeenCalledTimes(0);
-  });
-
-  test("can submit valid course", async () => {
-    fetchWithToken.mockReturnValueOnce({
-      id: 3,
-      name: "new course",
-      quarter: "quarter",
-      instructorFirstName: "instrfname",
-      instructorLastName: "instrlname",
-      instructorEmail: "instremail",
-    });
-
-    const { getByPlaceholderText, getByText } = render(<CourseList />);
-    const input = getByPlaceholderText("add course");
-    const input2 = getByPlaceholderText("quarter");
-    const input3 = getByPlaceholderText("instructor first name");
-    const input4 = getByPlaceholderText("instructor last name");
-    const input5 = getByPlaceholderText("instructor email");
-    const submit = getByText("Submit");
-    userEvent.type(input, "new course");
-    userEvent.type(input2, "new quarter");
-    userEvent.type(input3, "new fname");
-    userEvent.type(input4, "new lname");
-    userEvent.type(input5, "new email");
-    userEvent.click(submit);
-    await waitFor(() => expect(fetchWithToken).toHaveBeenCalledTimes(1));
-    expect(mutateSpy).toHaveBeenCalledTimes(1);
-  });
-
   test("can delete a course", async () => {
-    const { getAllByText } = render(<CourseList />);
-    const deleteButtons = getAllByText("Delete");
+    const fakeDeleteFunction = jest.fn();
+    buildDeleteCourse.mockReturnValue(fakeDeleteFunction);
+    const { getAllByTestId } = render(<Courses courses={courses}/>);
+    const deleteButtons = getAllByTestId("delete-button");
     userEvent.click(deleteButtons[0]);
-    await waitFor(() => expect(fetchWithToken).toHaveBeenCalledTimes(1));
-    expect(mutateSpy).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
   });
 
   test("can edit a course", async () => {
-    const { getAllByText, getByDisplayValue, getByText } = render(<CourseList />);
-    const editButtons = getAllByText("Edit");
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const { getAllByTestId } = render(<Courses courses={courses}/>);
+    const editButtons = getAllByTestId("edit-button");
     userEvent.click(editButtons[0]);
-    const selectedCourse = courses[0];
-    const updatedCourse = {
-      ...selectedCourse,
-      name: "my new course",
-      quarter: "quarter",
-      instructorFirstName: "instrfname",
-      instructorLastName: "instrlname",
-      instructorEmail: "instremail",
-    };
-    const input = getByDisplayValue(selectedCourse.name);
-    userEvent.clear(input);
-    userEvent.type(input, updatedCourse.name);
-    const doneButton = getByText("Done");
-    userEvent.click(doneButton);
-    await waitFor(() => expect(fetchWithToken).toHaveBeenCalledTimes(1));
-    expect(mutateSpy).toHaveBeenCalledTimes(1);
-    expect(fetchWithToken).toHaveBeenCalledWith(
-      "/api/courses/1",
-      getAccessTokenSilentlySpy,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(updatedCourse),
-      }
-    );
-    const editButtonsAfterEdit = getAllByText("Edit");
-    expect(editButtons.length).toBe(editButtonsAfterEdit.length);
+
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+  
 });
+
+

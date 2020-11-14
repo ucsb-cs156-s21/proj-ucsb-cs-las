@@ -1,8 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import CourseTable from "main/components/Footer/AppFooter";
 
-describe("CourseHeader tests", () => {
+
+describe("CourseForm tests", () => {
   test("renders without crashing", () => {
-    render(<CourseHeader />);
+    render(<CourseTable />);
   });
 });
