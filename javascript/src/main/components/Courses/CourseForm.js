@@ -27,7 +27,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     Course Name
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="name" placeholder="course name" value={course.name} onChange={(e) => setCourse({
+                    <Form.Control type="text" placeholder="course name" value={course.name} onChange={(e) => setCourse({
                         ...course,
                         name: e.target.value
                     })} />
@@ -38,7 +38,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     Quarter
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="quarter" placeholder="quarter" value={course.quarter} onChange={(e) => setCourse({
+                    <Form.Control type="text" placeholder="quarter" value={course.quarter} onChange={(e) => setCourse({
                         ...course,
                         quarter: e.target.value
                     })} />
@@ -49,7 +49,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     Last Name
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="instructorFirstName" placeholder="instructor first name" value={course.instructorFirstName} onChange={(e) => setCourse({
+                    <Form.Control type="text" placeholder="instructor first name" value={course.instructorFirstName} onChange={(e) => setCourse({
                         ...course,
                         instructorFirstName: e.target.value
                     })} />
@@ -60,7 +60,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     First Name
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="instructorLastName" placeholder="instructor last name" value={course.instructorLastName} onChange={(e) => setCourse({
+                    <Form.Control type="text" placeholder="instructor last name" value={course.instructorLastName} onChange={(e) => setCourse({
                         ...course,
                         instructorLastName: e.target.value
                     })} />
@@ -71,7 +71,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     Email
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="instructorEmail" placeholder="instructor email" value={course.instructorEmail} onChange={(e) => setCourse({
+                    <Form.Control type="email" placeholder="instructor email" value={course.instructorEmail} onChange={(e) => setCourse({
                         ...course,
                         instructorEmail: e.target.value
                     })} />
