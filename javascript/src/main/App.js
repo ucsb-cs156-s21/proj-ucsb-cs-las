@@ -40,7 +40,7 @@ function App() {
           <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses/edit" exact component={EditCourse} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
