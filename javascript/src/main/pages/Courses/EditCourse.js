@@ -9,6 +9,7 @@ import { sortCourses } from "../../utils/courseHelpers";
 import CourseTable from "../../components/Courses/CourseTable"
 import { useParams, useHistory } from "react-router-dom";
 import { buildUpdateCourse } from "main/services/Courses/CourseService";
+import { cache } from "swr"
 
 const EditCourse = () => {
   const history = useHistory();
@@ -16,6 +17,7 @@ const EditCourse = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const updateCourse = buildUpdateCourse(getToken, () => { history.push("/courses") });
 
+  cache.clear();
   const { data: course } = useSWR(
     [`/api/public/courses/${courseId}`, getToken],
     fetchWithToken
