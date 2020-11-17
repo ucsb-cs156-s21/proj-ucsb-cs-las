@@ -1,5 +1,5 @@
 import { fetchWithToken } from "main/utils/fetch";
-
+ 
 const buildCreateCourse = (getToken, onSuccess, onError) => {
   const func = async (name, quarter, instructorFirstName, instructorLastName, instructorEmail) => {
     try {
@@ -17,7 +17,9 @@ const buildCreateCourse = (getToken, onSuccess, onError) => {
         }),
       });
       onSuccess();
+      console.log(`success branch, onSuccess=${onSuccess}`);
     } catch (err) {
+      console.log(`err=${err}`);
       onError(err);
     }
   };
@@ -34,9 +36,9 @@ const buildUpdateCourse = (getToken, onSuccess, onError) => {
         },
         body: JSON.stringify(item),
       });
-      onSuccess();
+      onSuccess();  
     } catch (err) {
-      onError(err);
+      onError(err); 
     }
   };
   return func
