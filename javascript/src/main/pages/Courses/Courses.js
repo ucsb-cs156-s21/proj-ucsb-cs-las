@@ -34,7 +34,7 @@ const Courses = () => {
   return (
     <>
       <Button onClick={()=>history.push("/courses/new")}>New Course</Button>
-      <CourseTable courses={courseList || []} admin={true} deleteCourse={deleteCourse} />
+      <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
     </>
   );
 };

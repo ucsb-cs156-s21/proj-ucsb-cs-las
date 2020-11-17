@@ -66,7 +66,7 @@ describe("Courses page test", () => {
   });
 
   test("renders without crashing", () => {
-    render(<Courses courses={courses}/>);
+    render(<Courses />);
   });
 
   test("renders loading while course list is undefined", () => {
@@ -75,7 +75,7 @@ describe("Courses page test", () => {
       error: undefined,
       mutate: mutateSpy,
     });
-    const { getByAltText } = render(<Courses courses={courses}/>);
+    const { getByAltText } = render(<Courses />);
     const loading = getByAltText("Loading");
     expect(loading).toBeInTheDocument();
   });
@@ -86,7 +86,7 @@ describe("Courses page test", () => {
       error: new Error("this is an error"),
       mutate: mutateSpy,
     });
-    const { getByText } = render(<Courses courses={courses}/>);
+    const { getByText } = render(<Courses />);
     const error = getByText(/error/);
     expect(error).toBeInTheDocument();
   });
@@ -94,7 +94,7 @@ describe("Courses page test", () => {
   test("can delete a course", async () => {
     const fakeDeleteFunction = jest.fn();
     buildDeleteCourse.mockReturnValue(fakeDeleteFunction);
-    const { getAllByTestId } = render(<Courses courses={courses}/>);
+    const { getAllByTestId } = render(<Courses />);
     const deleteButtons = getAllByTestId("delete-button");
     userEvent.click(deleteButtons[0]);
     await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
@@ -107,9 +107,23 @@ describe("Courses page test", () => {
       push: pushSpy
     });
 
-    const { getAllByTestId } = render(<Courses courses={courses}/>);
+    const { getAllByTestId } = render(<Courses />);
     const editButtons = getAllByTestId("edit-button");
     userEvent.click(editButtons[0]);
+
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  });
+
+  test("can click to add a course", async () => {
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const { getByText } = render(<Courses />);
+    const newCourseButton = getByText("New Course");
+    userEvent.click(newCourseButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
