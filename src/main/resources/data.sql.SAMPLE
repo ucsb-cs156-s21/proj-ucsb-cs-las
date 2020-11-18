@@ -1,0 +1,1 @@
+INSERT INTO course(id, name, quarter, instructor_first_name, instructor_last_name, instructor_email) VALUES ('1', 'CMPSC 156', '20204', 'Phill', 'Conrad', 'phtcon@ucsb.edu');
