@@ -1,5 +1,5 @@
 import React from "react";
-import CourseForm from "../../components/Courses/CourseForm";
+import CourseForm from "main/components/Courses/CourseForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import {buildCreateCourse} from "main/services/Courses/CourseService";
 import {useHistory} from "react-router-dom";
@@ -7,8 +7,8 @@ import {useHistory} from "react-router-dom";
 const NewCourse = () => {
   const history = useHistory();
 
-  const { user, getAccessTokenSilently: getToken } = useAuth0();
-  
+  const { getAccessTokenSilently: getToken } = useAuth0();
+
   const createCourse = buildCreateCourse(getToken, ()=>history.push("/courses"))
 
   return (

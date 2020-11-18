@@ -1,7 +1,6 @@
 import React from "react";
 import useSWR from "swr";
-import { ListGroup } from "react-bootstrap";
-import CourseForm from "../../components/Courses/CourseForm";
+import CourseForm from "main/components/Courses/CourseForm";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
@@ -12,7 +11,7 @@ import { cache } from "swr"
 const EditCourse = () => {
   const history = useHistory();
   const { courseId } = useParams();
-  const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const { getAccessTokenSilently: getToken } = useAuth0();
   const updateCourse = buildUpdateCourse(getToken, () => { history.push("/courses") });
 
   cache.clear();

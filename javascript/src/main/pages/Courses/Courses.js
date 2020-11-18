@@ -1,12 +1,10 @@
 import React from "react";
 import useSWR from "swr";
-import { Button, ListGroup } from "react-bootstrap";
-// import { CourseForm } from "./CourseForm";
-import CourseForm from "../../components/Courses/CourseForm";
+import { Button } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
-import CourseTable from "../../components/Courses/CourseTable"
+import CourseTable from "main/components/Courses/CourseTable"
 import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
 
 import {useHistory} from "react-router-dom";
@@ -14,7 +12,7 @@ import {useHistory} from "react-router-dom";
 
 const Courses = () => {
   const history = useHistory();
-  const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: courseList, error, mutate: mutateCourses } = useSWR(
     ["/api/public/courses", getToken],
     fetchWithToken
@@ -27,10 +25,8 @@ const Courses = () => {
   if (!courseList) {
     return <Loading />;
   }
-  const updateCourse = buildUpdateCourse(getToken, mutateCourses);
   const deleteCourse = buildDeleteCourse(getToken, mutateCourses);
-  const createCourse = buildCreateCourse(getToken, mutateCourses);
-  
+
   return (
     <>
       <Button onClick={()=>history.push("/courses/new")}>New Course</Button>
