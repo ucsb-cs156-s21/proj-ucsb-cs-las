@@ -15,8 +15,8 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (createCourse)
-            createCourse(course.name, course.quarter, course.instructorFirstName, course.instructorLastName, course.instructorEmail);
-        else 
+            createCourse(course);
+        else
             updateCourse(course, course.id);
     }
 

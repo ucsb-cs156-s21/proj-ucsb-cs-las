@@ -35,8 +35,6 @@ public class CourseController {
   @PostMapping(value = "/api/admin/courses", produces = "application/json")
   public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
       @RequestBody @Valid Course course) throws JsonProcessingException {
-    DecodedJWT jwt = JWT.decode(authorization.substring(7));
-    // course.setUserId(jwt.getSubject());
     Course savedCourse = courseRepository.save(course);
     String body = mapper.writeValueAsString(savedCourse);
     return ResponseEntity.ok().body(body);
@@ -44,8 +42,7 @@ public class CourseController {
 
   @PutMapping(value = "/api/admin/courses/{id}", produces = "application/json")
   public ResponseEntity<String> updateCourse(@RequestHeader("Authorization") String authorization,
-      @PathVariable("id") Long id, @RequestBody @Valid Course incomingCourse)
-      throws JsonProcessingException {
+      @PathVariable("id") Long id, @RequestBody @Valid Course incomingCourse) throws JsonProcessingException {
     DecodedJWT jwt = JWT.decode(authorization.substring(7));
     Optional<Course> course = courseRepository.findById(id);
     if (!course.isPresent()) {
@@ -60,7 +57,7 @@ public class CourseController {
     String body = mapper.writeValueAsString(incomingCourse);
     return ResponseEntity.ok().body(body);
   }
- 
+
   @DeleteMapping(value = "/api/admin/courses/{id}", produces = "application/json")
   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) {
@@ -74,8 +71,7 @@ public class CourseController {
   }
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
-  public ResponseEntity<String> getCourses()
-      throws JsonProcessingException {
+  public ResponseEntity<String> getCourses() throws JsonProcessingException {
     List<Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
@@ -84,8 +80,7 @@ public class CourseController {
   }
 
   @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
-  public ResponseEntity<String> getCourse(@PathVariable("id") Long id)
-      throws JsonProcessingException {
+  public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws JsonProcessingException {
     Optional<Course> course = courseRepository.findById(id);
     if (course.isEmpty()) {
       return ResponseEntity.notFound().build();

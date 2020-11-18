@@ -61,10 +61,6 @@ describe("Courses page test", () => {
     jest.clearAllMocks();
   });
 
-  test("dummy test", () => {
-    
-  });
-
   test("renders without crashing", () => {
     render(<Courses />);
   });
@@ -128,7 +124,7 @@ describe("Courses page test", () => {
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
-  
+
 });
 
 

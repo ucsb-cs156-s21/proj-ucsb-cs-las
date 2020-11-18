@@ -74,14 +74,6 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createCourseMock).toHaveBeenCalledTimes(1);
-    expect(createCourseMock).toHaveBeenCalledWith(
-      sampleCourse.name, 
-      sampleCourse.quarter, 
-      sampleCourse.instructorFirstName, 
-      sampleCourse.instructorLastName, 
-      sampleCourse.instructorEmail, 
-      );
-
+    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined });
   });
-
 });

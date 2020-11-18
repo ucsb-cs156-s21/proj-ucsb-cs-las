@@ -1,25 +1,17 @@
 import { fetchWithToken } from "main/utils/fetch";
- 
+
 const buildCreateCourse = (getToken, onSuccess, onError) => {
-  const func = async (name, quarter, instructorFirstName, instructorLastName, instructorEmail) => {
+  const func = async (course) => {
     try {
       await fetchWithToken(`/api/admin/courses/`, getToken, {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify({
-          name,
-          quarter,
-          instructorFirstName,
-          instructorLastName,
-          instructorEmail,
-        }),
+        body: JSON.stringify(course),
       });
       onSuccess();
-      console.log(`success branch, onSuccess=${onSuccess}`);
     } catch (err) {
-      console.log(`err=${err}`);
       onError(err);
     }
   };
@@ -36,9 +28,9 @@ const buildUpdateCourse = (getToken, onSuccess, onError) => {
         },
         body: JSON.stringify(item),
       });
-      onSuccess();  
+      onSuccess();
     } catch (err) {
-      onError(err); 
+      onError(err);
     }
   };
   return func

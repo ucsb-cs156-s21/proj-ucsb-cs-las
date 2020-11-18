@@ -56,7 +56,6 @@ export default ({courses,admin,deleteCourse}) => {
         });
     }
 
-    console.log(`courses=${courses} columns=${columns}`)
     return (
         <BootstrapTable keyField='id' data={courses} columns={columns} />
     );

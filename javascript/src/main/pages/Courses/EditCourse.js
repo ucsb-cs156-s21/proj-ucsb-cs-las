@@ -1,12 +1,11 @@
 import React from "react";
-import useSWR from "swr";
+import useSWR, { cache } from "swr";
 import CourseForm from "main/components/Courses/CourseForm";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import { useParams, useHistory } from "react-router-dom";
 import { buildUpdateCourse } from "main/services/Courses/CourseService";
-import { cache } from "swr"
 
 const EditCourse = () => {
   const history = useHistory();
