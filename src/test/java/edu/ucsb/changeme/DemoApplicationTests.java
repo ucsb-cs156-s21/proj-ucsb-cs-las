@@ -2,8 +2,7 @@ package edu.ucsb.changeme;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import edu.ucsb.changeme.controllers.AppController;
-import edu.ucsb.changeme.controllers.ReactController;
+import edu.ucsb.changeme.controllers.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,17 @@ class DemoApplicationTests {
   private AppController appController;
   @Autowired
   private ReactController reactController;
-  
+  @Autowired
+  private CourseController courseController;
+  @Autowired
+  private RoleController roleController;
 
   @Test
   void contextLoads() {
     assertThat(appController).isNotNull();
     assertThat(reactController).isNotNull();
+    assertThat(courseController).isNotNull();
+    assertThat(roleController).isNotNull();
   }
 
   // This test just provides coverage on the main method of DemoApplication.
