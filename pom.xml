@@ -201,7 +201,7 @@
 					<archive>
 						<manifest>
 							<!-- full package name of class with the main you want to run -->
-							<mainClass>edu.ucsb.changeme.DemoApplication</mainClass>
+							<mainClass>edu.ucsb.ucsbcslas.DemoApplication</mainClass>
 
 						</manifest>
 					</archive>
