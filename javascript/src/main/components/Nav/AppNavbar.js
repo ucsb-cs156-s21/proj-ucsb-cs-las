@@ -14,12 +14,13 @@ function AppNavbar() {
     ["/api/myRole", getToken],
     fetchWithToken
   );
+
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
 
   return (
     <Navbar bg="dark" variant="dark">
       <LinkContainer to={""}>
-        <Navbar.Brand data-testid="brand">Changeme To App Name</Navbar.Brand>
+        <Navbar.Brand data-testid="brand">UCSB CS LAs</Navbar.Brand>
       </LinkContainer>
       <Nav>
         { isAdmin &&
@@ -30,6 +31,11 @@ function AppNavbar() {
         <LinkContainer to={"/about"}>
             <Nav.Link>About</Nav.Link>
         </LinkContainer>
+        { isAdmin &&
+        <LinkContainer to={"/courses"}>
+            <Nav.Link>Courses</Nav.Link>
+        </LinkContainer>
+        }
         <ProfileNav />
       </Nav>
       <Navbar.Collapse className="justify-content-end">

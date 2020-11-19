@@ -5,7 +5,7 @@ const About = () => {
     <Jumbotron>
       <h1>This is 127.0.0.1 (aka home)</h1>
       <div className="text-left">
-        <p>Welcome to (Changeme To App Name)!</p>
+        <p>Welcome to UCSB CS LAs!</p>
         <p>
           This app can hopefully help you understand how to use React with
           Spring in order to create a functional web application. This app is
