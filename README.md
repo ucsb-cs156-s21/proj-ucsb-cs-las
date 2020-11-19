@@ -6,20 +6,20 @@
 
 This app is a course project of <https://ucsb-cs156.github.io>, a course at [UC Santa Barbara](https://ucsb.edu).
 
-This repo is intended to be starter code for the UCSB Computer Science LA infomation page. 
+This repo is intended to be starter code for the UCSB Computer Science LA infomation page.
 
 It contains:
-* Spring Boot Backend
-* React Front end
-* Auth0 authentication using Google
-* privilege levels "not logged in", guest, member and admin, where
-  * guest means you've logged in, but with a non ucsb email address
-  * member means you've logged in with a ucsb email address
-  * admin means you are in the list of admins 
-    in the `application.properties` file, or else you've been 
-    added to the admins table by someone that's already an 
-    admin.
 
+- Spring Boot Backend
+- React Front end
+- Auth0 authentication using Google
+- privilege levels "not logged in", guest, member and admin, where
+  - guest means you've logged in, but with a non ucsb email address
+  - member means you've logged in with a ucsb email address
+  - admin means you are in the list of admins
+    in the `application.properties` file, or else you've been
+    added to the admins table by someone that's already an
+    admin.
 
 ## Property file values
 
@@ -72,7 +72,7 @@ The next thing you'll want to do is set up your Auth0 SPA App. Instructions for 
   | ------------------------------------------------ | ------------------------------------------- |
   | `auth0.domain`                                   | `REACT_APP_AUTH0_DOMAIN`                    |
   | `auth0.clientId`                                 | `REACT_APP_AUTH0_CLIENT_ID`                 |
-                    
+
   You may see additional values in `secrets-localhost.properties` such as the ones below. You do not need to adjust these; leave the values alone.
 
   ```
@@ -115,3 +115,14 @@ context.accessToken[<application url>]={
 ```
 
 before the return statement. After that, save the new rule.
+
+## Enabling fixtures
+
+You can enable fixtures (aka pre-populate the database) by running the following command:
+
+```bash
+# Un-sample the data.sql.SAMPLE file
+cp src/main/resources/data.sql.SAMPLE src/main/resources/data.sql
+```
+
+You can also add fixtures via SQL statements by adding sql statements to the `data.sql` file.

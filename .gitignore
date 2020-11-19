@@ -34,6 +34,9 @@ build/
 ### VS Code ###
 .vscode/
 
+### SQL fixture files for local development ###
+data.sql
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
