@@ -101,41 +101,6 @@ public class OnlineOfficeHours {
     this.notes = notes;
   }
 
-  public OnlineOfficeHours id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-  public OnlineOfficeHours tutorAssignment(TutorAssignment tutorAssignment) {
-    this.tutorAssignment = tutorAssignment;
-    return this;
-  }
-
-  public OnlineOfficeHours dayOfWeek(String dayOfWeek) {
-    this.dayOfWeek = dayOfWeek;
-    return this;
-  }
-
-  public OnlineOfficeHours startTime(String startTime) {
-    this.startTime = startTime;
-    return this;
-  }
-
-  public OnlineOfficeHours endTime(String endTime) {
-    this.endTime = endTime;
-    return this;
-  }
-
-  public OnlineOfficeHours zoomRoomLink(String zoomRoomLink) {
-    this.zoomRoomLink = zoomRoomLink;
-    return this;
-  }
-
-  public OnlineOfficeHours notes(String notes) {
-    this.notes = notes;
-    return this;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (o == this)

@@ -63,26 +63,6 @@ public class Tutor {
     this.email = email;
   }
 
-  public Tutor id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-  public Tutor firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-  public Tutor lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
-  public Tutor email(String email) {
-    this.email = email;
-    return this;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (o == this)
