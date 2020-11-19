@@ -13,9 +13,12 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
     const [course, setCourse] = useState(existingCourse || emptyCourse);
 
     const handleOnSubmit = (e) => {
+        console.log("handleOnSubmit called");
         e.preventDefault();
-        if (createCourse)
+        if (createCourse) {
+            console.log("about to call createCourse");
             createCourse(course);
+        }
         else
             updateCourse(course, course.id);
     }

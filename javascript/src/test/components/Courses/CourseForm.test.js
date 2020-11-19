@@ -47,7 +47,7 @@ describe("CourseForm tests", () => {
 
   });
 
-  test("updating creating course works", async () => {
+  test("creating course works", async () => {
 
     const createCourseMock = jest.fn();
 
