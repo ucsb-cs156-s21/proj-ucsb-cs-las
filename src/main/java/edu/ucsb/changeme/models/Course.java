@@ -1,5 +1,7 @@
 package edu.ucsb.changeme.models;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -105,4 +107,10 @@ public class Course {
   public void setInstructorEmail(String instructorEmail) {
     this.instructorEmail = instructorEmail;
   }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, quarter, instructorFirstName, instructorLastName, instructorEmail);
+  }
+
 }
