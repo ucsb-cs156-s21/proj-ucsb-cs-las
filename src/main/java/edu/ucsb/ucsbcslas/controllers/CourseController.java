@@ -90,7 +90,9 @@ public class CourseController {
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
+   
     List<Course> courseList = courseRepository.findAll();
+      courseList.removeIf(course -> !course.getQuarter().equals("f20"));
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);
