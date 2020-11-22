@@ -92,7 +92,7 @@ public class CourseController {
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
    
     List<Course> courseList = courseRepository.findAll();
-      courseList.removeIf(course -> !course.getQuarter().equals("f20"));
+      courseList.removeIf(course -> !course.getQuarter().equals(courseList.get(0).getActiveQuarter()));
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);

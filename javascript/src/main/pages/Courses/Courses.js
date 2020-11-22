@@ -30,6 +30,9 @@ const Courses = () => {
   return (
     <>
       <Button onClick={()=>history.push("/courses/new")}>New Course</Button>
+      <Button onClick={()=>history.push("/courses/setActiveQuarter")}>filter by quarter</Button>
+     
+     
       <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
     </>
   );
