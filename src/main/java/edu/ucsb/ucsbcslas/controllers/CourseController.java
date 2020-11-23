@@ -91,8 +91,7 @@ public class CourseController {
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
    
-    List<Course> courseList = courseRepository.findAll();
-      courseList.removeIf(course -> !course.getQuarter().equals(courseList.get(0).getActiveQuarter()));
+    List<Course> courseList = courseRepository.findByQuarter("f20");
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);
