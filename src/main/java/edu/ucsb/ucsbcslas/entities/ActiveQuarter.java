@@ -9,13 +9,13 @@ import javax.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
-public class Admin {
+public class ActiveQuarter {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private long id = 1;
 
   @Column(nullable = false)
-  private String name;
+  private String name = "f20";
   public ActiveQuarter(){
 
   }
@@ -32,23 +32,9 @@ public class Admin {
         return this.name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Admin)) {
-            return false;
-        }
-        Admin admin = (Admin) o;
-        return id == admin.id && Objects.equals(name, admin.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 }
+
+   

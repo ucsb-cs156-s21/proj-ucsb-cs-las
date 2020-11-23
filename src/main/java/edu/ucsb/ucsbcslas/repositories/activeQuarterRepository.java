@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface activeQuarterRepository extends CrudRepository<ActiveQuarter, Long> {
-  public List<Admin> findByName(String name);
+  public List<ActiveQuarter> findAll(); //there is only one quarter in the DB at any time.
 }
