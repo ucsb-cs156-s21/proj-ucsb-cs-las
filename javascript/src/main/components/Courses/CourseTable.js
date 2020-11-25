@@ -26,7 +26,7 @@ export default ({courses,admin,deleteCourse}) => {
         text: 'id'
     }, {
         dataField: 'name',
-        text: 'Course Numberr'
+        text: 'Course Number'
     }, {
         dataField: 'quarter',
         text: 'Quarter'
