@@ -19,6 +19,7 @@ const buildCreateCourse = (getToken, onSuccess, onError) => {
 }
 
 const buildUpdateCourse = (getToken, onSuccess, onError) => {
+  debugger
   const func = async (item, id) => {
     try {
       await fetchWithToken(`/api/admin/courses/${id}`, getToken, {

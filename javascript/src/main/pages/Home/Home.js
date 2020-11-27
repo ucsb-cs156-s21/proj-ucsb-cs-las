@@ -9,6 +9,11 @@ const Home = () => {
         "/api/public/courses",
         fetchWithoutToken
     );
+    const { data: active } = useSWR(
+        "/api/public/courses/1",
+        fetchWithoutToken
+    );
+    console.log(active);
     return (
         <Jumbotron>
             <div className="text-left">
