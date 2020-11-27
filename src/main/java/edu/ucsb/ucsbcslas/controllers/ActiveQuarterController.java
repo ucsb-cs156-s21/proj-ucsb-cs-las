@@ -1,5 +1,4 @@
 package edu.ucsb.ucsbcslas.controllers;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +24,23 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.ucsb.ucsbcslas.services.Auth0Service;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
-import edu.ucsb.ucsbcslas.models.Course;
-import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
+import edu.ucsb.ucsbcslas.models.GoogleUserProfile;
+import edu.ucsb.ucsbcslas.repositories.ActiveQuarterRepository;
+
 
 @RestController
-public class CourseController {
-  private final Logger logger = LoggerFactory.getLogger(CourseController.class);
+public class ActiveQuarterController {
+
+  private Logger logger = LoggerFactory.getLogger(ActiveQuarterController.class);
+
+  @Autowired
+  private ActiveQuarterRepository activeQuarterRepo;
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
-  @Autowired
-  private CourseRepository courseRepository;
-
   private ObjectMapper mapper = new ObjectMapper();
-
   private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
     Map<String, String> response = new HashMap<String, String>();
     response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -46,68 +48,68 @@ public class CourseController {
     return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
   }
 
-  @PostMapping(value = "/api/admin/courses", produces = "application/json")
-  public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
-      @RequestBody @Valid Course course) throws JsonProcessingException {
+
+  @PostMapping(value = "/api/admin/filter", produces = "application/json")
+  public ResponseEntity<String> createFilter(@RequestHeader("Authorization") String authorization,
+      @RequestBody @Valid ActiveQuarter ActiveQuarterData) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    Course savedCourse = courseRepository.save(course);
-    String body = mapper.writeValueAsString(savedCourse);
+    ActiveQuarter savedValue = activeQuarterRepo.save(ActiveQuarterData);
+    String body = mapper.writeValueAsString(savedValue);
     return ResponseEntity.ok().body(body);
   }
 
-  @PutMapping(value = "/api/admin/courses/{id}", produces = "application/json")
-  public ResponseEntity<String> updateCourse(@RequestHeader("Authorization") String authorization,
-      @PathVariable("id") Long id, @RequestBody @Valid Course incomingCourse) throws JsonProcessingException {
+  @PutMapping(value = "/api/admin/filter/{id}", produces = "application/json")
+  public ResponseEntity<String> updateFilter(@RequestHeader("Authorization") String authorization,
+      @PathVariable("id") Long id, @RequestBody @Valid ActiveQuarter ActiveQuarterData) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    Optional<Course> course = courseRepository.findById(id);
-    if (!course.isPresent()) {
+    Optional<ActiveQuarter> activeQ =activeQuarterRepo.findById(id);
+    if (!activeQ.isPresent()) {
       return ResponseEntity.notFound().build();
     }
 
-    if (!incomingCourse.getId().equals(id)) {
+    if (!ActiveQuarterData.getId().equals(id)) {
       return ResponseEntity.badRequest().build();
     }
 
-    courseRepository.save(incomingCourse);
-    String body = mapper.writeValueAsString(incomingCourse);
+   activeQuarterRepo.save(ActiveQuarterData);
+    String body = mapper.writeValueAsString(ActiveQuarterData);
     return ResponseEntity.ok().body(body);
   }
-
-  @DeleteMapping(value = "/api/admin/courses/{id}", produces = "application/json")
-  public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
+  @DeleteMapping(value = "/api/admin/filter{id}", produces = "application/json")
+  public ResponseEntity<String> deleteFilter(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    Optional<Course> course = courseRepository.findById(id);
-    if (!course.isPresent()) {
+    Optional<ActiveQuarter> activeQ = activeQuarterRepo.findById(id);
+    if (!activeQ.isPresent()) {
       return ResponseEntity.notFound().build();
     }
-    courseRepository.deleteById(id);
+    activeQuarterRepo.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping(value = "/api/public/courses", produces = "application/json")
-  public ResponseEntity<String> getCourses() throws JsonProcessingException {
+  @GetMapping(value = "/api/public/filter", produces = "application/json")
+  public ResponseEntity<String> getFilters() throws JsonProcessingException {
    
-    List <Course> courseList = courseRepository.findAll();
+    List<ActiveQuarter> filterList =activeQuarterRepo.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
-    String body = mapper.writeValueAsString(courseList);
+    String body = mapper.writeValueAsString(filterList);
     return ResponseEntity.ok().body(body);
   }
 
-  @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
-  public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws JsonProcessingException {
-    Optional<Course> course = courseRepository.findById(id);
-    if (course.isEmpty()) {
+
+  @GetMapping(value = "/api/admin/filter/{id}", produces = "application/json")
+  public ResponseEntity<String> getFilter(@PathVariable("id") Long id) throws JsonProcessingException {
+    Optional<ActiveQuarter> activeQ =activeQuarterRepo.findById(id);
+    if (activeQ.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
 
     ObjectMapper mapper = new ObjectMapper();
-    String body = mapper.writeValueAsString(course.get());
+    String body = mapper.writeValueAsString(activeQ.get());
     return ResponseEntity.ok().body(body);
   }
-
 }

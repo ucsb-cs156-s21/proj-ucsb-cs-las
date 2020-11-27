@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 public class ActiveQuarter {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
     @Override
     public boolean equals(Object o) {
@@ -21,15 +21,10 @@ public class ActiveQuarter {
         if (!(o instanceof ActiveQuarter)) {
             return false;
         }
-        ActiveQuarter activeQuarter = (ActiveQuarter) o;
+        ActiveQuarter other = (ActiveQuarter) o;
         EqualsBuilder e = new EqualsBuilder();
-        e.append(activeQuarter, other.activeQuarter);
+        e.append(activeQuarterValue, other.activeQuarterValue);
         return e.isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, activeQuarterValue);
     }
 
   @Column(nullable = false)
@@ -43,7 +38,7 @@ public class ActiveQuarter {
     }
 
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
