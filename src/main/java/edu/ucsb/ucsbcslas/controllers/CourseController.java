@@ -36,8 +36,6 @@ public class CourseController {
   private AuthControllerAdvice authControllerAdvice;
   @Autowired
   private CourseRepository courseRepository;
-  @Value("${app.active_quarter}")
-  private String activeQuarter;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -93,13 +91,7 @@ public class CourseController {
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
    
-    List<Course> courseList;
-    if(!activeQuarter.equals("all")){
-      courseList = courseRepository.findByQuarter(activeQuarter);
-    } else{
-
     courseList = courseRepository.findAll();
-    }
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);
