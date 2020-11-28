@@ -76,24 +76,24 @@ public class TutorController {
     }
 
     @DeleteMapping(value = "/api/admin/courses/{id}", produces = "application/json")
-    public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<String> deleteTutor(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        Optional<Course> course = courseRepository.findById(id);
-        if (!course.isPresent()) {
+        Optional<Tutor> tutor = tutorRepository.findById(id);
+        if (!tutor.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        courseRepository.deleteById(id);
+        tutorRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/api/public/courses", produces = "application/json")
-    public ResponseEntity<String> getCourses() throws JsonProcessingException {
-        List<Course> courseList = courseRepository.findAll();
+    public ResponseEntity<String> getTutors() throws JsonProcessingException {
+        List<Tutor> tutorList = tutorRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
 
-        String body = mapper.writeValueAsString(courseList);
+        String body = mapper.writeValueAsString(tutorList);
         return ResponseEntity.ok().body(body);
     }
 
