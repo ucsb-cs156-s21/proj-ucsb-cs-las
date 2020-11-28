@@ -15,34 +15,27 @@ public class Tutor {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
-    private String name;
+    private String fname;
     @Column(nullable = false)
-    private String quarter;
+    private String lname;
     @Column(nullable = false)
-    private String instructorFirstName;
-    @Column(nullable = false)
-    private String instructorLastName;
-    @Column(nullable = false)
-    private String instructorEmail;
+    private String email;
 
     public Tutor() {
     }
 
-    public Tutor(Long id, String name, String quarter, String instructorFirstName, String instructorLastName,
-            String instructorEmail) {
+    public Tutor(Long id, String fname, String lname, String email) {
         this.id = id;
-        this.name = name;
-        this.quarter = quarter;
-        this.instructorFirstName = instructorFirstName;
-        this.instructorLastName = instructorLastName;
-        this.instructorEmail = instructorEmail;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Tutor[ id=%d, name=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s ]",
-                id, name, quarter, instructorFirstName, instructorLastName, instructorEmail);
+                "Tutor[ id=%d, fname=%s, lname=%s, email=%s ]",
+                id, fname, lname, email);
     }
 
     @Override
@@ -59,9 +52,9 @@ public class Tutor {
         // field, we can
         // just test one difference.
         EqualsBuilder builder = new EqualsBuilder();
-        builder.append(id, other.id).append(name, other.name).append(quarter, other.quarter)
-                .append(instructorFirstName, other.instructorFirstName)
-                .append(instructorLastName, other.instructorLastName).append(instructorEmail, other.instructorEmail);
+        builder.append(id, other.id)
+                .append(fname, other.fname)
+                .append(lname, other.lname).append(email, other.email);
         return builder.isEquals();
     }
 
@@ -73,49 +66,37 @@ public class Tutor {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fname + " " + lname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFirstName() {
+        return fname;
     }
 
-    public String getQuarter() {
-        return quarter;
+    public void setFirstName(String fname) {
+        this.fname = fname;
     }
 
-    public void setQuarter(String quarter) {
-        this.quarter = quarter;
+    public String getLastName() {
+        return lname;
     }
 
-    public String getInstructorFirstName() {
-        return instructorFirstName;
+    public void setLastName(String lname) {
+        this.lname = lname;
     }
 
-    public void setInstructorFirstName(String instructorFirstName) {
-        this.instructorFirstName = instructorFirstName;
+    public String getEmail() {
+        return email;
     }
 
-    public String getInstructorLastName() {
-        return instructorLastName;
-    }
-
-    public void setInstructorLastName(String instructorLastName) {
-        this.instructorLastName = instructorLastName;
-    }
-
-    public String getInstructorEmail() {
-        return instructorEmail;
-    }
-
-    public void setInstructorEmail(String instructorEmail) {
-        this.instructorEmail = instructorEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, quarter, instructorFirstName, instructorLastName, instructorEmail);
+        return Objects.hash(id, fname, lname, email);
     }
 
 }
