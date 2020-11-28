@@ -98,14 +98,14 @@ public class TutorController {
     }
 
     @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
-    public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws JsonProcessingException {
-        Optional<Course> course = courseRepository.findById(id);
-        if (course.isEmpty()) {
+    public ResponseEntity<String> getTutor(@PathVariable("id") Long id) throws JsonProcessingException {
+        Optional<Tutor> tutor = tutorRepository.findById(id);
+        if (tutor.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(course.get());
+        String body = mapper.writeValueAsString(tutor.get());
         return ResponseEntity.ok().body(body);
     }
 
