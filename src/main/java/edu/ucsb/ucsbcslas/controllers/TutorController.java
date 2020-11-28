@@ -46,7 +46,7 @@ public class TutorController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping(value = "/api/admin/courses", produces = "application/json")
+    @PostMapping(value = "/api/admin/tutors", produces = "application/json")
     public ResponseEntity<String> createTutor(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid Tutor tutor) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
@@ -56,13 +56,13 @@ public class TutorController {
         return ResponseEntity.ok().body(body);
     }
 
-    @PutMapping(value = "/api/admin/courses/{id}", produces = "application/json")
+    @PutMapping(value = "/api/admin/tutors/{id}", produces = "application/json")
     public ResponseEntity<String> updateTutor(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id, @RequestBody @Valid Tutor incomingTutor) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        Optional<Tutor> course = tutorRepository.findById(id);
-        if (!course.isPresent()) {
+        Optional<Tutor> tutor = tutorRepository.findById(id);
+        if (!tutor.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -75,7 +75,7 @@ public class TutorController {
         return ResponseEntity.ok().body(body);
     }
 
-    @DeleteMapping(value = "/api/admin/courses/{id}", produces = "application/json")
+    @DeleteMapping(value = "/api/admin/tutors/{id}", produces = "application/json")
     public ResponseEntity<String> deleteTutor(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
@@ -88,7 +88,7 @@ public class TutorController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/api/public/courses", produces = "application/json")
+    @GetMapping(value = "/api/public/tutors", produces = "application/json")
     public ResponseEntity<String> getTutors() throws JsonProcessingException {
         List<Tutor> tutorList = tutorRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
@@ -97,7 +97,7 @@ public class TutorController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
+    @GetMapping(value = "/api/public/tutors/{id}", produces = "application/json")
     public ResponseEntity<String> getTutor(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<Tutor> tutor = tutorRepository.findById(id);
         if (tutor.isEmpty()) {
