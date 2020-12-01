@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import CourseTable from "main/components/Courses/CourseTable"
 import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
-import { buildCreateFilter } from "main/services/Courses/QuarterFilterService";
+import { buildCreateFilter } from "main/services/QuarterFilterService";
 import { fetchWithoutToken } from "main/utils/fetch";
 
 import { useHistory } from "react-router-dom";

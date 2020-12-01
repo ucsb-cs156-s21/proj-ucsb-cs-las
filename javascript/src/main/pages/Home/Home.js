@@ -3,7 +3,7 @@ import { Jumbotron } from "react-bootstrap";
 import CourseTable from "main/components/Courses/CourseTable"
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
-import { buildUpsertFilter } from "main/services/Courses/QuarterFilterService";
+import { buildUpsertFilter } from "main/services/QuarterFilterService";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {

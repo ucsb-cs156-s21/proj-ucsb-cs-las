@@ -1,6 +1,6 @@
 import React from "react";
 import CourseForm from "main/components/Courses/QuarterFilterForm";
-import { buildUpsertFilter, buildDeleteFilter } from "main/services/Courses/QuarterFilterService";
+import { buildUpsertFilter, buildDeleteFilter } from "main/services/QuarterFilterService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from 'react-toast-notifications'
 import QuarterFilterForm from "../../components/Courses/QuarterFilterForm";
