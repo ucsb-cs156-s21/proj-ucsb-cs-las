@@ -18,8 +18,24 @@ import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
 import { fetchWithToken } from "main/utils/fetch";
 
+
+const recordUserLogin = async (getToken) => {
+  try {
+    await fetchWithToken(`/api/userlogin`, getToken, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      }
+    });
+    // do what you do on success
+  } catch (err) {
+   // do something with the error
+  }
+}
+
 function App() {
-  const { isLoading, getAccessTokenSilently: getToken } = useAuth0();
+
+  const { isLoading, getAccessTokenSilently: getToken, isAuthenticated } = useAuth0();
   const { data: roleInfo } = useSWR(
     ["/api/myRole", getToken],
     fetchWithToken
@@ -28,6 +44,10 @@ function App() {
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if ( isAuthenticated ) {
+    recordUserLogin(getToken);
   }
 
   return (
