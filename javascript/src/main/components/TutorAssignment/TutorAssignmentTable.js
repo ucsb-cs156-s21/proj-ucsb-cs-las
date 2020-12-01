@@ -3,23 +3,20 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-// import { buildDeleteCourse } from "main/services/Courses/CourseService";
-
-
-export default ({courses}) => {
+export default ({courses, instructor}) => {
     const history = useHistory();
 
-    // const renderEditButton = (id) => {
-    //     return (
-    //         <Button data-testid="edit-button" onClick={() => { history.push(`/courses/edit/${id}`) }}>Edit</Button>
-    //     )
-    // }
+    const renderEditButton = (id) => {
+        return (
+            <Button data-testid="edit-button" >Edit</Button>
+        )
+    }
 
-    // const renderDeleteButton = (id) => {
-    //     return (
-    //         <Button variant="danger" data-testid="delete-button" onClick={() => deleteCourse(id)}>Delete</Button>
-    //     )
-    // }
+    const renderDeleteButton = (id) => {
+        return (
+            <Button variant="danger" data-testid="delete-button" >Delete</Button>
+        )
+    }
 
     const columns = [{
         dataField: 'id',
@@ -41,20 +38,20 @@ export default ({courses}) => {
         text: 'Email'
     }];
 
-    // if (admin) {
-    //     columns.push({
-    //         text: "Edit",
-    //         isDummyField: true,
-    //         dataField: "edit",
-    //         formatter: (cell, row) => renderEditButton(row.id)
-    //     });
-    //     columns.push({
-    //         text: "Delete",
-    //         isDummyField: true,
-    //         dataField: "delete",
-    //         formatter: (cell, row) => renderDeleteButton(row.id)
-    //     });
-    // }
+    if (instructor) {
+        columns.push({
+            text: "Edit",
+            isDummyField: true,
+            dataField: "edit",
+            formatter: (cell, row) => renderEditButton(row.id)
+        });
+        columns.push({
+            text: "Delete",
+            isDummyField: true,
+            dataField: "delete",
+            formatter: (cell, row) => renderDeleteButton(row.id)
+        });
+    }
 
     return (
         <BootstrapTable keyField='id' data={courses} columns={columns} />
