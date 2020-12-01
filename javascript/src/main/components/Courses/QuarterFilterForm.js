@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 
 const QuarterFilterForm = ({ upsertFilter, deleteFilter }) => {
-    const { filterVal, setFilterVal } = useState("");
+    const [filterVal, setFilterVal] = useState("");
     const handleOnSubmit = (e) => {
         e.preventDefault();
         upsertFilter(filterVal);

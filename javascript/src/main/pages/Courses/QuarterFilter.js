@@ -17,7 +17,7 @@ const QuarterFilter = () => {
   const { addToast } = useToasts();
   const history = useHistory();
   const { data: filterVal } = useSWR(["api/public/filter/1", getToken], fetchWithToken);
-  const createFilter = buildUpsertFilter(getToken,
+  const upsertFilter = buildUpsertFilter(getToken,
     () => {
       history.push("/courses");
       addToast("New Course Saved", { appearance: 'success' });
@@ -38,7 +38,7 @@ const QuarterFilter = () => {
 
   return (
     <>
-      <QuarterFilterForm createFilter={createFilter} deleteFilter={deleteFilter} />
+      <QuarterFilterForm upsertFilter={upsertFilter} deleteFilter={deleteFilter} />
     </>
   );
 };
