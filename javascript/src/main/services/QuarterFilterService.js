@@ -22,7 +22,7 @@ const buildDeleteFilter = (getToken, onSuccess, onError) => {
   const func = async () => {
     try {
       //there will only be one filter active in db, id will always be 1
-      await fetchWithToken(`/api/admin/filter/1`, getToken, {
+      await fetchWithToken(`/api/admin/filter/nuke`, getToken, {
         method: "DELETE",
         headers: {
           "content-type": "application/json",

@@ -71,16 +71,16 @@ public class ActiveQuarterController {
 
 
 
-  @DeleteMapping(value = "/api/admin/filter/{id}", produces = "application/json")
+  @DeleteMapping(value = "/api/admin/filter/nuke", produces = "application/json")
   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    Optional<ActiveQuarter> activeQ = activeQuarterRepo.findById(id);
-    if (!activeQ.isPresent()) {
+    List<ActiveQuarter> activeQuarters = activeQuarterRepo.findAll();
+    if (activeQuarters.size() == 0) {
       return ResponseEntity.notFound().build();
     }
-    activeQuarterRepo.deleteById(id);
+    activeQuarterRepo.deleteById(activeQuarters.get(0).getId());
     return ResponseEntity.noContent().build();
   }
 
