@@ -47,7 +47,7 @@ public class ActiveQuarterController {
   }
 
   @PostMapping(value = "/api/admin/filter/{activeValue}", produces = "application/json")
-  public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
+  public ResponseEntity<String> createFilter(@RequestHeader("Authorization") String authorization,
     @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
@@ -72,8 +72,7 @@ public class ActiveQuarterController {
 
 
   @DeleteMapping(value = "/api/admin/filter/nuke", produces = "application/json")
-  public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
-      @PathVariable("id") Long id) throws JsonProcessingException {
+  public ResponseEntity<String> deleteFilter(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     List<ActiveQuarter> activeQuarters = activeQuarterRepo.findAll();
