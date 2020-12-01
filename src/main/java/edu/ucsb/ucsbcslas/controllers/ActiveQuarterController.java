@@ -1,4 +1,5 @@
 package edu.ucsb.ucsbcslas.controllers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +25,20 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.ucsb.ucsbcslas.services.Auth0Service;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
-import edu.ucsb.ucsbcslas.models.GoogleUserProfile;
 import edu.ucsb.ucsbcslas.repositories.ActiveQuarterRepository;
-
 
 @RestController
 public class ActiveQuarterController {
-
-  private Logger logger = LoggerFactory.getLogger(ActiveQuarterController.class);
-
-  @Autowired
-  private ActiveQuarterRepository activeQuarterRepo;
+  private final Logger logger = LoggerFactory.getLogger(ActiveQuarterController.class);
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
+  @Autowired
+  private ActiveQuarterRepository activeQuarterRepo;
+
   private ObjectMapper mapper = new ObjectMapper();
+
   private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
     Map<String, String> response = new HashMap<String, String>();
     response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -48,37 +46,31 @@ public class ActiveQuarterController {
     return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
   }
 
-
-  @PostMapping(value = "/api/admin/filter", produces = "application/json")
-  public ResponseEntity<String> createFilter(@RequestHeader("Authorization") String authorization,
-      @RequestBody @Valid ActiveQuarter ActiveQuarterData) throws JsonProcessingException {
+  @PostMapping(value = "/api/admin/filter/{activeValue}", produces = "application/json")
+  public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
+    @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
+        logger.info(active.toString());
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    ActiveQuarter savedValue = activeQuarterRepo.save(ActiveQuarterData);
-    String body = mapper.writeValueAsString(savedValue);
+    Optional<ActiveQuarter> existing = activeQuarterRepo.findById(1);
+    if(existing.isPresent()){
+      existing.setActiveQuarter(activeValue);
+      activeQuarterRepo.save(existing);
+
+    }
+    else{
+      ActiveQuarter active = new ActiveQuarter(1L, activeValue);
+      activeQuarterRepo.save(active);
+    }
+    String body = mapper.writeValueAsString(savedQ);
     return ResponseEntity.ok().body(body);
   }
 
-  @PutMapping(value = "/api/admin/filter/{id}", produces = "application/json")
-  public ResponseEntity<String> updateFilter(@RequestHeader("Authorization") String authorization,
-      @PathVariable("id") Long id, @RequestBody @Valid ActiveQuarter ActiveQuarterData) throws JsonProcessingException {
-    if (!authControllerAdvice.getIsAdmin(authorization))
-      return getUnauthorizedResponse("admin");
-    Optional<ActiveQuarter> activeQ =activeQuarterRepo.findById(id);
-    if (!activeQ.isPresent()) {
-      return ResponseEntity.notFound().build();
-    }
-
-    if (!ActiveQuarterData.getId().equals(id)) {
-      return ResponseEntity.badRequest().build();
-    }
-
-   activeQuarterRepo.save(ActiveQuarterData);
-    String body = mapper.writeValueAsString(ActiveQuarterData);
-    return ResponseEntity.ok().body(body);
+  
   }
-  @DeleteMapping(value = "/api/admin/filter{id}", produces = "application/json")
-  public ResponseEntity<String> deleteFilter(@RequestHeader("Authorization") String authorization,
+
+  @DeleteMapping(value = "/api/admin/filter/{id}", produces = "application/json")
+  public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
@@ -91,25 +83,25 @@ public class ActiveQuarterController {
   }
 
   @GetMapping(value = "/api/public/filter", produces = "application/json")
-  public ResponseEntity<String> getFilters() throws JsonProcessingException {
+  public ResponseEntity<String> getfilter() throws JsonProcessingException {
    
-    List<ActiveQuarter> filterList =activeQuarterRepo.findAll();
+    List <ActiveQuarter> activeQList = activeQuarterRepo.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
-    String body = mapper.writeValueAsString(filterList);
+    String body = mapper.writeValueAsString(activeQList);
     return ResponseEntity.ok().body(body);
   }
 
+  // @GetMapping(value = "/api/public/filter/{id}", produces = "application/json")
+  // public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws JsonProcessingException {
+  //   Optional<Course> course = activeQuarterRepo.findById(id);
+  //   if (course.isEmpty()) {
+  //     return ResponseEntity.notFound().build();
+  //   }
 
-  @GetMapping(value = "/api/admin/filter/{id}", produces = "application/json")
-  public ResponseEntity<String> getFilter(@PathVariable("id") Long id) throws JsonProcessingException {
-    Optional<ActiveQuarter> activeQ =activeQuarterRepo.findById(id);
-    if (activeQ.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
+  //   ObjectMapper mapper = new ObjectMapper();
+  //   String body = mapper.writeValueAsString(course.get());
+  //   return ResponseEntity.ok().body(body);
+  // }
 
-    ObjectMapper mapper = new ObjectMapper();
-    String body = mapper.writeValueAsString(activeQ.get());
-    return ResponseEntity.ok().body(body);
-  }
 }
