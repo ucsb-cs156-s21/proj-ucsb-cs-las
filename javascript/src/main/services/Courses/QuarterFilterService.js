@@ -1,6 +1,6 @@
 import { fetchWithToken } from "main/utils/fetch";
 
-const buildCreateFilter = (getToken, onSuccess, onError) => {
+const buildUpsertFilter = (getToken, onSuccess, onError) => {
   const func = async (quarterString) => {
     try {
       await fetchWithToken(`/api/admin/filter/${quarterString}`, getToken, {
@@ -37,4 +37,4 @@ const buildDeleteFilter = (getToken, onSuccess, onError) => {
   return func;
 }
 
-export { buildCreateFilter, buildDeleteFilter };
+export { buildUpsertFilter, buildDeleteFilter };

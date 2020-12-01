@@ -1,6 +1,6 @@
 import React from "react";
 import CourseForm from "main/components/Courses/QuarterFilterForm";
-import { buildCreateFilter, buildDeleteFilter } from "main/services/Courses/QuarterFilterService";
+import { buildUpsertFilter, buildDeleteFilter } from "main/services/Courses/QuarterFilterService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from 'react-toast-notifications'
 import QuarterFilterForm from "../../components/Courses/QuarterFilterForm";
@@ -17,7 +17,7 @@ const QuarterFilter = () => {
   const { addToast } = useToasts();
   const history = useHistory();
   const { data: filterVal } = useSWR(["api/public/filter/1", getToken], fetchWithToken);
-  const createFilter = buildCreateFilter(getToken,
+  const createFilter = buildUpsertFilter(getToken,
     () => {
       history.push("/courses");
       addToast("New Course Saved", { appearance: 'success' });
@@ -39,10 +39,6 @@ const QuarterFilter = () => {
   return (
     <>
       <QuarterFilterForm createFilter={createFilter} deleteFilter={deleteFilter} />
-
-
-
-      }
     </>
   );
 };
