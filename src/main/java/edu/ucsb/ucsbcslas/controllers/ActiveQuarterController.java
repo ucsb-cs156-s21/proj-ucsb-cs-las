@@ -49,25 +49,27 @@ public class ActiveQuarterController {
   @PostMapping(value = "/api/admin/filter/{activeValue}", produces = "application/json")
   public ResponseEntity<String> createCourse(@RequestHeader("Authorization") String authorization,
     @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
-        logger.info(active.toString());
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    Optional<ActiveQuarter> existing = activeQuarterRepo.findById(1);
+   Optional<ActiveQuarter> existing = activeQuarterRepo.findById(1L);
+    String body;
     if(existing.isPresent()){
-      existing.setActiveQuarter(activeValue);
-      activeQuarterRepo.save(existing);
+      ActiveQuarter existingQuarter = existing.get();
+      existingQuarter.setActiveQuarter(activeValue);
+      activeQuarterRepo.save(existingQuarter);
+      body = mapper.writeValueAsString(existingQuarter);
 
     }
     else{
       ActiveQuarter active = new ActiveQuarter(1L, activeValue);
       activeQuarterRepo.save(active);
+      body = mapper.writeValueAsString(active);
     }
-    String body = mapper.writeValueAsString(savedQ);
+   
     return ResponseEntity.ok().body(body);
   }
 
-  
-  }
+
 
   @DeleteMapping(value = "/api/admin/filter/{id}", produces = "application/json")
   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
