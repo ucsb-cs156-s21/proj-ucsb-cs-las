@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class Course {
+  private static String activeQuarter = "";
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -107,6 +108,14 @@ public class Course {
   public void setInstructorEmail(String instructorEmail) {
     this.instructorEmail = instructorEmail;
   }
+  public static void setActiveQuarter(String q){
+    activeQuarter = q;
+
+  }
+  public static String getActiveQuarter(){
+    return activeQuarter;
+  }
+
 
   @Override
   public int hashCode() {
