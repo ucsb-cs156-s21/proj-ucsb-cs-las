@@ -51,10 +51,10 @@ public class ActiveQuarterController {
     @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-   Optional<ActiveQuarter> existing = activeQuarterRepo.findById(1L);
+   List<ActiveQuarter> existingQuarters = activeQuarterRepo.findAll();
     String body;
-    if(existing.isPresent()){
-      ActiveQuarter existingQuarter = existing.get();
+    if(existingQuarters.size() > 0){
+      ActiveQuarter existingQuarter = existingQuarters.get(0);
       existingQuarter.setActiveQuarter(activeValue);
       activeQuarterRepo.save(existingQuarter);
       body = mapper.writeValueAsString(existingQuarter);

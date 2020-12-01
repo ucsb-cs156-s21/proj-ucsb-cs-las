@@ -11,13 +11,10 @@ const Home = () => {
         "/api/public/courses",
         fetchWithoutToken
     );
-    const { data: active } = useSWR(
-        "/api/public/filter",
-        fetchWithoutToken
-    );
+    var courseArr = (JSON.stringify(courses));
 
     return (
-        <Jumbotron>
+        <Jumbotron>s
             <div className="text-left">
 
                 <h5>Welcome to the UCSB CS LAs App!</h5>

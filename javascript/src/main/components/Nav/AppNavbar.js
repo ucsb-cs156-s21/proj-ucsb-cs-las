@@ -23,18 +23,23 @@ function AppNavbar() {
         <Navbar.Brand data-testid="brand">UCSB CS LAs</Navbar.Brand>
       </LinkContainer>
       <Nav>
-        { isAdmin &&
+        {isAdmin &&
           (<LinkContainer to={"/admin"}>
             <Nav.Link>Admin</Nav.Link>
           </LinkContainer>)
         }
         <LinkContainer to={"/about"}>
-            <Nav.Link>About</Nav.Link>
+          <Nav.Link>About</Nav.Link>
         </LinkContainer>
-        { isAdmin &&
-        <LinkContainer to={"/courses"}>
+        {isAdmin &&
+          <LinkContainer to={"/courses"}>
             <Nav.Link>Courses</Nav.Link>
-        </LinkContainer>
+          </LinkContainer>
+        }
+        {isAdmin &&
+          <LinkContainer to={"/setActiveQuarter"}>
+            <Nav.Link>SetActiveQuarter</Nav.Link>
+          </LinkContainer>
         }
         <ProfileNav />
       </Nav>
