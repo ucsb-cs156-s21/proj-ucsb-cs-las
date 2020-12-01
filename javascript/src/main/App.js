@@ -16,14 +16,16 @@ import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
+
+import Tutor from "main/pages/Tutor/Tutor";
+import EditTutor from "main/pages/Tutor/EditTutor";
+import NewTutor from "main/pages/Tutor/NewTutor";
+
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {
   const { isLoading, getAccessTokenSilently: getToken } = useAuth0();
-  const { data: roleInfo } = useSWR(
-    ["/api/myRole", getToken],
-    fetchWithToken
-  );
+  const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
 
   if (isLoading) {
@@ -37,10 +39,48 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <PrivateRoute path="/profile" component={Profile} />
-          <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
+          <AuthorizedRoute
+            path="/admin"
+            component={Admin}
+            authorizedRoles={["admin"]}
+          />
+          <AuthorizedRoute
+            path="/courses"
+            exact
+            component={Courses}
+            authorizedRoles={["admin"]}
+          />
+          <AuthorizedRoute
+            path="/courses/new"
+            exact
+            component={NewCourse}
+            authorizedRoles={["admin"]}
+          />
+          <AuthorizedRoute
+            path="/courses/edit/:courseId"
+            exact
+            component={EditCourse}
+            authorizedRoles={["admin"]}
+          />
+
+          <AuthorizedRoute
+            path="/tutors"
+            exact
+            component={Tutor}
+            authorizedRoles={["admin"]}
+          />
+          <AuthorizedRoute
+            path="/tutors/new"
+            exact
+            component={NewTutor}
+            authorizedRoles={["admin"]}
+          />
+          <AuthorizedRoute
+            path="/tutors/edit/:tutorId"
+            exact
+            component={EditTutor}
+            authorizedRoles={["admin"]}
+          />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
