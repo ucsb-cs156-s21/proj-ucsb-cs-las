@@ -15,7 +15,6 @@ const Home = () => {
         "/api/public/filter",
         fetchWithoutToken
     );
-    console.log(active);
 
     return (
         <Jumbotron>

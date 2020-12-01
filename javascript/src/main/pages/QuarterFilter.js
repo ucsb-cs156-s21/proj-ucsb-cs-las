@@ -3,7 +3,7 @@ import CourseForm from "main/components/Courses/QuarterFilterForm";
 import { buildUpsertFilter, buildDeleteFilter } from "main/services/QuarterFilterService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from 'react-toast-notifications'
-import QuarterFilterForm from "../../components/Courses/QuarterFilterForm";
+import QuarterFilterForm from "../components/Courses/QuarterFilterForm";
 import useSWR, { cache } from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -20,7 +20,7 @@ const QuarterFilter = () => {
   const upsertFilter = buildUpsertFilter(getToken,
     () => {
       history.push("/courses");
-      addToast("New Course Saved", { appearance: 'success' });
+      addToast("New filter Saved", { appearance: 'success' });
     },
     () => {
       addToast("Error saving course", { appearance: 'error' });
@@ -29,10 +29,10 @@ const QuarterFilter = () => {
   const deleteFilter = buildDeleteFilter(getToken,
     () => {
       history.push("/courses");
-      addToast("New Course Saved", { appearance: 'success' });
+      addToast("Filter deleted", { appearance: 'success' });
     },
     () => {
-      addToast("Error saving course", { appearance: 'error' });
+      addToast("no active quarter existent", { appearance: 'error' });
     });
 
 

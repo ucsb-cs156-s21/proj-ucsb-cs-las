@@ -16,7 +16,7 @@ import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
-import QuarterFilter from "main/pages/Courses/QuarterFilter"
+import QuarterFilter from "main/pages/QuarterFilter"
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {

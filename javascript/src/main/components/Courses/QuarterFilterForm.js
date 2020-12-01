@@ -26,11 +26,11 @@ const QuarterFilterForm = ({ upsertFilter, deleteFilter }) => {
             </Form.Group>
             <Form.Group as={Row}>
                 <Col sm={{ span: 10, offset: 2 }}>
-                    <Button>delete</Button>
+                    <Button onClick={() => deleteFilter()}>delete</Button>
                 </Col>
-            </Form.Group>
+            </Form.Group >
 
-        </Form>
+        </Form >
     );
 };
 
