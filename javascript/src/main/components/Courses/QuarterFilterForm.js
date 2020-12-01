@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 
-const QuarterFilterForm = (existingFilter, createFilter, updateFilter, deleteFilter) => {
+const QuarterFilterForm = ({existingFilter, createFilter, updateFilter, deleteFilter}) => {
     const emptyFilter = {
-        "quarterFilterValue": ""
+        "activeQuarter": ""
     }
     const [filter, setFilter] = useState(emptyFilter || existingFilter);
 
@@ -12,13 +12,9 @@ const QuarterFilterForm = (existingFilter, createFilter, updateFilter, deleteFil
         if (createFilter) {
             createFilter(filter);
         }
-        else if (updateFilter) {
+        else {
             updateFilter(filter);
         }
-        else {
-            deleteFilter();
-        }
-
     }
     return (
         <Form onSubmit={handleOnSubmit}>
@@ -40,7 +36,7 @@ const QuarterFilterForm = (existingFilter, createFilter, updateFilter, deleteFil
             {existingFilter ?
                 <Form.Group as={Row}>
                     <Col sm={{ span: 10, offset: 2 }}>
-                        <Button type="submit">Submit</Button>
+                        <Button>delete</Button>
                     </Col>
                 </Form.Group> : <></>}
 

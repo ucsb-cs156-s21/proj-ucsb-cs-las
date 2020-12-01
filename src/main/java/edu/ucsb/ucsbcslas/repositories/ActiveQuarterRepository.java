@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ActiveQuarterRepository extends CrudRepository<ActiveQuarter, Long> {
-    List<ActiveQuarter> findAll();
+    public List<ActiveQuarter> findAll();
 }
