@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
-import edu.ucsb.ucsbcslas.models.Tutor;
+import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 
 @RestController
