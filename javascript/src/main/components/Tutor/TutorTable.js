@@ -39,11 +39,11 @@ export default ({ tutors, admin, deleteTutor }) => {
       text: "id"
     },
     {
-      dataField: "firstname",
+      dataField: "firstName",
       text: "First Name"
     },
     {
-      dataField: "lastname",
+      dataField: "lastName",
       text: "Last Name"
     },
     {
