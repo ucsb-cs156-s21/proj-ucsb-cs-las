@@ -12,6 +12,7 @@ function AppNavbar() {
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
+  const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
 
   return (
     <Navbar bg="dark" variant="dark">
@@ -32,7 +33,7 @@ function AppNavbar() {
             <Nav.Link>Courses</Nav.Link>
           </LinkContainer>
         )}
-        {isAdmin && (
+        {(isAdmin || isMember) && (
           <LinkContainer to={"/tutors"}>
             <Nav.Link>Tutors</Nav.Link>
           </LinkContainer>
