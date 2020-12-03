@@ -27,3 +27,90 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
+
+//
+
+/* take this and replace the code with code that makes sense for office hours */
+
+@RestController
+public class OnlineOfficeHoursController {
+    private final Logger logger = LoggerFactory.getLogger(OnlineOfficeHoursController.class);
+
+    @Autowired
+    private AuthControllerAdvice authControllerAdvice;
+    @Autowired
+    private OnlineOfficeHoursRepository onlineOfficeHoursRepository;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+    private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
+        Map<String, String> response = new HashMap<String, String>();
+        response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
+        String body = mapper.writeValueAsString(response);
+        return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping(value = "/api/admin/onlineofficehours", produces = "application/json")
+    public ResponseEntity<String> createOnlineOfficeHours(@RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid Tutor tutor) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        OnlineOfficeHours savedOnlineOfficeHours = tutorRepository.save(onlineOfficeHours);
+        String body = mapper.writeValueAsString(savedOnlineOfficeHours);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @PutMapping(value = "/api/admin/onlineofficehours/{id}", produces = "application/json")
+    public ResponseEntity<String> updateTutor(@RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Long id, @RequestBody @Valid Tutor incomingTutor) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Optional<Tutor> tutor = tutorRepository.findById(id);
+        if (!onlineOfficeHours.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!incomingOnlineOfficeHours.getId().equals(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        tutorRepository.save(incomingOnlineOfficeHours);
+        String body = mapper.writeValueAsString(incomingOnlineOfficeHours);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @DeleteMapping(value = "/api/admin/onlineofficehours/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteTutor(@RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Long id) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Optional<Tutor> tutor = tutorRepository.findById(id);
+        if (!tutor.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        tutorRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/api/public/onlineofficehours", produces = "application/json")
+    public ResponseEntity<String> getOnlineOfficeHours() throws JsonProcessingException {
+        List<OnlineOfficeHours> onlineOfficeHoursList = onlineOfficeHoursRepository.findAll();
+        ObjectMapper mapper = new ObjectMapper();
+
+        String body = mapper.writeValueAsString(onlineOfficeHoursList);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping(value = "/api/public/onlineofficehours/{id}", produces = "application/json")
+    public ResponseEntity<String> getOnlineOfficeHours(@PathVariable("id") Long id) throws JsonProcessingException {
+        Optional<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findById(id);
+        if (onlineOfficeHours.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(tutor.get());
+        return ResponseEntity.ok().body(body);
+    }
+
+}
