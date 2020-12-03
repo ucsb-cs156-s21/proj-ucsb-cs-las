@@ -52,20 +52,20 @@ public class OnlineOfficeHoursController {
 
     @PostMapping(value = "/api/admin/onlineofficehours", produces = "application/json")
     public ResponseEntity<String> createOnlineOfficeHours(@RequestHeader("Authorization") String authorization,
-            @RequestBody @Valid Tutor tutor) throws JsonProcessingException {
+            @RequestBody @Valid OnlineOfficeHours onlineOfficeHours) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        OnlineOfficeHours savedOnlineOfficeHours = tutorRepository.save(onlineOfficeHours);
+        OnlineOfficeHours savedOnlineOfficeHours = onlineOfficeHoursRepository.save(onlineOfficeHours);
         String body = mapper.writeValueAsString(savedOnlineOfficeHours);
         return ResponseEntity.ok().body(body);
     }
 
     @PutMapping(value = "/api/admin/onlineofficehours/{id}", produces = "application/json")
-    public ResponseEntity<String> updateTutor(@RequestHeader("Authorization") String authorization,
-            @PathVariable("id") Long id, @RequestBody @Valid Tutor incomingTutor) throws JsonProcessingException {
+    public ResponseEntity<String> updateOnlineOfficeHours(@RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Long id, @RequestBody @Valid OnlineOfficeHours incomingOnlineOfficeHours) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        Optional<Tutor> tutor = tutorRepository.findById(id);
+        Optional<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findById(id);
         if (!onlineOfficeHours.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -74,21 +74,21 @@ public class OnlineOfficeHoursController {
             return ResponseEntity.badRequest().build();
         }
 
-        tutorRepository.save(incomingOnlineOfficeHours);
+        onlineOfficeHoursRepository.save(incomingOnlineOfficeHours);
         String body = mapper.writeValueAsString(incomingOnlineOfficeHours);
         return ResponseEntity.ok().body(body);
     }
 
     @DeleteMapping(value = "/api/admin/onlineofficehours/{id}", produces = "application/json")
-    public ResponseEntity<String> deleteTutor(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<String> deleteOnlineOfficeHours(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        Optional<Tutor> tutor = tutorRepository.findById(id);
-        if (!tutor.isPresent()) {
+        Optional<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findById(id);
+        if (!onlineOfficeHours.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        tutorRepository.deleteById(id);
+        onlineOfficeHoursRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -109,7 +109,7 @@ public class OnlineOfficeHoursController {
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(tutor.get());
+        String body = mapper.writeValueAsString(onlineOfficeHours.get());
         return ResponseEntity.ok().body(body);
     }
 
