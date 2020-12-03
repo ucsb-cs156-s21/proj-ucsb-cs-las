@@ -17,6 +17,7 @@ import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
+import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {
@@ -25,7 +26,6 @@ function App() {
     ["/api/myRole", getToken],
     fetchWithToken
   );
-  const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
 
   if (isLoading) {
     return <Loading />;
@@ -42,7 +42,8 @@ function App() {
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "instructor", "member"]} />
+          <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "instructor"]} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>

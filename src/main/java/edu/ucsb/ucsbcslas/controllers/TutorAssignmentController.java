@@ -14,20 +14,26 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
+import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 
 @RestController
@@ -38,6 +44,10 @@ public class TutorAssignmentController {
   private AuthControllerAdvice authControllerAdvice;
   @Autowired
   private TutorAssignmentRepository tutorAssignmentRepository;
+  @Autowired
+  private CourseRepository courseRepository;
+  @Autowired
+  private TutorRepository tutorRepository;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -48,15 +58,41 @@ public class TutorAssignmentController {
     return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
   }
 
-//   @PostMapping(value = "/api/admin/tutorAssignments", produces = "application/json")
-//   public ResponseEntity<String> createTutorAssignment(@RequestHeader("Authorization") String authorization,
-//       @RequestBody @Valid TutorAssignment tutorAssignment) throws JsonProcessingException {
-//     if (!authControllerAdvice.getIsAdmin(authorization))
-//       return getUnauthorizedResponse("admin");
-//     TutorAssignment savedTutorAssignment = tutorAssignmentRepository.save(tutorAssignment);
-//     String body = mapper.writeValueAsString(savedTutorAssignment);
-//     return ResponseEntity.ok().body(body);
-//   }
+  private ResponseEntity<String> getIncorrectInputResponse(String malformedField) throws JsonProcessingException {
+    Map<String, String> response = new HashMap<String, String>();
+    response.put("error", String.format("Misformatted Input; check that % is a valid %.", malformedField, malformedField));
+    String body = mapper.writeValueAsString(response);
+    return new ResponseEntity<String>(body, HttpStatus.BAD_REQUEST);
+  }
+
+  @PostMapping(value = "/api/admin/tutorAssignments/", produces = "application/json")
+  public ResponseEntity<String> createTutorAssignment(@RequestHeader("Authorization") String authorization,
+      @RequestBody @Valid String tutorAssignment) throws JsonProcessingException {
+    if (!authControllerAdvice.getIsAdmin(authorization))
+      return getUnauthorizedResponse("admin");
+    JSONObject ta = new JSONObject(tutorAssignment);
+    
+    TutorAssignment newAssignment = new TutorAssignment();
+    Optional<Course> course = courseRepository.findByName(ta.getString("courseName"));
+    if(course.isPresent()){
+      newAssignment.setCourse(course.get());
+    }
+    else{
+      return getIncorrectInputResponse("course name");
+    }
+    Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
+    if(tutor.isPresent()){
+      newAssignment.setTutor(tutor.get());
+    }
+    else{
+      return getIncorrectInputResponse("tutor email");
+    }
+    newAssignment.setAssignmentType(ta.getString("assignmentType"));
+
+    TutorAssignment savedTutorAssignment = tutorAssignmentRepository.save(newAssignment);
+    String body = mapper.writeValueAsString(savedTutorAssignment);
+    return ResponseEntity.ok().body(body);
+  }
 
 //   @PutMapping(value = "/api/admin/tutorAssignments/{id}", produces = "application/json")
 //   public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
@@ -90,28 +126,49 @@ public class TutorAssignmentController {
 //     return ResponseEntity.noContent().build();
 //   }
 
-  @GetMapping(value = "/api/public/tutorAssignments", produces = "application/json")
+  @GetMapping(value = "/api/public/tutorAssignments/", produces = "application/json")
   public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
-    List<TutorAssignment> tutorAssignmentList;
+    List<TutorAssignment> tutorAssignmentList = new ArrayList();
     if (authControllerAdvice.getIsAdmin(authorization)){
-        tutorAssignmentList = tutorAssignmentRepository.findAll();
+      tutorAssignmentList = tutorAssignmentRepository.findAll();
+      if(tutorAssignmentList.isEmpty()){
+        return ResponseEntity.notFound().build();
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(tutorAssignmentList);
+      return ResponseEntity.ok().body(body);
     } else {
-        instructor = authControllerAdvice.getUser(authorization);
-        email = instructor.getEmail();
-        List<Course> courseList = courseRepository.findAllByInstructorEmail(email);
-        for(int i = 0; i < courseList.size(); i++){
-            tutorAssignmentList += tutorAssignmentRepository.findById(courseList[i].getId());
+      List<Course> courseList = courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
+      if(!(courseList.isEmpty())){
+        for(Course temp : courseList){
+          Optional<Course> course = courseRepository.findById(temp.getId());
+          if(course.isPresent()){
+            List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
+            tutorAssignmentList.addAll(tutorAssignments);
+          }
         }
+        if(tutorAssignmentList.isEmpty()){
+          return ResponseEntity.notFound().build();
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(tutorAssignmentList);
+        return ResponseEntity.ok().body(body);
+      }
     }
-
-    if (authControllerAdvice.getIsMember(authorization) && tutorAssignmentList.isEmpty()){
-        member = authControllerAdvice.getUser(authorization);
-        id = member.getId();
-        tutorAssignmentList = tutorAssignmentRepository.findById(id);
+    if(authControllerAdvice.getIsMember(authorization)){
+      Optional<Tutor> tutor = tutorRepository.findById(authControllerAdvice.getUser(authorization).getId());
+      if(tutor.isPresent()){
+        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByTutor(tutor.get());
+        tutorAssignmentList.addAll(tutorAssignments);
+      }
+      System.out.println(tutorAssignmentList.isEmpty());
+      if(tutorAssignmentList.isEmpty()){
+        return ResponseEntity.notFound().build();
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(tutorAssignmentList);
+      return ResponseEntity.ok().body(body);
     } 
-    ObjectMapper mapper = new ObjectMapper();
-
-    String body = mapper.writeValueAsString(tutorAssignmentList);
-    return ResponseEntity.ok().body(body);
+    return getUnauthorizedResponse("member");
   }
 }

@@ -5,7 +5,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
-// import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+import { buildCreateTutorAssignment, buildDeleteTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 
 import {useHistory} from "react-router-dom";
 
@@ -19,43 +19,30 @@ const TutorAssignment = () => {
     fetchWithToken
   );
   const isInstructor = roleInfo && (roleInfo.role.toLowerCase() === "instructor" || roleInfo.role.toLowerCase() === "admin");
-  const isAdmin =  roleInfo && roleInfo.role.toLowerCase() === "admin";
 
   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
-    ["/api/public/tutorAssignments", getToken],
+    ["/api/public/tutorAssignments/", getToken],
     fetchWithToken
   );
 
-  // tutorAssignmentList = [];
-  // if(isAdmin){
-  // }
-  // else if(isInstructor){
-  //   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
-  //     [`/api/instructor/tutorAssignments/${courseId}`, getToken],
-  //     fetchWithToken
-  //   );
-  // }
-  // else{
-  //   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
-  //     [`/api/member/tutorAssignments/${id}`, getToken],
-  //     fetchWithToken
-  //   );
-  // }
-
+  
   if (error) {
     return (
-      <h1>We encountered an error; please reload the page and try again.</h1>
+      <>
+        {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
+        <h1>We encountered an error; please reload the page and try again.</h1>
+      </>
     );
   }
   if (!tutorAssignmentList) {
     return <Loading />;
   }
-  // const deleteCourse = buildDeleteCourse(getToken, mutateCourses);
+  const deleteTutorAssignment = buildDeleteTutorAssignment(getToken, mutateTutorAssignment);
 
   return (
     <>
-      {isInstructor && <Button>New Tutor Assignment</Button>}
-      <TutorAssignmentTable courses={[]} instructor={isInstructor}/>
+      {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
+      <TutorAssignmentTable courses={tutorAssignmentList} instructor={isInstructor}/>
     </>
   );
 };
