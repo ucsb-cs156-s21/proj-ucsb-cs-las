@@ -16,19 +16,18 @@ const QuarterFilter = () => {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { addToast } = useToasts();
   const history = useHistory();
-  const { data: filterVal } = useSWR(["api/public/filter/1", getToken], fetchWithToken);
   const upsertFilter = buildUpsertFilter(getToken,
     () => {
-      history.push("/courses");
+      history.push("/");
       addToast("New filter Saved", { appearance: 'success' });
     },
     () => {
-      addToast("Error saving course", { appearance: 'error' });
+      addToast("Error saving filter", { appearance: 'error' });
     });
 
   const deleteFilter = buildDeleteFilter(getToken,
     () => {
-      history.push("/courses");
+      history.push("/");
       addToast("Filter deleted", { appearance: 'success' });
     },
     () => {
