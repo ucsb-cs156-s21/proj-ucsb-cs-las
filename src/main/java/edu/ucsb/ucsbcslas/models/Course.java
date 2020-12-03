@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class Course {
-  private static String activeQuarter = "";
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -29,7 +28,8 @@ public class Course {
   public Course() {
   }
 
-  public Course(Long id, String name, String quarter, String instructorFirstName, String instructorLastName, String instructorEmail) {
+  public Course(Long id, String name, String quarter, String instructorFirstName, String instructorLastName,
+      String instructorEmail) {
     this.id = id;
     this.name = name;
     this.quarter = quarter;
@@ -40,7 +40,9 @@ public class Course {
 
   @Override
   public String toString() {
-    return String.format("Course[ id=%d, name=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s ]", id, name, quarter, instructorFirstName, instructorLastName, instructorEmail);
+    return String.format(
+        "Course[ id=%d, name=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s ]", id,
+        name, quarter, instructorFirstName, instructorLastName, instructorEmail);
   }
 
   @Override
@@ -51,13 +53,15 @@ public class Course {
       return false;
     Course other = (Course) obj;
 
-    // Using EqualsBuilder cuts down on the number of branches/tests we end up having to write.
-    // Instead of needing to test equals failing on a difference in every single field, we can
+    // Using EqualsBuilder cuts down on the number of branches/tests we end up
+    // having to write.
+    // Instead of needing to test equals failing on a difference in every single
+    // field, we can
     // just test one difference.
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, other.id).append(name, other.name).append(quarter, other.quarter)
-      .append(instructorFirstName, other.instructorFirstName)
-      .append(instructorLastName, other.instructorLastName).append(instructorEmail, other.instructorEmail);
+        .append(instructorFirstName, other.instructorFirstName).append(instructorLastName, other.instructorLastName)
+        .append(instructorEmail, other.instructorEmail);
     return builder.isEquals();
   }
 
@@ -92,7 +96,7 @@ public class Course {
   public void setInstructorFirstName(String instructorFirstName) {
     this.instructorFirstName = instructorFirstName;
   }
-  
+
   public String getInstructorLastName() {
     return instructorLastName;
   }
@@ -108,14 +112,6 @@ public class Course {
   public void setInstructorEmail(String instructorEmail) {
     this.instructorEmail = instructorEmail;
   }
-  public static void setActiveQuarter(String q){
-    activeQuarter = q;
-
-  }
-  public static String getActiveQuarter(){
-    return activeQuarter;
-  }
-
 
   @Override
   public int hashCode() {
