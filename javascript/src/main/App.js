@@ -67,7 +67,7 @@ function App() {
             path="/tutors"
             exact
             component={Tutor}
-            authorizedRoles={["admin"]}
+            authorizedRoles={["admin", "member"]}
           />
           <AuthorizedRoute
             path="/tutors/new"
