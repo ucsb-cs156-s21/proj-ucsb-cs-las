@@ -48,31 +48,29 @@ public class ActiveQuarterController {
 
   @PostMapping(value = "/api/admin/filter/{activeValue}", produces = "application/json")
   public ResponseEntity<String> createFilter(@RequestHeader("Authorization") String authorization,
-    @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
+      @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-   List<ActiveQuarter> existingQuarters = activeQuarterRepo.findAll();
+    List<ActiveQuarter> existingQuarters = activeQuarterRepo.findAll();
     String body;
-    if(existingQuarters.size() > 0){
+    if (existingQuarters.size() > 0) {
       ActiveQuarter existingQuarter = existingQuarters.get(0);
       existingQuarter.setActiveQuarter(activeValue);
       activeQuarterRepo.save(existingQuarter);
       body = mapper.writeValueAsString(existingQuarter);
 
-    }
-    else{
+    } else {
       ActiveQuarter active = new ActiveQuarter(1L, activeValue);
       activeQuarterRepo.save(active);
       body = mapper.writeValueAsString(active);
     }
-   
+
     return ResponseEntity.ok().body(body);
   }
 
-
-
   @DeleteMapping(value = "/api/admin/filter/nuke", produces = "application/json")
-  public ResponseEntity<String> deleteFilter(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
+  public ResponseEntity<String> deleteFilter(@RequestHeader("Authorization") String authorization)
+      throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     List<ActiveQuarter> activeQuarters = activeQuarterRepo.findAll();
@@ -85,8 +83,8 @@ public class ActiveQuarterController {
 
   @GetMapping(value = "/api/public/filter", produces = "application/json")
   public ResponseEntity<String> getfilter() throws JsonProcessingException {
-   
-    List <ActiveQuarter> activeQList = activeQuarterRepo.findAll();
+
+    List<ActiveQuarter> activeQList = activeQuarterRepo.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(activeQList);
@@ -94,15 +92,16 @@ public class ActiveQuarterController {
   }
 
   // @GetMapping(value = "/api/public/filter/{id}", produces = "application/json")
-  // public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws JsonProcessingException {
-  //   Optional<Course> course = activeQuarterRepo.findById(id);
-  //   if (course.isEmpty()) {
-  //     return ResponseEntity.notFound().build();
-  //   }
+  // public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws
+  // JsonProcessingException {
+  // Optional<Course> course = activeQuarterRepo.findById(id);
+  // if (course.isEmpty()) {
+  // return ResponseEntity.notFound().build();
+  // }
 
-  //   ObjectMapper mapper = new ObjectMapper();
-  //   String body = mapper.writeValueAsString(course.get());
-  //   return ResponseEntity.ok().body(body);
+  // ObjectMapper mapper = new ObjectMapper();
+  // String body = mapper.writeValueAsString(course.get());
+  // return ResponseEntity.ok().body(body);
   // }
 
 }

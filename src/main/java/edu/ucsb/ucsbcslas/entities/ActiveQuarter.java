@@ -1,6 +1,5 @@
 package edu.ucsb.ucsbcslas.entities;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,18 +10,19 @@ import java.util.Objects;
 
 @Entity
 public class ActiveQuarter {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-  @Column(nullable = false)
-  private String activeQuarter;
-  public ActiveQuarter(){}
-  
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(nullable = false)
+    private String activeQuarter;
+
+    public ActiveQuarter() {
+    }
+
     public ActiveQuarter(Long id, String activeQuarter) {
         this.id = id;
         this.activeQuarter = activeQuarter;
     }
-
 
     public Long getId() {
         return this.id;
@@ -40,16 +40,6 @@ public class ActiveQuarter {
         this.activeQuarter = activeQuarter;
     }
 
-    public ActiveQuarter id(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public ActiveQuarter activeQuarter(String activeQuarter) {
-        this.activeQuarter = activeQuarter;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -57,20 +47,15 @@ public class ActiveQuarter {
         if (!(o instanceof ActiveQuarter)) {
             return false;
         }
-        ActiveQuarter activeQuarter = (ActiveQuarter) o;
-        return Objects.equals(id, activeQuarter.id) && Objects.equals(activeQuarter, activeQuarter.activeQuarter);
-    }
+        ActiveQuarter other = (ActiveQuarter) o;
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(id, other.getId()).append(activeQuarter, other.getActiveQuarter());
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, activeQuarter);
+        return builder.isEquals();
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", activeQuarter='" + getActiveQuarter() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", activeQuarter='" + getActiveQuarter() + "'" + "}";
     }
 }
