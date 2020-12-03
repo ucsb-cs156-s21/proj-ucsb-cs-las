@@ -3,8 +3,10 @@ import { Table, Button, Badge } from "react-bootstrap";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
+import { useHistory } from "react-router-dom";
 
 const Admin = () => {
+  const history = useHistory();
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: users } = useSWR(["/api/users", getToken], fetchWithToken);
   const { data: admins, mutate: mutateAdmins } = useSWR(["/api/admins", getToken], fetchWithToken);
@@ -44,6 +46,7 @@ const Admin = () => {
   return (
     <>
       <h1>Admin Panel</h1>
+      <Button onClick={() => history.push("/admin/tutorhistory")}>Search for a Tutor</Button>
       <h2 style={{ display: 'flex', justifyContent: 'left' }}>All Users</h2>
       <Table striped bordered hover>
         <thead>
