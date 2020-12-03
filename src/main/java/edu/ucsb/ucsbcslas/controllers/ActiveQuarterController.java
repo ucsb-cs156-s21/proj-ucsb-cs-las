@@ -60,7 +60,8 @@ public class ActiveQuarterController {
       body = mapper.writeValueAsString(existingQuarter);
 
     } else {
-      ActiveQuarter active = new ActiveQuarter(1L, activeValue);
+      ActiveQuarter active = new ActiveQuarter();
+      active.setActiveQuarter(activeValue);
       activeQuarterRepo.save(active);
       body = mapper.writeValueAsString(active);
     }
