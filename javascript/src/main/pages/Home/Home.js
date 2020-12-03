@@ -11,7 +11,7 @@ const Home = () => {
         "/api/public/courses",
         fetchWithoutToken
     );
-    var courseArr = (JSON.stringify(courses));
+
 
     return (
         <Jumbotron>s
