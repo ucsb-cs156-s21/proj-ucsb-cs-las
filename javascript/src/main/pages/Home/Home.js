@@ -13,6 +13,14 @@ const Home = () => {
     const { data: currentFilter } = useSWR(
         "api/public/filter", fetchWithoutToken
     );
+    const filterLabel = (currentFilter) =>{
+        if(currentFilter && currentFilter.length > 0){
+            if(currentFilter[0].activeQuarter !=="All"){
+                return <h5>Currently filtering by quarter {currentFilter[0].activeQuarter}</h5>
+            }
+        }
+        return <h5>All quarters are being viewed</h5>
+    }
 
 
     return (
@@ -20,8 +28,7 @@ const Home = () => {
             <div className="text-left">
 
                 <h5>Welcome to the UCSB CS LAs App!</h5>
-                {currentFilter && currentFilter.length > 0 ? <h5> currently Filtering by Quarter {currentFilter[0].activeQuarter}</h5> :
-                    <h5>No current quarter filter set</h5>}
+                {filterLabel(currentFilter)}
                 <CourseTable courses={courses || []} />
             </div>
         </Jumbotron>
