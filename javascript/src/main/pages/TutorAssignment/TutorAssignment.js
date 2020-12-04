@@ -18,18 +18,16 @@ const TutorAssignment = () => {
     ["/api/myRole", getToken],
     fetchWithToken
   );
-  const isInstructor = roleInfo && (roleInfo.role.toLowerCase() === "instructor" || roleInfo.role.toLowerCase() === "admin");
+  const isInstructor = roleInfo && roleInfo.role && (roleInfo.role.toLowerCase() === "instructor" || roleInfo.role.toLowerCase() === "admin");
 
   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
-    ["/api/public/tutorAssignments/", getToken],
+    ["/api/member/tutorAssignments/", getToken],
     fetchWithToken
   );
-
   
   if (error) {
     return (
       <>
-        {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
         <h1>We encountered an error; please reload the page and try again.</h1>
       </>
     );
@@ -42,7 +40,7 @@ const TutorAssignment = () => {
   return (
     <>
       {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
-      <TutorAssignmentTable courses={tutorAssignmentList} instructor={isInstructor}/>
+      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} instructor={isInstructor}/>
     </>
   );
 };

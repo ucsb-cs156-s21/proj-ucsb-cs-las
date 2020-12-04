@@ -2,8 +2,9 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import {asQuarterObject, asHumanQuarter} from "main/utils/quarter.ts"
 
-export default ({courses, instructor}) => {
+export default ({tutorAssignments, instructor}) => {
     const history = useHistory();
 
     const renderEditButton = (id) => {
@@ -18,24 +19,28 @@ export default ({courses, instructor}) => {
         )
     }
 
+    const renderTutorName = (row) => row.tutor.firstName + " " +row.tutor.lastName;
+    const renderCourseNameYear = (row) => {
+        const quarter = row.course.quarter;
+        return row.course.name + " " + asHumanQuarter(quarter);
+    }
+
     const columns = [{
         dataField: 'id',
         text: 'id'
     }, {
-        dataField: 'name',
-        text: 'Course Number'
+        dataField: 'courseNameYear',
+        isDummyField: true,
+        text: 'Course',
+        formatter: (cell, row) => renderCourseNameYear(row)
     }, {
-        dataField: 'quarter',
-        text: 'Quarter'
+        dataField: 'tutorName',
+        isDummyField: true,
+        text: 'Tutor',
+        formatter: (cell, row) => renderTutorName(row)
     }, {
-        dataField: 'instructorFirstName',
-        text: 'First'
-    }, {
-        dataField: 'instructorLastName',
-        text: 'Last'
-    }, {
-        dataField: 'instructorEmail',
-        text: 'Email'
+        dataField: 'assignmentType',
+        text: 'Assignment Type'
     }];
 
     if (instructor) {
@@ -54,6 +59,6 @@ export default ({courses, instructor}) => {
     }
 
     return (
-        <BootstrapTable keyField='id' data={courses} columns={columns} />
+        <BootstrapTable keyField='id' data={tutorAssignments} columns={columns} />
     );
 }

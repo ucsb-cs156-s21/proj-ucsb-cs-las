@@ -71,7 +71,7 @@ public class TutorAssignmentController {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     JSONObject ta = new JSONObject(tutorAssignment);
-    
+
     TutorAssignment newAssignment = new TutorAssignment();
     Optional<Course> course = courseRepository.findByName(ta.getString("courseName"));
     if(course.isPresent()){
@@ -89,6 +89,7 @@ public class TutorAssignmentController {
     }
     newAssignment.setAssignmentType(ta.getString("assignmentType"));
 
+    logger.info("newAssignment= {}", newAssignment);
     TutorAssignment savedTutorAssignment = tutorAssignmentRepository.save(newAssignment);
     String body = mapper.writeValueAsString(savedTutorAssignment);
     return ResponseEntity.ok().body(body);
@@ -113,7 +114,7 @@ public class TutorAssignmentController {
 //     return ResponseEntity.ok().body(body);
 //   }
 
-//   @DeleteMapping(value = "/api/admin/courses/{id}", produces = "application/json")
+//   @DeleteMapping(value = "/api/admin/tutorAssignments/{id}", produces = "application/json")
 //   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
 //       @PathVariable("id") Long id) throws JsonProcessingException {
 //     if (!authControllerAdvice.getIsAdmin(authorization))
@@ -126,7 +127,7 @@ public class TutorAssignmentController {
 //     return ResponseEntity.noContent().build();
 //   }
 
-  @GetMapping(value = "/api/public/tutorAssignments/", produces = "application/json")
+  @GetMapping(value = "/api/member/tutorAssignments/", produces = "application/json")
   public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     List<TutorAssignment> tutorAssignmentList = new ArrayList();
     if (authControllerAdvice.getIsAdmin(authorization)){
@@ -137,7 +138,8 @@ public class TutorAssignmentController {
       ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(tutorAssignmentList);
       return ResponseEntity.ok().body(body);
-    } else {
+    } 
+    else {
       List<Course> courseList = courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
       if(!(courseList.isEmpty())){
         for(Course temp : courseList){
@@ -156,7 +158,7 @@ public class TutorAssignmentController {
       }
     }
     if(authControllerAdvice.getIsMember(authorization)){
-      Optional<Tutor> tutor = tutorRepository.findById(authControllerAdvice.getUser(authorization).getId());
+      Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getUser(authorization).getEmail());
       if(tutor.isPresent()){
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByTutor(tutor.get());
         tutorAssignmentList.addAll(tutorAssignments);

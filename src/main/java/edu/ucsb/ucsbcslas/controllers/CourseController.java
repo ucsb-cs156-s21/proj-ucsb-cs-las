@@ -51,7 +51,6 @@ public class CourseController {
       @RequestBody @Valid Course course) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    System.out.println(course);
     Course savedCourse = courseRepository.save(course);
     String body = mapper.writeValueAsString(savedCourse);
     return ResponseEntity.ok().body(body);

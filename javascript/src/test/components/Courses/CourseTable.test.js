@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import CourseTable from "main/components/Footer/AppFooter";
+import CourseTable from "main/components/Course/CourseTable";
 
 
 describe("CourseForm tests", () => {

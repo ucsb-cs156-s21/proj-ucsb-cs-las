@@ -5,7 +5,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
     const emptyTutorAssignment = {
         courseName: "",
         tutorEmail: "",
-        assignmentType: "none",
+        assignmentType: "LA",
     }
 
     const [tutorAssignment, setTutorAssignment] = useState(existingTutorAssignment || emptyTutorAssignment);
@@ -47,7 +47,6 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
                 <Col sm={10}>
                     <Form.Control as="select" value={tutorAssignment.assignmentType} onChange={(e) => setTutorAssignment({ 
                         ...tutorAssignment, assignmentType: e.target.value})}>
-                        <option value="none" disabled hidden>Select an Option</option>
                         <option value="LA">LA</option>
                         <option value="190J">190J</option>
                         <option value="TA">TA</option>

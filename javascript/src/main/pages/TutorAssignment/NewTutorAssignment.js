@@ -21,7 +21,7 @@ const NewTutorAssignment = () => {
       addToast("New Tutor Assignment Saved", { appearance: 'success' });
     }, 
     () => { 
-      addToast("Error saving Tutor Assignment ", { appearance: 'error' });
+      addToast("Error saving Tutor Assignment. Make sure tutor email is correct", { appearance: 'error' });
     }
   );
 
