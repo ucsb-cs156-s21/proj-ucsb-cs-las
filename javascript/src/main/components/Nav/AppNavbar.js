@@ -38,7 +38,6 @@ function AppNavbar() {
             <Nav.Link>Tutors</Nav.Link>
           </LinkContainer>
         )}
-        }
         {(isAdmin || isMember) && (
           <LinkContainer to={"/tutorAssignment"}>
             <Nav.Link>Tutor Assignment</Nav.Link>
