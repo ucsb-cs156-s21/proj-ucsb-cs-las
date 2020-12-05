@@ -20,6 +20,7 @@ const TutorForm = ({ createTutor, updateTutor, existingTutor }) => {
 
   return (
     <Form onSubmit={handleOnSubmit}>
+      {createTutor && 
       <Form.Group as={Row} controlId="id">
         <Form.Label column sm={2}>
           Tutor Id
@@ -38,6 +39,7 @@ const TutorForm = ({ createTutor, updateTutor, existingTutor }) => {
           />
         </Col>
       </Form.Group>
+      }
       <Form.Group as={Row} controlId="firstName">
         <Form.Label column sm={2}>
           First Name
