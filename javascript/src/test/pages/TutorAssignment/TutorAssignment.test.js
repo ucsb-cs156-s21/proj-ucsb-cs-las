@@ -64,6 +64,11 @@ describe("TutorAssignment page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
+    useSWR.mockReturnValueOnce({
+      data: {role: "admin"},
+      error: undefined,
+      mutate: mutateSpy,
+    });
   });
 
   afterEach(() => {
@@ -90,15 +95,26 @@ describe("TutorAssignment page test", () => {
     expect(loading).toBeInTheDocument();
   });
 
-  test("renders an error message when there is an error", () => {
+  test("renders an error message when there is an error", async () => {
     useSWR.mockReturnValue({
       data: undefined,
       error: new Error("this is an error"),
       mutate: mutateSpy,
     });
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
     const { getByText } = render(<TutorAssignment />);
     const error = getByText(/error/);
     expect(error).toBeInTheDocument();
+
+    const newTutorAssignmentButton = getByText("New Tutor Assignment");
+    userEvent.click(newTutorAssignmentButton);
+
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
 //   test("can delete a tutor assignment", async () => {
@@ -133,9 +149,33 @@ describe("TutorAssignment page test", () => {
 //     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
 //   });
 
-  test("can click to add a tutor assignment", async () => {
+  test("can click to add a tutor assignment if admin", async () => {
     useSWR.mockReturnValueOnce({
         data: {role: "admin"},
+        error: undefined,
+        mutate: mutateSpy,
+    });
+    useSWR.mockReturnValueOnce({
+        data: tutorAssignments,
+        error: undefined,
+        mutate: mutateSpy,
+    });
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const { getByText } = render(<TutorAssignment />);
+    const newTutorAssignmentButton = getByText("New Tutor Assignment");
+    userEvent.click(newTutorAssignmentButton);
+
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  });
+
+  test("can click to add a tutor assignment if instructor", async () => {
+    useSWR.mockReturnValueOnce({
+        data: [{},{}],
         error: undefined,
         mutate: mutateSpy,
     });

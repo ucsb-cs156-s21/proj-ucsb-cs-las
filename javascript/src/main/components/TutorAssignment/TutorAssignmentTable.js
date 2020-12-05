@@ -1,12 +1,9 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import {asQuarterObject, asHumanQuarter} from "main/utils/quarter.ts"
+import {asHumanQuarter} from "main/utils/quarter.ts"
 
-export default ({tutorAssignments, instructor}) => {
-    const history = useHistory();
-
+export default ({tutorAssignments, isInstructor}) => {
     const renderEditButton = (id) => {
         return (
             <Button data-testid="edit-button" >Edit</Button>
@@ -43,7 +40,7 @@ export default ({tutorAssignments, instructor}) => {
         text: 'Assignment Type'
     }];
 
-    if (instructor) {
+    if (isInstructor) {
         columns.push({
             text: "Edit",
             isDummyField: true,

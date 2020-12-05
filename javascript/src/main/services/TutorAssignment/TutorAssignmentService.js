@@ -18,7 +18,7 @@ const buildCreateTutorAssignment = (getToken, onSuccess, onError) => {
   return func
 }
 
-const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
+// const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
 //   const func = async (item, id) => {
 //     try {
 //       await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
@@ -34,9 +34,9 @@ const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
 //     }
 //   };
 //   return func
-}
+// }
 
-const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
+// const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
 //   const func = async (id) => {
 //     try {
 //       await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
@@ -52,6 +52,6 @@ const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
 //     }
 //   }
 //   return func;
-}
+// }
 
-export { buildCreateTutorAssignment , buildDeleteTutorAssignment , buildUpdateTutorAssignment  };
+export { buildCreateTutorAssignment /*, buildDeleteTutorAssignment , buildUpdateTutorAssignment*/  };

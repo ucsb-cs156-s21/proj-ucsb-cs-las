@@ -68,18 +68,21 @@ public class TutorAssignmentController {
   @PostMapping(value = "/api/admin/tutorAssignments/", produces = "application/json")
   public ResponseEntity<String> createTutorAssignment(@RequestHeader("Authorization") String authorization,
       @RequestBody @Valid String tutorAssignment) throws JsonProcessingException {
-    if (!authControllerAdvice.getIsAdmin(authorization))
-      return getUnauthorizedResponse("admin");
-    JSONObject ta = new JSONObject(tutorAssignment);
+    if (!authControllerAdvice.getIsAdmin(authorization)){
+      if(courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail()).isEmpty()){
+        return getUnauthorizedResponse("instructor");
+      }
+    }
 
+    JSONObject ta = new JSONObject(tutorAssignment);
     TutorAssignment newAssignment = new TutorAssignment();
-    Optional<Course> course = courseRepository.findByName(ta.getString("courseName"));
-    if(course.isPresent()){
-      newAssignment.setCourse(course.get());
-    }
-    else{
-      return getIncorrectInputResponse("course name");
-    }
+
+    JSONObject cInfo = new JSONObject(ta.get("course").toString());
+    logger.info("course= {}", cInfo);
+    Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
+      cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
+    newAssignment.setCourse(c);
+
     Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
     if(tutor.isPresent()){
       newAssignment.setTutor(tutor.get());
