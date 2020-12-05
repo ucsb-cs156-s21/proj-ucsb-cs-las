@@ -2,11 +2,16 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import useSWR from "swr";
+import { fetchWithToken } from "main/utils/fetch";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 
 export default ({ tutors, admin, deleteTutor }) => {
   const history = useHistory();
+  const { getAccessTokenSilently: getToken } = useAuth0();
+  const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
   const renderEditButton = id => {
     return (
@@ -51,6 +56,14 @@ export default ({ tutors, admin, deleteTutor }) => {
       text: "Email"
     }
   ];
+
+  const isInstructor = roleInfo && roleInfo.role.toLowerCase() == "instructor";
+  var courseList;
+
+  courseList = useSWR(
+    ["/api/member/tutorAssignments/", getToken],
+    fetchWithToken
+  );
 
   if (admin) {
     columns.push({
