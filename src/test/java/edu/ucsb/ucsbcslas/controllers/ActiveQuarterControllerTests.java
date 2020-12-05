@@ -70,7 +70,7 @@ public class ActiveQuarterControllerTests {
   }
 
   @Test
-  public void testDeleteCourse_courseExists() throws Exception {
+  public void testDeleteActiveQuarter_ActiveQuarterExists() throws Exception {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     MvcResult response = mockMvc
         .perform(delete("/api/admin/filter/nuke").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -81,4 +81,45 @@ public class ActiveQuarterControllerTests {
 
     assertEquals(responseString.length(), 0);
   }
+  @Test
+  public void test_deleteFilter_unauthorizedIfNotAdmin() throws Exception {
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    
+    mockMvc
+    .perform(delete("/api/admin/filter/nuke").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void testSaveActiveQuarter() throws Exception {
+    ActiveQuarter expectedActiveQuarter = new ActiveQuarter();
+    expectedActiveQuarter.setActiveQuarter("blah");
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedActiveQuarter);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    when(mockQuarterRepo.save(any())).thenReturn(expectedActiveQuarter);
+    MvcResult response = mockMvc
+        .perform(post("/api/admin/filter/blah").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).save(expectedActiveQuarter);
+
+    String responseString = response.getResponse().getContentAsString();
+    ActiveQuarter actualActiveQuarter = objectMapper.readValue(responseString, ActiveQuarter.class);
+    assertEquals(actualActiveQuarter, expectedActiveQuarter);
+  }
+  @Test
+  public void test_setFilter_unauthorizedIfNotAdmin() throws Exception {
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    
+    mockMvc
+    .perform(post("/api/admin/filter/anything").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isUnauthorized());
+  }
+
+  
+
 }

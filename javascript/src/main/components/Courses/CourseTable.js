@@ -14,9 +14,7 @@ export default ({ courses, admin, deleteCourse }) => {
         "/api/public/filter",
         fetchWithoutToken
     );
-    // while (!filter) {
-    //     continue;
-    // }
+
     if (filter && courses) {
         if (filter.length > 0) {
 

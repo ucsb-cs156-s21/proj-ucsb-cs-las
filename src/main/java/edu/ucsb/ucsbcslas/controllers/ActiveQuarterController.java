@@ -51,20 +51,14 @@ public class ActiveQuarterController {
       @PathVariable("activeValue") String activeValue) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    List<ActiveQuarter> existingQuarters = activeQuarterRepo.findAll();
-    String body;
-    if (existingQuarters.size() > 0) {
-      ActiveQuarter existingQuarter = existingQuarters.get(0);
-      existingQuarter.setActiveQuarter(activeValue);
-      activeQuarterRepo.save(existingQuarter);
-      body = mapper.writeValueAsString(existingQuarter);
-
-    } else {
-      ActiveQuarter active = new ActiveQuarter();
-      active.setActiveQuarter(activeValue);
-      activeQuarterRepo.save(active);
-      body = mapper.writeValueAsString(active);
-    }
+    activeQuarterRepo.deleteAll();
+    
+    
+    
+    ActiveQuarter active = new ActiveQuarter();
+    active.setActiveQuarter(activeValue);
+    activeQuarterRepo.save(active);
+    String body = mapper.writeValueAsString(active);
 
     return ResponseEntity.ok().body(body);
   }
@@ -74,11 +68,7 @@ public class ActiveQuarterController {
       throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    List<ActiveQuarter> activeQuarters = activeQuarterRepo.findAll();
-    if (activeQuarters.size() == 0) {
-      return ResponseEntity.notFound().build();
-    }
-    activeQuarterRepo.deleteById(activeQuarters.get(0).getId());
+    activeQuarterRepo.deleteAll();
     return ResponseEntity.noContent().build();
   }
 

@@ -24,6 +24,7 @@ const QuarterFilter = () => {
     () => {
       addToast("Error saving filter", { appearance: 'error' });
     });
+  const {data: active, error} = useSWR("api/public/filter",fetchWithToken)
 
   const deleteFilter = buildDeleteFilter(getToken,
     () => {
@@ -33,6 +34,11 @@ const QuarterFilter = () => {
     () => {
       addToast("no active quarter existent", { appearance: 'error' });
     });
+    if (error) {
+      return (
+        <h1>We encountered an error; please reload the page and try again.</h1>
+      );
+    }
 
 
   return (

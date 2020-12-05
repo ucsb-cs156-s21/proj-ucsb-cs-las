@@ -2,6 +2,7 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
+import QuarterFilter from "main/pages/QuarterFilter";
 import userEvent from "@testing-library/user-event";
 import useSWR from "swr";
 jest.mock("swr");
@@ -16,7 +17,6 @@ jest.mock("main/utils/fetch", () => ({
 }));
 
 import { useToasts } from 'react-toast-notifications'
-import QuarterFilter from "../../main/pages/QuarterFilter";
 jest.mock('react-toast-notifications', () => ({
   useToasts: jest.fn()
 }));
@@ -26,6 +26,15 @@ describe("New Course page test", () => {
     name: "test user",
   };
   const getAccessTokenSilentlySpy = jest.fn();
+  const course =
+  {
+    name: "CMPSC 156",
+    id: 1,
+    quarter: "F20",
+    instructorFirstName: "Phill",
+    instructorLastName: "Conrad",
+    instructorEmail: "phtcon@ucsb.edu",
+  };
 
   const addToast = jest.fn();
   beforeEach(() => {
@@ -47,7 +56,7 @@ describe("New Course page test", () => {
     render(<QuarterFilter />);
   });
 
-  test("clicking submit button redirects to home page", async () => {
+  test("clicking submit button redirects to courses page", async () => {
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
       push: pushSpy
@@ -62,8 +71,8 @@ describe("New Course page test", () => {
     userEvent.click(submitButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-    expect(pushSpy).toHaveBeenCalledWith("/home");
-
+    expect(pushSpy).toHaveBeenCalledWith("/courses");
+    
   });
 
   test("clicking submit button redirects to home page on error", async () => {
@@ -86,7 +95,7 @@ describe("New Course page test", () => {
     userEvent.click(submitButton);
 
     expect(addToast).toHaveBeenCalledTimes(1);
-    expect(addToast).toHaveBeenCalledWith("Error saving filter", { appearance: 'error' });
+    expect(addToast).toHaveBeenCalledWith("Error saving course", { appearance: 'error' });
 
   });
 
