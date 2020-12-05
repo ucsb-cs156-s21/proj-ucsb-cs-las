@@ -57,7 +57,8 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <PrivateRoute path="/profile" component={Profile} />
-          <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/maintain" component={Admin} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/logins" component={AdminLogins} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
