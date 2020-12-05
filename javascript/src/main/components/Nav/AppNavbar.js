@@ -36,6 +36,9 @@ function AppNavbar() {
             <Nav.Link>Courses</Nav.Link>
         </LinkContainer>
         }
+        <LinkContainer to={"/officehours"}>
+            <Nav.Link>Office Hours</Nav.Link>
+        </LinkContainer>
         <ProfileNav />
       </Nav>
       <Navbar.Collapse className="justify-content-end">
