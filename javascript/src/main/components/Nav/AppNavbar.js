@@ -38,6 +38,12 @@ function AppNavbar() {
             <Nav.Link>Tutors</Nav.Link>
           </LinkContainer>
         )}
+        }
+        {(isAdmin || isMember) && (
+          <LinkContainer to={"/tutorAssignment"}>
+            <Nav.Link>Tutor Assignment</Nav.Link>
+          </LinkContainer>
+        )}
         <ProfileNav />
       </Nav>
       <Navbar.Collapse className="justify-content-end">
