@@ -90,7 +90,8 @@ public class CourseController {
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
-    List<Course> courseList = courseRepository.findAll();
+    // List<Course> courseList = courseRepository.findAll();
+    List<Course> courseList = courseRepository.findByQuarter("W21"); // quarter name is not used in GOLD its should be 20211
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);

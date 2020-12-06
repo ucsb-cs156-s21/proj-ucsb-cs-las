@@ -14,7 +14,7 @@ const Home = () => {
         <Jumbotron>
             <div className="text-left">
                 <h5>Welcome to the UCSB CS LAs App!</h5>
-                <CourseTable courses={courses || []} />
+                <CourseTable courses={courses || []} />  
             </div>
         </Jumbotron>
     );
