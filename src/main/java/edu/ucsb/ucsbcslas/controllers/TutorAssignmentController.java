@@ -98,38 +98,6 @@ public class TutorAssignmentController {
     return ResponseEntity.ok().body(body);
   }
 
-//   @PutMapping(value = "/api/admin/tutorAssignments/{id}", produces = "application/json")
-//   public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
-//       @PathVariable("id") Long id, @RequestBody @Valid TutorAssignment incomingTutorAssignment) throws JsonProcessingException {
-//     if (!authControllerAdvice.getIsAdmin(authorization))
-//       return getUnauthorizedResponse("admin");
-//     Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
-//     if (!tutorAssignment.isPresent()) {
-//       return ResponseEntity.notFound().build();
-//     }
-
-//     if (!incomingTutorAssignment.getId().equals(id)) {
-//       return ResponseEntity.badRequest().build();
-//     }
-
-//     courseRepository.save(incomingTutorAssignment);
-//     String body = mapper.writeValueAsString(incomingTutorAssignment);
-//     return ResponseEntity.ok().body(body);
-//   }
-
-//   @DeleteMapping(value = "/api/admin/tutorAssignments/{id}", produces = "application/json")
-//   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
-//       @PathVariable("id") Long id) throws JsonProcessingException {
-//     if (!authControllerAdvice.getIsAdmin(authorization))
-//       return getUnauthorizedResponse("admin");
-//     Optional<Course> course = courseRepository.findById(id);
-//     if (!course.isPresent()) {
-//       return ResponseEntity.notFound().build();
-//     }
-//     courseRepository.deleteById(id);
-//     return ResponseEntity.noContent().build();
-//   }
-
   @GetMapping(value = "/api/member/tutorAssignments", produces = "application/json")
   public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     List<TutorAssignment> tutorAssignmentList = new ArrayList();
