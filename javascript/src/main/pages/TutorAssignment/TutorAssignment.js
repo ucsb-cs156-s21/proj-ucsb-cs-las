@@ -24,7 +24,7 @@ const TutorAssignment = () => {
     fetchWithToken
   );
 
-  const isInstructor = roleInfo && roleInfo.role && (instructorCourseList || roleInfo.role.toLowerCase() === "admin");
+  const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
 
   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
     ["/api/member/tutorAssignments", getToken],
