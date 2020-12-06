@@ -3,7 +3,7 @@ import { fetchWithToken } from "main/utils/fetch";
 const buildCreateTutorAssignment = (getToken, onSuccess, onError) => {
   const func = async (tutorAssignment) => {
     try {
-      await fetchWithToken(`/api/admin/tutorAssignments/`, getToken, {
+      await fetchWithToken(`/api/member/tutorAssignments`, getToken, {
         method: "POST",
         headers: {
           "content-type": "application/json",

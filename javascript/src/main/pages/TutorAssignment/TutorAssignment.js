@@ -5,7 +5,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
-import { buildCreateTutorAssignment, buildDeleteTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
+// import { buildDeleteTutorAssignment} from "main/services/TutorAssignment/TutorAssignmentService";
 
 import {useHistory} from "react-router-dom";
 
@@ -28,7 +28,7 @@ const TutorAssignment = () => {
   const isInstructor = roleInfo && roleInfo.role && (instructorCourseList || roleInfo.role.toLowerCase() === "admin");
 
   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
-    ["/api/member/tutorAssignments/", getToken],
+    ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
   
@@ -43,7 +43,7 @@ const TutorAssignment = () => {
   if (!tutorAssignmentList) {
     return <Loading />;
   }
-  const deleteTutorAssignment = buildDeleteTutorAssignment(getToken, mutateTutorAssignment);
+  // const deleteTutorAssignment = buildDeleteTutorAssignment(getToken, mutateTutorAssignment);
 
   return (
     <>

@@ -58,14 +58,14 @@ public class TutorAssignmentController {
     return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
   }
 
-  private ResponseEntity<String> getIncorrectInputResponse(String malformedField) throws JsonProcessingException {
+  private ResponseEntity<String> getIncorrectInputResponse() throws JsonProcessingException {
     Map<String, String> response = new HashMap<String, String>();
-    response.put("error", String.format("Misformatted Input; check that % is a valid %.", malformedField, malformedField));
+    response.put("error", String.format("Misformatted Input; Check that the tutor email that was input is assigned to a valid tutor"));
     String body = mapper.writeValueAsString(response);
     return new ResponseEntity<String>(body, HttpStatus.BAD_REQUEST);
   }
 
-  @PostMapping(value = "/api/admin/tutorAssignments/", produces = "application/json")
+  @PostMapping(value = "/api/member/tutorAssignments", produces = "application/json")
   public ResponseEntity<String> createTutorAssignment(@RequestHeader("Authorization") String authorization,
       @RequestBody @Valid String tutorAssignment) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization)){
@@ -88,7 +88,7 @@ public class TutorAssignmentController {
       newAssignment.setTutor(tutor.get());
     }
     else{
-      return getIncorrectInputResponse("tutor email");
+      return getIncorrectInputResponse();
     }
     newAssignment.setAssignmentType(ta.getString("assignmentType"));
 
@@ -130,7 +130,7 @@ public class TutorAssignmentController {
 //     return ResponseEntity.noContent().build();
 //   }
 
-  @GetMapping(value = "/api/member/tutorAssignments/", produces = "application/json")
+  @GetMapping(value = "/api/member/tutorAssignments", produces = "application/json")
   public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     List<TutorAssignment> tutorAssignmentList = new ArrayList();
     if (authControllerAdvice.getIsAdmin(authorization)){
@@ -166,7 +166,6 @@ public class TutorAssignmentController {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByTutor(tutor.get());
         tutorAssignmentList.addAll(tutorAssignments);
       }
-      System.out.println(tutorAssignmentList.isEmpty());
       if(tutorAssignmentList.isEmpty()){
         return ResponseEntity.notFound().build();
       }
