@@ -1,6 +1,7 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
-import CourseTable from "main/components/Courses/CourseTable"
+// import CourseTable from "main/components/Courses/CourseTable"
+import CourseList from "main/components/Courses/CourseList"
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 
@@ -14,7 +15,7 @@ const Home = () => {
         <Jumbotron>
             <div className="text-left">
                 <h5>Welcome to the UCSB CS LAs App!</h5>
-                <CourseTable courses={courses || []} />  
+                <CourseList courses={courses || []} />  
             </div>
         </Jumbotron>
     );

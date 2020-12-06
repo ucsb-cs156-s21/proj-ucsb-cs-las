@@ -21,43 +21,24 @@ export default ({courses,admin,deleteCourse}) => {
         )
     }
 
-    const cellFormatter = (id, name) => {
-        return (
-            <div><a href="/course/{id}">{name}</a></div>
-        );
-    }
-
-    // {cell+"/"+row.age}>{courses.getId()}
-    // const columns = [{
-    //     dataField: 'id',
-    //     text: 'id'
-    // }, {
-    //     dataField: 'name',
-    //     text: 'Course Number'
-    // }, {
-    //     dataField: 'quarter',
-    //     text: 'Quarter'
-    // }, {
-    //     dataField: 'instructorFirstName',
-    //     text: 'First'
-    // }, {
-    //     dataField: 'instructorLastName',
-    //     text: 'Last'
-    // }, {
-    //     dataField: 'instructorEmail',
-    //     text: 'Email'
-    // }];
-
     const columns = [{
         dataField: 'id',
         text: 'id'
     }, {
         dataField: 'name',
-        text: 'Course Number',
-        formatter: (cell, row) => cellFormatter(row.id, row.name)
+        text: 'Course Number'
     }, {
         dataField: 'quarter',
         text: 'Quarter'
+    }, {
+        dataField: 'instructorFirstName',
+        text: 'First'
+    }, {
+        dataField: 'instructorLastName',
+        text: 'Last'
+    }, {
+        dataField: 'instructorEmail',
+        text: 'Email'
     }];
 
     if (admin) {
