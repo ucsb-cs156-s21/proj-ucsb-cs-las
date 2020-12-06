@@ -96,6 +96,11 @@ describe("TutorAssignment page test", () => {
   });
 
   test("renders an error message when there is an error", async () => {
+    useSWR.mockReturnValueOnce({
+      data: {role: "admin"},
+      error: undefined,
+      mutate: mutateSpy,
+    });
     useSWR.mockReturnValue({
       data: undefined,
       error: new Error("this is an error"),
