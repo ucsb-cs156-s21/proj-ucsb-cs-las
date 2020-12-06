@@ -96,6 +96,11 @@ describe("TutorAssignment page test", () => {
   });
 
   test("renders an error message when there is an error", async () => {
+    useSWR.mockReturnValueOnce({
+      data: {role: "admin"},
+      error: undefined,
+      mutate: mutateSpy,
+    });
     useSWR.mockReturnValue({
       data: undefined,
       error: new Error("this is an error"),
@@ -116,38 +121,6 @@ describe("TutorAssignment page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-//   test("can delete a tutor assignment", async () => {
-    // useSWR.mockReturnValue({
-    //     data: tutorAssignments,
-    //     error: undefined,
-    //     mutate: mutateSpy,
-    // });
-//     const fakeDeleteFunction = jest.fn();
-//     buildDeleteTutorAssignment.mockReturnValue(fakeDeleteFunction);
-//     const { getAllByTestId } = render(<TutorAssignment />);
-//     const deleteButtons = getAllByTestId("delete-button");
-//     userEvent.click(deleteButtons[0]);
-//     await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
-//   });
-
-//   test("can edit a tutor assignment", async () => {
-    // useSWR.mockReturnValue({
-    //     data: tutorAssignments,
-    //     error: undefined,
-    //     mutate: mutateSpy,
-    // });
-//     const pushSpy = jest.fn();
-//     useHistory.mockReturnValue({
-//       push: pushSpy
-//     });
-
-//     const { getAllByTestId } = render(<TutorAssignment />);
-//     const editButtons = getAllByTestId("edit-button");
-//     userEvent.click(editButtons[0]);
-
-//     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-//   });
 
   test("can click to add a tutor assignment if admin", async () => {
     useSWR.mockReturnValueOnce({

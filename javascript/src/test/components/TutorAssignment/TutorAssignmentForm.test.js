@@ -77,31 +77,6 @@ describe("TutorAssignmentForm tests", () => {
     expect(loading).toBeInTheDocument();
   });
 
-//   test("updating TutorAssignment name works", async () => {
-
-//     const updateTutorAssignmentMock = jest.fn();
-
-//     const { getByText, getByDisplayValue } = render
-//       (<TutorAssignmentForm updateTutorAssignment={updateTutorAssignmentMock} existingTutorAssignment={sampleTutorAssignment}/>)
-//     ;
-
-//     const updatedTutorAssignment = {
-//       ...sampleTutorAssignment,
-//       course: "new CMPSC 156",
-//     };
-
-//     const input = getByDisplayValue(sampleTutorAssignment.course);
-//     userEvent.clear(input);
-//     userEvent.type(input, updatedTutorAssignment.course);
-
-//     const submitButton = getByText("Submit");
-//     userEvent.click(submitButton);
-
-//     expect(updateTutorAssignmentMock).toHaveBeenCalledTimes(1);
-//     expect(updateTutorAssignmentMock).toHaveBeenCalledWith(updatedTutorAssignment, updatedTutorAssignment.id);
-
-//   });
-
   test("creating TutorAssignment works", async () => {
 
     const createTutorAssignmentMock = jest.fn();
