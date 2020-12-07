@@ -1,13 +1,13 @@
 import React from "react";
 
-   function tutorPage() {
+function tutorPage() {
+// const { data } = this.props.location
+    return (
+      <div>
+        <p>This is the tutor page {data}.</p>
+      </div>
+    );
 
-        return (
-          <div>
-            <p>This is the tutor page.</p>
-          </div>
-        );
+}
 
-    }
-
-    export default tutorPage;
+export default tutorPage;

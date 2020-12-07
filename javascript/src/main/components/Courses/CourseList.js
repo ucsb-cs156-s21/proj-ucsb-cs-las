@@ -8,15 +8,18 @@ export default ({courses}) => {
 
     const cellFormatter = (id, name) => {
         return (
-            <div>
-                <ul>
-        <li><Link to="/tutor/${id}">{name}</Link></li>
-                </ul>
+            <div>    
+        <li>
+            <Link 
+            to={{
+            pathname: "/tutorPage",
+            data: id
+        }}>{name}</Link>
+            </li>    
             </div>
         );
     }
 
-   
     const columns = [{
         dataField: 'id',
         text: 'id'
