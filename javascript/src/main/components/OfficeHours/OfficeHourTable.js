@@ -37,6 +37,9 @@ export default ({officeHours,admin,deleteOfficeHour,editOfficeHour}) => {
     }, {
         dataField: 'notes',
         text: 'Notes'
+    }, {
+        dataField: 'tutorAssignment.id',
+        text: 'Tutor Assignment'
     }
 
     ];
