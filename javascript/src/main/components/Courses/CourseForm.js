@@ -8,6 +8,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
     const quarterRef = useRef(null);
     const firstNameRef = useRef(null);
     const lastNameRef = useRef(null);
+    const emailRef = useRef(null);
     const emptyCourse = {
         name: "",
         quarter: "",
@@ -59,6 +60,9 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
         validList.push(lastNameValid);
 
         //check email
+        const emailValid = checkEmail(course.instructorEmail);
+        addFormEffects(emailRef, emailValid);
+        validList.push(emailValid);
 
         return !validList.includes(false);
     }
@@ -104,7 +108,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a valid quarter.
                     </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Use the first name of the quarter with the last 2 digits of the year. Ex (2020): use F20, W20, S20</Form.Text>
+                    <Form.Text style={{ textAlign: "left" }} muted>Use the first name of the quarter with the last 2 digits of the year. Ex (2020): F20, W20, S20, M20</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="firstName">
@@ -138,7 +142,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                     Email
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="email" placeholder="Ex: joegaucho@ucsb.edu" value={course.instructorEmail} onChange={(e) => setCourse({
+                    <Form.Control ref={emailRef} type="email" placeholder="Ex: joegaucho@ucsb.edu" value={course.instructorEmail} onChange={(e) => setCourse({
                         ...course,
                         instructorEmail: e.target.value
                     })} />
