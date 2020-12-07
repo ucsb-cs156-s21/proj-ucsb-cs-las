@@ -1,23 +1,47 @@
 import React, { useState } from "react";
+import { fetchWithToken } from "main/utils/fetch";
+import useSWR from "swr";
+import { useAuth0 } from "@auth0/auth0-react";
+import Loading from "main/components/Loading/Loading";
+import {asHumanQuarter} from "main/utils/quarter.ts"
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 
 const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, existingTutorAssignment }) => {
     const emptyTutorAssignment = {
-        courseName: "",
+        course: null,
         tutorEmail: "",
         assignmentType: "LA",
     }
 
     const [tutorAssignment, setTutorAssignment] = useState(existingTutorAssignment || emptyTutorAssignment);
 
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const { data: courseList, error, mutate: mutateCourse } = useSWR(
+        ["/api/member/courses/", getToken],
+        fetchWithToken
+    );
+
+    let sortedList;
+    if (error) {
+        return (
+            <>
+            <h1>You must be an instructor or an admin to create new Tutor Assignments.</h1>
+            </>
+        );
+    }
+    if (!courseList) {
+        return <Loading />;
+    }
+    else{
+        sortedList = courseList.map((course, index) => <option key={index} value={index}>{course.name+" "+asHumanQuarter(course.quarter)}</option>)
+        if(tutorAssignment.course === null){
+            setTutorAssignment({...tutorAssignment, course: courseList[0]});
+        }
+    }
+
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        if (createTutorAssignment) {
-            createTutorAssignment(tutorAssignment);
-        }
-        else{
-            updateTutorAssignment(tutorAssignment);
-        }
+        createTutorAssignment(tutorAssignment);
     }
 
     return (
@@ -25,10 +49,10 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
             <Form.Group as={Row} controlId="courseName">
                 <Form.Label column sm={2}>Course Name</Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="course name" value={tutorAssignment.course} onChange={(e) => setTutorAssignment({
-                        ...tutorAssignment,
-                        courseName: e.target.value
-                    })} />
+                    <Form.Control as="select" onChange={(e) => setTutorAssignment({ 
+                        ...tutorAssignment, course: courseList[e.target.value]})}>
+                        {sortedList}
+                    </Form.Control>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="tutorEmail">

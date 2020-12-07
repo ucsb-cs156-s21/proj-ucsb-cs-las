@@ -5,42 +5,48 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
-import { buildCreateTutorAssignment, buildDeleteTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 
 import {useHistory} from "react-router-dom";
 
 
 const TutorAssignment = () => {
   const history = useHistory();
-  const { getAccessTokenSilently: getToken } = useAuth0();
+  const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const { name, picture, email } = user;
 
   const { data: roleInfo } = useSWR(
-    ["/api/myRole", getToken],
+      ["/api/myRole", getToken],
+      fetchWithToken
+  );
+
+  const { data: instructorCourseList } = useSWR(
+    [`/api/member/courses/forInstructor/${email}`, getToken],
     fetchWithToken
   );
-  const isInstructor = roleInfo && roleInfo.role && (roleInfo.role.toLowerCase() === "instructor" || roleInfo.role.toLowerCase() === "admin");
+
+  const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
 
   const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
-    ["/api/member/tutorAssignments/", getToken],
+    ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
   
   if (error) {
     return (
       <>
-        <h1>We encountered an error; please reload the page and try again.</h1>
+        {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
+        <h1>You have no current Tutor Assignments or we encountered an error; please reload the page and try again.</h1>
       </>
     );
   }
   if (!tutorAssignmentList) {
     return <Loading />;
   }
-  const deleteTutorAssignment = buildDeleteTutorAssignment(getToken, mutateTutorAssignment);
 
   return (
     <>
       {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
-      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} instructor={isInstructor}/>
+      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
     </>
   );
 };
