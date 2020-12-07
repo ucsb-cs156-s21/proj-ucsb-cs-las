@@ -41,7 +41,6 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <PrivateRoute path="/profile" component={Profile} />
-<<<<<<< HEAD
           <AuthorizedRoute
             path="/admin"
             component={Admin}
@@ -96,14 +95,6 @@ function App() {
             component={NewTutorAssignment}
             authorizedRoles={["admin", "instructor"]}
           />
-=======
-          <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
->>>>>>> origin/6pm-c-svpaTutorAssignment
           <Route path="/about" component={About} />
         </Switch>
       </Container>

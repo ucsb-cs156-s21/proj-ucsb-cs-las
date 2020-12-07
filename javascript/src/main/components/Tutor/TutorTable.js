@@ -58,9 +58,8 @@ export default ({ tutors, admin, deleteTutor }) => {
   ];
 
   const isInstructor = roleInfo && roleInfo.role.toLowerCase() == "instructor";
-  var courseList;
 
-  courseList = useSWR(
+  const { data: tutorAssignments } = useSWR(
     ["/api/member/tutorAssignments/", getToken],
     fetchWithToken
   );
