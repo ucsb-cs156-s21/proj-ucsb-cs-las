@@ -21,7 +21,7 @@ const buildCreateTutorAssignment = (getToken, onSuccess, onError) => {
 const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
   const func = async (item, id) => {
     try {
-      await fetchWithToken(`/api/admin/courses/${id}`, getToken, {
+      await fetchWithToken(`/api/member/tutorAssignments/${id}`, getToken, {
         method: "PUT",
         headers: {
           "content-type": "application/json",

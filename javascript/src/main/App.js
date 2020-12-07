@@ -11,13 +11,14 @@ import About from "main/pages/About/About";
 import Home from "main/pages/Home/Home";
 import Profile from "main/pages/Profile/Profile";
 import Courses from "main/pages/Courses/Courses";
-import TutorAssignment from "main/pages/TutorAssignment/TutorAssignment";
+import TutorAssignments from "main/pages/TutorAssignment/TutorAssignments";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
+import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment";
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {
@@ -42,8 +43,9 @@ function App() {
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/tutorAssignments" exact component={TutorAssignments} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/tutorAssignments/edit/:tutorId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
