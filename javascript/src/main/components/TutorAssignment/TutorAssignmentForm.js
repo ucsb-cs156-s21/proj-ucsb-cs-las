@@ -41,7 +41,12 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        createTutorAssignment(tutorAssignment);
+        if (createTutorAssignment){
+            createTutorAssignment(tutorAssignment);
+        }
+        else{
+            updateTutorAssignment(tutorAssignment, tutorAssignment.id);
+        }
     }
 
     return (

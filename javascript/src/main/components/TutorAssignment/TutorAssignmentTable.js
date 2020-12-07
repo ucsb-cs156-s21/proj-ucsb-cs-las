@@ -2,11 +2,14 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import {asHumanQuarter} from "main/utils/quarter.ts"
+import { useHistory } from "react-router-dom";
 
 export default ({tutorAssignments, isInstructor}) => {
+    const history = useHistory();
+
     const renderEditButton = (id) => {
         return (
-            <Button data-testid="edit-button" >Edit</Button>
+            <Button data-testid="edit-button" onClick={() => { history.push(`/tutorAssignments/edit/${id}`) }}>Edit</Button>
         )
     }
 

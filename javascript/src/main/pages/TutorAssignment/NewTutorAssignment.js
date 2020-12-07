@@ -17,7 +17,7 @@ const NewTutorAssignment = () => {
   const createTutorAssignment = buildCreateTutorAssignment(
     getToken,
     () => { 
-      history.push("/tutorAssignment"); 
+      history.push("/tutorAssignments"); 
       addToast("New Tutor Assignment Saved", { appearance: 'success' });
     }, 
     () => { 
