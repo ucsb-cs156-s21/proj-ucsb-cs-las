@@ -33,19 +33,6 @@ const Courses = () => {
   return (
     <>
       <Button onClick={()=>history.push("/courses/new")}>New Course</Button>
-
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Sort By
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Course Number</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Quarter offered</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Instructor</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-
       <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
     </>
   );
