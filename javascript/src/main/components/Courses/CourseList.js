@@ -7,16 +7,12 @@ export default ({courses}) => {
     const history = useHistory();
 
     const cellFormatter = (id, name) => {
-        return (
-            <div>    
-        <li>
+        return (  
             <Link 
             to={{
-            pathname: "/tutorPage",
-            data: id
-        }}>{name}</Link>
-            </li>    
-            </div>
+            pathname: `/courses/${id}`,
+            data :id
+        }}>{name}</Link>    
         );
     }
 
