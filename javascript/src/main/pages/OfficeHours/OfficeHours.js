@@ -32,7 +32,8 @@ const OfficeHours = () => {
 
   return (
     <>
-      { <Button onClick={()=>history.push("/courses/new")}>New Course</Button> }
+      <Button onClick={()=>history.push("/officehours/new")}>New Office Hour</Button>
+      {/* <CourseTable courses={officeHourList} admin={true} deleteCourse={deleteCourse} /> */}
       <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour} editOfficeHour = {editOfficeHour} />
     </>
   );

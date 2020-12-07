@@ -1,14 +1,14 @@
 import { fetchWithToken } from "main/utils/fetch";
 
 const buildCreateOfficeHour = (getToken, onSuccess, onError) => {
-  const func = async (course) => {
+  const func = async (officeHour) => {
     try {
       await fetchWithToken(`/api/admin/officeHours/`, getToken, {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(course),
+        body: JSON.stringify(officeHour),
       });
       onSuccess();
     } catch (err) {
@@ -54,5 +54,4 @@ const buildDeleteOfficeHour = (getToken, onSuccess, onError) => {
   return func;
 }
 
-// export { buildCreateCourse, buildDeleteCourse, buildUpdateCourse };
-export { buildDeleteOfficeHour };
+export { buildCreateOfficeHour, buildDeleteOfficeHour, buildUpdateOfficeHour };

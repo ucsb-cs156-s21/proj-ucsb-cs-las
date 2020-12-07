@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface OnlineOfficeHoursRepository extends CrudRepository<OnlineOfficeHours, Long> {
   List<OnlineOfficeHours> findAll();
   Optional<OnlineOfficeHours> findById(Long id);
+  void deleteById(Long id);
 }

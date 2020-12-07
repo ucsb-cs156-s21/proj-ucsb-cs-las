@@ -1,6 +1,7 @@
 package edu.ucsb.ucsbcslas.controllers;
 
 import org.slf4j.Logger;
+import java.io.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,8 @@ public class OnlineOfficeHoursController {
     private AuthControllerAdvice authControllerAdvice;
     @Autowired
     private OnlineOfficeHoursRepository officeHoursRepository;
+    @Autowired
+    private TutorRepository tutorRepository;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -46,15 +49,16 @@ public class OnlineOfficeHoursController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    // @PostMapping(value = "/api/admin/officeHour", produces = "application/json")
-    // public ResponseEntity<String> createOfficeHour(@RequestHeader("Authorization") String authorization,
-    //         @RequestBody @Valid OnlineOfficeHours officeHour) throws JsonProcessingException {
-    //     if (!authControllerAdvice.getIsAdmin(authorization))
-    //         return getUnauthorizedResponse("admin");
-    //     Tutor savedTutor = tutorRepository.save(tutor);
-    //     String body = mapper.writeValueAsString(savedTutor);
-    //     return ResponseEntity.ok().body(body);
-    // }
+    @PostMapping(value = "/api/admin/officeHours", produces = "application/json")
+    public ResponseEntity<String> createOfficeHour(@RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid OnlineOfficeHours officeHour) throws JsonProcessingException {
+                System.out.println(officeHour.toString());
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        OnlineOfficeHours savedOfficeHour = officeHoursRepository.save(officeHour);
+        String body = mapper.writeValueAsString(savedOfficeHour);
+        return ResponseEntity.ok().body(body);
+    }
 
     // @PutMapping(value = "/api/admin/tutors/{id}", produces = "application/json")
     // public ResponseEntity<String> updateTutor(@RequestHeader("Authorization") String authorization,
@@ -78,12 +82,28 @@ public class OnlineOfficeHoursController {
     @DeleteMapping(value = "/api/admin/officeHours/{id}", produces = "application/json")
     public ResponseEntity<String> deleteOfficeHour(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsAdmin(authorization))
+                // Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getUser(authorization).getEmail());
+            Boolean isAdmin = authControllerAdvice.getIsAdmin(authorization);
+        if (!isAdmin){
+            // if (authControllerAdvice.getIsMember(authorization)){
+            //     if(!tutor.isPresent()){
+            //         return getUnauthorizedResponse("member is not a tutor unable to delete office hour");
+            //     }
+            // } else {
+            //     return getUnauthorizedResponse("guest unable to delete office hour");
+            // }
             return getUnauthorizedResponse("admin");
+        } 
+
         Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);
         if (!officeHour.isPresent()) {
             return ResponseEntity.notFound().build();
-        }
+        } 
+        // if (!isAdmin) {
+        //     if (officeHour.getTutorAssignment().getTutor().getEmail() != tutor.getEmail()){
+        //         return getUnauthorizedResponse("current tutor did not create this office hour")
+        //     }
+        // }
         officeHoursRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

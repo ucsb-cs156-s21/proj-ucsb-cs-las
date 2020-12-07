@@ -3,8 +3,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-import { buildDeleteCourse } from "main/services/Courses/CourseService";
-
 
 export default ({courses,admin,deleteCourse}) => {
     const history = useHistory();

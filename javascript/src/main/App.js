@@ -12,6 +12,7 @@ import Home from "main/pages/Home/Home";
 import Profile from "main/pages/Profile/Profile";
 import Courses from "main/pages/Courses/Courses";
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
+import NewOfficeHours from "main/pages/OfficeHours/NewOfficeHours" 
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignment";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
@@ -45,8 +46,10 @@ function App() {
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "instructor"]} />
+          <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "instructor", "member"]} />
+          <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "instructor"]} />
           <Route path="/about" component={About} />
-          <Route path="/officehours" component={OfficeHours}></Route>
+          {/* <Route path="/officehours" component={OfficeHours}></Route> */}
         </Switch>
       </Container>
       <AppFooter />
