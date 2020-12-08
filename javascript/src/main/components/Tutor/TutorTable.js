@@ -8,33 +8,51 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 
-export default ({ tutors, admin, deleteTutor }) => {
+export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
   const history = useHistory();
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
   const renderEditButton = id => {
+    const shouldRender =
+      admin ||
+      (instructorTutors &&
+        instructorTutors.filter(tutor => tutor.id === id).length > 0);
+
     return (
-      <Button
-        data-testid="edit-button"
-        onClick={() => {
-          history.push(`/tutors/edit/${id}`);
-        }}
-      >
-        Edit
-      </Button>
+      <div>
+        {shouldRender && (
+          <Button
+            data-testid="edit-button"
+            onClick={() => {
+              history.push(`/tutors/edit/${id}`);
+            }}
+          >
+            Edit
+          </Button>
+        )}
+      </div>
     );
   };
 
   const renderDeleteButton = id => {
+    const shouldRender =
+      admin ||
+      (instructorTutors &&
+        instructorTutors.filter(tutor => tutor.id === id).length > 0);
+
     return (
-      <Button
-        variant="danger"
-        data-testid="delete-button"
-        onClick={() => deleteTutor(id)}
-      >
-        Delete
-      </Button>
+      <div>
+        {shouldRender && (
+          <Button
+            variant="danger"
+            data-testid="delete-button"
+            onClick={() => deleteTutor(id)}
+          >
+            Delete
+          </Button>
+        )}
+      </div>
     );
   };
 
@@ -57,27 +75,21 @@ export default ({ tutors, admin, deleteTutor }) => {
     }
   ];
 
-  const isInstructor = roleInfo && roleInfo.role.toLowerCase() == "instructor";
+  columns.push({
+    text: "Edit",
+    isDummyField: true,
+    dataField: "edit",
+    formatter: (cell, row) => renderEditButton(row.id)
+  });
+  columns.push({
+    text: "Delete",
+    isDummyField: true,
+    dataField: "delete",
+    formatter: (cell, row) => renderDeleteButton(row.id)
+  });
 
-  const { data: tutorAssignments } = useSWR(
-    ["/api/member/tutorAssignments/", getToken],
-    fetchWithToken
-  );
-
-  if (admin) {
-    columns.push({
-      text: "Edit",
-      isDummyField: true,
-      dataField: "edit",
-      formatter: (cell, row) => renderEditButton(row.id)
-    });
-    columns.push({
-      text: "Delete",
-      isDummyField: true,
-      dataField: "delete",
-      formatter: (cell, row) => renderDeleteButton(row.id)
-    });
-  }
+  console.log(instructorTutors);
+  console.log(tutors);
 
   return <BootstrapTable keyField="id" data={tutors} columns={columns} />;
 };
