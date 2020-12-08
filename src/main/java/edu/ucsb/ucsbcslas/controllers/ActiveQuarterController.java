@@ -82,17 +82,5 @@ public class ActiveQuarterController {
     return ResponseEntity.ok().body(body);
   }
 
-  // @GetMapping(value = "/api/public/filter/{id}", produces = "application/json")
-  // public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws
-  // JsonProcessingException {
-  // Optional<Course> course = activeQuarterRepo.findById(id);
-  // if (course.isEmpty()) {
-  // return ResponseEntity.notFound().build();
-  // }
-
-  // ObjectMapper mapper = new ObjectMapper();
-  // String body = mapper.writeValueAsString(course.get());
-  // return ResponseEntity.ok().body(body);
-  // }
 
 }
