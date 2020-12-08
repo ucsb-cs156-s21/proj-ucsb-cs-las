@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 import edu.ucsb.ucsbcslas.models.Course;
 
-public class courseTabletoCSV{
-    private static Logger logger = LoggerFactory.getLogger(courseTabletoCSV.class);
+public class CourseTabletoCSV{
+    private static Logger logger = LoggerFactory.getLogger(CourseTabletoCSV.class);
     public static void writeCSV(PrintWriter writer, List<Course> courseList){
     String[] header = {"id","Course Name","Quarter","First name","Last name","Email"};
         try{
@@ -27,7 +27,7 @@ public class courseTabletoCSV{
             for (Course c1: courseList){
         
                 String data[] = {
-                    c1.getId(),
+                    c1.getId().toString(),
                     c1.getName(),
                     c1.getQuarter(),
                     c1.getInstructorFirstName(),

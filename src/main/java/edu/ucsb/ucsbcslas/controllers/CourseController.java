@@ -27,10 +27,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.services.CourseTabletoCSV;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+//import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -41,6 +42,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import java.io.IOException;
 
 
 
@@ -139,7 +141,7 @@ public class CourseController {
     List<Course> courseList = courseRepository.findAll();
 
     try {
-      courseTabletoCSV.writeCSV(response.getWriter(),courseList);
+      CourseTabletoCSV.writeCSV(response.getWriter(),courseList);
     } catch (IOException e) {
       logger.error("Error Writing to Response Stream{}", e);
     }    
