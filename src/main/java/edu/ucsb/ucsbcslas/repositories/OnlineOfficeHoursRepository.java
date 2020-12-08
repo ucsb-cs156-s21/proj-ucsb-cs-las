@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OnlineOfficeHoursRepository extends CrudRepository<OnlineOfficeHours, Long> {
     //public List<OnlineOfficeHours> findAll();
-    public List<OnlineOfficeHours> findbyCourses(Long id);
+    public List<OnlineOfficeHours> findbyId(Long id);
     //findbyCourses(OnlineOfficeHourse.tutorAssignment.course.id)
 }
