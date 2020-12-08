@@ -180,13 +180,13 @@ public class TutorAssignmentController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping(value = "/api/public/tutorAssignment/byCourseName/{courseName}", produces = "application/json")
-    public ResponseEntity<String> getCourse(@PathVariable("courseName") String courseName)
+    @GetMapping(value = "/api/public/tutorAssignment/byCourseNumber/{courseNumber}", produces = "application/json")
+    public ResponseEntity<String> getCourse(@PathVariable("courseNumber") String courseNumber)
             throws JsonProcessingException {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
         List<TutorAssignment> tutorAssignmentsMatchingCourse = new ArrayList<TutorAssignment>();
         for (TutorAssignment ta : tutorAssignments) {
-            if (ta.getCourse().getName().equals(courseName)) {
+            if (ta.getCourse().getName().equals(courseNumber)) {
                 tutorAssignmentsMatchingCourse.add(ta);
             }
 
