@@ -98,6 +98,36 @@ public class TutorAssignmentController {
     return ResponseEntity.ok().body(body);
   }
 
+  @PutMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
+  public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
+      @PathVariable("id") Long id, @RequestBody @Valid TutorAssignment incomingTutorAssignment) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+        return getUnauthorizedResponse("admin");
+    Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+    if (!tutorAssignment.isPresent()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    if (!incomingTutorAssignment.getId().equals(id)) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    tutorAssignmentRepository.save(incomingTutorAssignment);
+    String body = mapper.writeValueAsString(incomingTutorAssignment);
+    return ResponseEntity.ok().body(body);
+  }
+
+  @GetMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
+  public ResponseEntity<String> getTutorAssignment(@PathVariable("id") Long id) throws JsonProcessingException {
+      Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+      if (tutorAssignment.isEmpty()) {
+          return ResponseEntity.notFound().build();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(tutorAssignment.get());
+      return ResponseEntity.ok().body(body);
+  }
   @GetMapping(value = "/api/member/tutorAssignments", produces = "application/json")
   public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     List<TutorAssignment> tutorAssignmentList = new ArrayList();
@@ -143,4 +173,7 @@ public class TutorAssignmentController {
     } 
     return getUnauthorizedResponse("member");
   }
+
+
+
 }

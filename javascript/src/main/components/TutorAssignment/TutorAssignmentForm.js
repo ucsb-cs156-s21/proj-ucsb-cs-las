@@ -20,6 +20,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         ["/api/member/courses/", getToken],
         fetchWithToken
     );
+    console.log(courseList);
 
     let sortedList;
     if (error) {
