@@ -13,7 +13,6 @@ const EditTutorAssignment = () => {
   const { addToast } = useToasts();
   const history = useHistory();
   const { tutorAssignmentId } = useParams();
-  console.log(tutorAssignmentId);
   const { getAccessTokenSilently: getToken } = useAuth0();
   const updateTutorAssignment = buildUpdateTutorAssignment(
     getToken, 
@@ -32,7 +31,6 @@ const EditTutorAssignment = () => {
     [`/api/member/tutorAssignments/${tutorAssignmentId}`, getToken],
     fetchWithToken
   );
-  console.log(tutorAssignment);
 
   return (
     <>

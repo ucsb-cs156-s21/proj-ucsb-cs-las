@@ -9,7 +9,7 @@ export default ({tutorAssignments, isInstructor}) => {
 
     const renderEditButton = (id) => {
         return (
-            <Button data-testid="edit-button" onClick={() => { console.log(id);history.push(`/tutorAssignments/edit/${id}`) }}>Edit</Button>
+            <Button data-testid="edit-button" onClick={() => {history.push(`/tutorAssignments/edit/${id}`) }}>Edit</Button>
         )
     }
 
