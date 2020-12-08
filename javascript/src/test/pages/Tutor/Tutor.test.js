@@ -52,6 +52,11 @@ describe("Tutor page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
+    useSWR.mockReturnValueOnce({
+        data: {role: "admin"},
+        error: undefined,
+        mutate: mutateSpy,
+    });
     useSWR.mockReturnValue({
       data: tutors,
       error: undefined,
@@ -109,7 +114,7 @@ describe("Tutor page test", () => {
             <Tutor />
         </ToastProvider>
     );
-    const deleteButtons = getAllByTestId("delete-button");
+    const deleteButtons = getAllByTestId("delete-button-1");
     userEvent.click(deleteButtons[0]);
     await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
   });
@@ -126,7 +131,7 @@ describe("Tutor page test", () => {
             <Tutor />
         </ToastProvider>
     );
-    const editButtons = getAllByTestId("edit-button");
+    const editButtons = getAllByTestId("edit-button-2");
     userEvent.click(editButtons[0]);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
@@ -149,6 +154,5 @@ describe("Tutor page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
 
 });
