@@ -10,7 +10,7 @@ export default ({courses}) => {
         return (  
             <Link 
             to={{
-            pathname: `/courses/${id}`,
+            pathname: `/courses/show/${id}`,
             data :id
         }}>{name}</Link>    
         );

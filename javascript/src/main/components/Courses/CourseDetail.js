@@ -6,9 +6,6 @@ function CourseDetail({courseId}) {
       <div>
         <p>This is the course detail page {courseId}.</p>
       </div>
-      <div>
-      	<p></p>
-      </div>
     );
 }
 

@@ -49,6 +49,7 @@ function App() {
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
+          <Route path="/courses/show/:courseId" component={CourseShow} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
