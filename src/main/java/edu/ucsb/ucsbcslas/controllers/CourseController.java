@@ -28,6 +28,22 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+
+
+
 @RestController
 public class CourseController {
   private final Logger logger = LoggerFactory.getLogger(CourseController.class);
@@ -108,5 +124,26 @@ public class CourseController {
     String body = mapper.writeValueAsString(course.get());
     return ResponseEntity.ok().body(body);
   }
+
+//////////////////////////////////////////////////////////////////////////////
+  @GetMapping("/api/public/courses/export-CSV")
+  public void exportCSV(/*@RequestHeader("Authorization") String authorization,*/ HttpServletResponse response) throws IOException{
+    //if (!authControllerAdvice.getIsAdmin(authorization))
+    //  return getUnauthorizedResponse("admin");
+
+    String filename = "CourseTable.csv";
+    response.setContentType("text/csv");
+    response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+        "attachment; filename=\"" + filename + "\"");
+
+    List<Course> courseList = courseRepository.findAll();
+
+    try {
+      courseTabletoCSV.writeCSV(response.getWriter(),courseList);
+    } catch (IOException e) {
+      logger.error("Error Writing to Response Stream{}", e);
+    }    
+  }
+////////////////////////////////////////////////////////////////////////////////
 
 }

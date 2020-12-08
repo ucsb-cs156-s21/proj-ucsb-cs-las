@@ -5,7 +5,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import CourseTable from "main/components/Courses/CourseTable"
-import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+
 
 import {useHistory} from "react-router-dom";
 
@@ -30,11 +30,9 @@ const Courses = () => {
   return (
     <>
       <Button onClick={()=>history.push("/courses/new")}>New Course</Button>
-      <Button href="/api/admin/courses/export-CSV" target="_blank">Download as CSV</Button>
       <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
     </>
   );
 };
 
 export default Courses;
-
