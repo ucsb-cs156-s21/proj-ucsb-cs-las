@@ -30,6 +30,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 
 @WebMvcTest(value = TutorController.class)
@@ -44,8 +46,15 @@ public class TutorControllerTests {
 
   @MockBean
   TutorRepository mockTutorRepository;
+  
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
+
+  @MockBean
+  CourseRepository mockCourseRepository;
+  
+  @MockBean
+  TutorAssignmentRepository mockTutorAssignmentRepository;
 
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -56,7 +65,7 @@ public class TutorControllerTests {
     List<Tutor> expectedTutors = new ArrayList<Tutor>();
     expectedTutors.add(new Tutor(1L, "fname", "lname", "email"));
     when(mockTutorRepository.findAll()).thenReturn(expectedTutors);
-    MvcResult response = mockMvc.perform(get("/api/public/tutors").contentType("application/json")
+    MvcResult response = mockMvc.perform(get("/api/member/tutors").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
     verify(mockTutorRepository, times(1)).findAll();
@@ -72,7 +81,7 @@ public class TutorControllerTests {
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     // mockito is the library that allows us to do this when stuff
     when(mockTutorRepository.findById(1L)).thenReturn(Optional.of(expectedTutor));
-    MvcResult response = mockMvc.perform(get("/api/public/tutors/1").contentType("application/json")
+    MvcResult response = mockMvc.perform(get("/api/member/tutors/1").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
     verify(mockTutorRepository, times(1)).findById(1L);
@@ -85,7 +94,7 @@ public class TutorControllerTests {
   @Test
   public void testGetANonExistingTutor() throws Exception {
     when(mockTutorRepository.findById(99999L)).thenReturn(Optional.ofNullable(null));
-    mockMvc.perform(get("/api/public/tutors/99999").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
+    mockMvc.perform(get("/api/member/tutors/99999").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
         "Bearer " + userToken())).andExpect(status().isNotFound());
   }
 
@@ -120,7 +129,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testUpdateTutor_courseExists_updateValues() throws Exception {
+  public void testUpdateTutor_tutorExists_updateValues() throws Exception {
     Tutor inputTutor = new Tutor(1L, "fname", "lname", "email");
     Tutor savedTutor = new Tutor(1L, "first name", "last name", "myemail");
     String body = objectMapper.writeValueAsString(inputTutor);
@@ -153,7 +162,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testUpdateTutor_courseNotFound() throws Exception {
+  public void testUpdateTutor_tutorNotFound() throws Exception {
     Tutor inputTutor = new Tutor(1L, "fname", "lname", "email");
     String body = objectMapper.writeValueAsString(inputTutor);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -167,7 +176,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testUpdateTutor_courseAtPathOwned_butTryingToOverwriteAnotherTutor() throws Exception {
+  public void testUpdateTutor_tutorAtPathOwned_butTryingToOverwriteAnotherTutor() throws Exception {
     Tutor inputTutor = new Tutor(1L, "new tutor 1 trying to overwrite at id 1", "lname", "email");
     Tutor savedTutor = new Tutor(2L, "new tutor 1", "lname", "email");
     String body = objectMapper.writeValueAsString(inputTutor);
@@ -182,7 +191,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testDeleteTutor_courseExists() throws Exception {
+  public void testDeleteTutor_tutorExists() throws Exception {
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     when(mockTutorRepository.findById(1L)).thenReturn(Optional.of(expectedTutor));
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -207,7 +216,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testDeleteTutor_courseNotFound() throws Exception {
+  public void testDeleteTutor_tutorNotFound() throws Exception {
     long id = 1L;
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockTutorRepository.findById(id)).thenReturn(Optional.empty());
