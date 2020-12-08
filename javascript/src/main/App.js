@@ -45,7 +45,7 @@ function App() {
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignments" exact component={TutorAssignments} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorAssignments/edit/:tutorId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
