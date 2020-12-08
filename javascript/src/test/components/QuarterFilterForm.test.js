@@ -30,13 +30,5 @@ describe("QuarterFilterForm tests", () => {
     expect(upsertFilterMock).toHaveBeenCalledTimes(1);
     expect(upsertFilterMock).toHaveBeenCalledWith(sampleFilterVal);
   });
-  test("delete button calls the delete function", async () => {
-    const deleteFilterMock = jest.fn();
-    const { getByText } = render
-      (<QuarterFilterForm deleteFilter={deleteFilterMock} />)
-    const deleteButton = getByText("delete");
-    userEvent.click(deleteButton);
-    expect(deleteFilterMock).toHaveBeenCalledTimes(1);
-  })
 
 });

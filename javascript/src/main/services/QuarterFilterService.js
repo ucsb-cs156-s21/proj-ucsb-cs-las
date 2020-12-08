@@ -20,22 +20,4 @@ const buildUpsertFilter = (getToken, onSuccess, onError) => {
 }
 
 
-const buildDeleteFilter = (getToken, onSuccess, onError) => {
-  const func = async () => {
-    try {
-      await fetchWithToken(`/api/admin/filter/nuke`, getToken, {
-        method: "DELETE",
-        headers: {
-          "content-type": "application/json",
-        },
-        noJSON: true,
-      });
-      onSuccess();
-    } catch (err) {
-      onError(err);
-    }
-  }
-  return func;
-}
-
-export { buildUpsertFilter, buildDeleteFilter };
+export {buildUpsertFilter};
