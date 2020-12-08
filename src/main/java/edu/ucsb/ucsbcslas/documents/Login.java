@@ -87,6 +87,7 @@ public class Login {
     }
 
 }
+
 /*
 Example of the JSON for a Login document:
 

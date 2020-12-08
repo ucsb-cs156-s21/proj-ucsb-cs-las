@@ -55,11 +55,6 @@ public class LoginsController {
         if (!authControllerAdvice.getIsAdmin(authorization))        //Check for admin
             return getUnauthorizedResponse("admin");
 
-        // Start experiment
-        // Login login = new Login("10:00", "cgaucho@ucsb.edu", "Chris", "Gaucho", "12335", "member");
-        // loginsRepository.save(login);
-        // End experiment
-
         Iterable<Login> logins = loginsRepository.findAll();
         logger.info("logins = {}", logins);
         String body = mapper.writeValueAsString(logins);
