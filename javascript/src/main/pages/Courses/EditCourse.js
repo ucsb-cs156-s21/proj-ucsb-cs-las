@@ -13,6 +13,7 @@ const EditCourse = () => {
   const { addToast } = useToasts();
   const history = useHistory();
   const { courseId } = useParams();
+  console.log(courseId);
   const { getAccessTokenSilently: getToken } = useAuth0();
   const updateCourse = buildUpdateCourse(
     getToken, 

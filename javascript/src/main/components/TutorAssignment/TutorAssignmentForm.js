@@ -20,6 +20,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         ["/api/member/courses/", getToken],
         fetchWithToken
     );
+    console.log(courseList);
 
     let sortedList;
     if (error) {
@@ -41,7 +42,6 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        //createTutorAssignment(tutorAssignment);
         if (createTutorAssignment){
             createTutorAssignment(tutorAssignment);
         }
