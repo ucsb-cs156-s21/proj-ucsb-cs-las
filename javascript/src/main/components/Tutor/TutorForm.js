@@ -20,26 +20,6 @@ const TutorForm = ({ createTutor, updateTutor, existingTutor }) => {
 
   return (
     <Form onSubmit={handleOnSubmit}>
-      {createTutor && 
-      <Form.Group as={Row} controlId="id">
-        <Form.Label column sm={2}>
-          Tutor Id
-        </Form.Label>
-        <Col sm={10}>
-          <Form.Control
-            type="text"
-            placeholder="tutor id"
-            value={tutor.id}
-            onChange={e =>
-              setTutor({
-                ...tutor,
-                id: e.target.value
-              })
-            }
-          />
-        </Col>
-      </Form.Group>
-      }
       <Form.Group as={Row} controlId="firstName">
         <Form.Label column sm={2}>
           First Name
