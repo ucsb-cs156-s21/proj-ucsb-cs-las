@@ -6,10 +6,9 @@ import userEvent from "@testing-library/user-event";
 describe("TutorForm tests", () => {
 
   const sampleTutor = {
-    "id": 1,
-    "instructorFirstName": "Phill",
-    "instructorLastName": "Conrad",
-    "instructorEmail": "phtcon@ucsb.edu"
+    "firstName": "Phill",
+    "lastName": "Conrad",
+    "email": "phtcon@ucsb.edu"
   }
 
   test("empty component renders without crashing", () => {
@@ -30,12 +29,12 @@ describe("TutorForm tests", () => {
 
     const updatedTutor = {
       ...sampleTutor,
-      name: "updated name",
+      firstName: "updated name",
     };
 
-    const input = getByDisplayValue(sampleTutor.name);
+    const input = getByDisplayValue(sampleTutor.firstName);
     userEvent.clear(input);
-    userEvent.type(input, updatedTutor.name);
+    userEvent.type(input, updatedTutor.firstName);
 
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
@@ -53,22 +52,19 @@ describe("TutorForm tests", () => {
       (<TutorForm createTutor={createTutorMock} />)
     ;
 
-    const nameInput = getByLabelText("Tutor Name");
-    userEvent.type(nameInput, sampleTutor.name);
-
     const fnameInput = getByLabelText("First Name");
-    userEvent.type(fnameInput, sampleTutor.instructorFirstName);
+    userEvent.type(fnameInput, sampleTutor.firstName);
 
     const lnameInput = getByLabelText("Last Name");
-    userEvent.type(lnameInput, sampleTutor.instructorLastName);
+    userEvent.type(lnameInput, sampleTutor.lastName);
 
     const emailInput = getByLabelText("Email");
-    userEvent.type(emailInput, sampleTutor.instructorEmail);
+    userEvent.type(emailInput, sampleTutor.email);
 
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
 
     expect(createTutorMock).toHaveBeenCalledTimes(1);
-    expect(createTutorMock).toHaveBeenCalledWith({ ... sampleTutor, id: undefined });
+    expect(createTutorMock).toHaveBeenCalledWith({ ... sampleTutor, id: '' });
   });
 });

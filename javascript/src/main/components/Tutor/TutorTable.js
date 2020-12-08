@@ -23,7 +23,7 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
       <div>
         {shouldRender && (
           <Button
-            data-testid="edit-button"
+            data-testid={`edit-button-${id}`}
             onClick={() => {
               history.push(`/tutors/edit/${id}`);
             }}
@@ -46,7 +46,7 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
         {shouldRender && (
           <Button
             variant="danger"
-            data-testid="delete-button"
+            data-testid={`delete-button-${id}`}
             onClick={() => deleteTutor(id)}
           >
             Delete
