@@ -75,7 +75,7 @@ function App() {
             path="/tutors/new"
             exact
             component={NewTutor}
-            authorizedRoles={["admin"]}
+            authorizedRoles={["admin", "member"]}
           />
           <AuthorizedRoute
             path="/tutors/edit/:tutorId"
@@ -93,7 +93,7 @@ function App() {
             path="/tutorAssignment/new"
             exact
             component={NewTutorAssignment}
-            authorizedRoles={["admin", "instructor"]}
+            authorizedRoles={["admin", "member"]}
           />
           <Route path="/about" component={About} />
         </Switch>
