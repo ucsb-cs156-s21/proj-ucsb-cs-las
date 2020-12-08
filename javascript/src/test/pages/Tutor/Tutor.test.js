@@ -8,16 +8,20 @@ import Tutor from "main/pages/Tutor/Tutor";
 import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { buildCreateTutor, buildDeleteTutor, buildUpdateTutor } from "main/services/Tutor/TutorService";
+import {
+  buildCreateTutor,
+  buildDeleteTutor,
+  buildUpdateTutor
+} from "main/services/Tutor/TutorService";
 import { ToastProvider } from "react-toast-notifications";
 jest.mock("main/services/Tutor/TutorService", () => ({
   buildCreateTutor: jest.fn(),
   buildDeleteTutor: jest.fn(),
   buildUpdateTutor: jest.fn()
-}) );
+}));
 import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
-  useHistory: jest.fn(),
+  useHistory: jest.fn()
 }));
 
 describe("Tutor page test", () => {
@@ -26,21 +30,21 @@ describe("Tutor page test", () => {
       id: 1,
       firstName: "Phill",
       lastName: "Conrad",
-      email: "phtcon@ucsb.edu",
+      email: "phtcon@ucsb.edu"
     },
     {
       id: 2,
       firstName: "Chandra",
       lastName: "Krintz",
-      email: "krintz@example.org",
-    },
+      email: "krintz@example.org"
+    }
   ];
   const user = {
-    name: "test user",
+    name: "test user"
   };
 
   const roleInfo = {
-    role: "admin",
+    role: "admin"
   };
 
   const getAccessTokenSilentlySpy = jest.fn();
@@ -53,14 +57,14 @@ describe("Tutor page test", () => {
       user: user
     });
     useSWR.mockReturnValueOnce({
-        data: {role: "admin"},
-        error: undefined,
-        mutate: mutateSpy,
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
     });
     useSWR.mockReturnValue({
       data: tutors,
       error: undefined,
-      mutate: mutateSpy,
+      mutate: mutateSpy
     });
   });
 
@@ -70,9 +74,9 @@ describe("Tutor page test", () => {
 
   test("renders without crashing", () => {
     render(
-    <ToastProvider>
+      <ToastProvider>
         <Tutor />
-    </ToastProvider>
+      </ToastProvider>
     );
   });
 
@@ -80,12 +84,12 @@ describe("Tutor page test", () => {
     useSWR.mockReturnValue({
       data: undefined,
       error: undefined,
-      mutate: mutateSpy,
+      mutate: mutateSpy
     });
-    const { getByAltText } = render(    
-        <ToastProvider>
-            <Tutor />
-        </ToastProvider>
+    const { getByAltText } = render(
+      <ToastProvider>
+        <Tutor />
+      </ToastProvider>
     );
     const loading = getByAltText("Loading");
     expect(loading).toBeInTheDocument();
@@ -95,12 +99,12 @@ describe("Tutor page test", () => {
     useSWR.mockReturnValue({
       data: undefined,
       error: new Error("this is an error"),
-      mutate: mutateSpy,
+      mutate: mutateSpy
     });
-    const { getByText } = render(    
-        <ToastProvider>
-            <Tutor />
-        </ToastProvider>
+    const { getByText } = render(
+      <ToastProvider>
+        <Tutor />
+      </ToastProvider>
     );
     const error = getByText(/error/);
     expect(error).toBeInTheDocument();
@@ -109,10 +113,10 @@ describe("Tutor page test", () => {
   test("can delete a tutor", async () => {
     const fakeDeleteFunction = jest.fn();
     buildDeleteTutor.mockReturnValue(fakeDeleteFunction);
-    const { getAllByTestId } = render(    
-        <ToastProvider>
-            <Tutor />
-        </ToastProvider>
+    const { getAllByTestId } = render(
+      <ToastProvider>
+        <Tutor />
+      </ToastProvider>
     );
     const deleteButtons = getAllByTestId("delete-button-1");
     userEvent.click(deleteButtons[0]);
@@ -120,16 +124,15 @@ describe("Tutor page test", () => {
   });
 
   test("can edit a tutor", async () => {
-
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
       push: pushSpy
     });
 
-    const { getAllByTestId } = render(    
-        <ToastProvider>
-            <Tutor />
-        </ToastProvider>
+    const { getAllByTestId } = render(
+      <ToastProvider>
+        <Tutor />
+      </ToastProvider>
     );
     const editButtons = getAllByTestId("edit-button-2");
     userEvent.click(editButtons[0]);
@@ -138,21 +141,19 @@ describe("Tutor page test", () => {
   });
 
   test("can click to add a tutor", async () => {
-
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
       push: pushSpy
     });
 
-    const { getByText } = render(    
-        <ToastProvider>
-            <Tutor />
-        </ToastProvider>
+    const { getByText } = render(
+      <ToastProvider>
+        <Tutor />
+      </ToastProvider>
     );
     const newTutorButton = getByText("New Tutor");
     userEvent.click(newTutorButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
 });
