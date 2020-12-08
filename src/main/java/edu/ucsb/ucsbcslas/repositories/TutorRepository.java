@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TutorRepository extends CrudRepository<Tutor, Long> {
   public List<Tutor> findAll();
-
+  
   Optional<Tutor> findByEmail(String email);
 }
