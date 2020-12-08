@@ -16,10 +16,6 @@ const ViewLogins = () => {
   const { data:loginTable } = useSWR(["/api/admin/logins", getToken], fetchWithToken);
 
   console.log("loginTable = ", loginTable);
-  // if (!loginTable) {  //Shows loading screen if logintable isn't ready, or doesn't exist yet
-  //   return <Loading />;
-  // }
-
 
   // Below is fake data for front end testing
   // const loginTable = [

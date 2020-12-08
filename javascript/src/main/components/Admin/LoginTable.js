@@ -15,12 +15,6 @@ export default ({loginTable}) => {
     }, {
         dataField: 'lastName',
         text: 'Last Name'
-    }, {
-        dataField: 'id',
-        text: 'ID'
-    }, {
-        dataField: 'role',
-        text: 'Role'
     }];
 
     return (

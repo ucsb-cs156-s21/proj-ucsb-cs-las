@@ -17,12 +17,11 @@ public class Login {
     public Login() {
     }
 
-    public Login(String timestamp, String email, String firstName, String lastName, String role) {
+    public Login(String timestamp, String email, String firstName, String lastName) {
         this.timestamp = timestamp;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
     }
 
     public String getTimestamp() {
@@ -57,14 +56,6 @@ public class Login {
         this.lastName = lastName;
     }
 
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)  // Check references
@@ -76,14 +67,13 @@ public class Login {
         builder.append(timestamp, login.timestamp)
                 .append(email, login.email)
                 .append(firstName, login.firstName)
-                .append(lastName, login.lastName)
-                .append(role, login.role);
+                .append(lastName, login.lastName);
         return builder.build();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(timestamp, email, firstName, lastName, role);
+        return Objects.hash(timestamp, email, firstName, lastName);
     }
 
     @Override
@@ -93,7 +83,6 @@ public class Login {
             ", email='" + getEmail() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", role='" + getRole() + "'" +
             "}";
     }
 
@@ -109,7 +98,6 @@ Example of the JSON for a Login document:
     "email": "mongo_test@ucsb.edu",
     "firstName": "mongo",
     "lastName": "test",
-    "role": "Admin"
 }
 
 */
