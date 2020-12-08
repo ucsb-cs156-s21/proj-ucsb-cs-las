@@ -125,38 +125,6 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
-  @PostMapping("/roomAvailability/upload")
-  public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token,
-          RedirectAttributes redirAttrs) {
-      String role = authControllerAdvice.getRole(token);
-      if (!(role.equals("Admin"))) {
-          redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-          return "redirect:/";
-      }
-      try (Reader reader = new InputStreamReader(csv.getInputStream())) {
-          List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
-          roomAvailabilityRepository.saveAll(roomAvails);
-          List<TimeSlot> timeSlots = new ArrayList<>();
-          for ( RoomAvailability ra: roomAvails){
-              int start = ra.getStartTime();
-              int end = ra.getEndTime();
-              while ( start <= end-30){
-                  TimeSlot ts = new TimeSlot();
-                  ts.setRoomAvailability(ra);
-                  ts.setStartTime(start);
-                  if (start%100 >= 30){
-                      start += 70;
-                      ts.setEndTime(start);
-                  } else {
-                      start+=30;
-                      ts.setEndTime(start);
-                  }
-                  timeSlots.add(ts);
-              }
-          }
-          timeSlotRepository.saveAll(timeSlots);
-      } catch (IOException e) {
-          log.error(e.toString());
-      }
+
 
 }
