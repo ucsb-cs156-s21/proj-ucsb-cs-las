@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
-import edu.ucsb.ucsbcslas.services.CourseTabletoCSV;
+import edu.ucsb.ucsbcslas.services.CourseTableToCSV;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -141,7 +141,7 @@ public class CourseController {
     List<Course> courseList = courseRepository.findAll();
 
     try {
-      CourseTabletoCSV.writeCSV(response.getWriter(),courseList);
+      CourseTableToCSV.writeCSV(response.getWriter(),courseList);
     } catch (IOException e) {
       logger.error("Error Writing to Response Stream{}", e);
     }    
