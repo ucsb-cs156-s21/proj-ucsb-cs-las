@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -26,7 +27,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
+import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+import edu.ucsb.ucsbcslas.repositories.CourseRepository;;
 
 @RestController
 public class TutorController {
@@ -36,6 +41,10 @@ public class TutorController {
     private AuthControllerAdvice authControllerAdvice;
     @Autowired
     private TutorRepository tutorRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private TutorAssignmentRepository tutorAssignmentRepository;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -88,7 +97,7 @@ public class TutorController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/api/public/tutors", produces = "application/json")
+    @GetMapping(value = "/api/member/tutors", produces = "application/json")
     public ResponseEntity<String> getTutors() throws JsonProcessingException {
         List<Tutor> tutorList = tutorRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
@@ -97,7 +106,26 @@ public class TutorController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping(value = "/api/public/tutors/{id}", produces = "application/json")
+    @GetMapping(value = "/api/member/instructorTutors", produces = "application/json")
+    public ResponseEntity<String> getInstructorTutors(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        List<Course> courseList = courseRepository
+                .findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
+        List<Tutor> tutorList = new ArrayList<Tutor>();
+        ObjectMapper mapper = new ObjectMapper();
+        if (!courseList.isEmpty()) {
+            for (Course c : courseList) {
+                List<TutorAssignment> allTutorAssignments = tutorAssignmentRepository.findAllByCourse(c);
+                for (TutorAssignment a : allTutorAssignments) {
+                    tutorList.add(a.getTutor());
+                }
+            }
+        }
+        String body = mapper.writeValueAsString(tutorList);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping(value = "/api/member/tutors/{id}", produces = "application/json")
     public ResponseEntity<String> getTutor(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<Tutor> tutor = tutorRepository.findById(id);
         if (tutor.isEmpty()) {
