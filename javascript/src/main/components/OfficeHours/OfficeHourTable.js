@@ -4,10 +4,10 @@ import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 
-export default ({officeHours,admin,deleteOfficeHour,editOfficeHour}) => {
+export default ({officeHours,admin,deleteOfficeHour,/*editOfficeHour*/}) => {
     const history = useHistory();
 
-     const renderEditButton = (id) => {
+    const renderEditButton = (id) => {
       return (
              <Button data-testid="edit-button" onClick={() => { history.push(`/officehours/edit/${id}`) }}>Edit</Button>
          )
@@ -45,12 +45,12 @@ export default ({officeHours,admin,deleteOfficeHour,editOfficeHour}) => {
     ];
 
     if (admin) {
-         columns.push({
+        /* columns.push({
              text: "Edit",
              isDummyField: true,
              dataField: "edit",
              formatter: (cell, row) => renderEditButton(row.id)
-         });
+         });*/
         columns.push({
             text: "Delete",
             isDummyField: true,

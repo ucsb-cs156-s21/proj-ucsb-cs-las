@@ -60,7 +60,7 @@ public class OnlineOfficeHoursController {
         String body = mapper.writeValueAsString(savedOfficeHour);
         return ResponseEntity.ok().body(body);
     }
-
+/*
     @PutMapping(value = "/api/admin/officeHours/{id}", produces = "application/json")
     public ResponseEntity<String> updateOfficeHour(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id, @RequestBody @Valid OnlineOfficeHours incomingOH) throws JsonProcessingException {
@@ -94,6 +94,7 @@ public class OnlineOfficeHoursController {
         }
         return getUnauthorizedResponse("admin");
     }
+    */
 
     @DeleteMapping(value = "/api/admin/officeHours/{id}", produces = "application/json")
     public ResponseEntity<String> deleteOfficeHour(@RequestHeader("Authorization") String authorization,

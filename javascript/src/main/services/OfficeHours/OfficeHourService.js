@@ -17,7 +17,7 @@ const buildCreateOfficeHour = (getToken, onSuccess, onError) => {
   };
   return func
 }
-
+/*
 const buildUpdateOfficeHour = (getToken, onSuccess, onError) => {
   const func = async (item, id) => {
     try {
@@ -35,6 +35,7 @@ const buildUpdateOfficeHour = (getToken, onSuccess, onError) => {
   };
   return func
 }
+*/
 
 const buildDeleteOfficeHour = (getToken, onSuccess, onError) => {
   const func = async (id) => {
@@ -54,4 +55,4 @@ const buildDeleteOfficeHour = (getToken, onSuccess, onError) => {
   return func;
 }
 
-export { buildCreateOfficeHour, buildDeleteOfficeHour, buildUpdateOfficeHour };
+export { buildCreateOfficeHour, buildDeleteOfficeHour /*,buildUpdateOfficeHour */};

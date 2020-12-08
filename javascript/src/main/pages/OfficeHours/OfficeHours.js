@@ -5,7 +5,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable"
-import { buildDeleteOfficeHour, buildCreateOfficeHour, buildUpdateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+import { buildDeleteOfficeHour, buildCreateOfficeHour, /*buildUpdateOfficeHour*/ } from "main/services/OfficeHours/OfficeHourService";
 import {useHistory} from "react-router-dom";
 
 
@@ -27,13 +27,13 @@ const OfficeHours = () => {
     return <Loading />;
   }
   const deleteOfficeHour = buildDeleteOfficeHour(getToken, mutateOfficeHours);
-  const editOfficeHour = buildUpdateOfficeHour(getToken, mutateOfficeHours);
+  //const editOfficeHour = buildUpdateOfficeHour(getToken, mutateOfficeHours);
 
   return (
     <>
       <Button onClick={()=>history.push("/officehours/new")}>New Office Hour</Button>
       {/* <CourseTable courses={officeHourList} admin={true} deleteCourse={deleteCourse} /> */}
-      <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour} editOfficeHour = {editOfficeHour} />
+      <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour} /*editOfficeHour = {editOfficeHour}*/ />
     </>
   );
 };
