@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
-import edu.ucsb.ucsbcslas.services.CourseTableToCSV;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -43,8 +42,7 @@ import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import java.io.IOException;
-
-
+import java.io.StringWriter;
 
 @RestController
 public class CourseController {
@@ -126,26 +124,5 @@ public class CourseController {
     String body = mapper.writeValueAsString(course.get());
     return ResponseEntity.ok().body(body);
   }
-
-//////////////////////////////////////////////////////////////////////////////
-  @GetMapping("/api/admin/courses/export-CSV")
-  public ResponseEntity<String> exportCSV(@RequestHeader("Authorization") String authorization, HttpServletResponse response) throws IOException{
-    if (!authControllerAdvice.getIsAdmin(authorization))
-      return getUnauthorizedResponse("admin");
-
-    String filename = "CourseTable.csv";
-    response.setContentType("text/csv");
-    response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + filename + "\"");
-
-    List<Course> courseList = courseRepository.findAll();
-    logger.info("courseList = {}",courseList);
-    try {
-      CourseTableToCSV.writeCSV(response.getWriter(),courseList);
-    } catch (IOException e) {
-      logger.error("Error Writing to Response Stream{}", e);
-    }    
-  }
-////////////////////////////////////////////////////////////////////////////////
 
 }
