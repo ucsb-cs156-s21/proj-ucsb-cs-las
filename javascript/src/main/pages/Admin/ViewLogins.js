@@ -1,30 +1,36 @@
 import React from "react";
-import { Jumbotron } from "react-bootstrap";
+import { Table, Button, Badge } from "react-bootstrap";
+import useSWR from "swr";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchWithToken } from "main/utils/fetch";
+import LoginTable from "main/components/Admin/LoginTable"
+
+import Loading from "main/components/Loading/Loading";
+import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+
+
+
 const ViewLogins = () => {
+  const { getAccessTokenSilently: getToken } = useAuth0();
+  // Fetch real data here
+  const { data:loginTable } = useSWR(["/api/admin/logins", getToken], fetchWithToken);
+
+  console.log("loginTable = ", loginTable);
+  // if (!loginTable) {  //Shows loading screen if logintable isn't ready, or doesn't exist yet
+  //   return <Loading />;
+  // }
+
+
+  // Below is fake data for front end testing
+  // const loginTable = [
+  //   { timestamp: "8:50", email: "matthew_wong@ucsb.edu", firstName: "Matthew", lastName: "Wong", id: "12345", role: "Admin"},
+  //   { timestamp: "9:00", email: "test_user@ucsb.edu", firstName: "test", lastName: "user", id: "98765", role: "User" },
+  // ]
+
   return (
-    <Jumbotron>
-      <h1>This is 127.0.0.1 (aka home)</h1>
-      <div className="text-left">
-        <p>Welcome to UCSB CS LAs!</p>
-        <p>
-          This app can hopefully help you understand how to use React with
-          Spring in order to create a functional web application. This app is
-          primarily built using the following:
-        </p>
-        <ul>
-          <li>
-            <a href="https://github.com/facebook/create-react-app">
-              Create React App
-            </a>{" "}
-            - used for creating the React frontend from scratch
-          </li>
-          <li>
-            <a href="https://start.spring.io/">Spring Boot Initializer</a> -
-            used for creating the Spring Boot backend
-          </li>
-        </ul>
-      </div>
-    </Jumbotron>
+    <>
+      <LoginTable loginTable={loginTable || []} admin={true}/>
+    </>
   );
 };
 

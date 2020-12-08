@@ -13,6 +13,12 @@ import edu.ucsb.ucsbcslas.entities.Admin;
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.repositories.AdminRepository;
 
+import edu.ucsb.ucsbcslas.documents.Login;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import edu.ucsb.ucsbcslas.repositories.LoginsRepository;
+
+
 /**
  * Service object that determines whether a user is a member of the google org or not.
  */
@@ -33,6 +39,9 @@ public class Auth0MembershipService implements MembershipService {
   @Autowired
   private AdminRepository adminRepository;
 
+  @Autowired
+  private LoginsRepository loginsRepository;
+
   /**
    * is current logged in user a member but NOT an admin of the google org
    *
@@ -41,6 +50,7 @@ public class Auth0MembershipService implements MembershipService {
    */
   @Override
   public boolean isMember(DecodedJWT jwt) {
+    updateUserLogins(jwt);
     return hasRole(jwt, "member");
   }
 
@@ -52,6 +62,7 @@ public class Auth0MembershipService implements MembershipService {
    */
   @Override
   public boolean isAdmin(DecodedJWT jwt) {
+    updateUserLogins(jwt);
     return hasRole(jwt, "admin");
   }
 
@@ -107,4 +118,22 @@ public class Auth0MembershipService implements MembershipService {
   public List<String> getDefaultAdminEmails() {
     return adminEmails;
   }
+
+
+  private void updateUserLogins(DecodedJWT jwt) {
+    Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
+    String email = (String) customClaims.get("email");
+
+    Login login = new Login();
+    String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
+    login.setTimestamp(timestamp);
+    login.setEmail(email);
+    login.setFirstName((String) customClaims.get("given_name"));
+    login.setLastName((String) customClaims.get("family_name"));
+
+    logger.info("login = {}", login);
+
+    loginsRepository.save(login);
+  }
 }
+
