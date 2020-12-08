@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import com.auth0.jwt.JWT;
@@ -150,11 +153,46 @@ public class TutorAssignmentController {
 
     @GetMapping(value = "/api/public/tutorAssignment/{course_id}", produces = "application/json")
     public ResponseEntity<String> getCourse(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
-        // Optional<Course> course = courseRepository.findById(course_id);
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourseId(course_id);
 
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(tutorAssignments);
+        return ResponseEntity.ok().body(body);
+    }
+
+    /**
+     * return a list of all course numbers that appear in the tutor assignment table
+     * 
+     * @return response containing a list of all course numbers
+     * @throws JsonProcessingException
+     */
+    @GetMapping(value = "/api/public/tutorAssignment/course_numbers", produces = "application/json")
+    public ResponseEntity<String> getCourseNumbers() throws JsonProcessingException {
+        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
+        Set<String> courseNumbers = new HashSet<String>();
+        for (TutorAssignment ta : tutorAssignments) {
+            courseNumbers.add(ta.getCourse().getName());
+
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(courseNumbers);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping(value = "/api/public/tutorAssignment/byCourseName/{courseName}", produces = "application/json")
+    public ResponseEntity<String> getCourse(@PathVariable("courseName") String courseName)
+            throws JsonProcessingException {
+        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
+        List<TutorAssignment> tutorAssignmentsMatchingCourse = new ArrayList<TutorAssignment>();
+        for (TutorAssignment ta : tutorAssignments) {
+            if (ta.getCourse().getName().equals(courseName)) {
+                tutorAssignmentsMatchingCourse.add(ta);
+            }
+
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(tutorAssignmentsMatchingCourse);
         return ResponseEntity.ok().body(body);
     }
 
