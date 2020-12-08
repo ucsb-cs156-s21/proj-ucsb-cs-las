@@ -34,12 +34,10 @@ public class CourseTableToCSV{
                     c1.getInstructorLastName(),
                     c1.getInstructorEmail()
                 };
-                csvWriter.writeNext(data);
-            
+                csvWriter.writeNext(data);    
+            }
             csvWriter.close();
-        }
-    }
-        catch (Exception e){
+        } catch (Exception e){
             logger.info("Writing CSV error");
             e.printStackTrace();
         }

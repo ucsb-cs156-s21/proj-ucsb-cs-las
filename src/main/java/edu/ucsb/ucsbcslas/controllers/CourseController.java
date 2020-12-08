@@ -128,10 +128,10 @@ public class CourseController {
   }
 
 //////////////////////////////////////////////////////////////////////////////
-  @GetMapping("/api/public/courses/export-CSV")
-  public void exportCSV(/*@RequestHeader("Authorization") String authorization,*/ HttpServletResponse response) throws IOException{
-    //if (!authControllerAdvice.getIsAdmin(authorization))
-    //  return getUnauthorizedResponse("admin");
+  @GetMapping("/api/admin/courses/export-CSV")
+  public ResponseEntity<String> exportCSV(@RequestHeader("Authorization") String authorization, HttpServletResponse response) throws IOException{
+    if (!authControllerAdvice.getIsAdmin(authorization))
+      return getUnauthorizedResponse("admin");
 
     String filename = "CourseTable.csv";
     response.setContentType("text/csv");
@@ -139,7 +139,7 @@ public class CourseController {
         "attachment; filename=\"" + filename + "\"");
 
     List<Course> courseList = courseRepository.findAll();
-
+    logger.info("courseList = {}",courseList);
     try {
       CourseTableToCSV.writeCSV(response.getWriter(),courseList);
     } catch (IOException e) {
