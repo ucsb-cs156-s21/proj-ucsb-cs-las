@@ -61,3 +61,6 @@ javascript/npm-debug.log*
 javascript/yarn-debug.log*
 javascript/.now
 javascript/yarn-error.log*
+
+
+**/.DS_Store
