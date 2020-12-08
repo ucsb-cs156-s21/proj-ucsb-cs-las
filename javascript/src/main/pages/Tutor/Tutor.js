@@ -16,10 +16,12 @@ import {
 import { useHistory } from "react-router-dom";
 
 const Tutor = () => {
+  const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const { name, picture, email } = user;
   const history = useHistory();
   const { addToast } = useToasts();
-  const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
+
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutors", getToken],
     fetchWithToken
@@ -30,6 +32,18 @@ const Tutor = () => {
     errorInstructor,
     mutate: mutateInstructorTutors
   } = useSWR(["/api/member/instructorTutors", getToken], fetchWithToken);
+
+  const { data: instructorCourseList } = useSWR(
+    [`/api/member/courses/forInstructor/${email}`, getToken],
+    fetchWithToken
+  );
+
+  const isInstructor =
+    roleInfo &&
+    roleInfo.role &&
+    instructorCourseList &&
+    instructorCourseList.length > 0;
+  const isAdmin = roleInfo && roleInfo.role.toLowerCase() == "admin";
 
   if (error || errorInstructor) {
     return (
@@ -43,10 +57,9 @@ const Tutor = () => {
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors, () => {
     addToast("Error deleting tutor", { appearance: "error" });
   });
-  const isAdmin = roleInfo && roleInfo.role.toLowerCase() == "admin";
   return (
     <>
-      {((instructorTutorList && instructorTutorList.size > 0) || isAdmin) && (
+      {(isInstructor || isAdmin) && (
         <Button onClick={() => history.push("/tutors/new")}>New Tutor</Button>
       )}
       {instructorTutorList && (
