@@ -118,4 +118,37 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
+  @GetMapping(value = "/api/member/courses", produces = "application/json")
+  public ResponseEntity<String> getMyCourses(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
+    if (authControllerAdvice.getIsAdmin(authorization)){
+      List<Course> courseList = courseRepository.findAll();
+      if(courseList.isEmpty()){
+        return ResponseEntity.notFound().build();
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(courseList);
+      return ResponseEntity.ok().body(body);
+    } 
+    else {
+      List<Course> courseList = courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
+      if(courseList.isEmpty()){
+        return getUnauthorizedResponse("instructor");
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(courseList);
+      return ResponseEntity.ok().body(body);
+    }  
+  }
+
+  @GetMapping(value = "/api/member/courses/forInstructor/{email}", produces = "application/json")
+  public ResponseEntity<String> getMyCourses(@RequestHeader("Authorization") String authorization, @PathVariable("email") String email) throws JsonProcessingException {
+    if (!authControllerAdvice.getIsMember(authorization)){
+      return getUnauthorizedResponse("member");
+    }
+    List<Course> courseList = courseRepository.findAllByInstructorEmail(email);
+    ObjectMapper mapper = new ObjectMapper();
+    String body = mapper.writeValueAsString(courseList);
+    return ResponseEntity.ok().body(body);
+  }
+
 }
