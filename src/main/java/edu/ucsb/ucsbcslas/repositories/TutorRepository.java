@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TutorRepository extends CrudRepository<Tutor, Long> {
     List<Tutor> findAll();
-
+    List<Tutor> findById(int id);
     Optional<Tutor> findByEmail(String email);
 }
