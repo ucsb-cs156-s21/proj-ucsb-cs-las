@@ -28,6 +28,22 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import java.io.IOException;
+import java.io.StringWriter;
+
 @RestController
 public class CourseController {
   private final Logger logger = LoggerFactory.getLogger(CourseController.class);
@@ -106,39 +122,6 @@ public class CourseController {
 
     ObjectMapper mapper = new ObjectMapper();
     String body = mapper.writeValueAsString(course.get());
-    return ResponseEntity.ok().body(body);
-  }
-
-  @GetMapping(value = "/api/member/courses", produces = "application/json")
-  public ResponseEntity<String> getMyCourses(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
-    if (authControllerAdvice.getIsAdmin(authorization)){
-      List<Course> courseList = courseRepository.findAll();
-      if(courseList.isEmpty()){
-        return ResponseEntity.notFound().build();
-      }
-      ObjectMapper mapper = new ObjectMapper();
-      String body = mapper.writeValueAsString(courseList);
-      return ResponseEntity.ok().body(body);
-    } 
-    else {
-      List<Course> courseList = courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
-      if(courseList.isEmpty()){
-        return getUnauthorizedResponse("instructor");
-      }
-      ObjectMapper mapper = new ObjectMapper();
-      String body = mapper.writeValueAsString(courseList);
-      return ResponseEntity.ok().body(body);
-    }  
-  }
-
-  @GetMapping(value = "/api/member/courses/forInstructor/{email}", produces = "application/json")
-  public ResponseEntity<String> getMyCourses(@RequestHeader("Authorization") String authorization, @PathVariable("email") String email) throws JsonProcessingException {
-    if (!authControllerAdvice.getIsMember(authorization)){
-      return getUnauthorizedResponse("member");
-    }
-    List<Course> courseList = courseRepository.findAllByInstructorEmail(email);
-    ObjectMapper mapper = new ObjectMapper();
-    String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
   }
 
