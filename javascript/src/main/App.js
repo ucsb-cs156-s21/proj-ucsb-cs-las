@@ -12,7 +12,7 @@ import Home from "main/pages/Home/Home";
 import Profile from "main/pages/Profile/Profile";
 import Courses from "main/pages/Courses/Courses";
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
-import NewOfficeHours from "main/pages/OfficeHours/NewOfficeHours" 
+import NewOfficeHours from "main/pages/OfficeHours/NewOfficeHours"
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignment";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
@@ -20,6 +20,7 @@ import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
+import EditOfficeHours from "main/pages/OfficeHours/EditOfficeHours"
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "instructor"]} />
           <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "instructor", "member"]} />
           <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "instructor"]} />
+          <AuthorizedRoute path="/officehours/edit/:officehoursID" exact component={EditOfficeHours} authorizedRoles={["admin", "instructor","member","guest"]} />
           <Route path="/about" component={About} />
           {/* <Route path="/officehours" component={OfficeHours}></Route> */}
         </Switch>

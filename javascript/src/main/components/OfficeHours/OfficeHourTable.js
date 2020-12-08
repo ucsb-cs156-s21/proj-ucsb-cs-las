@@ -9,7 +9,7 @@ export default ({officeHours,admin,deleteOfficeHour,editOfficeHour}) => {
 
      const renderEditButton = (id) => {
       return (
-             <Button data-testid="edit-button" onClick={() => { history.push(`/courses/edit/${id}`) }}>Edit</Button>
+             <Button data-testid="edit-button" onClick={() => { history.push(`/officehours/edit/${id}`) }}>Edit</Button>
          )
      }
 

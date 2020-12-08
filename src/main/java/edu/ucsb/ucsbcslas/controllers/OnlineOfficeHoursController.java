@@ -61,24 +61,39 @@ public class OnlineOfficeHoursController {
         return ResponseEntity.ok().body(body);
     }
 
-    // @PutMapping(value = "/api/admin/tutors/{id}", produces = "application/json")
-    // public ResponseEntity<String> updateTutor(@RequestHeader("Authorization") String authorization,
-    //         @PathVariable("id") Long id, @RequestBody @Valid Tutor incomingTutor) throws JsonProcessingException {
-    //     if (!authControllerAdvice.getIsAdmin(authorization))
-    //         return getUnauthorizedResponse("admin");
-    //     Optional<Tutor> tutor = tutorRepository.findById(id);
-    //     if (!tutor.isPresent()) {
-    //         return ResponseEntity.notFound().build();
-    //     }
+    @PutMapping(value = "/api/admin/officeHours/{id}", produces = "application/json")
+    public ResponseEntity<String> updateOfficeHour(@RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Long id, @RequestBody @Valid OnlineOfficeHours incomingOH) throws JsonProcessingException {
 
-    //     if (!incomingTutor.getId().equals(id)) {
-    //         return ResponseEntity.badRequest().build();
-    //     }
+        Boolean isAdmin = authControllerAdvice.getIsAdmin(authorization);
 
-    //     tutorRepository.save(incomingTutor);
-    //     String body = mapper.writeValueAsString(incomingTutor);
-    //     return ResponseEntity.ok().body(body);
-    // }
+        Optional<OnlineOfficeHours> oh = officeHoursRepository.findById(id);
+
+
+        if (!oh.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if(isAdmin){
+          officeHoursRepository.save(incomingOH);
+          String body = mapper.writeValueAsString(incomingOH);
+          return ResponseEntity.ok().body(body);
+        }
+        else if(true ){
+
+          if(true){ // if tutor email == office hour email
+            officeHoursRepository.save(incomingOH);
+            String body = mapper.writeValueAsString(incomingOH);
+            return ResponseEntity.ok().body(body);
+          }
+
+          else{
+            return getUnauthorizedResponse("not your officeHour");
+          }
+
+        }
+        return getUnauthorizedResponse("admin");
+    }
 
     @DeleteMapping(value = "/api/admin/officeHours/{id}", produces = "application/json")
     public ResponseEntity<String> deleteOfficeHour(@RequestHeader("Authorization") String authorization,
@@ -94,12 +109,12 @@ public class OnlineOfficeHoursController {
             //     return getUnauthorizedResponse("guest unable to delete office hour");
             // }
             return getUnauthorizedResponse("admin");
-        } 
+        }
 
         Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);
         if (!officeHour.isPresent()) {
             return ResponseEntity.notFound().build();
-        } 
+        }
         // if (!isAdmin) {
         //     if (officeHour.getTutorAssignment().getTutor().getEmail() != tutor.getEmail()){
         //         return getUnauthorizedResponse("current tutor did not create this office hour")
