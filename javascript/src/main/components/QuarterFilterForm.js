@@ -12,7 +12,7 @@ const QuarterFilterForm = ({ upsertFilterS}) => {
             <Form.Group as={Row} controlId="name">
                 <Form.Label column sm={2}>Enter quarter to filter by</Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="active quarter to filter by" onChange={
+                    <Form.Control type="text" placeholder="enter blank value to filter by all" onChange={
                         (e) => setFilterVal(e.target.value)
                     }
                     />

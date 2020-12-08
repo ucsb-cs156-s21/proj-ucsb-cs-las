@@ -83,47 +83,5 @@ describe("New Course page test", () => {
     expect(addToast).toHaveBeenCalledWith("Error saving filter", { appearance: "error" })
 
   });
-  test("clicking delete button on an error throws an error toast", async () => {
-    const pushSpy = jest.fn();
-    fetchWithToken.mockImplementation(() => {
-      throw new Error();
-    });
-    useHistory.mockReturnValue({
-      push: pushSpy
-    });
-
-    const { getByText } = render(
-      <QuarterFilter />
-    );
-
-    const deleteButton = getByText("delete");
-    expect(deleteButton).toBeInTheDocument();
-    userEvent.click(deleteButton);
-    expect(addToast).toHaveBeenCalledTimes(1);
-    expect(addToast).toHaveBeenCalledWith("no active quarter existent", { appearance: 'error' });
-
+  
   });
-  test("clicking delete button succesfully deletes filter, and gives a successful toast, and goes to home page", async () => {
-    fetchWithToken.mockReturnValueOnce({});
-    const pushSpy = jest.fn();
-    useHistory.mockReturnValue({
-      push: pushSpy
-    });
-
-    const { getByText } = render(
-      <QuarterFilter />
-    );
-
-    const deleteButton = getByText("delete");
-    expect(deleteButton).toBeInTheDocument();
-    userEvent.click(deleteButton);
-    await waitFor(() => expect(addToast).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-    expect(pushSpy).toHaveBeenCalledWith("/");
-
-
-    await waitFor(() => expect(addToast).toHaveBeenCalledWith("Filter deleted", { appearance: 'success' }));
-
-  });
-
-})

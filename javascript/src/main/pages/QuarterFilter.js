@@ -24,20 +24,11 @@ const QuarterFilter = () => {
     () => {
       addToast("Error saving filter", { appearance: 'error' });
     });
-  const deleteFilter = buildDeleteFilter(getToken,
-    () => {
-      history.push("/");
-      console.log("in right method");
-      addToast("Filter deleted", { appearance: 'success' });
-    },
-    () => {
-      addToast("no active quarter existent", { appearance: 'error' });
-    });
 
 
   return (
     <>
-      <QuarterFilterForm upsertFilter={upsertFilter} deleteFilter={deleteFilter} />
+      <QuarterFilterForm upsertFilter={upsertFilter}/>
     </>
   );
 };
