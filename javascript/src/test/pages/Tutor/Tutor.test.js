@@ -38,6 +38,11 @@ describe("Tutor page test", () => {
   const user = {
     name: "test user",
   };
+
+  const roleInfo = {
+    role: "admin",
+  };
+
   const getAccessTokenSilentlySpy = jest.fn();
   const mutateSpy = jest.fn();
 
