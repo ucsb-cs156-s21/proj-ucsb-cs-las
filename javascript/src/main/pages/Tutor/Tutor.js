@@ -44,10 +44,9 @@ const Tutor = () => {
     addToast("Error deleting tutor", { appearance: "error" });
   });
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() == "admin";
-
   return (
     <>
-      {isAdmin && (
+      {((instructorTutorList && instructorTutorList.size > 0) || isAdmin) && (
         <Button onClick={() => history.push("/tutors/new")}>New Tutor</Button>
       )}
       {instructorTutorList && (
