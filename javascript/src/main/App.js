@@ -40,7 +40,7 @@ function App() {
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/courses/:courseId" component={CourseShow} />
+          <Route path="/courses/show/:courseId" component={CourseShow} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />
