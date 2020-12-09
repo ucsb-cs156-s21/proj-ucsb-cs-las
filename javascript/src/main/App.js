@@ -17,17 +17,9 @@ import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import QuarterFilter from "main/pages/QuarterFilter"
-=======
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
->>>>>>> cb2d794ce25a52329ff58f4f5cb3389a2dada1f7
-=======
 
 import QuarterFilter from "main/pages/QuarterFilter"
-import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
->>>>>>> 372af5bf1e8743ceff269f2b2ae3c786b742af7e
 import { fetchWithToken } from "main/utils/fetch";
 
 function App() {
