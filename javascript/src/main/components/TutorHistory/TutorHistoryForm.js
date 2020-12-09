@@ -1,12 +1,7 @@
 import React from "react";
 import { Accordion, Button, Card, Table } from "react-bootstrap";
-import useSWR from "swr";
-import { useAuth0 } from "@auth0/auth0-react";
-import { fetchWithToken } from "main/utils/fetch";
 
-const TutorHistoryForm = ({ searchTutorHistoryByCourse }) => {
-  const { getAccessTokenSilently: getToken } = useAuth0();
-  const { data: courseNumbers } = useSWR(["/api/public/tutorAssignment/course_numbers", getToken], fetchWithToken);
+const TutorHistoryForm = ({ searchTutorHistoryByCourse, courseNumbers }) => {
 
   return (
     <>
