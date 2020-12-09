@@ -156,4 +156,30 @@ describe("Tutor page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+  test("delete a tutor with error", async () => {
+    fetchWithToken.mockImplementation(() => {
+      throw new Error();
+    });
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const { getByText } = render(
+      <ToastProvider>
+        <Tutor />{" "}
+      </ToastProvider>
+    );
+
+    const deleteButton = getAllByTestId("delete-button-1");
+    // expect(deleteButton).toBeInTheDocument();
+    userEvent.click(deleteButton);
+
+    expect(addToast).toHaveBeenCalledTimes(1);
+    expect(addToast).toHaveBeenCalledWith("Error deleting tutor", {
+      appearance: "error"
+    });
+  });
 });

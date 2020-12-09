@@ -54,7 +54,9 @@ const Tutor = () => {
     return <Loading />;
   }
 
-  const deleteTutor = buildDeleteTutor(getToken, mutateTutors, () => {});
+  const deleteTutor = buildDeleteTutor(getToken, mutateTutors, () => {
+    addToast("Error deleting tutor", { appearance: "error" });
+  });
   return (
     <>
       {(isInstructor || isAdmin) && (
