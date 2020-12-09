@@ -19,6 +19,8 @@ class DemoApplicationTests {
   private CourseController courseController;
   @Autowired
   private RoleController roleController;
+  @Autowired
+  private OnlineOfficeHoursController onlineOfficeHoursController;
 
   @Test
   void contextLoads() {
@@ -26,6 +28,7 @@ class DemoApplicationTests {
     assertThat(reactController).isNotNull();
     assertThat(courseController).isNotNull();
     assertThat(roleController).isNotNull();
+    assertThat(onlineOfficeHoursController).isNotNull();
   }
 
   // This test just provides coverage on the main method of DemoApplication.
