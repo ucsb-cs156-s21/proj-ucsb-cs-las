@@ -81,6 +81,11 @@ describe("Edit Tutor Assignment page test", () => {
     useToasts.mockReturnValue({
       addToast: addToast
     })
+    useSWR.mockReturnValue({
+        data: courses,
+        error: undefined,
+        mutate: mutateSpy,
+      });
   });
 
   afterEach(() => {
@@ -88,13 +93,13 @@ describe("Edit Tutor Assignment page test", () => {
   });
 
   test("Renders tutor assignment with existing tutor assignment", async () => {
-    useSWR.mockReturnValueOnce({
+    // useSWR.mockReturnValueOnce({
+    //     data: courses,
+    //     error: undefined,
+    //     mutate: mutateSpy,
+    //   });
+    useSWR.mockReturnValue({
         data: sampleTutorAssignment,
-        error: undefined,
-        mutate: mutateSpy,
-      });
-    useSWR.mockReturnValueOnce({
-        data: courses,
         error: undefined,
         mutate: mutateSpy,
       });
