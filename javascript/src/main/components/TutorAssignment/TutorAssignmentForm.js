@@ -9,16 +9,24 @@ import { Form, Button, Row, Col, Container } from "react-bootstrap";
 const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, existingTutorAssignment }) => {
     const emptyTutorAssignment = {
         course: null,
+        tutor: null,
         tutorEmail: "",
         assignmentType: "LA",
-        index: null
+        index: null, 
+        id: null
     }
 
     const [existingSet, setExistingSet] = useState(1);
     const [tutorAssignment, setTutorAssignment] = useState(emptyTutorAssignment);
 
     if(existingTutorAssignment && existingSet){
-        setTutorAssignment({course: existingTutorAssignment.course, tutorEmail: existingTutorAssignment.tutor.email, assignmentType: existingTutorAssignment.assignmentType, index: null});
+        console.log(existingTutorAssignment.course);
+        setTutorAssignment({course: existingTutorAssignment.course, 
+            tutor: existingTutorAssignment.tutor,
+            tutorEmail: existingTutorAssignment.tutor.email, 
+            assignmentType: existingTutorAssignment.assignmentType, 
+            index: null, 
+            id: existingTutorAssignment.id});
         setExistingSet(0);
     }
 
@@ -46,6 +54,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         }
     }
 
+    console.log(tutorAssignment.course);
     if(existingTutorAssignment && tutorAssignment.index === null){
         courseList.map((course, index) => {
             if(course.id === tutorAssignment.course.id){
@@ -60,15 +69,13 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
             createTutorAssignment(tutorAssignment);
         }
         else{
+            console.log(tutorAssignment);
             updateTutorAssignment(tutorAssignment, tutorAssignment.id);
         }
     }
 
     return (
         <>
-        <div>
-        {console.log(tutorAssignment.index)} 
-        </div>
             {tutorAssignment.index !== null ? 
             <Form onSubmit={handleOnSubmit}>
                 <Form.Group as={Row} controlId="courseName">
