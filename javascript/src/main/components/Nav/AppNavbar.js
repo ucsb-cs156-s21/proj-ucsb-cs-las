@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AuthNav from "main/components/Nav/AuthNav";
 import ProfileNav from "main/components/Nav/ProfileNav";
@@ -21,20 +21,15 @@ function AppNavbar() {
       </LinkContainer>
       <Nav>
         {isAdmin &&
-          (<NavDropdown title="Admin" id="basic-nav-dropdown">
+          <NavDropdown title="Admin" id="basic-nav-dropdown">
             <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
-            <NavDropdown.Item href="/admin/tutorHistory">
-              Tutor History
-            </NavDropdown.Item>
-          </NavDropdown>)(
-            <LinkContainer to={"/admin"}>
-              <Nav.Link>Admin</Nav.Link>
-            </LinkContainer>
-          )}
+            <NavDropdown.Item href="/admin/tutorHistory">Tutor History</NavDropdown.Item>
+          </NavDropdown>
+        }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
-        {isAdmin && (
+        {isAdmin && 
           <LinkContainer to={"/courses"}>
             <Nav.Link>Courses</Nav.Link>
         </LinkContainer>
