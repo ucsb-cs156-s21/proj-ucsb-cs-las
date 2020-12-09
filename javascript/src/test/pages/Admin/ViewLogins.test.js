@@ -56,7 +56,7 @@ describe("ChannelList tests", () => {
             'data': [exampleLogin]
         });
         const { getByText } = render(<ViewLogins />);
-        const timestampElement = getByText(/8:00/);
+        const timestampElement = getByText(/2020-12-08 14:41:48.481 -0800/);
         const emailElement = getByText(/test@ucsb.edu/);
         const firstNameElement = getByText(/matthew/);
         const lastNameElement = getByText(/wong/);
