@@ -95,7 +95,7 @@ Example of the JSON for a Login document:
     "_id": {
         "$oid": "5fcf123e546a77556efb8345"
     },
-    "timestamp": "10:00",
+    "timestamp": "2020-12-08 14:41:48.481 -0800",
     "email": "mongo_test@ucsb.edu",
     "firstName": "mongo",
     "lastName": "test",
