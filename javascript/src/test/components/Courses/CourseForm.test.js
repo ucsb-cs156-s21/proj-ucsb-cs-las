@@ -32,12 +32,12 @@ describe("CourseForm tests", () => {
 
     const updatedCourse = {
       ...sampleCourse,
-      name: "updated name",
+      number: "updated number",
     };
 
-    const input = getByDisplayValue(sampleCourse.name);
+    const input = getByDisplayValue(sampleCourse.number);
     userEvent.clear(input);
-    userEvent.type(input, updatedCourse.name);
+    userEvent.type(input, updatedCourse.number);
 
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
@@ -55,8 +55,8 @@ describe("CourseForm tests", () => {
       (<CourseForm createCourse={createCourseMock} />)
     ;
 
-    const nameInput = getByLabelText("Course Number");
-    userEvent.type(nameInput, sampleCourse.number);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, sampleCourse.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, sampleCourse.quarter);
