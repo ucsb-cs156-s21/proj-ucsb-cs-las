@@ -15,7 +15,7 @@ describe("ChannelList tests", () => {
   
       const logins = [
         {
-            "timestamp": "8:00",
+            "timestamp": "2020-12-08 14:41:48.481 -0800",
             "email": "matthew_wong@ucsb.edu",
             "firstName": "matthew",
             "lastname": "wong"
