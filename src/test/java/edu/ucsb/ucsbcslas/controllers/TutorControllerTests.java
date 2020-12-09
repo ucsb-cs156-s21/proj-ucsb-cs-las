@@ -30,6 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.AppUser;
+
+import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
@@ -227,5 +231,40 @@ public class TutorControllerTests {
     verify(mockTutorRepository, times(1)).findById(id);
     verify(mockTutorRepository, times(0)).deleteById(id);
   }
+
+  @Test
+    public void testGetInstructorTutor() throws Exception {
+      List<Tutor> expectedTutor = new ArrayList<Tutor>();
+      List<TutorAssignment> expectedTutorAssignments = new ArrayList<TutorAssignment>();
+      List<Course> expectedCourse = new ArrayList<Course>();
+
+      Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+      Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+     
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
+      expectedTutor.add(t);
+      expectedTutorAssignments.add(new TutorAssignment(1L, c, t, "TA"));
+      expectedCourse.add(c);
+
+      when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+      when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignments);
+      when(mockTutorRepository.findByEmail("email")).thenReturn(Optional.of(t));
+
+      MvcResult response = mockMvc.perform(get("/api/member/instructorTutors").contentType("application/json")
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+  
+      
+      verify(mockTutorAssignmentRepository, times(1)).findAllByCourse(c);
+      verify(mockCourseRepository, times(1)).findAllByInstructorEmail("email");
+      //verify(mockTutorRepository, times(1)).findByEmail("email");
+
+
+      String responseString = response.getResponse().getContentAsString();
+      List<Tutor> actualTutor = objectMapper.readValue(responseString, new TypeReference<List<Tutor>>() {
+      });
+      assertEquals(actualTutor, expectedTutor);
+    }
 
 }
