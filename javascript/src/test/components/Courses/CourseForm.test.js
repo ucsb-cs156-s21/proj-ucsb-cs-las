@@ -7,7 +7,7 @@ describe("CourseForm tests", () => {
 
   const sampleCourse = {
     "id": 1,
-    "name": "CMPSC 156",
+    "number": "CMPSC 156",
     "quarter": "F20",
     "instructorFirstName": "Phill",
     "instructorLastName": "Conrad",
