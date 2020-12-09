@@ -13,7 +13,7 @@ describe("LoginTable tests", () => {
 
     const loginTable = [
         {
-            "timestamp": "7:00",
+            "timestamp": "2020-12-08 14:41:48.481 -0800",
             "email": "matthew_wong@ucsb.edu",
             "firstName": "matthew",
             "lastName": "wong"
