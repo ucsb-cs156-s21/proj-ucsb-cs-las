@@ -1,66 +1,80 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { TutorAssignmentRepository } from "./src/main/java/edu/ucsb/ucsbcslas/repositories/TutorAssignmentRepository";
-import { useHistory } from "react-router-dom";
-import BootstrapTable from 'react-bootstrap-table-next';
-
+import { fetchWithToken } from "main/utils/fetch";
+import { useSWR } from "swr";
+import { useParams } from "react-router-dom";
 
 const Tutor = () => {
 
-    const TutorList = TutorAssignmentRepository.findByCourse(this.course);
-    const { user, getAccessTokenSilently: getToken } = useAuth0();
-    const { name, picture, email } = user;
-    const { data: roleInfo } = useSWR(
-        ["/api/myRole", getToken],
+    function CourseDetail({courseId}) {
+        return (
+          <div>
+            <p>This is the course detail page {courseId}.</p>
+          </div>
+        );
+    }    
+
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const { data: users } = useSWR(["/api/users", getToken], fetchWithToken);
+ 
+    const { data: course } = useSWR(
+        [`/api/public/courses/${courseId}`, getToken],
+        fetchWithToken
+    );
+
+    const { data: tutorAssignments } = useSWR(
+        [`/api/member/tutorAssignments/${course}`, getToken],
         fetchWithToken
     );
     
-    const printTutorListForLoggedInUser = () => 
+    const printTutorAssignmentsForLoggedInUser = () => 
     {
-        for (let i = 0; i < TutorList.length; i++) 
+        for (let i = 0; i < tutorAssignments.length; i++) 
         {
             temp += "<tr>";
             temp += "<th>";
-            temp += TutorList[i].getFirstName();
+            temp += tutorAssignments[i].tutor();
             temp +- "</th>";
             temp += "<th>";
-            temp += TutorList[i].getLastName();
-            temp += "</th>";
-            temp += "<th>";
-            temp += TutorList[i].getEmail();
+            temp += tutorAssignments[i].tutor.email();
             temp += "</th>";
             temp += "</tr>";
         }
+        return temp;
     }
 
-    const printTutorListForNonLoggedInUser = () => 
+    const printTutorAssignmentsForNonLoggedInUser = () => 
     {
-        for (let i = 0; i < TutorList.length; i++) 
+        for (let i = 0; i < tutorAssignments.length; i++) 
         {
             temp += "<tr>";
             temp += "<th>";
-            temp += TutorList[i].getFirstName();
+            temp += tutorAssignments[i].tutor();
             temp +- "</th>";
             temp += "<th>";
-            temp += TutorList[i].getLastName();
+            temp += "Sign in to display tutor's email";
             temp += "</th>";
             temp += "</tr>";
         }
+        return temp;
     }
     
-    const printTutorList = () => 
+    const printTutorAssignments = () => 
     {
-        if (user) {
-            printTutorListForLoggedInUser();
+        if (users) {
+            return printTutorAssignmentsForLoggedInUser;
         }
-        printTutorListForNonLoggedInUser();
+        else {
+            return printTutorAssignmentsForNonLoggedInUser;
+        }
     }
 
     return (
         < >
-            <h1> Tutors </h1>
-            <h2 style={{ display: 'flex', justifyContent: 'left' }}>All Tutors</h2>
-            <Table striped bordered hover>
+            {courseDetail}
+            <title> Tutors </title>
+
+            <table border = "1" width = "100%">
                 <thead>
                     <tr>
                         <th>First Name</th>
@@ -69,10 +83,12 @@ const Tutor = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {printTutorList()}
+                    {printTutorAssignments}
                 </tbody>
-            </Table>
+            </table>
 
         </ >
     );
 }
+
+export default Tutor;
