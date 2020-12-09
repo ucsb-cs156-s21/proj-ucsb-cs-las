@@ -1,33 +1,48 @@
-import React, { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import React from "react";
+import { Accordion, Button, Card, Table } from "react-bootstrap";
+import useSWR from "swr";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchWithToken } from "main/utils/fetch";
 
 const TutorHistoryForm = ({ searchTutorHistoryByCourse }) => {
-  const emptyQuery = {
-    value: "",
-  }
-  const [query, setQuery] = useState(emptyQuery);
-
-  const handleOnSubmit = (e) => {
-    searchTutorHistoryByCourse(query);
-    e.preventDefault();
-  }
+  const { getAccessTokenSilently: getToken } = useAuth0();
+  const { data: courseNumbers } = useSWR(["/api/public/tutorAssignment/course_numbers", getToken], fetchWithToken);
 
   return (
-    <Form onSubmit={handleOnSubmit}>
-      <Form.Group as={Row} controlId="name">
-        <Form.Label column sm={2}>Enter a Course</Form.Label>
-        <Col sm={8}>
-          <Form.Control type="text" placeholder="e.g. CMPSC 156" value={query.value} onChange={(e) => setQuery({
-            ...query,
-            value: e.target.value
-          })} />
-        </Col>
-        <Col sm={2}>
-          <Button type="submit">Search</Button>
-        </Col>
-      </Form.Group>
-    </Form>
+    <>
+    <Accordion>
+      <Card>
+        <Accordion.Toggle as={Card.Header} eventKey="0">
+          Click to Show/Hide All Courses with a Tutor Assigned
+          </Accordion.Toggle>
+        <Accordion.Collapse eventKey="0">
+          <Card.Body>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Course Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                {courseNumbers && courseNumbers.map(courseNum => {
+                  return (
+                    <tr key={courseNum}>
+                      <td>
+                        <Button onClick={async () => await searchTutorHistoryByCourse({value: courseNum})}>
+                          {courseNum}
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Accordion.Collapse>
+      </Card>
+    </Accordion>
+    </>
   );
-};
+}
 
 export default TutorHistoryForm;
