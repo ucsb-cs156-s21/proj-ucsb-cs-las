@@ -7,8 +7,8 @@ const TutorHistoryForm = ({ searchTutorHistoryByCourse, courseNumbers }) => {
     <>
     <Accordion>
       <Card>
-        <Accordion.Toggle as={Card.Header} eventKey="0">
-          Click to Show/Hide All Courses with a Tutor Assigned
+        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+          <b>Click to Show/Hide All Courses with a Tutor Assigned</b>
           </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
