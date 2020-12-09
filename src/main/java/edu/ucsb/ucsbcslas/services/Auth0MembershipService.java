@@ -121,6 +121,9 @@ public class Auth0MembershipService implements MembershipService {
 
 
   private void updateUserLogins(DecodedJWT jwt) {
+    if (jwt == null) {
+      return;
+    }
     Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
     String email = (String) customClaims.get("email");
 
