@@ -176,33 +176,33 @@ describe("Tutor page test", () => {
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
-  test("delete a tutor with error", async () => {
+  // test("delete a tutor with error", async () => {
     
-    // fetchWithToken.mockImplementation(() => {
-    //   throw new Error();
-    // });
+  //   // fetchWithToken.mockImplementation(() => {
+  //   //   throw new Error();
+  //   // });
 
-    buildDeleteTutor.mockReturnValue(() => {
-      throw new Error();
-    });
+  //   buildDeleteTutor.mockReturnValue(() => {
+  //     throw new Error();
+  //   });
 
-    const pushSpy = jest.fn();
-    useHistory.mockReturnValue({
-      push: pushSpy
-    });
+  //   const pushSpy = jest.fn();
+  //   useHistory.mockReturnValue({
+  //     push: pushSpy
+  //   });
 
-    const { getAllByTestId } = render(    
+  //   const { getAllByTestId } = render(    
 
-        <Tutor />
+  //       <Tutor />
 
-    );
+  //   );
 
-    const deleteButtons = getAllByTestId("delete-button-1");
-    userEvent.click(deleteButtons[0]);
+  //   const deleteButtons = getAllByTestId("delete-button-1");
+  //   userEvent.click(deleteButtons[0]);
 
-    expect(addToast).toHaveBeenCalledTimes(1);
-    expect(addToast).toHaveBeenCalledWith("Error deleting tutor", { appearance: 'error' });
-  });
+  //   expect(addToast).toHaveBeenCalledTimes(1);
+  //   expect(addToast).toHaveBeenCalledWith("Error deleting tutor", { appearance: 'error' });
+  // });
 
 });
 
