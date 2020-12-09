@@ -116,9 +116,7 @@ public class TutorController {
         
         if(courseList.isEmpty()){
             return ResponseEntity.notFound().build();
-        }
-        
-        else if (!courseList.isEmpty()) {
+        } else {
             for (Course c : courseList) {
                 List<TutorAssignment> allTutorAssignments = tutorAssignmentRepository.findAllByCourse(c);
                 for (TutorAssignment a : allTutorAssignments) {
