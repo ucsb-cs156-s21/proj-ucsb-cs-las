@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { buildSearchTutorHistoryByCourse } from "main/services/TutorHistory/TutorHistoryService";
 import TutorHistoryForm from "main/components/TutorHistory/TutorHistoryForm";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable";
@@ -10,20 +10,29 @@ const TutorHistory = () => {
   const { addToast } = useToasts();
   const history = useHistory();
   const { getAccessTokenSilently: getToken } = useAuth0();
-  let showResults = false; // flag for whether to display table component
-  let tutorAssignmentList = null;
+  const emptySearchResults = {
+    showResults: false, 
+    results: [],
+  }
+  const [searchResults, setSearchResults] = useState(emptySearchResults);
   const searchTutorHistoryByCourse = buildSearchTutorHistoryByCourse(
     getToken,
     (data) => {
       // onSuccess
       // update the table component
-      tutorAssignmentList = data;
-      showResults = true;
-      addToast("Search success", { appearance: "success" });
+      setSearchResults({ 
+        ...searchResults,
+        showResults: true,
+        results: data
+      });
+      addToast("Search results updated", { appearance: "success" });
     },
     (err) => {
       // onError
-      showResults = false;
+      setSearchResults({
+        ...searchResults,
+        showResults: false
+      });
       addToast(`Error finding tutors for course: ${err}`, { appearance: "error" });
     }
   );
@@ -34,7 +43,7 @@ const TutorHistory = () => {
     <>
       <h1>Search for Tutors by Course</h1>
       <TutorHistoryForm searchTutorHistoryByCourse={searchTutorHistoryByCourse} />
-      { showResults && <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={true} /> }
+      { searchResults.showResults && <TutorAssignmentTable tutorAssignments={searchResults.results} isInstructor={true} /> }
     </>
   );
 };
