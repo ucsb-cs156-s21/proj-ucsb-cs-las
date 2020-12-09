@@ -289,4 +289,129 @@ public class TutorAssignmentControllerTests {
         TutorAssignment actualTutorAssignment = objectMapper.readValue(responseString, TutorAssignment.class);
         assertEquals(actualTutorAssignment, expectedTutorAssignment);
     }
+
+    @Test
+    public void testGetASingleTutorAssignment() throws Exception {
+        Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+        Tutor t = new Tutor(1L, "fname", "lname", "email@ucsb.edu");
+        TutorAssignment expectedTutorAssignment = new TutorAssignment(1L, c, t, "TA");
+        
+
+        // mockito is the library that allows us to do this when stuff
+        when(mockTutorAssignmentRepository.findById(1L)).thenReturn(Optional.of(expectedTutorAssignment));
+        MvcResult response = mockMvc.perform(get("/api/member/tutorAssignments/1").contentType("application/json")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+        verify(mockTutorAssignmentRepository, times(1)).findById(1L);
+
+        String responseString = response.getResponse().getContentAsString();
+        TutorAssignment actualTutorAssignment = objectMapper.readValue(responseString, TutorAssignment.class);
+        assertEquals(actualTutorAssignment, expectedTutorAssignment);
+    }
+
+    @Test
+    public void testUpdateTutorAssignments_tutorAssignmentExists_updateValues() throws Exception {
+    
+      Course c1 = new Course(1L, "course 1", "20203", "fname", "lname", "instr@ucsb.edu");
+      Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+      Course c2 = new Course(2L, "course 2", "20203", "fname", "lname", "email");
+      Tutor t2 = new Tutor(2L, "fname2", "lname2", "email2@ucsb.edu");
+
+      TutorAssignment inputTutorAssignment = new TutorAssignment(1L, c1, t, "TA");
+      TutorAssignment savedTutorAssignment = new TutorAssignment(1L, c2, t, "LA");
+
+      String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'course 1', id: '1', quarter: '20203',"+ 
+      "instructorFirstName: 'fname', instructorLastName: 'lname', instructorEmail: 'instr@ucsb.edu'}, assignmentType: 'TA'}";
+
+
+      String body = objectMapper.writeValueAsString(inputTutorAssignment);
+  
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
+      when(mockTutorAssignmentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutorAssignment));
+      when(mockTutorAssignmentRepository.save(inputTutorAssignment)).thenReturn(inputTutorAssignment);
+      MvcResult response = mockMvc
+          .perform(put("/api/member/tutorAssignments/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(requestBody))
+          .andExpect(status().isOk()).andReturn();
+  
+      verify(mockTutorAssignmentRepository, times(1)).findById(inputTutorAssignment.getId());
+      verify(mockTutorAssignmentRepository, times(1)).save(inputTutorAssignment);
+  
+      String responseString = response.getResponse().getContentAsString();
+  
+      assertEquals(body, responseString);
+    }
+  
+    @Test
+    public void testUpdateTutorAssignment_unauthorizedIfNotAdmin() throws Exception {
+      Course c1 = new Course(1L, "course 1", "20203", "fname", "lname", "instr@ucsb.edu");
+      Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+
+      TutorAssignment inputTutorAssignment = new TutorAssignment(1L, c1, t, "TA");
+
+      String body = objectMapper.writeValueAsString(inputTutorAssignment);
+  
+      mockMvc
+          .perform(put("/api/member/tutorAssignments/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+          .andExpect(status().isUnauthorized());
+    }
+  
+    @Test
+    public void testUpdateTutorAssignment_tutorAssignmentNotFound() throws Exception {
+      Course c1 = new Course(1L, "course 1", "20203", "fname", "lname", "instr@ucsb.edu");
+      Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+  
+      TutorAssignment inputTutorAssignment = new TutorAssignment(1L, c1, t, "TA");
+  
+      String body = objectMapper.writeValueAsString(inputTutorAssignment);
+
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
+      when(mockTutorAssignmentRepository.findById(1L)).thenReturn(Optional.empty());
+
+      mockMvc
+          .perform(put("/api/member/tutorAssignments/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+          .andExpect(status().isNotFound()).andReturn();
+      verify(mockTutorAssignmentRepository, times(1)).findById(1L);
+      verify(mockTutorAssignmentRepository, times(0)).save(any(TutorAssignment.class));
+    }
+  
+    @Test
+    public void testUpdateTutorAssignment_TutorAssignmentAtPathOwned_butTryingToOverwriteAnotherTutorAssignment() 
+        throws Exception {
+      
+      Course c1 = new Course(1L, "course 1", "20203", "fname", "lname", "instr@ucsb.edu");
+      Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+      Course c2 = new Course(2L, "course 2", "20203", "fname", "lname", "email");
+      Tutor t2 = new Tutor(2L, "fname2", "lname2", "email2@ucsb.edu");
+
+      TutorAssignment inputTutorAssignment = new TutorAssignment(1L, c1, t, "TA");
+      TutorAssignment savedTutorAssignment = new TutorAssignment(2L, c2, t, "LA");
+
+      String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'course 1', id: '1', quarter: '20203',"+ 
+      "instructorFirstName: 'fname', instructorLastName: 'lname', instructorEmail: 'instr@ucsb.edu'}, assignmentType: 'TA'}";
+
+      String requestBody2 = "{tutorEmail: 'email2@ucsb.edu', course:  {name: 'course 2', id: '1', quarter: '20203',"+ 
+      "instructorFirstName: 'fname', instructorLastName: 'lname', instructorEmail: 'email'}, assignmentType: 'LA'}";
+
+      //Course inputCourse = new Course(1L, "new course 1 trying to overwrite at id 1", "F20", "fname", "lname", "email");
+      //Course savedCourse = new Course(2L, "new course 1", "F20", "fname", "lname", "email");
+      String body = objectMapper.writeValueAsString(inputTutorAssignment);
+
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
+      when(mockTutorRepository.findByEmail("email2@ucsb.edu")).thenReturn(Optional.of(t2));
+      when(mockTutorAssignmentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutorAssignment));
+      mockMvc
+          .perform(put("/api/member/tutorAssignments/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + 
+              userToken()).content(objectMapper.writeValueAsString(requestBody)))
+          .andExpect(status().isBadRequest()).andReturn();
+      verify(mockTutorAssignmentRepository, times(1)).findById(2L);
+      verify(mockTutorAssignmentRepository, times(0)).save(any(TutorAssignment.class));
+    }
+
 }

@@ -100,20 +100,47 @@ public class TutorAssignmentController {
 
   @PutMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
   public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
-      @PathVariable("id") Long id, @RequestBody @Valid TutorAssignment incomingTutorAssignment) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsAdmin(authorization))
-        return getUnauthorizedResponse("admin");
+      @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment) throws JsonProcessingException {
+
+    if (!authControllerAdvice.getIsAdmin(authorization))
+      return getUnauthorizedResponse("admin");
     Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
     if (!tutorAssignment.isPresent()) {
       return ResponseEntity.notFound().build();
     }
 
-    if (!incomingTutorAssignment.getId().equals(id)) {
-      return ResponseEntity.badRequest().build();
-    }
+    JSONObject ta = new JSONObject(incomingTutorAssignment);
+    TutorAssignment newAssignment = new TutorAssignment();
 
-    tutorAssignmentRepository.save(incomingTutorAssignment);
-    String body = mapper.writeValueAsString(incomingTutorAssignment);
+    JSONObject cInfo = new JSONObject(ta.get("course").toString());
+    Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
+      cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
+    newAssignment.setCourse(c);
+
+    if(ta.getString("tutorEmail") != tutorAssignment.get().getTutor().getEmail()){
+      Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
+      
+      if(tutor.isPresent()){
+        newAssignment.setTutor(tutor.get());
+      }
+      else{
+        return getIncorrectInputResponse();
+      }
+    } else {
+
+      JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
+      Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"), tInfo.getString("lastName"), 
+      tInfo.getString("email"));
+      newAssignment.setTutor(t);
+      
+      
+    }
+    newAssignment.setAssignmentType(ta.getString("assignmentType"));
+
+
+    newAssignment.setId(id);
+    tutorAssignmentRepository.save(newAssignment);
+    String body = mapper.writeValueAsString(newAssignment);
     return ResponseEntity.ok().body(body);
   }
 
