@@ -161,7 +161,7 @@ public class CourseController {
     Optional<Course> course = courseRepository.findById(courseId);
 
     if(course.isPresent()){
-      List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+      List<TutorAssignmentOfficeHourView> viewList = new ArrayList();
       
       List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
       for(TutorAssignment temp : tutorAssignments){
