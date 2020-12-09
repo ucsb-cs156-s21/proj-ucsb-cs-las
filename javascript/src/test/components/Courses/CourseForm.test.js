@@ -22,7 +22,7 @@ describe("CourseForm tests", () => {
     render(<CourseForm existingCourse={sampleCourse}/>);
   });
 
-  test("updating course name works", async () => {
+  test("updating course number works", async () => {
 
     const updateCourseMock = jest.fn();
 
@@ -55,8 +55,8 @@ describe("CourseForm tests", () => {
       (<CourseForm createCourse={createCourseMock} />)
     ;
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, sampleCourse.name);
+    const nameInput = getByLabelText("Course Number");
+    userEvent.type(nameInput, sampleCourse.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, sampleCourse.quarter);
