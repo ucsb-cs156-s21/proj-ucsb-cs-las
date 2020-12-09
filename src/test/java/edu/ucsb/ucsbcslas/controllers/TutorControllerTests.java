@@ -266,5 +266,25 @@ public class TutorControllerTests {
       });
       assertEquals(actualTutor, expectedTutor);
     }
+    
+  @Test
+    public void testGetInstructorTutor_emptyCourse() throws Exception {
+      List<Tutor> expectedTutor = new ArrayList<Tutor>();
+      List<TutorAssignment> expectedTutorAssignments = new ArrayList<TutorAssignment>();
+      List<Course> expectedCourse = new ArrayList<Course>();
 
+      Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+      Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+     
+
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
+      when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+      when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignments);
+      when(mockTutorRepository.findByEmail("email")).thenReturn(Optional.of(t));
+
+      mockMvc.perform(get("/api/member/instructorTutors").contentType("application/json")
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
 }
