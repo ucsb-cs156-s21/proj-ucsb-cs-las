@@ -152,7 +152,7 @@ public class TutorAssignmentController {
     }
 
     @GetMapping(value = "/api/public/tutorAssignment/{course_id}", produces = "application/json")
-    public ResponseEntity<String> getCourse(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
+    public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourseId(course_id);
 
         ObjectMapper mapper = new ObjectMapper();
