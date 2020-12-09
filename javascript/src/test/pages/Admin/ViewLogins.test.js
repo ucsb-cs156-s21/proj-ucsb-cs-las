@@ -46,7 +46,7 @@ describe("ChannelList tests", () => {
     
     test("Accesses logins from backend", () => {
         const exampleLogin = {
-            "timestamp": "8:00",
+            "timestamp": "2020-12-08 14:41:48.481 -0800",
             "email": "test@ucsb.edu",
             "firstName": "matthew",
             "lastName": "wong"
