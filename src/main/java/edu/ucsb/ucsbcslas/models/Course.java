@@ -27,7 +27,6 @@ public class Course {
 
   public Course() {
   }
-
   public Course(Long id, String number, String quarter, String instructorFirstName, String instructorLastName, String instructorEmail) {
     this.id = id;
     this.number = number;
