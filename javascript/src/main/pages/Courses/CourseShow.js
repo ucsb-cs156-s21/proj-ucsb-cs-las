@@ -23,7 +23,7 @@ function CourseShow(){
         return <Loading />;
     }
     return(
-        <CourseDetail Member = {Member} viewList={viewList}/>
+        <CourseDetail member = {roleInfo.role === "member" || roleInfo.role === "admin"} viewList={viewList}/>
     )
 }
 
