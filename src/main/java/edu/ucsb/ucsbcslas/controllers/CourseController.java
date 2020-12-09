@@ -29,9 +29,9 @@ import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
 @RestController
-public class CourseController {
-  private final Logger logger = LoggerFactory.getLogger(CourseController.class);
+public class CourseController {LoggerFactory.getLogger(CourseController.class);
 
+  private final Logger logger = 
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
   @Autowired
