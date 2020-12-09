@@ -6,8 +6,9 @@ jest.mock("swr");
 
 describe("Home tests", () => {
   const filterData = [
-    {id: "1",
-  activeQuarter:"something that exists that isnt all"}
+    {
+      id: "1",
+      activeQuarter:"something that exists that isnt all"}
   ];
 
   test("renders without crashing", () => {

@@ -70,15 +70,6 @@ public class ActiveQuarterControllerTests {
   }
 
   
-  @Test
-  public void test_deleteFilter_unauthorizedIfNotAdmin() throws Exception {
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    
-    mockMvc
-    .perform(delete("/api/admin/filter/nuke").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-        .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-        .andExpect(status().isUnauthorized());
-  }
 
   @Test
   public void testSaveActiveQuarter() throws Exception {

@@ -63,14 +63,6 @@ public class ActiveQuarterController {
     return ResponseEntity.ok().body(body);
   }
 
-  @DeleteMapping(value = "/api/admin/filter/nuke", produces = "application/json")
-  public ResponseEntity<String> deleteFilter(@RequestHeader("Authorization") String authorization)
-      throws JsonProcessingException {
-    if (!authControllerAdvice.getIsAdmin(authorization))
-      return getUnauthorizedResponse("admin");
-    activeQuarterRepo.deleteAll();
-    return ResponseEntity.noContent().build();
-  }
 
   @GetMapping(value = "/api/public/filter", produces = "application/json")
   public ResponseEntity<String> getfilter() throws JsonProcessingException {

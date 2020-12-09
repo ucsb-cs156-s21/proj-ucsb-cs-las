@@ -24,7 +24,7 @@ const Home = () => {
 
 
     return (
-        <Jumbotron>s
+        <Jumbotron>
             <div className="text-left">
 
                 <h5>Welcome to the UCSB CS LAs App!</h5>
