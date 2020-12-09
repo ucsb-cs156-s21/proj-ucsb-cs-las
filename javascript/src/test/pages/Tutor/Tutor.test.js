@@ -13,7 +13,7 @@ import {
   buildDeleteTutor,
   buildUpdateTutor
 } from "main/services/Tutor/TutorService";
-import { ToastProvider } from "react-toast-notifications";
+
 jest.mock("main/services/Tutor/TutorService", () => ({
   buildCreateTutor: jest.fn(),
   buildDeleteTutor: jest.fn(),
@@ -22,6 +22,10 @@ jest.mock("main/services/Tutor/TutorService", () => ({
 import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn()
+}));
+import { useToasts } from 'react-toast-notifications'
+jest.mock('react-toast-notifications', () => ({
+  useToasts: jest.fn()
 }));
 
 describe("Tutor page test", () => {
@@ -49,6 +53,7 @@ describe("Tutor page test", () => {
 
   const getAccessTokenSilentlySpy = jest.fn();
   const mutateSpy = jest.fn();
+  const addToast = jest.fn();
 
   beforeEach(() => {
     useAuth0.mockReturnValue({
@@ -66,6 +71,22 @@ describe("Tutor page test", () => {
       error: undefined,
       mutate: mutateSpy
     });
+
+    // useSWR.mockReturnValueOnce({
+    //   data: tutors,
+    //   error: undefined,
+    //   mutate: mutateSpy
+    // });
+
+    // useSWR.mockReturnValueOnce({
+    //   data: tutors,
+    //   error: undefined,
+    //   mutate: mutateSpy
+    // });
+
+    useToasts.mockReturnValue({
+      addToast: addToast
+    })
   });
 
   afterEach(() => {
@@ -74,9 +95,9 @@ describe("Tutor page test", () => {
 
   test("renders without crashing", () => {
     render(
-      <ToastProvider>
+
         <Tutor />
-      </ToastProvider>
+
     );
   });
 
@@ -87,9 +108,9 @@ describe("Tutor page test", () => {
       mutate: mutateSpy
     });
     const { getByAltText } = render(
-      <ToastProvider>
+
         <Tutor />
-      </ToastProvider>
+
     );
     const loading = getByAltText("Loading");
     expect(loading).toBeInTheDocument();
@@ -102,9 +123,7 @@ describe("Tutor page test", () => {
       mutate: mutateSpy
     });
     const { getByText } = render(
-      <ToastProvider>
         <Tutor />
-      </ToastProvider>
     );
     const error = getByText(/error/);
     expect(error).toBeInTheDocument();
@@ -114,9 +133,9 @@ describe("Tutor page test", () => {
     const fakeDeleteFunction = jest.fn();
     buildDeleteTutor.mockReturnValue(fakeDeleteFunction);
     const { getAllByTestId } = render(
-      <ToastProvider>
+
         <Tutor />
-      </ToastProvider>
+
     );
     const deleteButtons = getAllByTestId("delete-button-1");
     userEvent.click(deleteButtons[0]);
@@ -130,9 +149,9 @@ describe("Tutor page test", () => {
     });
 
     const { getAllByTestId } = render(
-      <ToastProvider>
+
         <Tutor />
-      </ToastProvider>
+
     );
     const editButtons = getAllByTestId("edit-button-2");
     userEvent.click(editButtons[0]);
@@ -147,13 +166,62 @@ describe("Tutor page test", () => {
     });
 
     const { getByText } = render(
-      <ToastProvider>
+
         <Tutor />
-      </ToastProvider>
+
     );
     const newTutorButton = getByText("New Tutor");
     userEvent.click(newTutorButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+  test("delete a tutor with error", async () => {
+    
+    // fetchWithToken.mockImplementation(() => {
+    //   throw new Error();
+    // });
+
+    buildDeleteTutor.mockReturnValue(() => {
+      throw new Error();
+    });
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const { getAllByTestId } = render(    
+
+        <Tutor />
+
+    );
+
+    const deleteButtons = getAllByTestId("delete-button-1");
+    userEvent.click(deleteButtons[0]);
+
+    expect(addToast).toHaveBeenCalledTimes(1);
+    expect(addToast).toHaveBeenCalledWith("Error deleting tutor", { appearance: 'error' });
+  });
+
 });
+
+// fetchWithToken.mockImplementation(() => {
+//   throw new Error();
+// });
+
+// const pushSpy = jest.fn();
+// useHistory.mockReturnValue({
+//   push: pushSpy
+// });
+
+// const { getByText } = render(
+//   <NewTutor />
+// );
+
+// const submitButton = getByText("Submit");
+// expect(submitButton).toBeInTheDocument();
+// userEvent.click(submitButton);
+
+// expect(addToast).toHaveBeenCalledTimes(1);
+// expect(addToast).toHaveBeenCalledWith("Error saving tutor", { appearance: 'error' });

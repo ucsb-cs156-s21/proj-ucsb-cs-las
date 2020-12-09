@@ -19,7 +19,7 @@ const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { name, picture, email } = user;
   const history = useHistory();
-  const { addToast } = useToasts();
+  //const { addToast } = useToasts();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
@@ -54,7 +54,9 @@ const Tutor = () => {
     return <Loading />;
   }
 
-  const deleteTutor = buildDeleteTutor(getToken, mutateTutors, () => {});
+  const deleteTutor = buildDeleteTutor(getToken, mutateTutors, () => {
+    addToast("Error deleting tutor", { appearance: "error" });
+  });
   return (
     <>
       {(isInstructor || isAdmin) && (
