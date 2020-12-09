@@ -22,6 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
@@ -289,6 +293,7 @@ public class TutorAssignmentControllerTests {
         TutorAssignment actualTutorAssignment = objectMapper.readValue(responseString, TutorAssignment.class);
         assertEquals(actualTutorAssignment, expectedTutorAssignment);
     }
+
     @Test
     public void testGetTutorAssignmentByCourseID() throws Exception{
         List<TutorAssignment> expectedTutorAssignments = new ArrayList<TutorAssignment>();
@@ -296,8 +301,8 @@ public class TutorAssignmentControllerTests {
         Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
         expectedTutorAssignments.add(new TutorAssignment(1L, c, t, "TA"));
          // mockito is the library that allows us to do this when stuf
-            when(mockTutorAssignmentRepository.findAllByCourseId(1L)).thenReturn((expectedTutorAssignments));
-            MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/1").contentType("application/json")
+         when(mockTutorAssignmentRepository.findAllByCourseId(1L)).thenReturn((expectedTutorAssignments));
+         MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/1").contentType("application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
         
             verify(mockTutorAssignmentRepository, times(1)).findAllByCourseId(1L);
@@ -307,4 +312,29 @@ public class TutorAssignmentControllerTests {
             assertEquals(actualTA, expectedTutorAssignments);
 
     }
+
+    
+    @Test
+    public void testGetCourseNumbers() throws Exception {
+        List<Course> expectedCourses = new ArrayList<Course>();
+        Course c = new Course(2L, "CMPSC 148", "20203", "Chandra", "Krintz", "krintz@example.org");
+        expectedCourses.add(c);
+        Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+        TutorAssignment ta = new TutorAssignment(null, c, t, "TA");
+        List<TutorAssignment> expectedTutorAssignment = new ArrayList<TutorAssignment>();
+        expectedTutorAssignment.add(ta);
+        Set<String> expectedCourseNumbers = new HashSet<String>();
+        expectedCourseNumbers.add(ta.getCourse().getName());
+
+        when(mockTutorAssignmentRepository.findAll()).thenReturn((expectedTutorAssignment));
+        MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/course_numbers").contentType("application/json")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+        verify(mockTutorAssignmentRepository, times(1)).findAll();
+
+        String responseString = response.getResponse().getContentAsString();
+        Set<String> actualCourseNumber = objectMapper.readValue(responseString, new TypeReference<Set<String>>(){});
+        assertEquals(actualCourseNumber, expectedCourseNumbers);
+    }
+
 }
