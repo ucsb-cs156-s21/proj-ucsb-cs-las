@@ -115,12 +115,15 @@ public class TutorControllerTests {
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
     expectedCourse.add(c);
     when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
-
+    
+    AppUser user = new AppUser(1L, "email", "L", "kH");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
 
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedTutor);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockTutorRepository.save(any())).thenReturn(expectedTutor);
     
     MvcResult response = mockMvc
@@ -228,14 +231,38 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testDeleteTutor_tutorExists() throws Exception {
-    List<Course> expectedCourse = new ArrayList<Course>();
-    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    expectedCourse.add(c);
-    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+  public void testDeleteTutor_TutorExists_admin() throws Exception {
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     when(mockTutorRepository.findById(1L)).thenReturn(Optional.of(expectedTutor));
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    MvcResult response = mockMvc
+        .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isNoContent()).andReturn();
+    verify(mockTutorRepository, times(1)).findById(expectedTutor.getId());
+    verify(mockTutorRepository, times(1)).deleteById(expectedTutor.getId());
+
+    String responseString = response.getResponse().getContentAsString();
+
+    assertEquals(responseString.length(), 0);
+  }
+
+  @Test
+  public void testDeleteTutor_tutorExists_Instr() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+
+    AppUser user = new AppUser(1L, "email", "L", "kH");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+    Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
+    when(mockTutorRepository.findById(1L)).thenReturn(Optional.of(expectedTutor));
+
+
     MvcResult response = mockMvc
         .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
