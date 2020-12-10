@@ -245,3 +245,23 @@ describe("Tutor page test", () => {
   //   });
   // });
 });
+
+// fetchWithToken.mockImplementation(() => {
+//   throw new Error();
+// });
+
+// const pushSpy = jest.fn();
+// useHistory.mockReturnValue({
+//   push: pushSpy
+// });
+
+// const { getByText } = render(
+//   <NewTutor />
+// );
+
+// const submitButton = getByText("Submit");
+// expect(submitButton).toBeInTheDocument();
+// userEvent.click(submitButton);
+
+// expect(addToast).toHaveBeenCalledTimes(1);
+// expect(addToast).toHaveBeenCalledWith("Error saving tutor", { appearance: 'error' });

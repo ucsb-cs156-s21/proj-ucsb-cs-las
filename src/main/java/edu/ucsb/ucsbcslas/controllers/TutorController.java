@@ -125,7 +125,10 @@ public class TutorController {
                 .findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
         List<Tutor> tutorList = new ArrayList<Tutor>();
         ObjectMapper mapper = new ObjectMapper();
-        if (!courseList.isEmpty()) {
+        
+        if(courseList.isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else {
             for (Course c : courseList) {
                 List<TutorAssignment> allTutorAssignments = tutorAssignmentRepository.findAllByCourse(c);
                 for (TutorAssignment a : allTutorAssignments) {
