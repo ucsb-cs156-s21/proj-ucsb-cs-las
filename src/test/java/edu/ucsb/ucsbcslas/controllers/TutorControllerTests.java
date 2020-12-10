@@ -66,6 +66,10 @@ public class TutorControllerTests {
 
   @Test
   public void testGetTutors() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
     List<Tutor> expectedTutors = new ArrayList<Tutor>();
     expectedTutors.add(new Tutor(1L, "fname", "lname", "email"));
     when(mockTutorRepository.findAll()).thenReturn(expectedTutors);
@@ -104,6 +108,12 @@ public class TutorControllerTests {
 
   @Test
   public void testSaveTutor() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+
+
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedTutor);
@@ -142,6 +152,10 @@ public class TutorControllerTests {
 
   @Test
   public void testUpdateTutor_tutorExists_updateValues() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
     Tutor inputTutor = new Tutor(1L, "fname", "lname", "email");
     Tutor savedTutor = new Tutor(1L, "first name", "last name", "myemail");
     String body = objectMapper.writeValueAsString(inputTutor);
@@ -211,6 +225,10 @@ public class TutorControllerTests {
 
   @Test
   public void testDeleteTutor_tutorExists() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     when(mockTutorRepository.findById(1L)).thenReturn(Optional.of(expectedTutor));
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
