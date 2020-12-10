@@ -20,9 +20,10 @@ function AppNavbar() {
         <Navbar.Brand data-testid="brand">UCSB CS LAs</Navbar.Brand>
       </LinkContainer>
       <Nav>
-        {isAdmin &&
-          <NavDropdown title="Admin" id="basic-nav-dropdown">
-            <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
+        { isAdmin &&
+          <NavDropdown title="Admin">
+            <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/viewLogins">View Logins</NavDropdown.Item>
             <NavDropdown.Item href="/admin/tutorHistory">Tutor History</NavDropdown.Item>
           </NavDropdown>
         }
