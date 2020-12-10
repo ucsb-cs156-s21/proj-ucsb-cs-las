@@ -213,6 +213,10 @@ public class TutorControllerTests {
 
   @Test
   public void testDeleteTutor_unauthorizedIfNotAdmin() throws Exception {
+    AppUser user = new AppUser(1L, "email", "L", "kH");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
     mockMvc
         .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
