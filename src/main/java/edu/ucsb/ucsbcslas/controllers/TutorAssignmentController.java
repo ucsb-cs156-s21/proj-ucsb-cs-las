@@ -108,18 +108,22 @@ public class TutorAssignmentController {
     if (!tutorAssignment.isPresent()) {
       return ResponseEntity.notFound().build();
     }
-
+    logger.info(incomingTutorAssignment);
     JSONObject ta = new JSONObject(incomingTutorAssignment);
     TutorAssignment newAssignment = new TutorAssignment();
-
+    logger.info("ta: ", ta.toString());
     JSONObject cInfo = new JSONObject(ta.get("course").toString());
+    logger.info("cInfo: ", cInfo.toString());
     Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
       cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
     newAssignment.setCourse(c);
 
-    if(ta.getString("tutorEmail") != tutorAssignment.get().getTutor().getEmail()){
+    
+    logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
+    logger.info("ta: ", ta.getString("tutorEmail"));
+    if(!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))){
       Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
-      
+      logger.info("tutor: ", tutor);
       if(tutor.isPresent()){
         newAssignment.setTutor(tutor.get());
       }
@@ -143,19 +147,6 @@ public class TutorAssignmentController {
     String body = mapper.writeValueAsString(newAssignment);
     return ResponseEntity.ok().body(body);
   }
-
-//   @DeleteMapping(value = "/api/admin/tutorAssignments/{id}", produces = "application/json")
-//   public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
-//       @PathVariable("id") Long id) throws JsonProcessingException {
-//     if (!authControllerAdvice.getIsAdmin(authorization))
-//       return getUnauthorizedResponse("admin");
-//     Optional<Course> course = courseRepository.findById(id);
-//     if (!course.isPresent()) {
-//       return ResponseEntity.notFound().build();
-//     }
-//     courseRepository.deleteById(id);
-//     return ResponseEntity.noContent().build();
-//   }
 
   @GetMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
   public ResponseEntity<String> getTutorAssignment(@PathVariable("id") Long id) throws JsonProcessingException {

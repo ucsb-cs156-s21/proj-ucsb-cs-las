@@ -34,12 +34,16 @@ describe("TutorAssignmentForm tests", () => {
                     instructorLastName: "Krintz",
                     instructorEmail: "krintz@example.org",
                     },
+          tutor:    {email: "scottpchow@ucsb.edu",
+                    firstName: "Scott",
+                    id: 1,
+                    lastName: "Chow"},
           tutorEmail:   "scottpchow@ucsb.edu", 
           assignmentType: "TA"
         };
 
     const sampleTutorAssignment2 = {
-      id: 3,
+      id: 1,
       course:  {name: "CMPSC 148",
                 id: 2,
                 quarter: "20203",
@@ -51,7 +55,9 @@ describe("TutorAssignmentForm tests", () => {
                 firstName: "Scott",
                 id: 1,
                 lastName: "Chow"},
-        assignmentType: "TA"
+        assignmentType: "TA",
+        tutorEmail: "scottpchow@ucsb.edu",
+        index: 1,
       };    
 
     const mutateSpy = jest.fn();
@@ -67,9 +73,9 @@ describe("TutorAssignmentForm tests", () => {
     render(<TutorAssignmentForm />);
   });
 
-  // test("component with existing course renders without crashing", () => {
-  //   render(<TutorAssignmentForm existingTutorAssignment={sampleTutorAssignment2}/>);
-  // });
+  test("component with existing course renders without crashing", () => {
+    render(<TutorAssignmentForm existingTutorAssignment={sampleTutorAssignment}/>);
+  });
 
   test("error mesage appears if you are a member but not an admin or instructor", () => {
     useSWR.mockReturnValue({
@@ -93,30 +99,6 @@ describe("TutorAssignmentForm tests", () => {
     expect(loading).toBeInTheDocument();
   });
 
-  // test("updating TutorAssignment name works", async () => {
-
-  //   const updateTutorAssignmentMock = jest.fn();
-
-  //   const { getByText, getByDisplayValue } = render
-  //     (<TutorAssignmentForm updateTutorAssignment={updateTutorAssignmentMock} existingTutorAssignment={sampleTutorAssignment2}/>)
-  //   ;
-
-  //   const updatedTutorAssignment = {
-  //     ...sampleTutorAssignment,
-  //     course: "new CMPSC 156",
-  //   };
-
-  //   const input = getByDisplayValue(sampleTutorAssignment.course);
-  //   userEvent.clear(input);
-  //   userEvent.type(input, updatedTutorAssignment.course);
-
-  //   const submitButton = getByText("Submit");
-  //   userEvent.click(submitButton);
-
-  //   expect(updateTutorAssignmentMock).toHaveBeenCalledTimes(1);
-  //   expect(updateTutorAssignmentMock).toHaveBeenCalledWith(updatedTutorAssignment, updatedTutorAssignment.id);
-
-  // });
 
   test("creating TutorAssignment works", async () => {
 

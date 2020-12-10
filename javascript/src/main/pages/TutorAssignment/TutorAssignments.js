@@ -5,7 +5,6 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
-// import { buildDeleteTutorAssignment} from "main/services/TutorAssignment/TutorAssignmentService";
 
 import {useHistory} from "react-router-dom";
 
@@ -43,7 +42,6 @@ const TutorAssignment = () => {
   if (!tutorAssignmentList) {
     return <Loading />;
   }
-  // const deleteTutorAssignment = buildDeleteTutorAssignment(getToken, mutateTutorAssignment);
 
   return (
     <>

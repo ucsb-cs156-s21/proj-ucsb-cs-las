@@ -6,12 +6,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignments";
 import userEvent from "@testing-library/user-event";
-import { fetchWithToken } from "main/utils/fetch";
-jest.mock("main/utils/fetch");
-import { buildCreateTutorAssignment, buildDeleteTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
+
 jest.mock("main/services/TutorAssignment/TutorAssignmentService", () => ({
   buildCreateTutorAssignment: jest.fn(),
-  buildDeleteTutorAssignment: jest.fn(),
   buildUpdateTutorAssignment: jest.fn()
 }) );
 import { useHistory } from "react-router-dom";
@@ -122,37 +119,7 @@ describe("TutorAssignment page test", () => {
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
-//   test("can delete a tutor assignment", async () => {
-    // useSWR.mockReturnValue({
-    //     data: tutorAssignments,
-    //     error: undefined,
-    //     mutate: mutateSpy,
-    // });
-//     const fakeDeleteFunction = jest.fn();
-//     buildDeleteTutorAssignment.mockReturnValue(fakeDeleteFunction);
-//     const { getAllByTestId } = render(<TutorAssignment />);
-//     const deleteButtons = getAllByTestId("delete-button");
-//     userEvent.click(deleteButtons[0]);
-//     await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
-//   });
 
-//   test("can edit a tutor assignment", async () => {
-    // useSWR.mockReturnValue({
-    //     data: tutorAssignments,
-    //     error: undefined,
-    //     mutate: mutateSpy,
-    // });
-//     const pushSpy = jest.fn();
-//     useHistory.mockReturnValue({
-//       push: pushSpy
-//     });
-
-//     const { getAllByTestId } = render(<TutorAssignment />);
-//     const editButtons = getAllByTestId("edit-button");
-//     userEvent.click(editButtons[0]);
-
-//     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-//   });
 
   test("can click to add a tutor assignment if admin", async () => {
     useSWR.mockReturnValueOnce({
