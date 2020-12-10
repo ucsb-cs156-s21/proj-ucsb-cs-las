@@ -144,26 +144,45 @@ public class OnlineOfficeHourControllerTests {
         .andExpect(status().isUnauthorized());
     }
 
-//     @Test
-//   public void testDeleteCourse_unauthorizedIfNotAdmin() throws Exception {
-//     mockMvc
-//         .perform(delete("/api/admin/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-//             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-//         .andExpect(status().isUnauthorized());
-//   }
+    @Test
+    public void testDeleteOfficeHour_officeHourExists() throws Exception {
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
+        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
+        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
+        when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.of(expectedOfficeHour));
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        MvcResult response = mockMvc
+            .perform(delete("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isNoContent()).andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).findById(expectedOfficeHour.getId());
+        verify(mockOnlineOfficeHoursRepository, times(1)).deleteById(expectedOfficeHour.getId());
 
-// testDeleteOfficeHour_ifNotAdminOrTutor
-// testDeleteOfficeHour
-//  @Test
-//   public void testDeleteCourse_courseNotFound() throws Exception {
-//     long id = 1L;
-//     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-//     when(mockCourseRepository.findById(id)).thenReturn(Optional.empty());
-//     mockMvc
-//         .perform(delete("/api/admin/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-//             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-//         .andExpect(status().isNotFound()).andReturn();
-//     verify(mockCourseRepository, times(1)).findById(id);
-//     verify(mockCourseRepository, times(0)).deleteById(id);
-//   }
-}
+        String responseString = response.getResponse().getContentAsString();
+
+        assertEquals(responseString.length(), 0);
+    }
+
+    @Test
+    public void testDeleteOfficeHour_unauthorizedIfNotAdmin() throws Exception {
+        mockMvc
+            .perform(delete("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testDeleteOfficeHour_courseNotFound() throws Exception {
+        long id = 1L;
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockOnlineOfficeHoursRepository.findById(id)).thenReturn(Optional.empty());
+        mockMvc
+            .perform(delete("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isNotFound()).andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).findById(id);
+        verify(mockOnlineOfficeHoursRepository, times(0)).deleteById(id);
+    }
+
+ }
