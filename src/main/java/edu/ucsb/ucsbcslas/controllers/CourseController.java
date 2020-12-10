@@ -62,6 +62,7 @@ public class CourseController {
       @PathVariable("id") Long id, @RequestBody @Valid Course incomingCourse) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
+    
     Optional<Course> course = courseRepository.findById(id);
     if (!course.isPresent()) {
       return ResponseEntity.notFound().build();
