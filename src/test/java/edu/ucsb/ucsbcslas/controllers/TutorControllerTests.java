@@ -93,6 +93,7 @@ public class TutorControllerTests {
     expectedTutors.add(new Tutor(1L, "fname", "lname", "email"));
     when(mockTutorRepository.findAll()).thenReturn(expectedTutors);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
     MvcResult response = mockMvc.perform(get("/api/member/tutors").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
@@ -127,7 +128,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testSaveTutor() throws Exception {
+  public void testSaveTutor_Instr() throws Exception {
     List<Course> expectedCourse = new ArrayList<Course>();
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
     expectedCourse.add(c);
@@ -136,6 +137,35 @@ public class TutorControllerTests {
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+
+    Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedTutor);
+    when(mockTutorRepository.save(any())).thenReturn(expectedTutor);
+    
+    MvcResult response = mockMvc
+        .perform(post("/api/member/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockTutorRepository, times(1)).save(expectedTutor);
+
+    String responseString = response.getResponse().getContentAsString();
+    Tutor actualTutor = objectMapper.readValue(responseString, Tutor.class);
+    assertEquals(actualTutor, expectedTutor);
+  }
+
+  @Test
+  public void testSaveTutor_Admin() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+    
+    AppUser user = new AppUser(1L, "email", "L", "kH");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
 
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
@@ -209,7 +239,7 @@ public class TutorControllerTests {
     Tutor inputTutor = new Tutor(1L, "fname", "lname", "email");
     Tutor savedTutor = new Tutor(1L, "first name", "last name", "myemail");
     String body = objectMapper.writeValueAsString(inputTutor);
-    
+
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
