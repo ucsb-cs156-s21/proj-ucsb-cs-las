@@ -129,7 +129,7 @@ public class TutorControllerTests {
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+
     mockMvc
         .perform(post("/api/member/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
@@ -165,7 +165,6 @@ public class TutorControllerTests {
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
 
     mockMvc
         .perform(put("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
