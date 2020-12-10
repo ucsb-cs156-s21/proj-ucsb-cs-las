@@ -1,6 +1,6 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import QuarterFilter from "main/pages/QuarterFilter";
+import QuarterFilter from "main/pages/Admin/QuarterFilter";
 
 import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
