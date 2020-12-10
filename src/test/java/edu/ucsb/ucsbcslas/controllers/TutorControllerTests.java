@@ -123,12 +123,16 @@ public class TutorControllerTests {
 
   @Test
   public void test_saveTutor_unauthorizedIfNotAdmin() throws Exception {
+
+    List<Course> expectedCourse = new ArrayList<Course>();
+
     Tutor expectedTutor = new Tutor(1L, "fname", "lname", "email");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedTutor);
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
 
     mockMvc
         .perform(post("/api/member/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -160,11 +164,15 @@ public class TutorControllerTests {
 
   @Test
   public void testUpdateTutor_unauthorizedIfNotAdmin() throws Exception {
+
+    List<Course> expectedCourse = new ArrayList<Course>();
+
     Tutor inputTutor = new Tutor(1L, "fname", "lname", "email");
     String body = objectMapper.writeValueAsString(inputTutor);
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
 
     mockMvc
         .perform(put("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -220,10 +228,12 @@ public class TutorControllerTests {
 
   @Test
   public void testDeleteTutor_unauthorizedIfNotAdmin() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
     AppUser user = new AppUser(1L, "email", "L", "kH");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
     mockMvc
         .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
