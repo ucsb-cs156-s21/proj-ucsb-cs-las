@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import edu.ucsb.ucsbcslas.entities.Course;
+import edu.ucsb.ucsbcslas.models.Course;
 
 @Entity
 public class TutorAssignment {

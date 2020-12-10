@@ -1,4 +1,4 @@
-package edu.ucsb.ucsbcslas.entities;
+package edu.ucsb.ucsbcslas.models;
 
 import java.util.Objects;
 

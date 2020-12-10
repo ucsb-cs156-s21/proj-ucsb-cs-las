@@ -84,7 +84,7 @@ public class TutorAssignmentController {
 
         JSONObject cInfo = new JSONObject(ta.get("course").toString());
         logger.info("course= {}", cInfo);
-        Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"),
+        Course c = new Course(cInfo.getLong("id"), cInfo.getString("number"), cInfo.getString("quarter"),
                 cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"),
                 cInfo.getString("instructorEmail"));
         newAssignment.setCourse(c);
@@ -171,7 +171,7 @@ public class TutorAssignmentController {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
         Set<String> courseNumbers = new HashSet<String>();
         for (TutorAssignment ta : tutorAssignments) {
-            courseNumbers.add(ta.getCourse().getName());
+            courseNumbers.add(ta.getCourse().getNumber());
 
         }
 
@@ -186,7 +186,7 @@ public class TutorAssignmentController {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
         List<TutorAssignment> tutorAssignmentsMatchingCourse = new ArrayList<TutorAssignment>();
         for (TutorAssignment ta : tutorAssignments) {
-            if (ta.getCourse().getName().equals(courseNumber)) {
+            if (ta.getCourse().getNumber().equals(courseNumber)) {
                 tutorAssignmentsMatchingCourse.add(ta);
             }
 

@@ -1,4 +1,4 @@
-package edu.ucsb.ucsbcslas.entities;
+package edu.ucsb.ucsbcslas.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

@@ -225,7 +225,7 @@ public class TutorAssignmentControllerTests {
     @Test
     public void testSaveTutorAssignment_Unauthorized() throws Exception {
         List<Course> expectedTutorAssignmentss = new ArrayList<Course>();
-        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203',"
+        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {number: 'CMPSC 148', id: '2', quarter: '20203',"
             + "instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, assignmentType: 'TA'}";
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
         when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
@@ -237,7 +237,7 @@ public class TutorAssignmentControllerTests {
 
     @Test
     public void testSaveTutorAssignment_BadRequest() throws Exception {
-        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203', "
+        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {number: 'CMPSC 148', id: '2', quarter: '20203', "
             +"instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, assignmentType: 'TA'}";
         when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.empty());
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -251,7 +251,7 @@ public class TutorAssignmentControllerTests {
         Course c = new Course(2L, "CMPSC 148", "20203", "Chandra", "Krintz", "krintz@example.org");
         Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
         TutorAssignment expectedTutorAssignment = new TutorAssignment(null, c, t, "TA");
-        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203',"+ 
+        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {number: 'CMPSC 148', id: '2', quarter: '20203',"+ 
             "instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, assignmentType: 'TA'}";
         when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -275,7 +275,7 @@ public class TutorAssignmentControllerTests {
         expectedTutorAssignmentss.add(c);
         Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
         TutorAssignment expectedTutorAssignment = new TutorAssignment(null, c, t, "TA");
-        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203',"+ 
+        String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {number: 'CMPSC 148', id: '2', quarter: '20203',"+ 
             "instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, assignmentType: 'TA'}";
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
         when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
@@ -512,7 +512,7 @@ public class TutorAssignmentControllerTests {
         List<TutorAssignment> expectedTutorAssignment = new ArrayList<TutorAssignment>();
         expectedTutorAssignment.add(ta);
         Set<String> expectedCourseNumbers = new HashSet<String>();
-        expectedCourseNumbers.add(ta.getCourse().getName());
+        expectedCourseNumbers.add(ta.getCourse().getNumber());
 
         when(mockTutorAssignmentRepository.findAll()).thenReturn((expectedTutorAssignment));
         MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/course_numbers").contentType("application/json")
