@@ -1,6 +1,7 @@
 import React from "react";
-
-const CourseDetail = () => {
+import { useParams } from "react-router-dom";
+//placeholder page for tutor detail
+const CourseDetail = ({courseId}) => {
     return (
       <div>
         <p>This is the course detail page.</p>
