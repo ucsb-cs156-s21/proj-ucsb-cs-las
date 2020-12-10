@@ -17,12 +17,15 @@ import org.mockito.InjectMocks;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import edu.ucsb.ucsbcslas.repositories.LoginsRepository;
 
 @ExtendWith(SpringExtension.class)
 public class Auth0MembershipServiceTests {
 
   @MockBean
   AdminRepository adminRepository;
+  @MockBean
+  LoginsRepository loginsRepository;
   @InjectMocks
   Auth0MembershipService service = new Auth0MembershipService();
 
@@ -41,6 +44,7 @@ public class Auth0MembershipServiceTests {
   public void setUp() {
     ReflectionTestUtils.setField(service, "memberHostedDomain", "ucsb.edu");
     ReflectionTestUtils.setField(service, "adminRepository", adminRepository);
+    ReflectionTestUtils.setField(service, "loginsRepository", loginsRepository);
     ReflectionTestUtils.setField(service, "namespace", "namespace");
   }
 
