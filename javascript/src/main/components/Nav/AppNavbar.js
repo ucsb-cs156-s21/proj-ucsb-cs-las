@@ -23,6 +23,7 @@ function AppNavbar() {
         {isAdmin &&
           <NavDropdown title="Admin" id="basic-nav-dropdown">
             <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
+<<<<<<< HEAD
             <NavDropdown.Item href="/admin/tutorHistory">
               Tutor History
             </NavDropdown.Item>
@@ -32,12 +33,19 @@ function AppNavbar() {
           <NavDropdown title="Admin">
             <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
             <NavDropdown.Item href="/admin/viewLogins">View Logins</NavDropdown.Item>
+=======
+            <NavDropdown.Item href="/admin/tutorHistory">Tutor History</NavDropdown.Item>
+>>>>>>> 0b87238a654fe4452ddb37bc1bda76cdf63a8b5c
           </NavDropdown>
         }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
+<<<<<<< HEAD
         {isAdmin &&
+=======
+        {isAdmin && 
+>>>>>>> 0b87238a654fe4452ddb37bc1bda76cdf63a8b5c
           <LinkContainer to={"/courses"}>
             <Nav.Link>Courses</Nav.Link>
           </LinkContainer>
