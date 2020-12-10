@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
 import { Button } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
@@ -19,8 +20,8 @@ const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { name, picture, email } = user;
   const history = useHistory();
-  const { addToast } = useToasts();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
+  const { addToast } = useToasts();
 
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutors", getToken],
@@ -33,6 +34,11 @@ const Tutor = () => {
     mutate: mutateInstructorTutors
   } = useSWR(["/api/member/instructorTutors", getToken], fetchWithToken);
 
+  useEffect(() => {
+    mutateTutors();
+    mutateInstructorTutors();
+  }, []);
+
   const { data: instructorCourseList } = useSWR(
     [`/api/member/courses/forInstructor/${email}`, getToken],
     fetchWithToken
@@ -43,7 +49,8 @@ const Tutor = () => {
     roleInfo.role &&
     instructorCourseList &&
     instructorCourseList.length > 0;
-  const isAdmin = roleInfo && roleInfo.role.toLowerCase() == "admin";
+  const isAdmin =
+    roleInfo && roleInfo.role && roleInfo.role.toLowerCase() == "admin";
 
   if (error || errorInstructor) {
     return (
@@ -54,13 +61,16 @@ const Tutor = () => {
     return <Loading />;
   }
 
-  const deleteTutor = buildDeleteTutor(getToken, mutateTutors, () => {
-    addToast("Error deleting tutor", { appearance: "error" });
-  });
+  const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
   return (
     <>
       {(isInstructor || isAdmin) && (
-        <Button onClick={() => history.push("/tutors/new")}>New Tutor</Button>
+        <Button
+          data-testid={`new-tutor-button`}
+          onClick={() => history.push("/tutors/new")}
+        >
+          New Tutor
+        </Button>
       )}
       {instructorTutorList && (
         <TutorTable
