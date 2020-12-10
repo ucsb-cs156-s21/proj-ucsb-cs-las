@@ -32,7 +32,7 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 public class CourseController {
 
   private final Logger logger = LoggerFactory.getLogger(CourseController.class);
-  @Autowired
+  @Autowired 
   private AuthControllerAdvice authControllerAdvice;
   @Autowired
   private CourseRepository courseRepository;
