@@ -32,8 +32,6 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
-import edu.ucsb.ucsbcslas.entities.AppUser;
-
 @WebMvcTest(value = CourseController.class)
 @WithMockUser
 public class CourseControllerTests {
@@ -221,81 +219,4 @@ public class CourseControllerTests {
     verify(mockCourseRepository, times(0)).deleteById(id);
   }
 
-  @Test
-  public void testGetMyCourses() throws Exception {
-    List<Course> expectedCourses = new ArrayList<Course>();
-    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
-    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/member/courses").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-
-    verify(mockCourseRepository, times(1)).findAll();
-
-    String responseString = response.getResponse().getContentAsString();
-    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
-    });
-    assertEquals(actualCourses, expectedCourses);
-  }
-
-  @Test
-  public void testGetMyCourses_notFound() throws Exception {
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    mockMvc.perform(get("/api/member/courses").contentType("application/json")
-      .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
-  }
-
-  @Test
-  public void testGetMyCourses_notAdmin() throws Exception {
-    List<Course> expectedCourses = new ArrayList<Course>();
-    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
-    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
-    MvcResult response = mockMvc.perform(get("/api/member/courses").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-
-    verify(mockCourseRepository, times(1)).findAllByInstructorEmail("email");
-
-    String responseString = response.getResponse().getContentAsString();
-    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
-    });
-    assertEquals(actualCourses, expectedCourses);
-  }
-
-
-  @Test
-  public void testGetMyCoursesUnauthorized() throws Exception {
-    List<Course> expectedCourses = new ArrayList<Course>();
-    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
-    mockMvc.perform(get("/api/member/courses").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
-  }
-
-  @Test
-  public void testGetMyCoursesInstructor() throws Exception {
-    List<Course> expectedCourses = new ArrayList<Course>();
-    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
-    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
-    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/member/courses/forInstructor/email").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-
-    verify(mockCourseRepository, times(1)).findAllByInstructorEmail("email");
-
-    String responseString = response.getResponse().getContentAsString();
-    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
-    });
-    assertEquals(actualCourses, expectedCourses);
-  }
-
-  @Test
-  public void testGetMyCoursesInstructorUnauthorized() throws Exception {
-    mockMvc.perform(get("/api/member/courses/forInstructor/email").contentType("application/json")
-    .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
-  }
 }
