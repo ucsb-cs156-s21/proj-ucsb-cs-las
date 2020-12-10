@@ -38,10 +38,11 @@ function AppNavbar() {
             <Nav.Link>Courses</Nav.Link>
           </LinkContainer>
         }
-        {isAdmin &&
-          <LinkContainer to={"/setActiveQuarter"}>
-            <Nav.Link>SetActiveQuarter</Nav.Link>
-          </LinkContainer>
+       { isAdmin &&
+          <NavDropdown title="Admin">
+            <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/setActiveQuarter">Set Quarter Filter</NavDropdown.Item>
+          </NavDropdown>
         }
         { isMember &&
           (<LinkContainer to={"/tutorAssignment"}>
