@@ -20,7 +20,7 @@ describe("TutorAssignment page test", () => {
   const tutorAssignments = [
     {
       id: 1,
-      course:  {name: "CMPSC 156",
+      course:  {number: "CMPSC 156",
                 id: 1,
                 quarter: "20202",
                 instructorFirstName: "Phill",
@@ -35,7 +35,7 @@ describe("TutorAssignment page test", () => {
     },
     {
         id: 2,
-        course:{name: "CMPSC 148",
+        course:{number: "CMPSC 148",
                 id: 2,
                 quarter: "20204",
                 instructorFirstName: "Jack",

@@ -8,7 +8,7 @@ import userEvent from "@testing-library/user-event";
 describe("TutorAssignmentForm tests", () => {
     const courses = [
         {
-        name: "CMPSC 156",
+        number: "CMPSC 156",
         id: 1,
         quarter: "20202",
         instructorFirstName: "Phill",
@@ -16,7 +16,7 @@ describe("TutorAssignmentForm tests", () => {
         instructorEmail: "phtcon@ucsb.edu",
         },
         {
-        name: "CMPSC 148",
+        number: "CMPSC 148",
         id: 2,
         quarter: "20203",
         instructorFirstName: "Chandra",
@@ -27,7 +27,7 @@ describe("TutorAssignmentForm tests", () => {
   
     const sampleTutorAssignment = {
           id: 1,
-          course:  {name: "CMPSC 148",
+          course:  {number: "CMPSC 148",
                     id: 2,
                     quarter: "20203",
                     instructorFirstName: "Chandra",
@@ -107,7 +107,7 @@ describe("TutorAssignmentForm tests", () => {
       (<TutorAssignmentForm createTutorAssignment={createTutorAssignmentMock} />)
     ;
 
-    const courseSelect = getByLabelText("Course Name");
+    const courseSelect = getByLabelText("Course Number");
     userEvent.selectOptions(courseSelect, "1");
 
     const tutorInput = getByLabelText("Tutor Email");

@@ -20,7 +20,7 @@ export default ({tutorAssignments, isInstructor}) => {
     }
 
     const renderTutorName = (row) => row.tutor.firstName + " " +row.tutor.lastName;
-    const renderCourseNameYear = (row) => {
+    const renderCourseNumberYear = (row) => {
         const quarter = row.course.quarter;
         return row.course.number + " " + asHumanQuarter(quarter);
     }
@@ -29,10 +29,10 @@ export default ({tutorAssignments, isInstructor}) => {
         dataField: 'id',
         text: 'id'
     }, {
-        dataField: 'courseNameYear',
+        dataField: 'courseNumberYear',
         isDummyField: true,
         text: 'Course',
-        formatter: (cell, row) => renderCourseNameYear(row)
+        formatter: (cell, row) => renderCourseNumberYear(row)
     }, {
         dataField: 'tutorName',
         isDummyField: true,
