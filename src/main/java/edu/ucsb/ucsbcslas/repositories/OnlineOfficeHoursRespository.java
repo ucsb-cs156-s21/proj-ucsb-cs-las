@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OnlineOfficeHoursRespository extends CrudRepository<OnlineOfficeHours, Long> {
   List<OnlineOfficeHours> findAll();
-  List<OnlineOfficeHours> findAllByTutorAssignmentAndCourse(TutorAssignment tutorAssignment, Course course);
+  List<OnlineOfficeHours> findAllByTutorAssignment(TutorAssignment tutorAssignment);
 }

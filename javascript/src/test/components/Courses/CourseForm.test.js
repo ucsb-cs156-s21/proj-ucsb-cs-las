@@ -11,8 +11,8 @@ describe("CourseForm tests", () => {
     "quarter": "F20",
     "instructorFirstName": "Phill",
     "instructorLastName": "Conrad",
-    "instructorEmail": "phtcon@ucsb.edu"
-  }
+    "instructorEmail": "phtcon@ucsb.edu",
+  };
 
   test("empty component renders without crashing", () => {
     render(<CourseForm />);

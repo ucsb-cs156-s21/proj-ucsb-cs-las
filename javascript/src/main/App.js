@@ -19,6 +19,8 @@ import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
 import { fetchWithToken } from "main/utils/fetch";
+import CourseShow from "main/pages/Courses/CourseShow";
+
 
 function App() {
   const { isLoading, getAccessTokenSilently: getToken } = useAuth0();
@@ -37,6 +39,7 @@ function App() {
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/courses/show/:courseId" component={CourseShow} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />

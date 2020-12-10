@@ -26,7 +26,7 @@ public class TutorAssignmentOfficeHourView {
     }
     @Override
     public String toString() {
-      return String.format("TutorAssignmentOfficeHourView[tutorAssignment=%s,onlineOfficeHours=%d]",tutorAssignment,onlineOfficeHours);
+      return String.format("TutorAssignmentOfficeHourView[ tutorAssignment=%s, onlineOfficeHours=%d ]",tutorAssignment,onlineOfficeHours);
     }
   
     @Override

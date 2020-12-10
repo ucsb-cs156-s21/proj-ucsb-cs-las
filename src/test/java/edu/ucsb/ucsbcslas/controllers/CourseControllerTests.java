@@ -30,9 +30,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
-
+import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRespository;
 import edu.ucsb.ucsbcslas.entities.AppUser;
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 
 @WebMvcTest(value = CourseController.class)
 @WithMockUser
@@ -48,7 +53,11 @@ public class CourseControllerTests {
   CourseRepository mockCourseRepository;
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
-
+  @MockBean
+  TutorAssignmentRepository mockTutorAssignmentRepository;
+  @MockBean
+  OnlineOfficeHoursRespository mockOnlineOfficeHoursRepository;
+  
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
   }
@@ -297,5 +306,87 @@ public class CourseControllerTests {
   public void testGetMyCoursesInstructorUnauthorized() throws Exception {
     mockMvc.perform(get("/api/member/courses/forInstructor/email").contentType("application/json")
     .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
+  }
+
+
+
+@Test
+  public void testShowMemberCourseAuthorized() throws Exception {
+    List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
+    List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
+    List<TutorAssignment> expectedTutorAssignmentsList = new ArrayList<>();
+  
+    Optional <Course> expectedCourses = Optional.empty();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    expectedTutorAssignmentsList.add(expectedTutorAssignments);
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09", "Scott closes the room early sometimes but he will still be on slack!");
+    expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
+    TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList);
+    expectedViewList.add(expectedView_1);
+
+
+    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
+    when(mockCourseRepository.findById(1L)).thenReturn(expectedCourses);
+    when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList);
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+    MvcResult response = mockMvc.perform(get("/api/member/courses/{courseId}").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    
+    String responseString = response.getResponse().getContentAsString();
+    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {
+    });
+    assertEquals(actualviewList, expectedViewList);
+  }
+
+  @Test
+  public void testShowCourseUnauthorized() throws Exception {
+    List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
+    List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
+    List<TutorAssignment> expectedTutorAssignmentsList = new ArrayList<>();
+
+    Optional <Course> expectedCourses = Optional.empty();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    expectedTutorAssignmentsList.add(expectedTutorAssignments);
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM",
+        "6:00 PM", "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09",
+        "Scott closes the room early sometimes but he will still be on slack!");
+    expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
+    TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments,
+        expectedOnlineOfficeHoursList);
+    expectedViewList.add(expectedView_1);
+
+    for (TutorAssignmentOfficeHourView temp : expectedViewList) {
+      List<OnlineOfficeHours> officeHourList = temp.getOnlineOfficeHours();
+      temp.getTutorAssignment().getTutor().setEmail(null);
+      for (OnlineOfficeHours tempo : officeHourList) {
+        tempo.setZoomRoomLink(null);
+      }
+    }
+
+    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
+    when(mockCourseRepository.findById(1L)).thenReturn(expectedCourses);
+    when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments))
+        .thenReturn(expectedOnlineOfficeHoursList);
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+    MvcResult response = mockMvc.perform(get("/api/member/courses/{courseId}").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString,
+        new TypeReference<List<TutorAssignmentOfficeHourView>>() {
+        });
+    assertEquals(actualviewList, expectedViewList);
+    
   }
 }

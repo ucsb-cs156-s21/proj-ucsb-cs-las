@@ -1,11 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import TutorOfficeHourTable from "main/components/Courses/TutorOfficeHourTable"
+import BootstrapTable from 'react-bootstrap-table-next';
 
-export default ({Member,viewList}) => {
+export default ({member,viewList}) => {
     const columns = [{
-        dataField: 'id',
-        text: 'tutor_assignment_id'
+        dataField: 'tutorAssignment.id',
+        text: 'Tutor Assignment Id'
     }, {
         dataField: 'tutorAssignment.tutor.firstName',
         text: 'Tutor First Name'
@@ -13,28 +13,28 @@ export default ({Member,viewList}) => {
         dataField: 'tutorAssignment.tutor.lastName',
         text: 'Tutor Last Name'
     }, {
-        dataField: 'dayOfWeek',
+        dataField: 'onlineOfficeHours[0].dayOfWeek',
         text: 'Day of Week'
     }, {
-        dataField: 'startTime',
+        dataField: 'onlineOfficeHours[0].startTime',
         text: 'Start Time'
     }, {
-        dataField: 'endTime',
+        dataField: 'onlineOfficeHours[0].endTime',
         text: 'End Time'
     }];
 
-    if (Member) {
+    if (member) {
         columns.push({
             text: "Email",
             dataField: "tutorAssignment.tutor.email",
         });
         columns.push({
             text: "Zoom Room Link",
-            dataField: "zoomRoomLink",
+            dataField: "onlineOfficeHours[0].zoomRoomLink",
         });
     }
 
     return (
-        <BootstrapTable keyField='id' data={OnlineOfficeHours} columns={columns} />
+        <BootstrapTable keyField='id' data={viewList} columns={columns} />
     );
 }
