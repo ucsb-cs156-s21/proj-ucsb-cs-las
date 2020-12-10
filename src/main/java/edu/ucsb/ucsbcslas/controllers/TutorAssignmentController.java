@@ -181,7 +181,7 @@ public class TutorAssignmentController {
     }
 
     @GetMapping(value = "/api/public/tutorAssignment/byCourseNumber/{courseNumber}", produces = "application/json")
-    public ResponseEntity<String> getCourse(@PathVariable("courseNumber") String courseNumber)
+    public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("courseNumber") String courseNumber)
             throws JsonProcessingException {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
         List<TutorAssignment> tutorAssignmentsMatchingCourse = new ArrayList<TutorAssignment>();

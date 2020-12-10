@@ -39,6 +39,7 @@ import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
+import jdk.jfr.Timestamp;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
@@ -313,6 +314,31 @@ public class TutorAssignmentControllerTests {
 
     }
 
+    @Test
+    public void testGetCourse() throws Exception{
+        List<TutorAssignment> expectedTutorAssignment =new ArrayList<TutorAssignment>();
+        List<TutorAssignment> resultingTutorAssignment =new ArrayList<TutorAssignment>();
+        Course c1= new Course(1L, "course 1", "F20", "fname", "lname", "email");
+        Course c2 = new Course(2L, "course 2", "S20", "fname", "lname", "email");
+        Tutor t1 = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+        Tutor t2 = new Tutor(2L, "Au", "Go", "AuGo@ucsb.edu");
+        resultingTutorAssignment.add(new TutorAssignment(1L,c1,t1,"TA"));
+        resultingTutorAssignment.add(new TutorAssignment(2L, c2,t2,"TA"));    
+        
+
+        expectedTutorAssignment.add(new TutorAssignment(1L,c1,t1,"TA"));
+
+        when(mockTutorAssignmentRepository.findAll()).thenReturn((resultingTutorAssignment));
+        MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/byCourseNumber/course 1").contentType("application/json")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();    
+        verify(mockTutorAssignmentRepository, times(1)).findAll();
+        //for in list get name course                                                                          
+        //for loop                                                                                    
+        String responseString = response.getResponse().getContentAsString();
+        List<TutorAssignment> actualTutorAssignment = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignment>>(){});
+        assertEquals(actualTutorAssignment, expectedTutorAssignment);
+  }
+
     
     @Test
     public void testGetCourseNumbers() throws Exception {
@@ -336,5 +362,4 @@ public class TutorAssignmentControllerTests {
         Set<String> actualCourseNumber = objectMapper.readValue(responseString, new TypeReference<Set<String>>(){});
         assertEquals(actualCourseNumber, expectedCourseNumbers);
     }
-
 }
