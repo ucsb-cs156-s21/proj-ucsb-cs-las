@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,9 +92,16 @@ public class CourseController {
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
     List<Course> courseList = courseRepository.findAll();
+    String currentQuarter = "F20";
+    List<Course> currentCourses = new ArrayList<Course>();
+    for(Course i: courseList){
+      if(i.getQuarter().equalsIgnoreCase(currentQuarter)){
+        currentCourses.add(i);
+      }
+    }
     ObjectMapper mapper = new ObjectMapper();
 
-    String body = mapper.writeValueAsString(courseList);
+    String body = mapper.writeValueAsString(currentCourses);
     return ResponseEntity.ok().body(body);
   }
 
@@ -113,6 +121,7 @@ public class CourseController {
   public ResponseEntity<String> getMyCourses(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     if (authControllerAdvice.getIsAdmin(authorization)){
       List<Course> courseList = courseRepository.findAll();
+
       if(courseList.isEmpty()){
         return ResponseEntity.notFound().build();
       }
