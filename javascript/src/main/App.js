@@ -44,8 +44,6 @@ function App() {
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/courses/show/:courseId" component={CourseShow} />
-          <Route path="/courses/show/:id" component={CourseList} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />
@@ -55,12 +53,13 @@ function App() {
           <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
+          <Route path="/courses/show/:id" component={CourseList} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
       <AppFooter />
     </div>
   );
-}
+};
 
 export default App;
