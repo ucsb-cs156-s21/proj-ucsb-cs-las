@@ -110,7 +110,7 @@ public class TutorControllerTests {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockTutorRepository.save(any())).thenReturn(expectedTutor);
     MvcResult response = mockMvc
-        .perform(post("/api/admin/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(post("/api/member/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isOk()).andReturn();
 
@@ -127,7 +127,7 @@ public class TutorControllerTests {
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedTutor);
     mockMvc
-        .perform(post("/api/admin/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(post("/api/member/tutors").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isUnauthorized());
   }
@@ -142,7 +142,7 @@ public class TutorControllerTests {
     when(mockTutorRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutor));
     when(mockTutorRepository.save(inputTutor)).thenReturn(inputTutor);
     MvcResult response = mockMvc
-        .perform(put("/api/admin/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(put("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
         .andExpect(status().isOk()).andReturn();
 
@@ -160,7 +160,7 @@ public class TutorControllerTests {
     String body = objectMapper.writeValueAsString(inputTutor);
 
     mockMvc
-        .perform(put("/api/admin/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(put("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
         .andExpect(status().isUnauthorized());
   }
@@ -172,7 +172,7 @@ public class TutorControllerTests {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockTutorRepository.findById(1L)).thenReturn(Optional.empty());
     mockMvc
-        .perform(put("/api/admin/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(put("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
         .andExpect(status().isNotFound()).andReturn();
     verify(mockTutorRepository, times(1)).findById(1L);
@@ -187,7 +187,7 @@ public class TutorControllerTests {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockTutorRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutor));
     mockMvc
-        .perform(put("/api/admin/tutors/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(put("/api/member/tutors/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
         .andExpect(status().isBadRequest()).andReturn();
     verify(mockTutorRepository, times(1)).findById(2L);
@@ -200,7 +200,7 @@ public class TutorControllerTests {
     when(mockTutorRepository.findById(1L)).thenReturn(Optional.of(expectedTutor));
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     MvcResult response = mockMvc
-        .perform(delete("/api/admin/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isNoContent()).andReturn();
     verify(mockTutorRepository, times(1)).findById(expectedTutor.getId());
@@ -214,7 +214,7 @@ public class TutorControllerTests {
   @Test
   public void testDeleteTutor_unauthorizedIfNotAdmin() throws Exception {
     mockMvc
-        .perform(delete("/api/admin/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isUnauthorized());
   }
@@ -225,7 +225,7 @@ public class TutorControllerTests {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockTutorRepository.findById(id)).thenReturn(Optional.empty());
     mockMvc
-        .perform(delete("/api/admin/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .perform(delete("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isNotFound()).andReturn();
     verify(mockTutorRepository, times(1)).findById(id);
