@@ -1,7 +1,6 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Router, useHistory, useParams } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import {useHistory, useParams } from 'react-router-dom';
 import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment";
 import userEvent from "@testing-library/user-event";
 
@@ -81,11 +80,6 @@ describe("Edit Tutor Assignment page test", () => {
     useToasts.mockReturnValue({
       addToast: addToast
     })
-    useSWR.mockReturnValue({
-        data: courses,
-        error: undefined,
-        mutate: mutateSpy,
-      });
   });
 
   afterEach(() => {
@@ -93,13 +87,13 @@ describe("Edit Tutor Assignment page test", () => {
   });
 
   test("Renders tutor assignment with existing tutor assignment", async () => {
-    // useSWR.mockReturnValueOnce({
-    //     data: courses,
-    //     error: undefined,
-    //     mutate: mutateSpy,
-    //   });
+    useSWR.mockReturnValueOnce({
+      data: sampleTutorAssignment,
+      error: undefined,
+      mutate: mutateSpy,
+    });
     useSWR.mockReturnValue({
-        data: sampleTutorAssignment,
+        data: courses,
         error: undefined,
         mutate: mutateSpy,
       });
@@ -108,79 +102,88 @@ describe("Edit Tutor Assignment page test", () => {
     );
 
     await waitFor(() => (
-      expect(getByText("Tutor Name")).toBeInTheDocument() &&
+      expect(getByText("Tutor Email")).toBeInTheDocument() &&
       expect(getByLabelText("Tutor Email").value).toEqual(sampleTutorAssignment.tutor.email)
     ));
     
   });
 
-//   test("Renders spinner with no existing course", () => {
-//     useSWR.mockReturnValue({
-//       data: undefined,
-//       error: undefined,
-//       mutate: mutateSpy,
-//     });
-//     const { getByTestId } = render(
-//       <EditCourse />
-//     );
-//     const spinner = getByTestId("spinner");
-//     expect(spinner).toBeInTheDocument();
-//   });
+  test("Renders spinner with no existing tutor assignment", () => {
+    useSWR.mockReturnValue({
+      data: undefined,
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    const { getByTestId } = render(
+      <EditTutorAssignment />
+    );
+    const spinner = getByTestId("spinner");
+    expect(spinner).toBeInTheDocument();
+  });
 
-//   test("With existing course, pressing submit routes back to Courses page", async () => {
-//     useSWR.mockReturnValue({
-//       data: course,
-//       error: undefined,
-//       mutate: mutateSpy,
-//     });
+  test("With existing tutor assignment, pressing submit routes back to Tutor Assignments page", async () => {
+    useSWR.mockReturnValueOnce({
+      data: sampleTutorAssignment,
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    useSWR.mockReturnValue({
+        data: courses,
+        error: undefined,
+        mutate: mutateSpy,
+      });
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
 
-//     const pushSpy = jest.fn();
-//     useHistory.mockReturnValue({
-//       push: pushSpy
-//     });
+    const { getByText } = render(
+      <EditTutorAssignment />
+    );
 
-//     const { getByText } = render(
-//       <EditCourse />
-//     );
+    const submitButton = getByText("Submit");
+    expect(submitButton).toBeInTheDocument();
+    userEvent.click(submitButton);
 
-//     const submitButton = getByText("Submit");
-//     expect(submitButton).toBeInTheDocument();
-//     userEvent.click(submitButton);
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+    expect(pushSpy).toHaveBeenCalledWith("/tutorAssignments");
 
-//     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-//     expect(pushSpy).toHaveBeenCalledWith("/courses");
+  });
 
-//   });
+  test("clicking submit button redirects to home page on error", async () => {
 
-//   test("clicking submit button redirects to home page on error", async () => {
+    fetchWithToken.mockImplementation(() => {
+      throw new Error();
+    });
 
-//     fetchWithToken.mockImplementation(() => {
-//       throw new Error();
-//     });
+    useSWR.mockReturnValueOnce({
+      data: sampleTutorAssignment,
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    useSWR.mockReturnValue({
+        data: courses,
+        error: undefined,
+        mutate: mutateSpy,
+      });
 
-//     useSWR.mockReturnValue({
-//       data: course,
-//       error: undefined,
-//       mutate: mutateSpy,
-//     });
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
 
-//     const pushSpy = jest.fn();
-//     useHistory.mockReturnValue({
-//       push: pushSpy
-//     });
+    const { getByText } = render(
+      <EditTutorAssignment />
+    );
 
-//     const { getByText } = render(
-//       <EditCourse />
-//     );
+    const submitButton = getByText("Submit");
+    expect(submitButton).toBeInTheDocument();
+    userEvent.click(submitButton);
 
-//     const submitButton = getByText("Submit");
-//     expect(submitButton).toBeInTheDocument();
-//     userEvent.click(submitButton);
+    expect(addToast).toHaveBeenCalledTimes(1);
+    expect(addToast).toHaveBeenCalledWith("Error updating tutor assignment", { appearance: 'error' });
 
-//     expect(addToast).toHaveBeenCalledTimes(1);
-//     expect(addToast).toHaveBeenCalledWith("Error saving course", { appearance: 'error' });
-
-//   });
+  });
 
 
 });

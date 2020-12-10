@@ -36,5 +36,4 @@ const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
   return func
 }
 
-
 export { buildCreateTutorAssignment, buildUpdateTutorAssignment  };

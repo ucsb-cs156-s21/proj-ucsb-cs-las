@@ -108,18 +108,22 @@ public class TutorAssignmentController {
     if (!tutorAssignment.isPresent()) {
       return ResponseEntity.notFound().build();
     }
-
+    logger.info(incomingTutorAssignment);
     JSONObject ta = new JSONObject(incomingTutorAssignment);
     TutorAssignment newAssignment = new TutorAssignment();
-
+    logger.info("ta: ", ta.toString());
     JSONObject cInfo = new JSONObject(ta.get("course").toString());
+    logger.info("cInfo: ", cInfo.toString());
     Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
       cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
     newAssignment.setCourse(c);
 
-    if(ta.getString("tutorEmail") != tutorAssignment.get().getTutor().getEmail()){
+    
+    logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
+    logger.info("ta: ", ta.getString("tutorEmail"));
+    if(!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))){
       Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
-      
+      logger.info("tutor: ", tutor);
       if(tutor.isPresent()){
         newAssignment.setTutor(tutor.get());
       }

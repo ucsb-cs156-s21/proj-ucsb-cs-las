@@ -16,18 +16,17 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         id: null
     }
 
-    const [existingSet, setExistingSet] = useState(1);
+    const [existingSet, setExistingSet] = useState(false);
     const [tutorAssignment, setTutorAssignment] = useState(emptyTutorAssignment);
 
-    if(existingTutorAssignment && existingSet){
-        console.log(existingTutorAssignment.course);
+    if(existingTutorAssignment && !existingSet){
         setTutorAssignment({course: existingTutorAssignment.course, 
             tutor: existingTutorAssignment.tutor,
             tutorEmail: existingTutorAssignment.tutor.email, 
             assignmentType: existingTutorAssignment.assignmentType, 
             index: null, 
             id: existingTutorAssignment.id});
-        setExistingSet(0);
+        setExistingSet(true);
     }
 
     const { getAccessTokenSilently: getToken } = useAuth0();
@@ -54,10 +53,10 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         }
     }
 
-    console.log(tutorAssignment.course);
+    
     if(existingTutorAssignment && tutorAssignment.index === null){
         courseList.map((course, index) => {
-            if(course.id === tutorAssignment.course.id){
+            if(course.id === existingTutorAssignment.course.id){
                 setTutorAssignment({...tutorAssignment, index: index});
             }
         });
@@ -69,7 +68,6 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
             createTutorAssignment(tutorAssignment);
         }
         else{
-            console.log(tutorAssignment);
             updateTutorAssignment(tutorAssignment, tutorAssignment.id);
         }
     }
