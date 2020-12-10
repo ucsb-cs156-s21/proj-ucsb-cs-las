@@ -7,11 +7,12 @@ import { useHistory } from "react-router-dom";
 export default ({officeHours,admin,deleteOfficeHour,/*editOfficeHour*/}) => {
     const history = useHistory();
 
-    const renderEditButton = (id) => {
+  /*  const renderEditButton = (id) => {
       return (
              <Button data-testid="edit-button" onClick={() => { history.push(`/officehours/edit/${id}`) }}>Edit</Button>
          )
      }
+     */
 
     const renderDeleteButton = (id) => {
         return (
