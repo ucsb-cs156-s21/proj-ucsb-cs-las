@@ -175,7 +175,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testUpdateTutor_tutorExists_updateValues() throws Exception {
+  public void testUpdateTutor_tutorExists_updateValues_Admin() throws Exception {
     List<Course> expectedCourse = new ArrayList<Course>();
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
     expectedCourse.add(c);
@@ -185,6 +185,35 @@ public class TutorControllerTests {
     String body = objectMapper.writeValueAsString(inputTutor);
 
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    when(mockTutorRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutor));
+    when(mockTutorRepository.save(inputTutor)).thenReturn(inputTutor);
+    MvcResult response = mockMvc
+        .perform(put("/api/member/tutors/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockTutorRepository, times(1)).findById(inputTutor.getId());
+    verify(mockTutorRepository, times(1)).save(inputTutor);
+
+    String responseString = response.getResponse().getContentAsString();
+
+    assertEquals(body, responseString);
+  }
+
+  @Test
+  public void testUpdateTutor_tutorExists_updateValues_Instr() throws Exception {
+    List<Course> expectedCourse = new ArrayList<Course>();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    expectedCourse.add(c);
+    when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourse);
+    Tutor inputTutor = new Tutor(1L, "fname", "lname", "email");
+    Tutor savedTutor = new Tutor(1L, "first name", "last name", "myemail");
+    String body = objectMapper.writeValueAsString(inputTutor);
+    
+    AppUser user = new AppUser(1L, "email", "L", "kH");
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+
     when(mockTutorRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutor));
     when(mockTutorRepository.save(inputTutor)).thenReturn(inputTutor);
     MvcResult response = mockMvc
