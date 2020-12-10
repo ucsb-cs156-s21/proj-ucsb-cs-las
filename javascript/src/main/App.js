@@ -50,7 +50,6 @@ function App() {
           <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "instructor"]} />
           <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "instructor", "member"]} />
           <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "instructor"]} />
-
           <Route path="/about" component={About} />
           {/* <Route path="/officehours" component={OfficeHours}></Route> */}
         </Switch>

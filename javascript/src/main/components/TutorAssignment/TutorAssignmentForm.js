@@ -49,7 +49,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
             <Form.Group as={Row} controlId="courseName">
                 <Form.Label column sm={2}>Course Name</Form.Label>
                 <Col sm={10}>
-                    <Form.Control as="select" onChange={(e) => setTutorAssignment({
+                    <Form.Control as="select" onChange={(e) => setTutorAssignment({ 
                         ...tutorAssignment, course: courseList[e.target.value]})}>
                         {sortedList}
                     </Form.Control>

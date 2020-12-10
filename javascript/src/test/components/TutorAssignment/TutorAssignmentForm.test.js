@@ -34,7 +34,9 @@ describe("TutorAssignmentForm tests", () => {
                     instructorLastName: "Krintz",
                     instructorEmail: "krintz@example.org",
                     },
+
           tutorEmail:   "scottpchow@ucsb.edu",
+
           assignmentType: "TA"
         };
 

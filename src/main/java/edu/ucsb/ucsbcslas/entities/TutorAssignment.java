@@ -17,7 +17,7 @@ import edu.ucsb.ucsbcslas.models.Course;
 @Entity
 public class TutorAssignment {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
