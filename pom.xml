@@ -221,6 +221,7 @@
                     <excludes>
                         <!-- Exclude class from test coverage -->
 						<exclude>**/edu/ucsb/ucsbcslas/DemoApplication.*</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/config/SecurityConfig.*</exclude>
                         <!-- Exclude full package from test coverage -->
                         <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
                     </excludes>
