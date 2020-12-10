@@ -69,7 +69,6 @@ describe("New Course page test", () => {
 
   });
   test("clicking submit button on error says so on toast", async () => {
-    const pushSpy = jest.fn();
     fetchWithToken.mockImplementation(
       () => { throw new Error(); });
     const { getByText } = render(

@@ -17,10 +17,12 @@ describe("Home tests", () => {
     });
     render(<Home />);
   });
-  test("conditionalrendering funtion exists", () => {
+  test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
     useSWR.mockReturnValue({
       data: filterData
     })
     render(<Home />);
+    expect(filterData).toBeDefined();
+    expect(filterData).toEqual([{"id":"1", "activeQuarter": "something that exists that isnt all"}]);
   })
 });
