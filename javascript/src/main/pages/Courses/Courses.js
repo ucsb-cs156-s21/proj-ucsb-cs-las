@@ -31,7 +31,7 @@ const Courses = () => {
     key: 'id',
     label: 'id'
   }, {
-    key: 'name',
+    key: 'number',
     label: 'Course Number'
   }, {
     key: 'quarter',
