@@ -126,5 +126,3 @@ describe("Courses page test", () => {
 
 
 });
-
-

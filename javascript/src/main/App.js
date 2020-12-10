@@ -23,6 +23,7 @@ import ViewLogins from "main/pages/Admin/ViewLogins";
 >>>>>>> Revert "Merge branch 'main' into 6pm-a-course-list-for-current-quarter"
 import { fetchWithToken } from "main/utils/fetch";
 import CourseDetail from "main/components/Courses/CourseDetail";
+import CourseList from "main/components/Courses/CourseList";
 import CourseShow from "main/pages/Courses/CourseShow";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
+          <Route path="/courses/show/:id" component={CourseList} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />
