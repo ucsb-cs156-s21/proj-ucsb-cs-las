@@ -41,7 +41,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/admin/tutorHistory" exact component={TutorHistory} authorizedRoles={["admin"]} 
+          <AuthorizedRoute path="/admin/tutorHistory" exact component={TutorHistory} authorizedRoles={["admin"]}/> 
           <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />

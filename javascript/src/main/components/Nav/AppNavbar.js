@@ -26,21 +26,23 @@ function AppNavbar() {
             <NavDropdown.Item href="/admin/tutorHistory">
               Tutor History
             </NavDropdown.Item>
-        { isAdmin &&
+          </NavDropdown>
+        }
+        {isAdmin &&
           <NavDropdown title="Admin">
             <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
-            <NavDropdown.Item href="/admin/viewLogins">View Logins</NavDropdown.Ite
+            <NavDropdown.Item href="/admin/viewLogins">View Logins</NavDropdown.Item>
           </NavDropdown>
         }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
-        {isAdmin && 
+        {isAdmin &&
           <LinkContainer to={"/courses"}>
             <Nav.Link>Courses</Nav.Link>
-        </LinkContainer>
+          </LinkContainer>
         }
-        { isMember &&
+        {isMember &&
           (<LinkContainer to={"/tutorAssignment"}>
             <Nav.Link>Tutor Assignment</Nav.Link>
           </LinkContainer>)
