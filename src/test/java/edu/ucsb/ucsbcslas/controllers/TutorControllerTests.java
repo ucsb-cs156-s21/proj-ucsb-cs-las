@@ -65,7 +65,7 @@ public class TutorControllerTests {
   }
 
   @Test
-  public void testGetTutors() throws Exception {
+  public void testGetTutors_Instr() throws Exception {
     List<Course> expectedCourse = new ArrayList<Course>();
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
     expectedCourse.add(c);
@@ -76,6 +76,23 @@ public class TutorControllerTests {
 
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
 
+    MvcResult response = mockMvc.perform(get("/api/member/tutors").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockTutorRepository, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Tutor> actualTutors = objectMapper.readValue(responseString, new TypeReference<List<Tutor>>() {
+    });
+    assertEquals(actualTutors, expectedTutors);
+  }
+
+  @Test
+  public void testGetTutors_Admin() throws Exception {
+    List<Tutor> expectedTutors = new ArrayList<Tutor>();
+    expectedTutors.add(new Tutor(1L, "fname", "lname", "email"));
+    when(mockTutorRepository.findAll()).thenReturn(expectedTutors);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     MvcResult response = mockMvc.perform(get("/api/member/tutors").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
