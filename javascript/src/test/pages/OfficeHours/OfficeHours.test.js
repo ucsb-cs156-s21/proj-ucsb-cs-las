@@ -8,7 +8,7 @@ import OfficeHours from "main/pages/OfficeHours/OfficeHours";
 import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+import { buildDeleteOfficeHour, buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
 
 
 
@@ -64,7 +64,7 @@ describe("OfficeHours page test", () => {
     render(<OfficeHours />);
   });
 
-  test("renders loading while office hours list is undefined", () => {
+  test("renders loading while office hour list is undefined", () => {
     useSWR.mockReturnValue({
       data: undefined,
       error: undefined,
@@ -96,26 +96,7 @@ describe("OfficeHours page test", () => {
     await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
   });
 
-
-/* THIS IS FOR WHEN WE ADD EDIT BUTTON
-  test("can edit a course", async () => {
-
-    const pushSpy = jest.fn();
-    useHistory.mockReturnValue({
-      push: pushSpy
-    });
-
-    const { getAllByTestId } = render(<OfficeHours />);
-    const editButtons = getAllByTestId("edit-button");
-    userEvent.click(editButtons[0]);
-
-    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-  });
-
-  */
-
-
-  test("can click to add a office hour", async () => {
+  test("can click to add an office hour", async () => {
 
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
@@ -123,7 +104,7 @@ describe("OfficeHours page test", () => {
     });
 
     const { getByText } = render(<OfficeHours />);
-    const newCourseButton = getByText("New Office Hour");
+    const newOfficeHourButton = getByText("New Course");
     userEvent.click(newCourseButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));

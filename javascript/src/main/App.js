@@ -33,7 +33,6 @@ function App() {
   if (isLoading) {
     return <Loading />;
   }
-  //<AuthorizedRoute path="/officehours/edit/:officehoursID" exact component={EditOfficeHours} authorizedRoles={["admin", "instructor","member","guest"]} />
 
   return (
     <div className="App">
@@ -47,11 +46,11 @@ function App() {
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "instructor"]} />
-          <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "instructor", "member"]} />
-          <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "instructor"]} />
+          <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "member"]} />
+
           <Route path="/about" component={About} />
-          {/* <Route path="/officehours" component={OfficeHours}></Route> */}
         </Switch>
       </Container>
       <AppFooter />

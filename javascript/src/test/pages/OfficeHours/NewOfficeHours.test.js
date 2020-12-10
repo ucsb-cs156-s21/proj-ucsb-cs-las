@@ -101,27 +101,6 @@ describe("NewOfficeHours page test", () => {
 
   });
 
-
-
-
-
-/* THIS IS FOR WHEN WE ADD EDIT BUTTON
-  test("can edit a course", async () => {
-
-    const pushSpy = jest.fn();
-    useHistory.mockReturnValue({
-      push: pushSpy
-    });
-
-    const { getAllByTestId } = render(<OfficeHours />);
-    const editButtons = getAllByTestId("edit-button");
-    userEvent.click(editButtons[0]);
-
-    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-  });
-
-*/
-
   test("clicking submit button redirects to home page on error", async () => {
 
     fetchWithToken.mockImplementation(() => {
