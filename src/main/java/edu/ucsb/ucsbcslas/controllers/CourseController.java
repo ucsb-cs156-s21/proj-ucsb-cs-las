@@ -155,7 +155,7 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
-  @GetMapping(value = "/api/member/courses/{courseId}")
+  @GetMapping(value = "/api/member/courses/{courseId}", produces = "application/json")
   public ResponseEntity<String> showMemberCourse(@RequestHeader("Authorization") String authorization, @PathVariable("courseId") Long courseId) throws JsonProcessingException {
     if (!authControllerAdvice.getIsMember(authorization)){
       return getUnauthorizedResponse("member");
@@ -181,7 +181,7 @@ public class CourseController {
     
   }
     
-  @GetMapping(value = "/api/public/courses/{courseId}")
+  @GetMapping(value = "/api/public/courses/{courseId}", produces = "application/json")
   public ResponseEntity<String> showCourse(@PathVariable("courseId") Long courseId) throws JsonProcessingException {
     Optional<Course> course = courseRepository.findById(courseId);
 
@@ -210,7 +210,7 @@ public class CourseController {
     }
   
 
-    @GetMapping(value = "/api/public/tutors/{courseId}")
+    @GetMapping(value = "/api/public/tutors/{courseId}", produces = "application.json")
     public ResponseEntity<String> showTutor(@PathVariable("courseId") Long courseId) throws JsonProcessingException {
       Optional<Course> course = courseRepository.findById(courseId);
   
