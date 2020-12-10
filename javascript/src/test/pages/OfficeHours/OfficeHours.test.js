@@ -105,7 +105,7 @@ describe("OfficeHours page test", () => {
 
     const { getByText } = render(<OfficeHours />);
     const newOfficeHourButton = getByText("New Office Hour");
-    userEvent.click(newCourseButton);
+    userEvent.click(newOfficeHourButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
