@@ -92,7 +92,9 @@ public class CourseController {
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
     List<Course> courseList = courseRepository.findAll();
-    String currentQuarter = "F20";
+
+    String currentQuarter = "F20"; //This should be deleted once configuration file is implemented
+
     List<Course> currentCourses = new ArrayList<Course>();
     for(Course i: courseList){
       if(i.getQuarter().equalsIgnoreCase(currentQuarter)){
