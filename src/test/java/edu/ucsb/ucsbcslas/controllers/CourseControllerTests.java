@@ -32,7 +32,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
-import edu.ucsb.ucsbcslas.models.Course;
+import edu.ucsb.ucsbcslas.entities.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
 import edu.ucsb.ucsbcslas.entities.AppUser;

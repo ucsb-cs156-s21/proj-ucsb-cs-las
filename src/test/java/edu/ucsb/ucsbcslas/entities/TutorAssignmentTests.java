@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
-import edu.ucsb.ucsbcslas.models.Course;
+import edu.ucsb.ucsbcslas.entities.Course;
 import net.codebox.javabeantester.JavaBeanTester;
 
 public class TutorAssignmentTests {
