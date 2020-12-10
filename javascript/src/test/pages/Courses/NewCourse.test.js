@@ -67,8 +67,8 @@ describe("New Course page test", () => {
       <NewCourse />
     );
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, course.name);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, course.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, course.quarter);
@@ -122,8 +122,8 @@ describe("New Course page test", () => {
       <NewCourse />
     );
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, course.name);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, course.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, course.quarter);
@@ -161,8 +161,8 @@ describe("New Course page test", () => {
       <NewCourse />
     );
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, course.name);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, course.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, course.quarter);

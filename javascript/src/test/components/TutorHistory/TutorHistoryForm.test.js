@@ -8,7 +8,7 @@ describe("TutorHistoryForm tests", () => {
   const sampleTutorAssignment = {
     id: 1,
     course: {
-      name: "CMPSC 148",
+      number: "CMPSC 148",
       id: 2,
       quarter: "20203",
       instructorFirstName: "Chandra",
@@ -22,7 +22,7 @@ describe("TutorHistoryForm tests", () => {
   const sampleCourseNumberList = ["CMPSC 148"];
 
   const sampleQuery = {
-    value: sampleTutorAssignment.course.name,
+    value: sampleTutorAssignment.course.number,
   }
 
   test("empty component renders without crashing", () => {

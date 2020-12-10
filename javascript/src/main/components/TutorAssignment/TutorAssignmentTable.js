@@ -22,7 +22,7 @@ export default ({tutorAssignments, isInstructor}) => {
     const renderTutorName = (row) => row.tutor.firstName + " " +row.tutor.lastName;
     const renderCourseNameYear = (row) => {
         const quarter = row.course.quarter;
-        return row.course.name + " " + asHumanQuarter(quarter);
+        return row.course.number + " " + asHumanQuarter(quarter);
     }
 
     const columns = [{

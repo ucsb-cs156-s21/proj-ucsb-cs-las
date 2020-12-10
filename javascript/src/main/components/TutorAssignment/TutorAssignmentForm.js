@@ -47,7 +47,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         return <Loading />;
     }
     else {
-        sortedList = courseList.map((course, index) => <option key={index} value={index}>{course.name+" "+asHumanQuarter(course.quarter)}</option>);
+        sortedList = courseList.map((course, index) => <option key={index} value={index}>{course.number+" "+asHumanQuarter(course.quarter)}</option>);
         if(tutorAssignment.course === null){
             setTutorAssignment({...tutorAssignment, course: courseList[0], index: 0});
         }
@@ -76,8 +76,8 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
         <>
             {tutorAssignment.index !== null ? 
             <Form onSubmit={handleOnSubmit}>
-                <Form.Group as={Row} controlId="courseName">
-                    <Form.Label column sm={2}>Course Name</Form.Label>
+                <Form.Group as={Row} controlId="courseNumber">
+                    <Form.Label column sm={2}>Course Number</Form.Label>
                     <Col sm={10}>
                         <Form.Control as="select" value={tutorAssignment.index} onChange={(e) => setTutorAssignment({ 
                             ...tutorAssignment, course: courseList[e.target.value], index: e.target.value})}>

@@ -85,8 +85,8 @@ describe("CourseForm tests", () => {
       (<CourseForm createCourse={createCourseMock} />)
     ;
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, sampleCourse.name);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, sampleCourse.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, "S20");
@@ -115,8 +115,8 @@ describe("CourseForm tests", () => {
       (<CourseForm createCourse={createCourseMock} />)
     ;
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, sampleCourse.name);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, sampleCourse.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, "M20");
@@ -145,8 +145,8 @@ describe("CourseForm tests", () => {
       (<CourseForm createCourse={createCourseMock} />)
     ;
 
-    const nameInput = getByLabelText("Course Name");
-    userEvent.type(nameInput, sampleCourse.name);
+    const numberInput = getByLabelText("Course Number");
+    userEvent.type(numberInput, sampleCourse.number);
 
     const quarterInput = getByLabelText("Quarter");
     userEvent.type(quarterInput, "W20");
