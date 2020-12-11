@@ -21,6 +21,7 @@ import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import { fetchWithToken } from "main/utils/fetch";
 import CourseShow from "main/pages/Courses/CourseShow";
+import CourseList from "main/components/Courses/CourseList";
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
+          <Route path="/courses/show/:id" component={CourseList} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />

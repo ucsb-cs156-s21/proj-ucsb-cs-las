@@ -65,6 +65,20 @@ describe("Courses page test", () => {
     render(<Courses />);
   });
 
+  test("renders without crashing", () => {
+    useAuth0.mockReturnValue({
+      admin: true,
+      getAccessTokenSilently: getAccessTokenSilentlySpy,
+      user: user
+    });
+    useSWR.mockReturnValue({
+      data: courses,
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    render(<Courses />);
+  });
+
   test("renders loading while course list is undefined", () => {
     useSWR.mockReturnValue({
       data: undefined,

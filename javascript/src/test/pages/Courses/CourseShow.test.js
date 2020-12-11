@@ -74,6 +74,23 @@ describe("Course Show Page Test", () => {
 		render(<CourseShow />);
 	});
 
+	test("display page with admin access", () => {
+		useSWR.mockImplementation((key, getter) => {
+			if (key[0] === "/api/myRole") {
+				return {
+					data: {
+						role: "Admin"
+					}
+				};
+			} else {
+				return {
+					data: [course]
+				}
+			}
+		});
+		render(<CourseShow existingCourse={course}/>);
+	});
+
 	test("renders loading waiting for viewlist without crashing", () => {
 		useSWR.mockImplementation((key, getter) => {
 			if (key[0] === "/api/myRole") {
@@ -97,8 +114,25 @@ describe("Course Show Page Test", () => {
 			if (key[0] === "/api/myRole") {
 				return {
 					data: {
-						role: "Member"
+						role: "Guest"
 					}
+				};
+			} else {
+				return {
+					data: null,
+					error: true
+				}
+			}
+		});
+		const screen = render(<CourseShow />);
+		expect(screen.getByText("We encountered an error; please reload the page and try again.")).toBeInTheDocument();
+	});
+
+	test("display error messages", () => {
+		useSWR.mockImplementation((key, getter) => {
+			if (key[0] === "/api/myRole") {
+				return {
+					data: null
 				};
 			} else {
 				return {

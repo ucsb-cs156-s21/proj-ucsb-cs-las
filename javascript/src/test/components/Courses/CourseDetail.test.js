@@ -54,5 +54,9 @@ describe("Course Detail Test", () => {
 		render(<CourseDetail existingView={sampleTutorAssignmentOfficeHourView} member = {true}/>);
 	});
 
+	test("component with existing course renders without crashing", () => {
+		render(<CourseDetail existingView={sampleTutorAssignmentOfficeHourView} member={false} />);
+	});
+
 
 });
