@@ -14,6 +14,7 @@ import Courses from "main/pages/Courses/Courses";
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
 import NewOfficeHours from "main/pages/OfficeHours/NewOfficeHours"
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignment";
+import TutorHistory from "main/pages/TutorHistory/TutorHistory";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
@@ -42,6 +43,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <PrivateRoute path="/profile" component={Profile} />
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/tutorHistory" exact component={TutorHistory} authorizedRoles={["admin"]}/> 
           <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
