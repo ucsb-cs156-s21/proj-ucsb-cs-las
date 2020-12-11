@@ -8,6 +8,7 @@ export default ({courses}) => {
     const history = useHistory();
 
     const cellFormatter = (id, name) => {
+        const link = `/courses/show/${id}`
         return (  
         //     <Link 
         //     to={{
@@ -16,7 +17,7 @@ export default ({courses}) => {
         // }}>{name}</Link>  
         //<div><a href="/course/show/${id}">{name}</a></div>
             //<div><Link to={{pathname: `/courses/show/${id}`, data :id}}>{name}</Link></div>
-            <a href={"/courses/show/{id}"}>{name}</a>
+            <a href={link}>{name}</a>
         )
     }
 
