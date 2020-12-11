@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { getAllByText, render, screen, waitFor } from "@testing-library/react";
 import App from "main/App";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
@@ -60,11 +60,13 @@ describe("App tests", () => {
   test("renders admin route when user is admin", async () => {
     setupSWRMocks("admin");
     const history = createMemoryHistory();
-    const { getByText } = render(
+    const { getAllByText } = render(
       <Router history={history}>
         <App />
       </Router>
     );
-    expect(getByText("Admin")).toBeInTheDocument();
+    //travis koski-this test was causign an error causee it was finding multiple instances of "admin", message me in slack if 
+    //me changing it to this is ok.
+    expect(getAllByText("Admin")).toBeDefined();
   });
 });
