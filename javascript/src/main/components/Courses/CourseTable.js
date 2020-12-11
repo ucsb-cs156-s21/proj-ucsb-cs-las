@@ -28,11 +28,11 @@ export default ({ courses, admin, deleteCourse }) => {
         const descendingOFF = String.fromCharCode(0x25bd);
 
         if (!order) 
-            return (<span data-testid="sort">&nbsp;&nbsp;{descendingOFF}{ascendingOFF}</span>);
+            return (<span data-testid="sort">{descendingOFF}{ascendingOFF}</span>);
         else if (order === 'asc') 
-            return (<span data-testid="sort-asc">&nbsp;&nbsp;{descendingOFF}<font color="red">{ascendingON}</font></span>);
+            return (<span data-testid="sort-asc">{descendingOFF}<font color="red">{ascendingON}</font></span>);
         else 
-            return (<span data-testid="sort-desc">&nbsp;&nbsp;<font color="red">{descendingON}</font>{ascendingOFF}</span>);
+            return (<span data-testid="sort-desc"><font color="red">{descendingON}</font>{ascendingOFF}</span>);
         
     }
 
