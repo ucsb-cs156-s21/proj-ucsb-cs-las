@@ -231,23 +231,6 @@ public class CourseControllerTests {
   }
 
   @Test
-  public void testGetMyCourses() throws Exception {
-    List<Course> expectedCourses = new ArrayList<Course>();
-    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
-    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/member/courses").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-
-    verify(mockCourseRepository, times(1)).findAll();
-
-    String responseString = response.getResponse().getContentAsString();
-    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
-    });
-    assertEquals(actualCourses, expectedCourses);
-  }
-
-  @Test
   public void testGetMyCourses_notFound() throws Exception {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     mockMvc.perform(get("/api/member/courses").contentType("application/json")
@@ -308,8 +291,6 @@ public class CourseControllerTests {
     .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
   }
 
-
-
 @Test
   public void testShowMemberCourseAuthorized() throws Exception {
     List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
@@ -343,7 +324,7 @@ public class CourseControllerTests {
     });
     assertEquals(actualviewList, expectedViewList);
   }
-
+ 
   @Test
   public void testShowCourseUnauthorized() throws Exception {
     List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
@@ -389,4 +370,25 @@ public class CourseControllerTests {
     assertEquals(actualviewList, expectedViewList);
     
   }
+
+  @Test
+  public void testShowPublicCourseNoCourse() throws Exception {
+     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+    mockMvc.perform(get("/api/public/courses/show/1").contentType("application/json")
+      .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void testshowMemberCourseUnthorized() throws Exception {
+    mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
+    .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void testshowMemberCourseNoCourse() throws Exception {
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+    mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
+      .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
+
 }
