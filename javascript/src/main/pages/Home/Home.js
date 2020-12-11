@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 
 
+
 const Home = () => {
     const { data: courses } = useSWR(
         "/api/public/courses",

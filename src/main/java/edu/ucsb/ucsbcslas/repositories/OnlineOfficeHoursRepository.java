@@ -11,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OnlineOfficeHoursRespository extends CrudRepository<OnlineOfficeHours, Long> {
+public interface OnlineOfficeHoursRepository extends CrudRepository<OnlineOfficeHours, Long> {
   List<OnlineOfficeHours> findAll();
   List<OnlineOfficeHours> findAllByTutorAssignment(TutorAssignment tutorAssignment);
 }

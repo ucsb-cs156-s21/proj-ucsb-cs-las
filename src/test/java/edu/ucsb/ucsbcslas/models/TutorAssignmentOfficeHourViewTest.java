@@ -60,7 +60,7 @@ public class TutorAssignmentOfficeHourViewTest {
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(expectedTutorAssignments,expectedOnlineOfficeHoursList);
     String tutorAssignmentExpected = "{id='1L', course='Course[ id=1L, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email]', tutor='{ id='1L', firstName='Seth', lastName='VanB', email='vanbrocklin@ucsb.ed'}', assignmentType='TA'}";
-    String onlineOfficeHourExpected = "{ id='1', tutorAssignment='{id='1L', course='Course[ id=1L, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email]', tutor='{ id='1L', firstName='Seth', lastName='VanB', email='vanbrocklin@ucsb.ed'}', assignmentType='TA'}', dayOfWeek='Tuesday', startTime='4:00 PM', endTime='6:00 PM', zoomRoomLink='https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09', notes='Scott closes the room early sometimes but he will still be on slack!'}";
-    assertEquals(tutorAssignmentOfficeHourView.toString(), tutorAssignmentExpected+onlineOfficeHourExpected);
+    String onlineOfficeHourExpected = "{id='1L', tutorAssignment='{id='1L', course='Course[ id=1L, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email]', tutor='{ id='1L', firstName='Seth', lastName='VanB', email='vanbrocklin@ucsb.ed'}', assignmentType='TA'}', dayOfWeek='Tuesday', startTime='4:00 PM', endTime='6:00 PM', zoomRoomLink='https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09', notes='Scott closes the room early sometimes but he will still be on slack!'}";
+    assertEquals(tutorAssignmentOfficeHourView.toString(), "[tutorAssignment="+tutorAssignmentExpected+" onlineOfficeHours=["+ onlineOfficeHourExpected+"]]");
   }
 }

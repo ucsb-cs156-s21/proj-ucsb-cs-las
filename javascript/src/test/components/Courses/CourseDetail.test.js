@@ -1,5 +1,6 @@
 import React from "react";
-import { useParams} from "react-router-dom";
+import { render, waitFor } from "@testing-library/react";
+import CourseDetail from "main/components/Courses/CourseDetail";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"), // use real functions 

@@ -32,8 +32,8 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
-import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRespository;
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
 import edu.ucsb.ucsbcslas.entities.Tutor;
@@ -56,7 +56,7 @@ public class CourseControllerTests {
   @MockBean
   TutorAssignmentRepository mockTutorAssignmentRepository;
   @MockBean
-  OnlineOfficeHoursRespository mockOnlineOfficeHoursRepository;
+  OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
   
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -334,7 +334,7 @@ public class CourseControllerTests {
     when(mockCourseRepository.findById(1L)).thenReturn(expectedCourses);
     when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList);
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/member/courses/{courseId}").contentType("application/json")
+    MvcResult response = mockMvc.perform(get("/api/member/courses/show/{courseId}").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
     
@@ -379,7 +379,7 @@ public class CourseControllerTests {
     when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments))
         .thenReturn(expectedOnlineOfficeHoursList);
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
-    MvcResult response = mockMvc.perform(get("/api/member/courses/{courseId}").contentType("application/json")
+    MvcResult response = mockMvc.perform(get("/api/member/courses/show/{courseId}").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
     String responseString = response.getResponse().getContentAsString();

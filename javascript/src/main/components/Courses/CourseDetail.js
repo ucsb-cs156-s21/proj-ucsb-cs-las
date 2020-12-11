@@ -1,8 +1,19 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 export default ({member,viewList}) => {
+
+    const column2 = [{
+        dataField: 'tutorAssignment.id',
+        text: 'Tutor Assignment Id'
+    }, {
+        dataField: 'tutorAssignment.tutor.firstName',
+        text: 'Tutor First Name'
+    }, {
+        dataField: 'tutorAssignment.tutor.lastName',
+        text: 'Tutor Last Name'
+    } ];
+
     const columns = [{
         dataField: 'tutorAssignment.id',
         text: 'Tutor Assignment Id'
@@ -23,6 +34,7 @@ export default ({member,viewList}) => {
         text: 'End Time'
     }];
 
+
     if (member) {
         columns.push({
             text: "Email",
@@ -35,6 +47,9 @@ export default ({member,viewList}) => {
     }
 
     return (
-        <BootstrapTable keyField='id' data={viewList} columns={columns} />
+        <div>
+            <BootstrapTable keyField='id' data={viewList} columns={column2} />
+            <BootstrapTable keyField='id' data={viewList} columns={columns} />
+        </div>
     );
 }

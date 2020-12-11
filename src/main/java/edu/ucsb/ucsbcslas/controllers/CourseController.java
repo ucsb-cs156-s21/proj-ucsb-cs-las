@@ -31,7 +31,7 @@ import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
-import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRespository;
+import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 
 
@@ -46,7 +46,7 @@ public class CourseController {
   @Autowired
   private TutorAssignmentRepository tutorAssignmentRepository;
   @Autowired
-  private OnlineOfficeHoursRespository onlineOfficeHoursRespository;
+  private OnlineOfficeHoursRepository onlineOfficeHoursRepository;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -165,7 +165,7 @@ public class CourseController {
       
       List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
       for(TutorAssignment temp : tutorAssignments){
-        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRespository.findAllByTutorAssignment(temp);
+        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findAllByTutorAssignment(temp);
 
         TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, onlineOfficeHours);
         viewList.add(tutorAssignmentOfficeHourView);
@@ -188,25 +188,24 @@ public class CourseController {
       
       List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
       for(TutorAssignment temp : tutorAssignments){
-        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRespository.findAllByTutorAssignment(temp);
+        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findAllByTutorAssignment(temp);
 
         TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, onlineOfficeHours);
         viewList.add(tutorAssignmentOfficeHourView);
       }
       
-      /*for(TutorAssignmentOfficeHourView temp: viewList){
+      for(TutorAssignmentOfficeHourView temp: viewList){
         List<OnlineOfficeHours> officeHourList = temp.getOnlineOfficeHours();
         temp.getTutorAssignment().getTutor().setEmail(null);
         for(OnlineOfficeHours tempo: officeHourList){
           tempo.setZoomRoomLink(null);
         }
-      }*/
+      }
       ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
     }   
     return ResponseEntity.notFound().build();
     }
-  
 }
   

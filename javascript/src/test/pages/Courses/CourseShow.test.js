@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
 jest.mock("swr");
@@ -31,14 +31,22 @@ describe("Course Show Page Test", () => {
 	  instructorFirstName: "Phill",
 	  instructorLastName: "Conrad",
 	  instructorEmail: "phtcon@ucsb.edu",
-    };
+	};
+	
+	const roleInfo={
+		/*id: 1,
+   		email: "abcd@ucsb.edu",
+    	firstName: "Fname",
+		lastName:"Lname",*/
+		role: "Member",
+	};
     
 	test("empty component renders without crashing", () => {
 		render(<CourseShow />);
 	});
 	
 	test("component with existing course renders without crashing", () => {
-		render(<CourseShow existingCourse={sampleCourse}/>);
+		render(<CourseShow existingCourse={course}/>);
     });
       
 	const user = {
@@ -46,6 +54,12 @@ describe("Course Show Page Test", () => {
 	};
 	const getAccessTokenSilentlySpy = jest.fn();
 	const mutateSpy = jest.fn();
+
+	beforeEach(() => {
+		useSWR.mockReturnValue({
+		  data: roleInfo,
+		});
+	  });
 
 	beforeEach(() => {
 	  useParams.mockReturnValue({
