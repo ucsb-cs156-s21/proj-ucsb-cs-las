@@ -22,7 +22,7 @@ function CourseShow(){
         : [`/api/public/courses/show/${courseId}`, fetchWithoutToken];
 
     }
-    const { data: viewList, error} = useSWR(... args);
+    const { data: viewList, error} = useSWR(args);
     if (error) {
         return (
           <h1>We encountered an error; please reload the page and try again.</h1>

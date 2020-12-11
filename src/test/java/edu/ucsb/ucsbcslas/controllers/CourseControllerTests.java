@@ -329,12 +329,12 @@ public class CourseControllerTests {
 
 
     AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
-    when(mockCourseRepository.findById(1L)).thenReturn(expectedCourses);
+    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
     when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList);
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/member/courses/show/{courseId}").contentType("application/json")
+    MvcResult response = mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
     
@@ -375,12 +375,12 @@ public class CourseControllerTests {
     AppUser user = new AppUser(1L, "email", "Seth", "VanB");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
-    when(mockCourseRepository.findById(1L)).thenReturn(expectedCourses);
+    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
     when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments))
         .thenReturn(expectedOnlineOfficeHoursList);
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
-    MvcResult response = mockMvc.perform(get("/api/member/courses/show/{courseId}").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+    MvcResult response = mockMvc.perform(get("/api/public/courses/show/1").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn(); 
 
     String responseString = response.getResponse().getContentAsString();
     List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString,

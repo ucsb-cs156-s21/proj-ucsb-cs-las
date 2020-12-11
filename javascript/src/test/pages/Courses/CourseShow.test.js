@@ -53,9 +53,20 @@ describe("Course Show Page Test", () => {
 			  getAccessTokenSilently: getAccessTokenSilentlySpy,
 			  user: user,
 		  });
-		  useSWR.mockReturnValue({
-			data: roleInfo,
-		  });
+		  useSWR.mockImplementation((key, getter)=>{
+			  if (key[0] === "/api/myRole") {
+				  return { data : {
+					  role: "Member"
+				  }};
+			  } else {
+				  return {
+					  data : {course}
+				  }
+			  }
+		  })
+		//   useSWR.mockReturnValue({
+		// 	data: roleInfo,
+		//   });
 		  useParams.mockReturnValue({
 			courseId: '1'
 		  });
