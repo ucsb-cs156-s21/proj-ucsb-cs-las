@@ -34,43 +34,36 @@ describe("Course Show Page Test", () => {
 	};
 	
 	const roleInfo={
-		/*id: 1,
-   		email: "abcd@ucsb.edu",
-    	firstName: "Fname",
-		lastName:"Lname",*/
 		role: "Member",
 	};
 
 	const user = {
 		name: "test user",
-	  };
-	  const getAccessTokenSilentlySpy = jest.fn();
-	  const mutateSpy = jest.fn();
+	};
+	const getAccessTokenSilentlySpy = jest.fn();
+	const mutateSpy = jest.fn();
   
-	  beforeEach(() => {
-		  useAuth0.mockReturnValue({
-			  admin: undefined,
-			  getAccessTokenSilently: getAccessTokenSilentlySpy,
-			  user: user,
-		  });
-		  useSWR.mockImplementation((key, getter)=>{
-			  if (key[0] === "/api/myRole") {
-				  return { data : {
-					  role: "Member"
-				  }};
-			  } else {
-				  return {
-					  data : {course}
-				  }
-			  }
-		  })
-		//   useSWR.mockReturnValue({
-		// 	data: roleInfo,
-		//   });
-		  useParams.mockReturnValue({
-			courseId: '1'
-		  });
+	beforeEach(() => {
+		useAuth0.mockReturnValue({
+			admin: undefined,
+			getAccessTokenSilently: getAccessTokenSilentlySpy,
+			user: user,
 		});
+		useSWR.mockImplementation((key, getter)=>{
+			if (key[0] === "/api/myRole") {
+				return { data : {
+					role: "Member"
+				}};
+			} else {
+				return {
+					data : [course]
+				}
+			}
+		})
+		useParams.mockReturnValue({
+			courseId: '1'
+		});
+	});
 
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -80,9 +73,47 @@ describe("Course Show Page Test", () => {
 	test("empty component renders without crashing", () => {
 		render(<CourseShow />);
 	});
+
+	test("renders loading waiting for viewlist without crashing", () => {
+		useSWR.mockImplementation((key, getter) => {
+			if (key[0] === "/api/myRole") {
+				return {
+					data: {
+						role: "Member"
+					}
+				};
+			} else {
+				return {
+					data: null
+				}
+			}
+		});
+		const screen = render(<CourseShow />);
+		expect(screen.getByAltText("Loading")).toBeInTheDocument();
+	});
+
+	test("display error messages", () => {
+		useSWR.mockImplementation((key, getter) => {
+			if (key[0] === "/api/myRole") {
+				return {
+					data: {
+						role: "Member"
+					}
+				};
+			} else {
+				return {
+					data: null,
+					error: true
+				}
+			}
+		});
+		const screen = render(<CourseShow />);
+		expect(screen.getByText("We encountered an error; please reload the page and try again.")).toBeInTheDocument();
+	});
 	
 	test("component with existing course renders without crashing", () => {
 		render(<CourseShow existingCourse={course}/>);
+		// screen.getByText(course.name)
     });
       
 	
