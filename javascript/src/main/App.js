@@ -18,6 +18,7 @@ import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
+import ViewLogins from "main/pages/Admin/ViewLogins";
 import { fetchWithToken } from "main/utils/fetch";
 import CourseShow from "main/pages/Courses/CourseShow";
 
@@ -41,7 +42,8 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
           <PrivateRoute path="/profile" component={Profile} />
-          <AuthorizedRoute path="/admin" component={Admin} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/viewLogins" exact component={ViewLogins} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses" exact component={Courses} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/new" exact component={NewCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
