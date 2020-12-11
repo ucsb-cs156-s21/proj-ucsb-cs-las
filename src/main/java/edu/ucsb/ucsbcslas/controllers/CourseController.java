@@ -28,22 +28,6 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.opencsv.CSVWriter;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpHeaders;
-import java.io.IOException;
-import java.io.StringWriter;
-
 @RestController
 public class CourseController {
   private final Logger logger = LoggerFactory.getLogger(CourseController.class);
