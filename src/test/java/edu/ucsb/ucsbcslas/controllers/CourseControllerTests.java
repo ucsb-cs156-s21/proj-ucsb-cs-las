@@ -74,9 +74,11 @@ public class CourseControllerTests {
     List<Course> expectedCourses = new ArrayList<Course>();
     expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
 
-    mockCourseRepository.save(new Course(2L, "course 2", "S20", "fname", "lname", "email"));
+    List<Course> allCourses = new ArrayList<Course>();
+    allCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
+    allCourses.add(new Course(2L, "course 2", "S20", "fname", "lname", "email"));
 
-    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
+    when(mockCourseRepository.findAll()).thenReturn(allCourses);
     MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
