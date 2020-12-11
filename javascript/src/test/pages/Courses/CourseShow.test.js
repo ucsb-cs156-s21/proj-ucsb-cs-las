@@ -40,6 +40,31 @@ describe("Course Show Page Test", () => {
 		lastName:"Lname",*/
 		role: "Member",
 	};
+
+	const user = {
+		name: "test user",
+	  };
+	  const getAccessTokenSilentlySpy = jest.fn();
+	  const mutateSpy = jest.fn();
+  
+	  beforeEach(() => {
+		  useAuth0.mockReturnValue({
+			  admin: undefined,
+			  getAccessTokenSilently: getAccessTokenSilentlySpy,
+			  user: user,
+		  });
+		  useSWR.mockReturnValue({
+			data: roleInfo,
+		  });
+		  useParams.mockReturnValue({
+			courseId: '1'
+		  });
+		});
+
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+  
     
 	test("empty component renders without crashing", () => {
 		render(<CourseShow />);
@@ -49,29 +74,14 @@ describe("Course Show Page Test", () => {
 		render(<CourseShow existingCourse={course}/>);
     });
       
-	const user = {
-	  name: "test user",
-	};
-	const getAccessTokenSilentlySpy = jest.fn();
-	const mutateSpy = jest.fn();
-
-	beforeEach(() => {
-		useSWR.mockReturnValue({
-		  data: roleInfo,
-		});
-	  });
-
-	beforeEach(() => {
+	
+	/*beforeEach(() => {
 	  useParams.mockReturnValue({
 	    courseId: '1'
 	  });
-	});
+	});*/
 
-	afterEach(() => {
-	  jest.clearAllMocks();
-	});
-
-	test("renders without crashing", () => {
+	/*test("renders without crashing", () => {
     	render(<CourseShow />);
-  	});
+  	});*/
 });
