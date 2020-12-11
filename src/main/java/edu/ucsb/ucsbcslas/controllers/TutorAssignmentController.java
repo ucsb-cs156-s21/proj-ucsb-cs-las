@@ -195,19 +195,4 @@ public class TutorAssignmentController {
         String body = mapper.writeValueAsString(tutorAssignmentsMatchingCourse);
         return ResponseEntity.ok().body(body);
     }
-    if(authControllerAdvice.getIsMember(authorization)){
-      Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getUser(authorization).getEmail());
-      if(tutor.isPresent()){
-        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByTutor(tutor.get());
-        tutorAssignmentList.addAll(tutorAssignments);
-      }
-      if(tutorAssignmentList.isEmpty()){
-        return ResponseEntity.notFound().build();
-      }
-      ObjectMapper mapper = new ObjectMapper();
-      String body = mapper.writeValueAsString(tutorAssignmentList);
-      return ResponseEntity.ok().body(body);
-    } 
-    return getUnauthorizedResponse("member");
-  }
 }
