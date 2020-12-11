@@ -30,14 +30,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
-import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
-import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
-import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+
 import edu.ucsb.ucsbcslas.entities.AppUser;
-import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
-import edu.ucsb.ucsbcslas.entities.Tutor;
-import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 
 @WebMvcTest(value = CourseController.class)
 @WithMockUser
@@ -53,11 +48,7 @@ public class CourseControllerTests {
   CourseRepository mockCourseRepository;
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
-  @MockBean
-  TutorAssignmentRepository mockTutorAssignmentRepository;
-  @MockBean
-  OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
-  
+
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
   }
@@ -231,6 +222,23 @@ public class CourseControllerTests {
   }
 
   @Test
+  public void testGetMyCourses() throws Exception {
+    List<Course> expectedCourses = new ArrayList<Course>();
+    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
+    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    MvcResult response = mockMvc.perform(get("/api/member/courses").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
+    });
+    assertEquals(actualCourses, expectedCourses);
+  }
+
+  @Test
   public void testGetMyCourses_notFound() throws Exception {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     mockMvc.perform(get("/api/member/courses").contentType("application/json")
@@ -291,7 +299,7 @@ public class CourseControllerTests {
     .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
   }
 
-@Test
+  @Test
   public void testShowMemberCourseAuthorized() throws Exception {
     List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
@@ -390,5 +398,8 @@ public class CourseControllerTests {
     mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
   }
+}
+
+  
 
 }
