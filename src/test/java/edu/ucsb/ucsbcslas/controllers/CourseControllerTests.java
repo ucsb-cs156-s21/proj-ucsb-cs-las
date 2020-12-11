@@ -34,6 +34,13 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
 import edu.ucsb.ucsbcslas.entities.AppUser;
 
+import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
+import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+
 @WebMvcTest(value = CourseController.class)
 @WithMockUser
 public class CourseControllerTests {
@@ -48,6 +55,11 @@ public class CourseControllerTests {
   CourseRepository mockCourseRepository;
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
+
+  @MockBean
+  TutorAssignmentRepository mockTutorAssignmentRepository;
+  @MockBean
+  OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
 
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -398,8 +410,4 @@ public class CourseControllerTests {
     mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
   }
-}
-
-  
-
 }
