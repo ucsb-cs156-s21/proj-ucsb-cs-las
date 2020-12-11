@@ -16,16 +16,13 @@ import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import EditCourse from "main/pages/Courses/EditCourse";
 import NewCourse from "main/pages/Courses/NewCourse";
-<<<<<<< HEAD
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
 import ViewLogins from "main/pages/Admin/ViewLogins";
-=======
->>>>>>> Revert "Merge branch 'main' into 6pm-a-course-list-for-current-quarter"
 import { fetchWithToken } from "main/utils/fetch";
 import CourseDetail from "main/components/Courses/CourseDetail";
 import CourseList from "main/components/Courses/CourseList";
 import CourseShow from "main/pages/Courses/CourseShow";
-import ViewLogins from "main/pages/Admin/ViewLogins";
+import TutorAssignment from "main/pages/TutorAssignment/TutorAssignment"
 
 function App() {
   const { isLoading, getAccessTokenSilently: getToken } = useAuth0();
