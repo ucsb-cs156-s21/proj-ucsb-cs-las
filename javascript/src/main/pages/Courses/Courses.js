@@ -6,9 +6,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import CourseTable from "main/components/Courses/CourseTable"
 import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+import { CSVLink } from "react-csv";
 import { buildCreateFilter } from "main/services/QuarterFilterService";
 import { fetchWithoutToken } from "main/utils/fetch";
-
 import { useHistory } from "react-router-dom";
 
 
@@ -38,12 +38,31 @@ const Courses = () => {
   }
 
 
+  const headers = [{
+    key: 'id',
+    label: 'id'
+  }, {
+    key: 'number',
+    label: 'Course Number'
+  }, {
+    key: 'quarter',
+    label: 'Quarter'
+  }, {
+    key: 'instructorFirstName',
+    label: 'First'
+  }, {
+    key: 'instructorLastName',
+    label: 'Last'
+  }, {
+    key: 'instructorEmail',
+    label: 'Email'
+  }];
+
   return (
     <>
       <Button onClick={() => history.push("/courses/new")}>New Course</Button>
-
-
       <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={courseList} filename = {"CourseTable.csv"}>Download CSV</CSVLink></Button>
     </>
   );
 
