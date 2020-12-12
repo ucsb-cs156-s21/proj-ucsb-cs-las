@@ -3,14 +3,14 @@ import { fetchWithToken } from "main/utils/fetch";
 const buildCreateCourse = (getToken, onSuccess, onError) => {
   const func = async (course) => {
     try {
-      await fetchWithToken(`/api/admin/courses/`, getToken, {
+      const result = await fetchWithToken(`/api/admin/courses/`, getToken, {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify(course),
       });
-      onSuccess();
+      onSuccess(result);
     } catch (err) {
       onError(err);
     }
