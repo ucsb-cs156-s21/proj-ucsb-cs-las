@@ -2,13 +2,11 @@ import React from "react";
 import { waitFor, render } from "@testing-library/react";
 import CourseShow from "main/pages/Courses/CourseShow";
 import { useParams} from "react-router-dom";
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"), // use real functions 
-  useParams: jest.fn(), // except for just this one
-}));
-
 import CourseDetail from "main/components/Courses/CourseDetail";
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), 
+  useParams: jest.fn(), 
+}));
 
 describe("Course Show Page Test", () => { 
 	const course =
@@ -37,6 +35,6 @@ describe("Course Show Page Test", () => {
 	});
 
 	test("renders without crashing", () => {
-    	render(<CourseShow />);
+      render(<CourseShow />);
   	});
 });

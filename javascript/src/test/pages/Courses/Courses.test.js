@@ -88,15 +88,6 @@ describe("Courses page test", () => {
     render(<Courses />);
   });
 
-  test("renders with admin access", () => {
-    // useAuth0.mockReturnValue({
-    //   admin: true,
-    //   getAccessTokenSilently: getAccessTokenSilentlySpy,
-    //   user: user
-    // });
-    render(<Courses />);
-  });
-
   test("renders loading while course list is undefined", () => {
     useSWR.mockReturnValue({
       data: undefined,
@@ -155,6 +146,4 @@ describe("Courses page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-
 });

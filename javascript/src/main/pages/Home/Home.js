@@ -1,7 +1,5 @@
-  
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
-// import CourseTable from "main/components/Courses/CourseTable"
 import CourseList from "main/components/Courses/CourseList"
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";

@@ -31,10 +31,10 @@ describe("Home tests", () => {
 	];
 
 	const filterdata = [
-		{
-			id: "2",
-			activeQuarter: "All"
-		}
+	  {
+	    id: "2",
+	    activeQuarter: "All"
+	  }
 	];
 
 	const filterData = [
@@ -44,17 +44,17 @@ describe("Home tests", () => {
 	];
 
 	beforeEach(() => {
-		useSWR.mockImplementation((key, getter) => {
-			if(key[0] === "/api/public/courses/") {
-				return {
-					data : courses
-				};
-			} else {
-				return {
-					data : filterData
-				}
-			}
-	  	});
+	  useSWR.mockImplementation((key, getter) => {
+		  if(key[0] === "/api/public/courses/") {
+			  return {
+				  data : courses
+			  };
+		  } else {
+			  return {
+			    data : filterData
+			  }
+		  }
+	  });
 	});
 	afterEach(() => {
 	  jest.clearAllMocks();
@@ -81,7 +81,7 @@ describe("Home tests", () => {
 		expect(filterData).toEqual([{"id":"1", "activeQuarter": "F20"}]);
 	});
 
-	test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
+	test("Existing filterdata, and the value is refering to all the quarters", () => {
 		useSWR.mockImplementation((key, getter) => {
 			if (key === "/api/public/courses/") {
 				return {
@@ -97,7 +97,5 @@ describe("Home tests", () => {
 		expect(filterdata).toBeDefined();
 		expect(filterdata).toEqual([{ "id": "2", "activeQuarter": "All" }]);
 	});
-  
-    
 });
 
