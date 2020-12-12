@@ -15,7 +15,7 @@ export default ({courses}) => {
     );
 
     if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
-        if (filter.length > 0 &&filter[0].activeQuarter != "All") {
+        if (filter.length > 0 &&filter[0].activeQuarter !== "All") {
             courses = courses.filter((course) => course.quarter === filter[0].activeQuarter);
         }
     }

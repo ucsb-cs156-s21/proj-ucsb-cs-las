@@ -9,28 +9,26 @@ jest.mock("react-router-dom", () => ({
   Link: jest.fn() // and this one too
 }));
 
-
-const courses = [
-  {
-    name: "CMPSC 156",
-    id: 1,
-    quarter: "F20",
-    instructorFirstName: "Phill",
-    instructorLastName: "Conrad",
-    instructorEmail: "phtcon@ucsb.edu",
-  },
-  {
-    name: "CMPSC 148",
-    id: 2,
-    quarter: "F20",
-    instructorFirstName: "Chandra",
-    instructorLastName: "Krintz",
-    instructorEmail: "krintz@example.org",
-  },
-];
-
 describe("CourseList tests", () => {
-  test("renders without crashing", () => {
-    render(<CourseList/>);
-  });
+	const courses = [
+	  {
+	    name: "CMPSC 156",
+	    id: 1,
+	    quarter: "F20",
+	    instructorFirstName: "Phill",
+	    instructorLastName: "Conrad",
+	    instructorEmail: "phtcon@ucsb.edu",
+	  },
+	  {
+	    name: "CMPSC 148",
+	    id: 2,
+	    quarter: "W21",
+	    instructorFirstName: "Chandra",
+	    instructorLastName: "Krintz",
+	    instructorEmail: "krintz@example.org",
+	  },
+	];
+	test("renders without crashing", () => {
+		render(<CourseList courses={courses}/>);
+	});
 });

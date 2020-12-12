@@ -38,6 +38,21 @@ describe("Courses page test", () => {
       instructorEmail: "krintz@example.org",
     },
   ];
+
+  const filterdata = [
+    {
+      id: "2",
+      activeQuarter: "All"
+    }
+  ];
+
+  const filterData = [
+    {
+      id: "1",
+      activeQuarter: "F20"
+    }
+  ];
+
   const user = {
     name: "test user",
   };
@@ -50,10 +65,18 @@ describe("Courses page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockReturnValue({
-      data: courses,
-      error: undefined,
-      mutate: mutateSpy,
+    useSWR.mockImplementation((key, getter) => {
+      if (key[0] === "/api/public/courses/") {
+        return {
+          data: courses
+        };
+      } else {
+        return {
+          data: courses,
+          error: undefined,
+          mutate: mutateSpy,
+        }
+      }
     });
   });
 
@@ -62,6 +85,15 @@ describe("Courses page test", () => {
   });
 
   test("renders without crashing", () => {
+    render(<Courses />);
+  });
+
+  test("renders with admin access", () => {
+    // useAuth0.mockReturnValue({
+    //   admin: true,
+    //   getAccessTokenSilently: getAccessTokenSilentlySpy,
+    //   user: user
+    // });
     render(<Courses />);
   });
 
