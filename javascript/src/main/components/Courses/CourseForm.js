@@ -4,13 +4,13 @@ import { checkCourseQuarter, checkEmail, checkFilled } from "main/utils/CourseFo
 
 const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
     const [validated, setValidated] = useState(false);
-    const courseNameRef = useRef(null);
+    const courseNumberRef = useRef(null);
     const quarterRef = useRef(null);
     const firstNameRef = useRef(null);
     const lastNameRef = useRef(null);
     const emailRef = useRef(null);
     const emptyCourse = {
-        name: "",
+        number: "",
         quarter: "",
         instructorFirstName: "",
         instructorLastName: "",
@@ -48,10 +48,10 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
 
     function checkInputs() {
         const validList = [];
-        //check course name
-        const courseNameValid = checkFilled(course.name);
-        addFormEffects(courseNameRef, courseNameValid);
-        validList.push(courseNameValid);
+        //check course number
+        const courseNumberValid = checkFilled(course.number);
+        addFormEffects(courseNumberRef, courseNumberValid);
+        validList.push(courseNumberValid);
 
         //check valid quarter
         const quarterValid = checkCourseQuarter(course.quarter);
@@ -92,17 +92,17 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
 
     return (
         <Form onSubmit={handleOnSubmit}>
-            <Form.Group as={Row} controlId="name">
-                <Form.Label column sm={2}>Course Name</Form.Label>
+            <Form.Group as={Row} controlId="number">
+                <Form.Label column sm={2}>Course Number</Form.Label>
                 <Col sm={10}>
-                    <Form.Control ref={courseNameRef} type="text" placeholder="Ex: CMPSC 48" value={course.name} onChange={(e) => setCourse({
+                    <Form.Control ref={courseNumberRef} type="text" placeholder="Ex: CMPSC 48" value={course.number} onChange={(e) => setCourse({
                         ...course,
-                        name: e.target.value
+                        number: e.target.value
                     })} />
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a course.
                     </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the course name as it is seen in GOLD. Ex: CMPSC 48</Form.Text>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the course number as it is seen in GOLD. Ex: CMPSC 48</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="quarter">

@@ -15,7 +15,7 @@ public class Course {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @Column(nullable = false)
-  private String name;
+  private String number;
   @Column(nullable = false)
   private String quarter;
   @Column(nullable = false)
@@ -28,10 +28,9 @@ public class Course {
   public Course() {
   }
 
-  public Course(Long id, String name, String quarter, String instructorFirstName, String instructorLastName,
-      String instructorEmail) {
+  public Course(Long id, String number, String quarter, String instructorFirstName, String instructorLastName, String instructorEmail) {
     this.id = id;
-    this.name = name;
+    this.number = number;
     this.quarter = quarter;
     this.instructorFirstName = instructorFirstName;
     this.instructorLastName = instructorLastName;
@@ -41,8 +40,8 @@ public class Course {
   @Override
   public String toString() {
     return String.format(
-        "Course[ id=%d, name=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s ]", id,
-        name, quarter, instructorFirstName, instructorLastName, instructorEmail);
+        "Course[ id=%d, number=%s, quarter=%s, instructorFirstName=%s, instructorLastName=%s, instructorEmail=%s ]", id,
+        number, quarter, instructorFirstName, instructorLastName, instructorEmail);
   }
 
   @Override
@@ -59,7 +58,7 @@ public class Course {
     // field, we can
     // just test one difference.
     EqualsBuilder builder = new EqualsBuilder();
-    builder.append(id, other.id).append(name, other.name).append(quarter, other.quarter)
+    builder.append(id, other.id).append(number, other.number).append(quarter, other.quarter)
         .append(instructorFirstName, other.instructorFirstName).append(instructorLastName, other.instructorLastName)
         .append(instructorEmail, other.instructorEmail);
     return builder.isEquals();
@@ -73,12 +72,12 @@ public class Course {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getNumber() {
+    return number;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setNumber(String number) {
+    this.number = number;
   }
 
   public String getQuarter() {
@@ -112,10 +111,10 @@ public class Course {
   public void setInstructorEmail(String instructorEmail) {
     this.instructorEmail = instructorEmail;
   }
-
+  
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, quarter, instructorFirstName, instructorLastName, instructorEmail);
+    return Objects.hash(id, number, quarter, instructorFirstName, instructorLastName, instructorEmail);
   }
 
 }

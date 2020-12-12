@@ -22,7 +22,7 @@ jest.mock("react-router-dom", () => ({
 describe("Courses page test", () => {
   const courses = [
     {
-      name: "CMPSC 156",
+      number: "CMPSC 156",
       id: 1,
       quarter: "F20",
       instructorFirstName: "Phill",
@@ -30,7 +30,7 @@ describe("Courses page test", () => {
       instructorEmail: "phtcon@ucsb.edu",
     },
     {
-      name: "CMPSC 148",
+      number: "CMPSC 148",
       id: 2,
       quarter: "F20",
       instructorFirstName: "Chandra",

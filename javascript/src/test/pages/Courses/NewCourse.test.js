@@ -28,7 +28,7 @@ describe("New Course page test", () => {
   const getAccessTokenSilentlySpy = jest.fn();
   const course =
   {
-    name: "CMPSC 156",
+    number: "CMPSC 156",
     id: 1,
     quarter: "F20",
     instructorFirstName: "Phill",

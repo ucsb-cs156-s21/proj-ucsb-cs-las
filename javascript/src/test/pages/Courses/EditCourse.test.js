@@ -29,7 +29,7 @@ jest.mock('react-toast-notifications', () => ({
 describe("Edit Course page test", () => {
   const course =
   {
-    name: "CMPSC 156",
+    number: "CMPSC 156",
     id: 1,
     quarter: "F20",
     instructorFirstName: "Phill",
@@ -72,8 +72,8 @@ describe("Edit Course page test", () => {
     );
 
     await waitFor(() => (
-      expect(getByText("Course Name")).toBeInTheDocument() &&
-      expect(getByLabelText("Course Name").value).toEqual(course.name)
+      expect(getByText("Course Number")).toBeInTheDocument() &&
+      expect(getByLabelText("Course Number").value).toEqual(course.number)
     ));
     
   });

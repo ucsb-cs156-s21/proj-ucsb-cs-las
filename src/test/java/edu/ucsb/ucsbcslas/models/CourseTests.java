@@ -26,6 +26,6 @@ public class CourseTests {
   @Test
   public void testCourse_toString() throws Exception {
     Course course = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    assertEquals(course.toString(), "Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]");
+    assertEquals(course.toString(), "Course[ id=1, number=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]");
   }
 }

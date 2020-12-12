@@ -55,7 +55,7 @@ export default ({ courses, admin, deleteCourse }) => {
         sort: true,
         sortCaret: sortCaret
     }, {
-        dataField: 'name',
+        dataField: 'number',
         text: 'Course Number',
         sort: true,
         sortCaret: sortCaret
