@@ -7,16 +7,8 @@ import useSWR from "swr";
 jest.mock("swr");
 import { fetchWithoutToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-
 import { useHistory } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// jest.mock("react-router-dom", () => ({
-//   useHistory: jest.fn(), // and this one too
-//   Link: jest.fn(), // and this one too
-//   Router: jest.fn(),
-//   Switch: jest.fn(),
-//   Route: jest.fn()
-// }));
+
 
 describe("Home tests", () => {
 	const courses = [
@@ -45,7 +37,29 @@ describe("Home tests", () => {
 	afterEach(() => {
 	  jest.clearAllMocks();
 	});
+
+
+  const filterData = [
+    {
+      id: "1",
+      activeQuarter:"something that exists that isnt all"}
+  ];
+
   test("renders without crashing", () => {
-    render(<Home/>);
+    useSWR.mockReturnValue({
+      data:undefined
+    });
+    render(<Home />);
   });
+
+  test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
+    useSWR.mockReturnValue({
+      data: filterData
+    })
+    render(<Home />);
+    expect(filterData).toBeDefined();
+    expect(filterData).toEqual([{"id":"1", "activeQuarter": "something that exists that isnt all"}]);
+  });
+    
 });
+

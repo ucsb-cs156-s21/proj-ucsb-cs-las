@@ -23,6 +23,7 @@ import EditTutor from "main/pages/Tutor/EditTutor";
 import NewTutor from "main/pages/Tutor/NewTutor";
 
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
+import QuarterFilter from "main/pages/Admin/QuarterFilter"
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import { fetchWithToken } from "main/utils/fetch";
 import CourseDetail from "main/components/Courses/CourseDetail";
@@ -70,6 +71,7 @@ function App() {
             authorizedRoles={["admin", "member"]}
           />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <Route path="/courses/show/:courseId" component={CourseShow} />

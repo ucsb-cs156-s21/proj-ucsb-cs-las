@@ -3,6 +3,7 @@ package edu.ucsb.ucsbcslas.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +33,10 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 public class CourseController {
 
   private final Logger logger = LoggerFactory.getLogger(CourseController.class);
-  @Autowired 
+ 
+  @Autowired
   private AuthControllerAdvice authControllerAdvice;
+  
   @Autowired
   private CourseRepository courseRepository;
 
@@ -99,8 +102,9 @@ public class CourseController {
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
-    // List<Course> courseList = courseRepository.findAll();
-    List<Course> courseList = courseRepository.findByQuarter("W21"); // quarter name is not used in GOLD its should be 20211
+
+   
+    List <Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
     String body = mapper.writeValueAsString(courseList);
