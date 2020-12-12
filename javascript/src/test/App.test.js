@@ -20,7 +20,7 @@ describe("App tests", () => {
           role: mockRole
         }
       };
-      return ( firstParam === "/api/public/courses" ) ? coursesResult : roleResult;
+      return ( firstParam === "/api/public/courses/current" ) ? coursesResult : roleResult;
     });
   };
 
