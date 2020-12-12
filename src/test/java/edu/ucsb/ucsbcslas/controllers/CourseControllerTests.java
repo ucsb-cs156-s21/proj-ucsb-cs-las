@@ -22,6 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
@@ -120,6 +123,27 @@ public class CourseControllerTests {
     String responseString = response.getResponse().getContentAsString();
     Course actualCourse = objectMapper.readValue(responseString, Course.class);
     assertEquals(actualCourse, expectedCourse);
+  }
+
+  @Test
+  public void testErrorOnDuplicateSave() throws Exception {
+    Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    Map<String, String> expectedResponse = new HashMap<String, String>();
+    expectedResponse.put("error", String.format("Course titled %s already exists for quarter %s.", expectedCourse.getName(), expectedCourse.getQuarter()));
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedCourse);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    when(mockCourseRepository.findByNameAndQuarter("course 1", "F20")).thenReturn(expectedCourse);
+    MvcResult response = mockMvc
+        .perform(post("/api/admin/courses").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).findByNameAndQuarter("course 1", "F20");
+
+    String responseString = response.getResponse().getContentAsString();
+    Map<String, String> actualResponse = mapper.readValue(responseString, new TypeReference<Map<String,String>>() {});
+    assertEquals(expectedResponse, actualResponse);
   }
 
   @Test

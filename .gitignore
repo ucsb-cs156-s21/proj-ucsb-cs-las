@@ -1,4 +1,6 @@
 HELP.md
+._.DS_Store
+.DS_Store
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
@@ -61,3 +63,6 @@ javascript/npm-debug.log*
 javascript/yarn-debug.log*
 javascript/.now
 javascript/yarn-error.log*
+
+
+**/.DS_Store
