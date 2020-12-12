@@ -93,6 +93,15 @@ public class CourseController {
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
     List<Course> courseList = courseRepository.findAll();
+    ObjectMapper mapper = new ObjectMapper();
+
+    String body = mapper.writeValueAsString(courseList);
+    return ResponseEntity.ok().body(body);
+  }
+
+  @GetMapping(value = "/api/public/courses/current", produces = "application/json")
+  public ResponseEntity<String> getCurrentCourses() throws JsonProcessingException {
+    List<Course> courseList = courseRepository.findAll();
 
     String currentQuarter = "F20"; //This should be deleted once configuration file is implemented
 
@@ -131,7 +140,7 @@ public class CourseController {
       ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(courseList);
       return ResponseEntity.ok().body(body);
-    } 
+    }
     else {
       List<Course> courseList = courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
       if(courseList.isEmpty()){

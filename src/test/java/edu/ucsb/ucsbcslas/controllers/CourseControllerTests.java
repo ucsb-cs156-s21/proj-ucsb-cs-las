@@ -79,7 +79,7 @@ public class CourseControllerTests {
     allCourses.add(new Course(2L, "course 2", "S20", "fname", "lname", "email"));
 
     when(mockCourseRepository.findAll()).thenReturn(allCourses);
-    MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
+    MvcResult response = mockMvc.perform(get("/api/public/courses/current").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
     verify(mockCourseRepository, times(1)).findAll();
