@@ -29,14 +29,17 @@ describe("Home tests", () => {
       instructorEmail: "krintz@example.org",
     },
   ];
+  
   beforeEach(() => {
     useSWR.mockReturnValue({
       data: courses,
     });
   });
+  
   afterEach(() => {
     jest.clearAllMocks();
   });
+  
   test("renders without crashing", () => {
     render(<Home />);
   });
@@ -47,36 +50,14 @@ describe("Home tests", () => {
     });
     render(<Home />);
   });
+    
+  test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
+    useSWR.mockReturnValue({
+      data: filterData
+    })
+    render(<Home />);
+    expect(filterData).toBeDefined();
+    expect(filterData).toEqual([{"id":"1", "activeQuarter": "something that exists that isnt all"}]);
+  })
 });
 
-// describe("Home tests with empty courses", () => {
-//   const courses = [
-//     {
-//       name: "CMPSC 156",
-//       id: 1,
-//       quarter: "F20",
-//       instructorFirstName: "Phill",
-//       instructorLastName: "Conrad",
-//       instructorEmail: "phtcon@ucsb.edu",
-//     },
-//     {
-//       name: "CMPSC 148",
-//       id: 2,
-//       quarter: "F20",
-//       instructorFirstName: "Chandra",
-//       instructorLastName: "Krintz",
-//       instructorEmail: "krintz@example.org",
-//     },
-//   ];
-//   beforeEach(() => {
-//     useSWR.mockReturnValue({
-//       data: null,
-//     });
-//   });
-//   afterEach(() => {
-//     jest.clearAllMocks();
-//   });
-//   test("renders without crashing", () => {
-//     render(<Home />);
-//   });
-// });

@@ -1,5 +1,6 @@
 package edu.ucsb.ucsbcslas.entities;
 
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,14 +52,18 @@ public class Admin {
     return isPermanentAdmin;
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, email, isPermanentAdmin);
+  }
+
   public void setIsPermanentAdmin(boolean status) {
     isPermanentAdmin = status;
   }
 
   @Override
   public String toString() {
-    return String.format("Admin[ id=%d, email=%s, isPermanentAdmin=%s ]", this.id, this.email,
-        this.isPermanentAdmin);
+    return String.format("Admin[ id=%d, email=%s, isPermanentAdmin=%s ]", this.id, this.email, this.isPermanentAdmin);
   }
 
   @Override
