@@ -9,18 +9,26 @@ import { useToasts } from 'react-toast-notifications'
 
 const NewCourse = () => {
   const history = useHistory();
-  
+
   const { addToast } = useToasts();
 
   const { getAccessTokenSilently: getToken } = useAuth0();
 
+  //TODO COVER THE TWO FUNCTIONS
   const createCourse = buildCreateCourse(
     getToken,
-    () => { 
-      history.push("/courses"); 
-      addToast("New Course Saved", { appearance: 'success' });
-    }, 
-    () => { 
+    (response) => {
+      if (response.error) {
+        console.log("error message: ", response.error);
+        addToast(response.error, { appearance: 'error' });
+      }
+      else {
+        history.push("/courses");
+        addToast("New Course Saved", { appearance: 'success' });
+      }
+    },
+    (err) => {
+      console.log("error message: ", err);
       addToast("Error saving course", { appearance: 'error' });
     }
   );
