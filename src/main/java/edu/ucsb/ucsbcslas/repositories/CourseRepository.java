@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Long> {
   List<Course> findAll();
-  Course findByNameAndQuarter(String name, String quarter);
+  Course findByNumberAndQuarter(String number, String quarter);
   List<Course> findAllByInstructorEmail(String email);
   Optional<Course> findByNumber(String number);
 }
