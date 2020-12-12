@@ -2,11 +2,24 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import useSWR from "swr";
+import { fetchWithoutToken } from "main/utils/fetch";
 
 
 export default ({ courses, admin, deleteCourse }) => {
     const history = useHistory();
+    const { data: filter } = useSWR(
+        "/api/public/filter",
+        fetchWithoutToken
+    );
 
+    if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
+        if (filter.length > 0 &&filter[0].activeQuarter != "All") {
+
+
+            courses = !admin ? courses.filter((course) => course.quarter === filter[0].activeQuarter) : courses;
+        }
+    }
     const renderEditButton = (id) => {
         return (
             <Button data-testid="edit-button" onClick={() => { history.push(`/courses/edit/${id}`) }}>Edit</Button>
@@ -84,5 +97,4 @@ export default ({ courses, admin, deleteCourse }) => {
     return (
         <BootstrapTable keyField='id' data={courses} columns={columns} />
     );
-
 }
