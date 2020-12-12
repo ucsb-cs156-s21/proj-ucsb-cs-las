@@ -58,11 +58,11 @@ public class CourseControllerTests {
   public void testGetCourses() throws Exception {
     List<Course> expectedCourses = new ArrayList<Course>();
     expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
-    when(mockCourseRepository.findByQuarter("W21")).thenReturn(expectedCourses);
+    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
     MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
-    verify(mockCourseRepository, times(1)).findByQuarter("W21");
+    verify(mockCourseRepository, times(1)).findAll();
 
     String responseString = response.getResponse().getContentAsString();
     List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
