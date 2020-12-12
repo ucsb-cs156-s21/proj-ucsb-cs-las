@@ -42,7 +42,7 @@ const Courses = () => {
     key: 'id',
     label: 'id'
   }, {
-    key: 'number',
+    key: 'name',
     label: 'Course Number'
   }, {
     key: 'quarter',
