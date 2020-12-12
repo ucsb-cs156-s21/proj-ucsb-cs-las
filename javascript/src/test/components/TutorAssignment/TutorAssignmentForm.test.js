@@ -99,7 +99,6 @@ describe("TutorAssignmentForm tests", () => {
     expect(loading).toBeInTheDocument();
   });
 
-
   test("creating TutorAssignment works", async () => {
 
     const createTutorAssignmentMock = jest.fn();

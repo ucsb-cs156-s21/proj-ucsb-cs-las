@@ -26,7 +26,6 @@ describe("TutorAssignmentService tests", () => {
         await updateTutorAssignment();
         expect(onSuccess).toBeCalledTimes(1);
     });
-
     test("buildCreateTutorAssignment where we expect onError to be called", async () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
         const createTutorAssignment = buildCreateTutorAssignment(getToken, onSuccess, onError);
