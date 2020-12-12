@@ -13,7 +13,7 @@ jest.mock("main/services/Courses/CourseService", () => ({
   buildCreateCourse: jest.fn(),
   buildDeleteCourse: jest.fn(),
   buildUpdateCourse: jest.fn()
-}) );
+}));
 import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
@@ -38,6 +38,21 @@ describe("Courses page test", () => {
       instructorEmail: "krintz@example.org",
     },
   ];
+
+  const filterdata = [
+    {
+      id: "2",
+      activeQuarter: "All"
+    }
+  ];
+
+  const filterData = [
+    {
+      id: "1",
+      activeQuarter: "F20"
+    }
+  ];
+
   const user = {
     name: "test user",
   };
@@ -50,10 +65,18 @@ describe("Courses page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockReturnValue({
-      data: courses,
-      error: undefined,
-      mutate: mutateSpy,
+    useSWR.mockImplementation((key, getter) => {
+      if (key[0] === "/api/public/courses/") {
+        return {
+          data: courses
+        };
+      } else {
+        return {
+          data: courses,
+          error: undefined,
+          mutate: mutateSpy,
+        }
+      }
     });
   });
 
@@ -62,20 +85,6 @@ describe("Courses page test", () => {
   });
 
   test("renders without crashing", () => {
-    render(<Courses />);
-  });
-
-  test("renders without crashing", () => {
-    useAuth0.mockReturnValue({
-      admin: true,
-      getAccessTokenSilently: getAccessTokenSilentlySpy,
-      user: user
-    });
-    useSWR.mockReturnValue({
-      data: courses,
-      error: undefined,
-      mutate: mutateSpy,
-    });
     render(<Courses />);
   });
 
@@ -137,8 +146,4 @@ describe("Courses page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-
 });
-
-
