@@ -19,9 +19,9 @@ export async function fetchWithToken(url, getToken, options) {
 }
 
 export async function fetchWithoutToken(url, options) {
-    const response = await unfetch(url, {
-      ...options,
-      headers: {
+  const response = await unfetch(url, {
+    ...options,
+    headers: {
       ...options?.headers,
     },
   });

@@ -59,4 +59,10 @@ public class AdminTests {
     Admin admin2 = new Admin();
     assertEquals(admin1, admin2);
   }
+  @Test
+  public void testAdmin_hashcode() {
+    Admin admin1 = new Admin();
+    Admin admin2 = new Admin();
+    assertEquals(admin1.hashCode(), admin2.hashCode());
+  }
 }
