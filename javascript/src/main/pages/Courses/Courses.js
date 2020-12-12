@@ -7,6 +7,8 @@ import Loading from "main/components/Loading/Loading";
 import CourseTable from "main/components/Courses/CourseTable"
 import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
 import { CSVLink } from "react-csv";
+import { buildCreateFilter } from "main/services/QuarterFilterService";
+import { fetchWithoutToken } from "main/utils/fetch";
 import { useHistory } from "react-router-dom";
 
 
@@ -20,6 +22,12 @@ const Courses = () => {
     ["/api/public/courses", getToken],
     fetchWithToken
   );
+  const deleteCourse = buildDeleteCourse(getToken, mutateCourses);
+  const { data: active } = useSWR(
+    "/api/public/filter",
+    fetchWithoutToken
+  );
+  console.log(active);
   if (error) {
     return (
       <h1>We encountered an error; please reload the page and try again.</h1>
@@ -28,7 +36,7 @@ const Courses = () => {
   if (!courseList) {
     return <Loading />;
   }
-  const deleteCourse = buildDeleteCourse(getToken, mutateCourses);
+
 
   const headers = [{
     key: 'id',
