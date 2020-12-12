@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TutorAssignmentRepository extends CrudRepository<TutorAssignment, Long> {
-  List<TutorAssignment> findAll();
-  List<TutorAssignment> findAllByCourse(Course course);
-  List<TutorAssignment> findAllByTutor(Tutor tutor);
+    List<TutorAssignment> findAll();
+    List<TutorAssignment> findAllByCourse(Course course);
+    List<TutorAssignment> findAllByTutor(Tutor tutor);
+    List<TutorAssignment> findAllByCourseId(Long courseId);
 }
