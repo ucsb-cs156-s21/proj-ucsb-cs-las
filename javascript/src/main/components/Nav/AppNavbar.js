@@ -24,6 +24,7 @@ function AppNavbar() {
           <NavDropdown title="Admin">
             <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
             <NavDropdown.Item href="/admin/viewLogins">View Logins</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/tutorHistory">Tutor History</NavDropdown.Item>
           </NavDropdown>
         }
         <LinkContainer to={"/about"}>

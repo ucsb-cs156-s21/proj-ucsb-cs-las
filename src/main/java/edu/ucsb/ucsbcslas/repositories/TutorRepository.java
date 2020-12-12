@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TutorRepository extends CrudRepository<Tutor, Long> {
-  public List<Tutor> findAll();
-
-  public Optional<Tutor> findById(Long id);
-
-  Optional<Tutor> findByEmail(String email);
+    List<Tutor> findAll();
+    Optional<Tutor> findById(Long id);
+    Optional<Tutor> findByEmail(String email);
 }
