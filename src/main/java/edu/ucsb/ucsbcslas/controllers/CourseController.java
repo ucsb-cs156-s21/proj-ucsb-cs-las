@@ -52,9 +52,18 @@ public class CourseController {
       @RequestBody @Valid Course course) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    Course savedCourse = courseRepository.save(course);
-    String body = mapper.writeValueAsString(savedCourse);
-    return ResponseEntity.ok().body(body);
+    Course existingCourse = courseRepository.findByNameAndQuarter(course.getName(), course.getQuarter());
+    if (existingCourse != null){
+      Map<String, String> response = new HashMap<String, String>();
+      response.put("error", String.format("Course titled %s already exists for quarter %s.", course.getName(), course.getQuarter()));
+      String body = mapper.writeValueAsString(response);
+      return new ResponseEntity<String>(body, HttpStatus.OK);
+    }
+    else{
+      Course savedCourse = courseRepository.save(course);
+      String body = mapper.writeValueAsString(savedCourse);
+      return ResponseEntity.ok().body(body);
+    }
   }
 
   @PutMapping(value = "/api/admin/courses/{id}", produces = "application/json")
