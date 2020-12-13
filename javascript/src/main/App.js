@@ -29,7 +29,6 @@ import { fetchWithToken } from "main/utils/fetch";
 import CourseDetail from "main/components/Courses/CourseDetail";
 import CourseList from "main/components/Courses/CourseList";
 import CourseShow from "main/pages/Courses/CourseShow";
-// import TutorAssignment from "main/pages/TutorAssignment/TutorAssignment"
 
 function App() {
   const { isLoading, getAccessTokenSilently: getToken } = useAuth0();
@@ -75,8 +74,6 @@ function App() {
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
-          //<AuthorizedRoute path="/tutorAssignment" exact component={TutorAssignment} authorizedRoles={["admin", "member"]} />
-          //<AuthorizedRoute path="/tutorAssignment/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
           <Route path="/courses/show/:id" component={CourseList} />
           <Route path="/about" component={About} />
