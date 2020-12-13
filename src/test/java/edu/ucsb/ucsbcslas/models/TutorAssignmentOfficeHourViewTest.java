@@ -41,7 +41,6 @@ public class TutorAssignmentOfficeHourViewTest {
   @Test
   public void testTutorAssignmentOfficeHourView_equalsSelf() throws Exception {
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    //Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();

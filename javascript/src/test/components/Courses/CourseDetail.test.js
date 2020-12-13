@@ -19,9 +19,9 @@ describe("Course Detail Test", () => {
 	
 	const sampleTutor = {
 		"id": 1,
-		"firstName": "Seth",
-		"lastName": "VanB",
-		"email": "vanbrocklin@ucsb.edu",
+		"firstName": "Chris",
+		"lastName": "Gaucho",
+		"email": "cgaucho@ucsb.edu",
 	};
 
 	const sampleTutorAssignment={

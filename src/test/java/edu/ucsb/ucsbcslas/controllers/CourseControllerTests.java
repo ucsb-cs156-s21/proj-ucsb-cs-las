@@ -377,7 +377,6 @@ public class CourseControllerTests {
 
     Optional <Course> expectedCourses = Optional.empty();
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    //Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
@@ -398,7 +397,7 @@ public class CourseControllerTests {
       }
     }
 
-    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+    AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
     when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
