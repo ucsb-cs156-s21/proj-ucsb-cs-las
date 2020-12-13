@@ -34,7 +34,7 @@ const TutorAssignment = () => {
   if (error) {
     return (
       <>
-        {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
+        {isInstructor && <Button onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>}
         <h1>You have no current Tutor Assignments or we encountered an error; please reload the page and try again.</h1>
       </>
     );
@@ -45,7 +45,7 @@ const TutorAssignment = () => {
 
   return (
     <>
-      {isInstructor && <Button onClick={()=>history.push("/tutorAssignment/new")}>New Tutor Assignment</Button>}
+      {isInstructor && <Button onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>}
       <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
     </>
   );

@@ -21,16 +21,25 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        console.log("hi");
         const form = e.currentTarget;
         var isValid = checkInputs();
-        console.log("form valid: ", isValid);
         //submit to actual create course
         //in create course API, if course repo already exists, fail
         if (isValid) {
-            console.log("validated: ", validated);
+            let quarterNum = "1";
+            if(course.quarter.substr(0, 1)==="S"){
+                quarterNum =  "2";
+            }
+            else if(course.quarter.substr(0, 1)==="M"){
+                quarterNum =  "3";
+            }
+            else if(course.quarter.substr(0, 1)==="F"){
+                quarterNum =  "4";
+            }
+            let formatedQuarter = "20" + course.quarter.substr(1, 2) + quarterNum;
+            
             if (createCourse) {
-                createCourse(course);
+                createCourse({...course, quarter: formatedQuarter});
             }
             else
                 updateCourse(course, course.id);
