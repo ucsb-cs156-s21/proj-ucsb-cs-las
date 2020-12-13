@@ -126,9 +126,6 @@ describe("Tutor History page test", () => {
     expect(buildSearchTutorHistoryByCourse).toHaveBeenCalledWith(getAccessTokenSilentlySpy, expect.any(Function), expect.any(Function));
     expect(addToastSpy).toHaveBeenCalledWith("Search results updated", { appearance: "success" });
     expect(setStateSpy).toHaveBeenCalledWith({showResults: true, results: sampleTutorAssignments});
-
-    // const tutorAssignment = getByText(/Scott/);
-    // expect(tutorAssignment).toBeInTheDocument();
   });
 
   test("clicking a course button causes an error Toast to pop up on error", async () => {

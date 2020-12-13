@@ -32,4 +32,17 @@ describe("CourseForm tests", () => {
   test("renders without crashing", () => {
     render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={false}/>);
   });
+
+  test("renders delete and edit for admin/instructor", async () => {
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const {getByTestId} = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true}/>);
+    const editButton = getByTestId('edit-button');
+    userEvent.click(editButton);
+
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  });
 });
