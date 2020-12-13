@@ -47,7 +47,7 @@ describe("CourseForm tests", () => {
 
   });
 
-  test("creating course works", async () => {
+  test("creating course works F20", async () => {
 
     const createCourseMock = jest.fn();
 
@@ -74,6 +74,96 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createCourseMock).toHaveBeenCalledTimes(1);
-    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined });
+    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20204"});
+  });
+
+  test("creating course works with S20", async () => {
+
+    const createCourseMock = jest.fn();
+
+    const { getByLabelText, getByText } = render
+      (<CourseForm createCourse={createCourseMock} />)
+    ;
+
+    const nameInput = getByLabelText("Course Name");
+    userEvent.type(nameInput, sampleCourse.name);
+
+    const quarterInput = getByLabelText("Quarter");
+    userEvent.type(quarterInput, "S20");
+
+    const fnameInput = getByLabelText("First Name");
+    userEvent.type(fnameInput, sampleCourse.instructorFirstName);
+
+    const lnameInput = getByLabelText("Last Name");
+    userEvent.type(lnameInput, sampleCourse.instructorLastName);
+
+    const emailInput = getByLabelText("Email");
+    userEvent.type(emailInput, sampleCourse.instructorEmail);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(createCourseMock).toHaveBeenCalledTimes(1);
+    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20202"});
+  });
+
+  test("creating course works with M20", async () => {
+
+    const createCourseMock = jest.fn();
+
+    const { getByLabelText, getByText } = render
+      (<CourseForm createCourse={createCourseMock} />)
+    ;
+
+    const nameInput = getByLabelText("Course Name");
+    userEvent.type(nameInput, sampleCourse.name);
+
+    const quarterInput = getByLabelText("Quarter");
+    userEvent.type(quarterInput, "M20");
+
+    const fnameInput = getByLabelText("First Name");
+    userEvent.type(fnameInput, sampleCourse.instructorFirstName);
+
+    const lnameInput = getByLabelText("Last Name");
+    userEvent.type(lnameInput, sampleCourse.instructorLastName);
+
+    const emailInput = getByLabelText("Email");
+    userEvent.type(emailInput, sampleCourse.instructorEmail);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(createCourseMock).toHaveBeenCalledTimes(1);
+    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20203"});
+  });
+
+  test("creating course works with W20", async () => {
+
+    const createCourseMock = jest.fn();
+
+    const { getByLabelText, getByText } = render
+      (<CourseForm createCourse={createCourseMock} />)
+    ;
+
+    const nameInput = getByLabelText("Course Name");
+    userEvent.type(nameInput, sampleCourse.name);
+
+    const quarterInput = getByLabelText("Quarter");
+    userEvent.type(quarterInput, "W20");
+
+    const fnameInput = getByLabelText("First Name");
+    userEvent.type(fnameInput, sampleCourse.instructorFirstName);
+
+    const lnameInput = getByLabelText("Last Name");
+    userEvent.type(lnameInput, sampleCourse.instructorLastName);
+
+    const emailInput = getByLabelText("Email");
+    userEvent.type(emailInput, sampleCourse.instructorEmail);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(createCourseMock).toHaveBeenCalledTimes(1);
+    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20201"});
   });
 });
