@@ -16,7 +16,7 @@ public class TutorAssignmentOfficeHourViewTest {
   @Test
   public void testTutorAssignmentOfficeHourView_notEqualNull() throws Exception {
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
     OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09", "Scott closes the room early sometimes but he will still be on slack!");
@@ -29,7 +29,7 @@ public class TutorAssignmentOfficeHourViewTest {
   @Test
   public void testTutorAssignmentOfficeHourView_notEqualAnotherClass() throws Exception {
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
     OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09", "Scott closes the room early sometimes but he will still be on slack!");
@@ -41,7 +41,8 @@ public class TutorAssignmentOfficeHourViewTest {
   @Test
   public void testTutorAssignmentOfficeHourView_equalsSelf() throws Exception {
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    //Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
     OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09", "Scott closes the room early sometimes but he will still be on slack!");
@@ -53,7 +54,7 @@ public class TutorAssignmentOfficeHourViewTest {
   @Test
   public void testTutorAssignmentOfficeHourView_toString() throws Exception {
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
     OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09", "Scott closes the room early sometimes but he will still be on slack!");

@@ -287,7 +287,7 @@ public class CourseControllerTests {
     expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
     when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+    AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     MvcResult response = mockMvc.perform(get("/api/member/courses").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -306,7 +306,7 @@ public class CourseControllerTests {
     List<Course> expectedCourses = new ArrayList<Course>();
     when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+    AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     mockMvc.perform(get("/api/member/courses").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
@@ -343,7 +343,7 @@ public class CourseControllerTests {
   
     Optional <Course> expectedCourses = Optional.empty();
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
 
@@ -353,7 +353,7 @@ public class CourseControllerTests {
     expectedViewList.add(expectedView_1);
 
 
-    AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+    AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
     // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
     when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
     when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
@@ -377,7 +377,8 @@ public class CourseControllerTests {
 
     Optional <Course> expectedCourses = Optional.empty();
     Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    //Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
 
