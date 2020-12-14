@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
 import Loading from "main/components/Loading/Loading";
 import CourseDetail from "main/components/Courses/CourseDetail";
-
 import { useHistory } from "react-router-dom";
 
 function CourseShow() {

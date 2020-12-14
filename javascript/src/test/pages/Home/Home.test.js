@@ -1,13 +1,9 @@
 import React from "react";
-import { Jumbotron } from "react-bootstrap";
-import { waitFor, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from "@testing-library/react";
 import Home from "main/pages/Home/Home"
 import useSWR from "swr";
 jest.mock("swr");
-import { fetchWithoutToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { useHistory } from "react-router-dom";
 
 
 describe("Home tests", () => {
@@ -30,14 +26,14 @@ describe("Home tests", () => {
     },
   ];
 
-  const filterdata = [
+  const filterdata_1 = [
     {
       id: "2",
       activeQuarter: "All"
     }
   ];
 
-  const filterData = [
+  const filterdata_2 = [
     {
       id: "1",
       activeQuarter: "F20"
@@ -45,14 +41,14 @@ describe("Home tests", () => {
   ];
 
   beforeEach(() => {
-    useSWR.mockImplementation((key, getter) => {
+    useSWR.mockImplementation((key) => {
       if (key[0] === "/api/public/courses/") {
         return {
           data: courses
         };
       } else {
         return {
-          data: filterData
+          data: filterdata_2
         }
       }
     });
@@ -66,36 +62,36 @@ describe("Home tests", () => {
   });
 
   test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
-    useSWR.mockImplementation((key, getter) => {
+    useSWR.mockImplementation((key) => {
       if (key === "/api/public/courses/") {
         return {
           data: courses
         };
       } else {
         return {
-          data: filterData
+          data: filterdata_2
         }
       }
     });
     render(<Home />);
-    expect(filterData).toBeDefined();
-    expect(filterData).toEqual([{ "id": "1", "activeQuarter": "F20" }]);
+    expect(filterdata_2).toBeDefined();
+    expect(filterdata_2).toEqual([{ "id": "1", "activeQuarter": "F20" }]);
   });
 
   test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
-    useSWR.mockImplementation((key, getter) => {
+    useSWR.mockImplementation((key) => {
       if (key === "/api/public/courses/") {
         return {
           data: courses
         };
       } else {
         return {
-          data: filterdata
+          data: filterdata_1
         }
       }
     });
     render(<Home />);
-    expect(filterdata).toBeDefined();
-    expect(filterdata).toEqual([{ "id": "2", "activeQuarter": "All" }]);
+    expect(filterdata_1).toBeDefined();
+    expect(filterdata_1).toEqual([{ "id": "2", "activeQuarter": "All" }]);
   });
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render} from "@testing-library/react";
 import CourseDetail from "main/components/Courses/CourseDetail";
 
 jest.mock("react-router-dom", () => ({

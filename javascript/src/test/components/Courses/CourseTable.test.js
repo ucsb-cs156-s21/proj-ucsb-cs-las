@@ -24,7 +24,6 @@ describe("CourseForm tests", () => {
     },
   ];
 
-  const courseList = [];
   const deleteCourse = jest.fn();
   test("renders without crashing", () => {
     render(<CourseTable courses={courses} admin={true} deleteCourse={deleteCourse} />);

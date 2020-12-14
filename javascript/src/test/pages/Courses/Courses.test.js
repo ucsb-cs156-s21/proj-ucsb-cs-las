@@ -6,9 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
 import Courses from "main/pages/Courses/Courses";
 import userEvent from "@testing-library/user-event";
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+import { buildDeleteCourse } from "main/services/Courses/CourseService";
 jest.mock("main/services/Courses/CourseService", () => ({
   buildCreateCourse: jest.fn(),
   buildDeleteCourse: jest.fn(),
@@ -39,20 +38,6 @@ describe("Courses page test", () => {
     },
   ];
 
-  const filterdata = [
-    {
-      id: "2",
-      activeQuarter: "All"
-    }
-  ];
-
-  const filterData = [
-    {
-      id: "1",
-      activeQuarter: "F20"
-    }
-  ];
-
   const user = {
     name: "test user",
   };
@@ -65,7 +50,7 @@ describe("Courses page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockImplementation((key, getter) => {
+    useSWR.mockImplementation((key) => {
       if (key[0] === "/api/public/courses/") {
         return {
           data: courses

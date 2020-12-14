@@ -1,16 +1,13 @@
-import React, { useCallback } from "react";
-import { waitFor, render } from "@testing-library/react";
+import React from "react";
+import { render } from "@testing-library/react";
 import useSWR from "swr";
 jest.mock("swr");
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams} from "react-router-dom";
 jest.mock("@auth0/auth0-react");
 import CourseShow from "main/pages/Courses/CourseShow";
-import userEvent from "@testing-library/user-event";
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
 
-import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));
@@ -33,15 +30,10 @@ describe("Course Show Page Test", () => {
 	  instructorEmail: "phtcon@ucsb.edu",
 	};
 	
-	const roleInfo={
-		role: "Member",
-	};
-
 	const user = {
 		name: "test user",
 	};
 	const getAccessTokenSilentlySpy = jest.fn();
-	const mutateSpy = jest.fn();
   
 	beforeEach(() => {
 		useAuth0.mockReturnValue({
@@ -147,17 +139,5 @@ describe("Course Show Page Test", () => {
 	
 	test("component with existing course renders without crashing", () => {
 		render(<CourseShow existingCourse={course}/>);
-		// screen.getByText(course.name)
     });
-      
-	
-	/*beforeEach(() => {
-	  useParams.mockReturnValue({
-	    courseId: '1'
-	  });
-	});*/
-
-	/*test("renders without crashing", () => {
-    	render(<CourseShow />);
-  	});*/
 });
