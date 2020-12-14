@@ -4,7 +4,8 @@ import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 
-export default ({ courses }) => {
+
+export default ({courses}) => {
     const history = useHistory();
 
     const { data: filter } = useSWR(
@@ -18,7 +19,7 @@ export default ({ courses }) => {
 
     const cellFormatter = (id, name) => {
         const link = `/courses/show/${id}`
-        return (
+        return (  
             <a href={link}>{name}</a>
         )
     }

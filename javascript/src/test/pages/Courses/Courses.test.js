@@ -50,7 +50,8 @@ describe("Courses page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockImplementation((key) => {
+
+    useSWR.mockImplementation((key, getter) => {
       if (key[0] === "/api/public/courses/") {
         return {
           data: courses
