@@ -72,8 +72,8 @@ describe("Home tests", () => {
 			}
 		});
 		render(<Home />);
-		expect(filterData).toBeDefined();
-		expect(filterData).toEqual([{"id":"1", "activeQuarter": "F20"}]);
+		expect(filterData2).toBeDefined();
+		expect(filterData2).toEqual([{"id":"1", "activeQuarter": "F20"}]);
 	});
 
 	test("Existing filterData, and the value is refering to all the quarters", () => {
