@@ -322,4 +322,5 @@ public class CourseControllerTests {
     mockMvc.perform(get("/api/member/courses/forInstructor/email").contentType("application/json")
     .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
   }
+
 }

@@ -1,13 +1,13 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
-import CourseTable from "main/components/Courses/CourseTable"
+import CourseList from "main/components/Courses/CourseList"
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
     const { data: courses } = useSWR(
-        "/api/public/courses",
+        "/api/public/courses/",
         fetchWithoutToken
     );
     const { data: currentFilter } = useSWR(
@@ -29,7 +29,7 @@ const Home = () => {
 
                 <h5>Welcome to the UCSB CS LAs App!</h5>
                 {filterLabel(currentFilter)}
-                <CourseTable courses={courses || []} />
+                <CourseList courses={courses || []} />
             </div>
         </Jumbotron>
     );

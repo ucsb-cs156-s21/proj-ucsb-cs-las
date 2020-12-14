@@ -38,6 +38,7 @@ describe("Courses page test", () => {
       instructorEmail: "krintz@example.org",
     },
   ];
+
   const user = {
     name: "test user",
   };
@@ -50,10 +51,18 @@ describe("Courses page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockReturnValue({
-      data: courses,
-      error: undefined,
-      mutate: mutateSpy,
+    useSWR.mockImplementation((key, getter) => {
+      if (key[0] === "/api/public/courses/") {
+        return {
+          data: courses
+        };
+      } else {
+        return {
+          data: courses,
+          error: undefined,
+          mutate: mutateSpy,
+        }
+      }
     });
   });
 
@@ -123,8 +132,4 @@ describe("Courses page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-
 });
-
-

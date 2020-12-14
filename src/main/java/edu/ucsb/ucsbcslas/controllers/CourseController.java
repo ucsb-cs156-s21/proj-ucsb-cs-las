@@ -31,9 +31,12 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
 @RestController
 public class CourseController {
+
   private final Logger logger = LoggerFactory.getLogger(CourseController.class);
+ 
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
+  
   @Autowired
   private CourseRepository courseRepository;
 
@@ -99,6 +102,7 @@ public class CourseController {
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
+
    
     List <Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
@@ -118,7 +122,6 @@ public class CourseController {
     String body = mapper.writeValueAsString(course.get());
     return ResponseEntity.ok().body(body);
   }
-
   @GetMapping(value = "/api/member/courses", produces = "application/json")
   public ResponseEntity<String> getMyCourses(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     if (authControllerAdvice.getIsAdmin(authorization)){
