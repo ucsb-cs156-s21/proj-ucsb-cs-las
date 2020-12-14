@@ -13,8 +13,13 @@ export default ({courses}) => {
         fetchWithoutToken
     );
 
+    // if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
+    //     courses = courses.filter((course) => course.quarter === filter[0].activeQuarter);
+    // }
     if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
-        courses = courses.filter((course) => course.quarter === filter[0].activeQuarter);
+        if (filter.length > 0 &&filter[0].activeQuarter != "All") {
+            courses = courses.filter((course) => course.quarter === filter[0].activeQuarter);
+        }
     }
 
     const cellFormatter = (id, name) => {
