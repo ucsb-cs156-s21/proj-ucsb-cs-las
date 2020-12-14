@@ -7,21 +7,9 @@ import { fetchWithoutToken } from "main/utils/fetch";
 
 import { buildDeleteCourse } from "main/services/Courses/CourseService";
 
-
 export default ({ courses, admin, deleteCourse }) => {
     const history = useHistory();
-    const { data: filter } = useSWR(
-        "/api/public/filter",
-        fetchWithoutToken
-    );
-
-    if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
-        if (filter.length > 0 &&filter[0].activeQuarter != "All") {
-
-
-            courses = !admin ? courses.filter((course) => course.quarter === filter[0].activeQuarter) : courses;
-        }
-    }
+    
     const renderEditButton = (id) => {
         return (
             <Button data-testid="edit-button" onClick={() => { history.push(`/courses/edit/${id}`) }}>Edit</Button>

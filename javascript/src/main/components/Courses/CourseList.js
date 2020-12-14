@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 
-export default ({courses}) => {
+export default ({courses = []}) => {
     const history = useHistory();
 
     const { data: filter } = useSWR(

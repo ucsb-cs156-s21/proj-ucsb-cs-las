@@ -29,7 +29,7 @@ const Home = () => {
 
                 <h5>Welcome to the UCSB CS LAs App!</h5>
                 {filterLabel(currentFilter)}
-                <CourseList courses={courses || []} />
+                <CourseList courses={courses} />
             </div>
         </Jumbotron>
     );
