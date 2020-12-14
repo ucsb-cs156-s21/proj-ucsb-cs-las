@@ -26,8 +26,6 @@ import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment"
 import QuarterFilter from "main/pages/Admin/QuarterFilter"
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import { fetchWithToken } from "main/utils/fetch";
-import CourseDetail from "main/components/Courses/CourseDetail";
-import CourseList from "main/components/Courses/CourseList";
 import CourseShow from "main/pages/Courses/CourseShow";
 
 function App() {
@@ -75,7 +73,6 @@ function App() {
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
-          <Route path="/courses/show/:id" component={CourseList} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>

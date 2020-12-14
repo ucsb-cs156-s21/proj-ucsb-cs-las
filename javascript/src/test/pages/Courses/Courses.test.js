@@ -39,20 +39,6 @@ describe("Courses page test", () => {
     },
   ];
 
-  const filterdata = [
-    {
-      id: "2",
-      activeQuarter: "All"
-    }
-  ];
-
-  const filterData = [
-    {
-      id: "1",
-      activeQuarter: "F20"
-    }
-  ];
-
   const user = {
     name: "test user",
   };

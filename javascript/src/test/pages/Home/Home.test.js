@@ -1,14 +1,9 @@
 import React from "react";
-import { Jumbotron } from "react-bootstrap";
-import { waitFor, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from "@testing-library/react";
 import Home from "main/pages/Home/Home"
 import useSWR from "swr";
 jest.mock("swr");
-import { fetchWithoutToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { useHistory } from "react-router-dom";
-
 
 describe("Home tests", () => {
 	const courses = [
@@ -30,14 +25,14 @@ describe("Home tests", () => {
 	  },
 	];
 
-	const filterdata = [
+	const filterData1 = [
 	  {
 	    id: "2",
 	    activeQuarter: "All"
 	  }
 	];
 
-	const filterData = [
+	const filterData2 = [
 	  {
 	    id: "1",
 	    activeQuarter:"F20"}
@@ -51,7 +46,7 @@ describe("Home tests", () => {
 			  };
 		  } else {
 			  return {
-			    data : filterData
+			    data : filterData2
 			  }
 		  }
 	  });
@@ -64,7 +59,7 @@ describe("Home tests", () => {
     render(<Home />);
   });
 
-  	test("Existing filterdata, and the value is an array with one element in it with the above data", () => {
+  	test("Existing filterData, and the value is an array with one element in it with the above data", () => {
 		useSWR.mockImplementation((key, getter) => {
 			if(key === "/api/public/courses/") {
 				return {
@@ -72,7 +67,7 @@ describe("Home tests", () => {
 				};
 			} else {
 				return {
-					data : filterData
+					data : filterData2
 				}
 			}
 		});
@@ -81,7 +76,7 @@ describe("Home tests", () => {
 		expect(filterData).toEqual([{"id":"1", "activeQuarter": "F20"}]);
 	});
 
-	test("Existing filterdata, and the value is refering to all the quarters", () => {
+	test("Existing filterData, and the value is refering to all the quarters", () => {
 		useSWR.mockImplementation((key, getter) => {
 			if (key === "/api/public/courses/") {
 				return {
@@ -89,13 +84,13 @@ describe("Home tests", () => {
 				};
 			} else {
 				return {
-					data: filterdata
+					data: filterData1
 				}
 			}
 		});
 		render(<Home />);
-		expect(filterdata).toBeDefined();
-		expect(filterdata).toEqual([{ "id": "2", "activeQuarter": "All" }]);
+		expect(filterData1).toBeDefined();
+		expect(filterData1).toEqual([{ "id": "2", "activeQuarter": "All" }]);
 	});
 });
 
