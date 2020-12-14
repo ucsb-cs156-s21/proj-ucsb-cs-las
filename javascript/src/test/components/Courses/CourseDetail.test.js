@@ -37,7 +37,7 @@ describe("Course Detail Test", () => {
 		"dayOfWeek": "Tuesday",
 		"startTime": "4:00 PM",
 		"endTime": "6:00 PM",
-		"zoomRoomLink": "https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09",
+		"zoomRoomLink": "zoomLink",
 		"notes":"Scott closes the room early sometimes but he will still be on slack!",
 	}
 
