@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.Optional;
 import javax.validation.Valid;
 import com.auth0.jwt.JWT;
@@ -26,8 +27,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 import edu.ucsb.ucsbcslas.models.Course;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
+import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+
 
 @RestController
 public class CourseController {
@@ -39,6 +46,10 @@ public class CourseController {
   
   @Autowired
   private CourseRepository courseRepository;
+  @Autowired
+  private TutorAssignmentRepository tutorAssignmentRepository;
+  @Autowired
+  private OnlineOfficeHoursRepository onlineOfficeHoursRepository;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -155,4 +166,59 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
+  @GetMapping(value = "/api/member/courses/show/{courseId}")
+  public ResponseEntity<String> showMemberCourse(@RequestHeader("Authorization") String authorization, @PathVariable("courseId") Long courseId) throws JsonProcessingException {
+    if (!authControllerAdvice.getIsMember(authorization)){
+      return getUnauthorizedResponse("member");
+    }
+    Optional<Course> course = courseRepository.findById(courseId);
+
+    if(course.isPresent()){
+      List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+      
+      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
+      for(TutorAssignment temp : tutorAssignments){
+        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findAllByTutorAssignment(temp);
+
+        TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, onlineOfficeHours);
+        viewList.add(tutorAssignmentOfficeHourView);
+      }
+      
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(viewList);
+      return ResponseEntity.ok().body(body); 
+    }   
+    return ResponseEntity.notFound().build();
+    
+  }
+    
+  @GetMapping(value = "/api/public/courses/show/{courseId}")
+  public ResponseEntity<String> showMemberCourse(@PathVariable("courseId") Long courseId) throws JsonProcessingException {
+    Optional<Course> course = courseRepository.findById(courseId);
+
+    if(course.isPresent()){
+      List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+      
+      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
+      for(TutorAssignment temp : tutorAssignments){
+        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findAllByTutorAssignment(temp);
+
+        TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, onlineOfficeHours);
+        viewList.add(tutorAssignmentOfficeHourView);
+      }
+      
+      for(TutorAssignmentOfficeHourView temp: viewList){
+        List<OnlineOfficeHours> officeHourList = temp.getOnlineOfficeHours();
+        temp.getTutorAssignment().getTutor().setEmail(null);
+        for(OnlineOfficeHours tempo: officeHourList){
+          tempo.setZoomRoomLink(null);
+        }
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(viewList);
+      return ResponseEntity.ok().body(body); 
+    }   
+    return ResponseEntity.notFound().build();
+    }
 }
+  

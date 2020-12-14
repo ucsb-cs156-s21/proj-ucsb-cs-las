@@ -5,6 +5,8 @@ import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 import { useHistory } from "react-router-dom";
 
+
+
 const Home = () => {
     const { data: courses } = useSWR(
         "/api/public/courses/",

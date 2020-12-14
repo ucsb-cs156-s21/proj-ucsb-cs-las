@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import CourseList from "main/components/Footer/AppFooter";
+
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(), 
   Link: jest.fn() 

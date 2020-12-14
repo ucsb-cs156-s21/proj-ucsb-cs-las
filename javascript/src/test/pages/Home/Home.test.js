@@ -93,4 +93,3 @@ describe("Home tests", () => {
 		expect(filterData1).toEqual([{ "id": "2", "activeQuarter": "All" }]);
 	});
 });
-
