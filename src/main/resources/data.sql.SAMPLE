@@ -2,11 +2,35 @@
 
 INSERT INTO course(id, name, quarter, instructor_first_name, instructor_last_name, instructor_email) VALUES ('1', 'CMPSC 156', '20204', 'Phill', 'Conrad', 'phtcon@ucsb.edu');
 INSERT INTO course(id, name, quarter, instructor_first_name, instructor_last_name, instructor_email) VALUES ('2', 'CMPSC 148', '20204', 'Chandra', 'Krintz', 'ckrintz@ucsb.edu');
+INSERT INTO course(id, name, quarter, instructor_first_name, instructor_last_name, instructor_email) VALUES ('3', 'CMPSC 156', '20211', 'Phill', 'Conrad', 'phtcon@ucsb.edu');
 
-INSERT INTO tutor(id, first_name, last_name, email) VALUES ('1', 'Andrew', 'Lu', 'alu@ucsb.edu');
-INSERT INTO tutor(id, first_name, last_name, email) VALUES ('2', 'Scott', 'Chow', 'scottpchow@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('1', 'Scott', 'Chow', 'scottpchow@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('2', 'Mara', 'Downing', 'maradowning@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('3', 'Andrew', 'Lu', 'alu@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('4', 'Tanay', 'Komarlu', 'tkomarlu@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('5', 'Gabriel', 'Soule', 'gabrielsoule@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('6', 'Bryan', 'Terce', 'bkb@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('7', 'Jacqui', 'Mai', 'jacquelinemai@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('8', 'Jayleen', 'Li', 'jayleenli@ucsb.edu');
+INSERT INTO tutor(id, first_name, last_name, email) VALUES ('9', 'Zachary', 'Minshall', 'zminshall@ucsb.edu');
 
-INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ('1', '2', '1', 'TA');
-INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ('2', '1', '1', 'LA');
+
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '1',  '1', '1', 'TA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '2',  '2',  '1', 'TA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '3',  '3',  '1', 'LA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '4',  '4',  '1', 'LA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '5',  '5',  '1', '190J');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '6',  '6',  '1', 'LA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '6',  '2',  '3', 'TA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '7',  '7',  '3', 'TA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '8',  '3',  '3', 'LA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ( '9',  '6',  '3', 'LA');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ('10',  '8',  '3', '190J');
+INSERT INTO tutor_assignment(id, tutor_id, course_id, assignment_type) VALUES ('11',  '9',  '3', '190J');
+
 
 INSERT INTO online_office_hours(id, tutor_assignment_id, day_of_week, start_time, end_time, zoom_room_link, notes) VALUES ('1', '1', 'Tuesday', '4:00 PM', '6:00 PM', 'https://ucsb.zoom.us/j/92714889391?pwd=dXlaVTFUS1NuNm5xL0NMUUFjRDVndz09', 'Scott closes the room early sometimes but he will still be on slack!');
+INSERT INTO online_office_hours(id, tutor_assignment_id, day_of_week, start_time, end_time, zoom_room_link, notes) VALUES ('2', '2', 'Thursday', '4:00 PM', '6:00 PM', '', '');
+INSERT INTO online_office_hours(id, tutor_assignment_id, day_of_week, start_time, end_time, zoom_room_link, notes) VALUES ('3', '3', 'Friday', '3:00 PM', '5:00 PM', '', '');
+INSERT INTO online_office_hours(id, tutor_assignment_id, day_of_week, start_time, end_time, zoom_room_link, notes) VALUES ('4', '4', 'Wednesday', '2:00 PM', '4:00 PM', '', '');
+INSERT INTO online_office_hours(id, tutor_assignment_id, day_of_week, start_time, end_time, zoom_room_link, notes) VALUES ('5', '5', 'Friday', '2:00 PM', '3:00 PM', '', '');
