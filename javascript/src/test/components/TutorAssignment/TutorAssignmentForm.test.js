@@ -34,11 +34,31 @@ describe("TutorAssignmentForm tests", () => {
                     instructorLastName: "Krintz",
                     instructorEmail: "krintz@example.org",
                     },
-
-          tutorEmail:   "scottpchow@ucsb.edu",
-
+          tutor:    {email: "scottpchow@ucsb.edu",
+                    firstName: "Scott",
+                    id: 1,
+                    lastName: "Chow"},
+          tutorEmail:   "scottpchow@ucsb.edu", 
           assignmentType: "TA"
         };
+
+    const sampleTutorAssignment2 = {
+      id: 1,
+      course:  {name: "CMPSC 148",
+                id: 2,
+                quarter: "20203",
+                instructorFirstName: "Chandra",
+                instructorLastName: "Krintz",
+                instructorEmail: "krintz@example.org",
+                },
+        tutor:  {email: "scottpchow@ucsb.edu",
+                firstName: "Scott",
+                id: 1,
+                lastName: "Chow"},
+        assignmentType: "TA",
+        tutorEmail: "scottpchow@ucsb.edu",
+        index: 1,
+      };    
 
     const mutateSpy = jest.fn();
     beforeEach(() => {
@@ -100,7 +120,7 @@ describe("TutorAssignmentForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createTutorAssignmentMock).toHaveBeenCalledTimes(1);
-    expect(createTutorAssignmentMock).toHaveBeenCalledWith({ ... sampleTutorAssignment, id: undefined});
+    expect(createTutorAssignmentMock).toHaveBeenCalledWith({ ... sampleTutorAssignment, id: null, index: "1", tutor: null});
   });
 
 

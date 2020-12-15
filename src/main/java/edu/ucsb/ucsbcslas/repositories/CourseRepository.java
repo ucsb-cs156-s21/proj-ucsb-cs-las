@@ -14,4 +14,6 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
   Course findByNameAndQuarter(String name, String quarter);
   List<Course> findAllByInstructorEmail(String email);
   Optional<Course> findByName(String name);
+  Optional<Course> findById(Long id);
+  List<Course> findByQuarter(String quarter);
 }

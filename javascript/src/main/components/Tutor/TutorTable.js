@@ -88,8 +88,5 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
     formatter: (cell, row) => renderDeleteButton(row.id)
   });
 
-  console.log(instructorTutors);
-  console.log(tutors);
-
   return <BootstrapTable keyField="id" data={tutors} columns={columns} />;
 };

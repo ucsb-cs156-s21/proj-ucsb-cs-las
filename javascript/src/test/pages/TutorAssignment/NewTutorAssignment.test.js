@@ -71,8 +71,8 @@ describe("New Tutor Assignment page test", () => {
     userEvent.click(submitButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-    expect(pushSpy).toHaveBeenCalledWith("/tutorAssignment");
-
+    expect(pushSpy).toHaveBeenCalledWith("/tutorAssignments");
+    
   });
 
   test("clicking submit button stays on same page on error", async () => {

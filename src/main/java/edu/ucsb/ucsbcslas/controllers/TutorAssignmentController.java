@@ -150,7 +150,7 @@ public class TutorAssignmentController {
         }
         return getUnauthorizedResponse("member");
     }
-
+    
     @GetMapping(value = "/api/public/tutorAssignment/{course_id}", produces = "application/json")
     public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourseId(course_id);
@@ -195,4 +195,67 @@ public class TutorAssignmentController {
         String body = mapper.writeValueAsString(tutorAssignmentsMatchingCourse);
         return ResponseEntity.ok().body(body);
     }
+  
+    @GetMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
+    public ResponseEntity<String> getTutorAssignment(@PathVariable("id") Long id) throws JsonProcessingException {
+        Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+        if (tutorAssignment.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(tutorAssignment.get());
+        return ResponseEntity.ok().body(body);
+    }
+  
+    @PutMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
+    public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
+        @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment) throws JsonProcessingException {
+
+      if (!authControllerAdvice.getIsAdmin(authorization))
+        return getUnauthorizedResponse("admin");
+      Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+      if (!tutorAssignment.isPresent()) {
+        return ResponseEntity.notFound().build();
+      }
+      logger.info(incomingTutorAssignment);
+      JSONObject ta = new JSONObject(incomingTutorAssignment);
+      TutorAssignment newAssignment = new TutorAssignment();
+      logger.info("ta: ", ta.toString());
+      JSONObject cInfo = new JSONObject(ta.get("course").toString());
+      logger.info("cInfo: ", cInfo.toString());
+      Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
+        cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
+      newAssignment.setCourse(c);
+
+
+      logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
+      logger.info("ta: ", ta.getString("tutorEmail"));
+      if(!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))){
+        Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
+        logger.info("tutor: ", tutor);
+        if(tutor.isPresent()){
+          newAssignment.setTutor(tutor.get());
+        }
+        else{
+          return getIncorrectInputResponse();
+        }
+      } else {
+
+        JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
+        Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"), tInfo.getString("lastName"), 
+        tInfo.getString("email"));
+        newAssignment.setTutor(t);
+
+
+      }
+      newAssignment.setAssignmentType(ta.getString("assignmentType"));
+
+
+      newAssignment.setId(id);
+      tutorAssignmentRepository.save(newAssignment);
+      String body = mapper.writeValueAsString(newAssignment);
+      return ResponseEntity.ok().body(body);
+    }
+  
 }

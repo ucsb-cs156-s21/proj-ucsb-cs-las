@@ -6,14 +6,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
 import Courses from "main/pages/Courses/Courses";
 import userEvent from "@testing-library/user-event";
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
+import { buildDeleteCourse } from "main/services/Courses/CourseService";
 jest.mock("main/services/Courses/CourseService", () => ({
   buildCreateCourse: jest.fn(),
   buildDeleteCourse: jest.fn(),
   buildUpdateCourse: jest.fn()
-}) );
+}));
 import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
@@ -38,6 +37,7 @@ describe("Courses page test", () => {
       instructorEmail: "krintz@example.org",
     },
   ];
+
   const user = {
     name: "test user",
   };
@@ -50,10 +50,19 @@ describe("Courses page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockReturnValue({
-      data: courses,
-      error: undefined,
-      mutate: mutateSpy,
+
+    useSWR.mockImplementation((key, getter) => {
+      if (key[0] === "/api/public/courses/") {
+        return {
+          data: courses
+        };
+      } else {
+        return {
+          data: courses,
+          error: undefined,
+          mutate: mutateSpy,
+        }
+      }
     });
   });
 
@@ -123,8 +132,4 @@ describe("Courses page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-
 });
-
-

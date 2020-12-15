@@ -1,4 +1,4 @@
-import { buildCreateTutorAssignment, buildDeleteTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
+import { buildCreateTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 
 import { fetchWithToken } from "main/utils/fetch";
 
@@ -23,6 +23,11 @@ describe("TutorAssignmentService tests", () => {
         await createTutorAssignment();
         expect(onSuccess).toBeCalledTimes(1);
     });
+    test("buildUpdateTutorAssignment and invoke updateTutorAssignment", async () => {
+        const updateTutorAssignment = buildUpdateTutorAssignment(getToken, onSuccess, onError);
+        await updateTutorAssignment();
+        expect(onSuccess).toBeCalledTimes(1);
+    });
     test("buildCreateTutorAssignment where we expect onError to be called", async () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
         const createTutorAssignment = buildCreateTutorAssignment(getToken, onSuccess, onError);
@@ -30,5 +35,11 @@ describe("TutorAssignmentService tests", () => {
         expect(onError).toBeCalledTimes(1);
     });
 
-});
+    test("buildUpdateTutorAssignment where we expect onError to be called", async () => {
+        fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
+        const updateTutorAssignment = buildUpdateTutorAssignment(getToken, onSuccess, onError);
+        await updateTutorAssignment();
+        expect(onError).toBeCalledTimes(1);
+    });
 
+});
