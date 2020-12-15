@@ -30,7 +30,7 @@ const TutorAssignment = () => {
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
-  
+
   if (error) {
     return (
       <>

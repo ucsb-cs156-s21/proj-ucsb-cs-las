@@ -9,7 +9,7 @@ import { useToasts } from 'react-toast-notifications'
 
 const NewTutorAssignment = () => {
   const history = useHistory();
-  
+
   const { addToast } = useToasts();
 
   const { getAccessTokenSilently: getToken } = useAuth0();
@@ -19,8 +19,8 @@ const NewTutorAssignment = () => {
     () => { 
       history.push("/tutorAssignments"); 
       addToast("New Tutor Assignment Saved", { appearance: 'success' });
-    }, 
-    () => { 
+    },
+    () => {
       addToast("Error saving Tutor Assignment. Make sure tutor email is correct", { appearance: 'error' });
     }
   );

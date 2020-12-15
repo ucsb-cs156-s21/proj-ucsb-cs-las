@@ -5,8 +5,6 @@ import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 
-import { buildDeleteCourse } from "main/services/Courses/CourseService";
-
 
 export default ({ courses, admin, deleteCourse }) => {
     const history = useHistory();

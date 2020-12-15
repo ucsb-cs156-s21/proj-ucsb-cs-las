@@ -9,7 +9,9 @@ jest.mock("main/utils/fetch", () => ({
 describe("TutorAssignmentService tests", () => {
 
     const getToken = jest.fn();
-    const onSuccess = jest.fn(); 
+
+    const onSuccess = jest.fn();
+
     const onError = jest.fn();
 
     beforeEach( () => {

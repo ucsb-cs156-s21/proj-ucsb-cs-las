@@ -24,7 +24,7 @@ describe("TutorAssignmentForm tests", () => {
         instructorEmail: "krintz@example.org",
         },
     ];
-  
+
     const sampleTutorAssignment = {
           id: 1,
           course:  {name: "CMPSC 148",
@@ -123,5 +123,5 @@ describe("TutorAssignmentForm tests", () => {
     expect(createTutorAssignmentMock).toHaveBeenCalledWith({ ... sampleTutorAssignment, id: null, index: "1", tutor: null});
   });
 
-  
+
 });

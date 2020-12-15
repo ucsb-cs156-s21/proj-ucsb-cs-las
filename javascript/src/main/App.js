@@ -11,6 +11,8 @@ import About from "main/pages/About/About";
 import Home from "main/pages/Home/Home";
 import Profile from "main/pages/Profile/Profile";
 import Courses from "main/pages/Courses/Courses";
+import OfficeHours from "main/pages/OfficeHours/OfficeHours";
+import NewOfficeHours from "main/pages/OfficeHours/NewOfficeHours"
 import TutorAssignments from "main/pages/TutorAssignment/TutorAssignments";
 import TutorHistory from "main/pages/TutorHistory/TutorHistory";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
@@ -72,6 +74,9 @@ function App() {
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "member"]} />
+
           <Route path="/courses/show/:courseId" component={CourseShow} />
           <Route path="/about" component={About} />
         </Switch>

@@ -30,6 +30,7 @@ describe("CourseForm tests", () => {
       ];
 
   test("renders without crashing", () => {
+
     render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={false}/>);
   });
 
