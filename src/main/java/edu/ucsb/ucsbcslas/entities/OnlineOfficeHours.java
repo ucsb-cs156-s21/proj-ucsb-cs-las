@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 @Entity
 public class OnlineOfficeHours {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY) //@GeneratedValue(strategy = GenerationType.AUTO) was the original line, change back if broken
+  @GeneratedValue(strategy = GenerationType.AUTO) //@GeneratedValue(strategy = GenerationType.AUTO) was the original line, change back if broken
   private Long id;
   @ManyToOne
   @JoinColumn(name = "tutor_assignment_id")
