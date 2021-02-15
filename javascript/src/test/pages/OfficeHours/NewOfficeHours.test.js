@@ -1,6 +1,5 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
-import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import NewOfficeHour from "main/pages/OfficeHours/NewOfficeHours";
 import userEvent from "@testing-library/user-event";
@@ -37,7 +36,7 @@ describe("NewOfficeHours page test", () => {
   };
 
   const getAccessTokenSilentlySpy = jest.fn();
-  const officeHours =
+  const _officeHours =
   {
 
     id: 1,
@@ -82,7 +81,7 @@ describe("NewOfficeHours page test", () => {
 
 
 
-    buildCreateOfficeHour.mockImplementation((getToken, onSuccess, onError) => {
+    buildCreateOfficeHour.mockImplementation((_getToken, onSuccess, _onError) => {
       return () => {
         onSuccess();
       }
@@ -107,7 +106,7 @@ describe("NewOfficeHours page test", () => {
       throw new Error();
     });
 
-    buildCreateOfficeHour.mockImplementation((getToken, onSuccess, onError) => {
+    buildCreateOfficeHour.mockImplementation((_getToken, _onSuccess, onError) => {
       return () => {
         onError();
       }

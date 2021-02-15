@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllByText, render, screen, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import App from "main/App";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
@@ -11,7 +11,7 @@ jest.mock("swr");
 describe("App tests", () => {
 
   const setupSWRMocks = (mockRole) => {
-    useSWR.mockImplementation( (firstParam, fetchWithToken) => { 
+    useSWR.mockImplementation( (firstParam, _fetchWithToken) => { 
       const coursesResult = {
         data: []
       };

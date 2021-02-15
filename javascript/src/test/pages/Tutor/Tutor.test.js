@@ -4,11 +4,8 @@ import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import Tutor from "main/pages/Tutor/Tutor";
 import userEvent from "@testing-library/user-event";
-import { fetchWithToken } from "main/utils/fetch";
 import {
-  buildCreateTutor,
-  buildDeleteTutor,
-  buildUpdateTutor
+  buildDeleteTutor
 } from "main/services/Tutor/TutorService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";

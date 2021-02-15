@@ -1,6 +1,3 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import AppFooter from "main/components/Footer/AppFooter";
 import { buildUpsertFilter} from "main/services/QuarterFilterService";
 
 import { fetchWithToken } from "main/utils/fetch";

@@ -40,7 +40,7 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
             text: "Delete",
             isDummyField: true,
             dataField: "delete",
-            formatter: (cell, row) => renderDeleteButton(row.id)
+            formatter: (_cell, row) => renderDeleteButton(row.id)
         });
     }
 

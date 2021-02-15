@@ -3,7 +3,6 @@ import { render, waitFor } from "@testing-library/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import NewTutor from "main/pages/Tutor/NewTutor";
 import userEvent from "@testing-library/user-event";
-import useSWR from "swr";
 import { useHistory } from 'react-router-dom';
 
 import { fetchWithToken } from "main/utils/fetch";
@@ -26,7 +25,7 @@ describe("New Tutor page test", () => {
     name: "test user",
   };
   const getAccessTokenSilentlySpy = jest.fn();
-  const Tutor =
+  const _Tutor =
   {
     id: 1,
     firstName: "Phill",

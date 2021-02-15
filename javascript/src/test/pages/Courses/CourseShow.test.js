@@ -41,7 +41,7 @@ describe("Course Show Page Test", () => {
 			getAccessTokenSilently: getAccessTokenSilentlySpy,
 			user: user,
 		});
-		useSWR.mockImplementation((key, getter)=>{
+		useSWR.mockImplementation((key, _getter)=>{
 			if (key[0] === "/api/myRole") {
 				return { data : {
 					role: "Member"
@@ -67,7 +67,7 @@ describe("Course Show Page Test", () => {
 	});
 
 	test("display page with admin access", () => {
-		useSWR.mockImplementation((key, getter) => {
+		useSWR.mockImplementation((key, _getter) => {
 			if (key[0] === "/api/myRole") {
 				return {
 					data: {
@@ -84,7 +84,7 @@ describe("Course Show Page Test", () => {
 	});
 
 	test("renders loading waiting for viewlist without crashing", () => {
-		useSWR.mockImplementation((key, getter) => {
+		useSWR.mockImplementation((key, _getter) => {
 			if (key[0] === "/api/myRole") {
 				return {
 					data: {
@@ -102,7 +102,7 @@ describe("Course Show Page Test", () => {
 	});
 
 	test("display error messages", () => {
-		useSWR.mockImplementation((key, getter) => {
+		useSWR.mockImplementation((key, _getter) => {
 			if (key[0] === "/api/myRole") {
 				return {
 					data: {
@@ -121,7 +121,7 @@ describe("Course Show Page Test", () => {
 	});
 
 	test("display error messages", () => {
-		useSWR.mockImplementation((key, getter) => {
+		useSWR.mockImplementation((key, _getter) => {
 			if (key[0] === "/api/myRole") {
 				return {
 					data: null

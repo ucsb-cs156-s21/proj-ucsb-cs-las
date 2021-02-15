@@ -5,7 +5,6 @@ import QuarterFilter from "main/pages/Admin/QuarterFilter";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import userEvent from "@testing-library/user-event";
-import useSWR from "swr";
 import { useHistory } from 'react-router-dom';
 
 import { fetchWithToken } from "main/utils/fetch";

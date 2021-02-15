@@ -5,8 +5,6 @@ import TutorHistory from "main/pages/TutorHistory/TutorHistory.js";
 import userEvent from "@testing-library/user-event";
 import useSWR from "swr";
 
-import { fetchWithToken } from "main/utils/fetch";
-
 import { useToasts } from 'react-toast-notifications'
 
 import { buildSearchTutorHistoryByCourse } from "main/services/TutorHistory/TutorHistoryService";
@@ -98,8 +96,8 @@ describe("Tutor History page test", () => {
 
   test("clicking a course button initiates a search and updates search results", async () => {
     buildSearchTutorHistoryByCourse.mockImplementation(
-      (fakeGetToken, onSuccess, onError) => {
-        const func = async (query) => {
+      (_fakeGetToken, onSuccess, onError) => {
+        const func = async (_query) => {
           try {
             const data = sampleTutorAssignments;
             onSuccess(data);
@@ -131,11 +129,10 @@ describe("Tutor History page test", () => {
   test("clicking a course button causes an error Toast to pop up on error", async () => {
     const sampleErrorMessage = "sample error";
     buildSearchTutorHistoryByCourse.mockImplementation(
-      (fakeGetToken, fakeOnSuccess, fakeOnError) => {
-        const fakeFunc = async (fakeQuery) => {
+      (_fakeGetToken, _fakeOnSuccess, fakeOnError) => {
+        const fakeFunc = async (_fakeQuery) => {
           try {
             throw new Error(sampleErrorMessage);
-            fakeOnSuccess();
           } catch (fakeErr) {
             fakeOnError(fakeErr);
           }

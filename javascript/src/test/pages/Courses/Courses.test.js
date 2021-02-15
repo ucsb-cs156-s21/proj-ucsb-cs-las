@@ -51,7 +51,7 @@ describe("Courses page test", () => {
       user: user
     });
 
-    useSWR.mockImplementation((key, getter) => {
+    useSWR.mockImplementation((key, _getter) => {
       if (key[0] === "/api/public/courses/") {
         return {
           data: courses

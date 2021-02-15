@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import TutorForm from "main/components/Tutor/TutorForm";
 import userEvent from "@testing-library/user-event";
 

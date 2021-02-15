@@ -28,7 +28,7 @@ export default ({courses}) => {
     }, {
         dataField: 'name',
         text: 'Course Number',
-        formatter: (cell, row) => cellFormatter(row.id, row.name)
+        formatter: (_cell, row) => cellFormatter(row.id, row.name)
     }, {
         dataField: 'quarter',
         text: 'Quarter'

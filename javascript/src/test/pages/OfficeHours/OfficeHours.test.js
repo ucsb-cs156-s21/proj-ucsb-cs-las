@@ -4,8 +4,7 @@ import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
 import userEvent from "@testing-library/user-event";
-import { fetchWithToken } from "main/utils/fetch";
-import { buildDeleteOfficeHour, buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
 
 import { useHistory } from "react-router-dom";
 jest.mock("swr");

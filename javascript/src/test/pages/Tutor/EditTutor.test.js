@@ -1,7 +1,6 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Router, useHistory, useParams } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { useHistory, useParams } from 'react-router-dom';
 import EditTutor from "main/pages/Tutor/EditTutor";
 import userEvent from "@testing-library/user-event";
 

@@ -1,5 +1,4 @@
 import React from "react";
-import useSWR from "swr";
 import { waitFor, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable";

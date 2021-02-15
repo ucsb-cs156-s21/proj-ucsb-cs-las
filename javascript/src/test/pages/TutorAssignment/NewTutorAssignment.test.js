@@ -62,7 +62,7 @@ describe("New Tutor Assignment page test", () => {
       push: pushSpy
     });
 
-    const { getByText, getByLabelText } = render(
+    const { getByText, _getByLabelText } = render(
       <NewTutorAssignment />
     );
 

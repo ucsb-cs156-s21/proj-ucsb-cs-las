@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import useSWR from "swr";
 import TutorAssignmentForm from "main/components/TutorAssignment/TutorAssignmentForm";
 import userEvent from "@testing-library/user-event";
@@ -42,7 +42,7 @@ describe("TutorAssignmentForm tests", () => {
           assignmentType: "TA"
         };
 
-    const sampleTutorAssignment2 = {
+    const _sampleTutorAssignment2 = {
       id: 1,
       course:  {name: "CMPSC 148",
                 id: 2,
