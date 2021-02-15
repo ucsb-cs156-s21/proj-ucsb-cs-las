@@ -1,9 +1,9 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import useSWR from "swr";
-jest.mock("swr");
 import TutorAssignmentForm from "main/components/TutorAssignment/TutorAssignmentForm";
 import userEvent from "@testing-library/user-event";
+jest.mock("swr");
 
 describe("TutorAssignmentForm tests", () => {
     const courses = [
@@ -120,7 +120,7 @@ describe("TutorAssignmentForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createTutorAssignmentMock).toHaveBeenCalledTimes(1);
-    expect(createTutorAssignmentMock).toHaveBeenCalledWith({ ... sampleTutorAssignment, id: null, index: "1", tutor: null});
+    expect(createTutorAssignmentMock).toHaveBeenCalledWith({ ...sampleTutorAssignment, id: null, index: "1", tutor: null});
   });
 
 

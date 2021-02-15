@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import useSWR from "swr";
-jest.mock("swr");
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams} from "react-router-dom";
-jest.mock("@auth0/auth0-react");
 import CourseShow from "main/pages/Courses/CourseShow";
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
 
 jest.mock("react-router-dom", () => ({

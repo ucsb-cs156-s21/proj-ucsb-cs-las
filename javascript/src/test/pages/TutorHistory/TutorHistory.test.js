@@ -1,30 +1,30 @@
 import React, { useState } from "react";
+import { render, waitFor } from "@testing-library/react";
+import { useAuth0 } from "@auth0/auth0-react";
+import TutorHistory from "main/pages/TutorHistory/TutorHistory.js";
+import userEvent from "@testing-library/user-event";
+import useSWR from "swr";
+
+import { fetchWithToken } from "main/utils/fetch";
+
+import { useToasts } from 'react-toast-notifications'
+
+import { buildSearchTutorHistoryByCourse } from "main/services/TutorHistory/TutorHistoryService";
 jest.mock("react", () => ({
   ...jest.requireActual("react"),
   useState: jest.fn()
 }));
-import { render, waitFor } from "@testing-library/react";
-import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
-import TutorHistory from "main/pages/TutorHistory/TutorHistory.js";
-import userEvent from "@testing-library/user-event";
-import useSWR from "swr";
 jest.mock("swr");
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn() // and this one too
 }));
-
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
 }));
-
-import { useToasts } from 'react-toast-notifications'
 jest.mock('react-toast-notifications', () => ({
   useToasts: jest.fn()
 }));
-
-import { buildSearchTutorHistoryByCourse } from "main/services/TutorHistory/TutorHistoryService";
 jest.mock("main/services/TutorHistory/TutorHistoryService", () => ({
   buildSearchTutorHistoryByCourse: jest.fn()
 }));

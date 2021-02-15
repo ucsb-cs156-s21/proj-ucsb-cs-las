@@ -1,10 +1,10 @@
 import React from "react";
 import useSWR from "swr";
-jest.mock("swr");
 import { waitFor, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable";
 import { useHistory } from "react-router-dom";
+jest.mock("swr");
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));

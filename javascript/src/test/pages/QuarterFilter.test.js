@@ -3,22 +3,22 @@ import { render, waitFor } from "@testing-library/react";
 import QuarterFilter from "main/pages/Admin/QuarterFilter";
 
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 
 import userEvent from "@testing-library/user-event";
 import useSWR from "swr";
-jest.mock("swr");
 import { useHistory } from 'react-router-dom';
+
+import { fetchWithToken } from "main/utils/fetch";
+
+import { useToasts } from 'react-toast-notifications'
+jest.mock("@auth0/auth0-react");
+jest.mock("swr");
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn() // and this one too
 }));
-
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
 }));
-
-import { useToasts } from 'react-toast-notifications'
 jest.mock('react-toast-notifications', () => ({
   useToasts: jest.fn()
 }));

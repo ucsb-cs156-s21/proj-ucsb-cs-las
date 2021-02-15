@@ -1,14 +1,16 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
-jest.mock("swr");
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
 import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
-jest.mock("main/utils/fetch");
 import { buildDeleteOfficeHour, buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+
+import { useHistory } from "react-router-dom";
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
+jest.mock("main/utils/fetch");
 
 
 
@@ -18,8 +20,6 @@ import { buildDeleteOfficeHour, buildCreateOfficeHour } from "main/services/Offi
 jest.mock("main/services/OfficeHours/OfficeHourService", () => ({
   buildDeleteOfficeHour: jest.fn(),
 }) );
-
-import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));

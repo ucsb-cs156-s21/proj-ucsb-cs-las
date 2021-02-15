@@ -74,7 +74,7 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createCourseMock).toHaveBeenCalledTimes(1);
-    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20204"});
+    expect(createCourseMock).toHaveBeenCalledWith({ ...sampleCourse, id: undefined, quarter: "20204"});
   });
 
   test("creating course works with S20", async () => {
@@ -104,7 +104,7 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createCourseMock).toHaveBeenCalledTimes(1);
-    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20202"});
+    expect(createCourseMock).toHaveBeenCalledWith({ ...sampleCourse, id: undefined, quarter: "20202"});
   });
 
   test("creating course works with M20", async () => {
@@ -134,7 +134,7 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createCourseMock).toHaveBeenCalledTimes(1);
-    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20203"});
+    expect(createCourseMock).toHaveBeenCalledWith({ ...sampleCourse, id: undefined, quarter: "20203"});
   });
 
   test("creating course works with W20", async () => {
@@ -164,6 +164,6 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createCourseMock).toHaveBeenCalledTimes(1);
-    expect(createCourseMock).toHaveBeenCalledWith({ ... sampleCourse, id: undefined, quarter: "20201"});
+    expect(createCourseMock).toHaveBeenCalledWith({ ...sampleCourse, id: undefined, quarter: "20201"});
   });
 });

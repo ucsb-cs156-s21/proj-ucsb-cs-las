@@ -37,7 +37,7 @@ const Tutor = () => {
   useEffect(() => {
     mutateTutors();
     mutateInstructorTutors();
-  }, []);
+  }, [mutateInstructorTutors, mutateTutors]);
 
   const { data: instructorCourseList } = useSWR(
     [`/api/member/courses/forInstructor/${email}`, getToken],

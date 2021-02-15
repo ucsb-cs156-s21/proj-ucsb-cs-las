@@ -65,6 +65,6 @@ describe("TutorForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createTutorMock).toHaveBeenCalledTimes(1);
-    expect(createTutorMock).toHaveBeenCalledWith({ ... sampleTutor, id: '' });
+    expect(createTutorMock).toHaveBeenCalledWith({ ...sampleTutor, id: '' });
   });
 });
