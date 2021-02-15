@@ -12,7 +12,8 @@ import {useHistory} from "react-router-dom";
 const TutorAssignment = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
-  const { name, picture, email } = user;
+  //const { name, picture, email } = user;
+  const { email } = user;
 
   const { data: roleInfo } = useSWR(
       ["/api/myRole", getToken],
@@ -26,7 +27,7 @@ const TutorAssignment = () => {
 
   const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
 
-  const { data: tutorAssignmentList, error, mutate: mutateTutorAssignment } = useSWR(
+  const { data: tutorAssignmentList, error } = useSWR(
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );

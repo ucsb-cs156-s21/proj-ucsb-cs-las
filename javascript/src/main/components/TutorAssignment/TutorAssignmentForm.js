@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import {asHumanQuarter} from "main/utils/quarter.ts"
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 
 const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, existingTutorAssignment }) => {
     const emptyTutorAssignment = {
@@ -30,7 +30,7 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
     }
 
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: courseList, error, mutate: mutateCourse } = useSWR(
+    const { data: courseList, error } = useSWR(
         ["/api/member/courses/", getToken],
         fetchWithToken
     );
@@ -55,11 +55,16 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
 
     
     if(existingTutorAssignment && tutorAssignment.index === null){
-        courseList.map((course, index) => {
-            if(course.id === existingTutorAssignment.course.id){
-                setTutorAssignment({...tutorAssignment, index: index});
+        for (var i = 0; i < courseList.length; i++) {
+            if (courseList[i].id === existingTutorAssignment.course.id) {
+                setTutorAssignment({...tutorAssignment, index: i});
             }
-        });
+        }
+        // courseList.map((course, index) => {
+        //     if(course.id === existingTutorAssignment.course.id){
+                
+        //     }
+        // });
     }
 
     const handleOnSubmit = (e) => {

@@ -14,7 +14,7 @@ export default ({ courses, admin, deleteCourse }) => {
     );
 
     if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
-        if (filter.length > 0 &&filter[0].activeQuarter != "All") {
+        if (filter.length > 0 &&filter[0].activeQuarter !== "All") {
 
 
             courses = !admin ? courses.filter((course) => course.quarter === filter[0].activeQuarter) : courses;

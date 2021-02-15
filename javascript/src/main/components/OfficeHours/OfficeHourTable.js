@@ -1,11 +1,9 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
 
 
 export default ({officeHours,admin,deleteOfficeHour}) => {
-    const history = useHistory();
     const renderDeleteButton = (id) => {
         return (
             <Button variant="danger" data-testid="delete-button" onClick={() => deleteOfficeHour(id)}>Delete</Button>
