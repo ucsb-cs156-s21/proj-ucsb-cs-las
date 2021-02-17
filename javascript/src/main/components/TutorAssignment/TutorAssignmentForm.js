@@ -60,11 +60,6 @@ const TutorAssignmentForm = ({ createTutorAssignment, updateTutorAssignment, exi
                 setTutorAssignment({...tutorAssignment, index: i});
             }
         }
-        // courseList.map((course, index) => {
-        //     if(course.id === existingTutorAssignment.course.id){
-                
-        //     }
-        // });
     }
 
     const handleOnSubmit = (e) => {

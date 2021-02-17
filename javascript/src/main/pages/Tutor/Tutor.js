@@ -18,11 +18,9 @@ import { useHistory } from "react-router-dom";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
-  //const { name, picture, email } = user;
   const { email } = user;
   const history = useHistory();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
-  //const { addToast } = useToasts();
 
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutors", getToken],
