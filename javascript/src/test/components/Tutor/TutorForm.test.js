@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import TutorForm from "main/components/Tutor/TutorForm";
 import userEvent from "@testing-library/user-event";
 
@@ -65,6 +65,6 @@ describe("TutorForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createTutorMock).toHaveBeenCalledTimes(1);
-    expect(createTutorMock).toHaveBeenCalledWith({ ... sampleTutor, id: '' });
+    expect(createTutorMock).toHaveBeenCalledWith({ ...sampleTutor, id: '' });
   });
 });

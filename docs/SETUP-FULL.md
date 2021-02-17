@@ -174,7 +174,6 @@ auth0.domain:
 auth0.clientId: 
 google.clientId:
 google.clientSecret:
-app.ucsb.api.consumer_key:
 spring.data.mongodb.uri:
 ```
 
@@ -242,7 +241,6 @@ auth0.domain: ucsb-cs156-cgaucho.us.auth0.com
 auth0.clientid: 6KoPsWMM2A27PjAejHHWTXApra8CVQ6C
 google.clientId:
 google.clientSecret: 
-app.ucsb.api.consumer_key:
 spring.data.mongodb.uri:
 ```
 
@@ -443,7 +441,6 @@ preferred text editor, and fill in the values as shown below:
 | `app.admin.emails` | `phtcon@ucsb.edu,youremail@ucsb.edu` | A comma separated list of emails for admins for the app.  Add your email. |  (none) |
 | `auth0.domain` | `ucsb-cs156-cgaucho.us.auth0.com` | The DNS hostname used to access Auth0 services; starts wtih the name of your tenant, and ends with something like `.us.auth0.com` |  `auth0.domain` |
 | `auth0.clientId` | `6KoPsWMM2A27PjAejHHWTXApra8CVQ6C` | The value that identifies the specific Auth0 application from your tenant |  `auth0.clientId` |
-| `app.ucsb.api.consumer_key` | | Key for UCSB Developer API| `app.ucsb.api.consumer_key` |
 | `spring.data.mongodb.uri` | | URI for accessing MongoDB data | `spring.data.mongodb.uri` |
 | `security.oauth2.resource.id` | `https://dsr-min-cgaucho.herokuapp.com` | Copy the same value as `app.namespace`  |  `heroku.url` |
 |`security.oauth2.resource.jwk.keySetUri`| (no change)| Leave unchanged from value in `.SAMPLE` file | | 
@@ -485,7 +482,6 @@ app.namespace
 app.admin.emails
 auth0.domain
 auth0.clientId
-app.ucsb.api.consumer_key
 spring.data.mongodb.uri
 security.oauth2.resource.id
 security.oauth2.resource.jwk.keySetUri
