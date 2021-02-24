@@ -10,6 +10,15 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
         )
     }
 
+    function zoomRoomLinkFormatter(cell,row) {
+    
+        var httpsPrefix = 'https://';
+        var linkWithHttps = httpsPrefix + cell
+        return (
+            <div><a rel={'external'} target="_blank" href={linkWithHttps}> { cell } </a></div>
+        );
+      }
+   
     const columns = [{
         dataField: 'id',
         text: 'id'
@@ -24,7 +33,8 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
         text: 'Day'
     }, {
         dataField: 'zoomRoomLink',
-        text: 'Zoom Room'
+        text: 'Zoom Room',
+        formatter: zoomRoomLinkFormatter
     }, {
         dataField: 'notes',
         text: 'Notes'
@@ -43,6 +53,8 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
             formatter: (_cell, row) => renderDeleteButton(row.id)
         });
     }
+
+    //call formatter function
 
     return (
         <BootstrapTable keyField='id' data={officeHours} columns={columns} />
