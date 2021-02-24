@@ -1,3 +1,7 @@
+# Don't check in a built storybook
+
+javascript/storybook-static
+
 # We don't want node_modules, package.json or package-lock.json at top level
 # Only under javascript/ directory
 
