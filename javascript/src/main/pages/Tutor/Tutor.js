@@ -6,22 +6,21 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
-import { useToasts } from "react-toast-notifications";
+//import { useToasts } from "react-toast-notifications";
 
 import {
-  buildCreateTutor,
-  buildDeleteTutor,
-  buildUpdateTutor
+  //buildCreateTutor,
+  buildDeleteTutor
+  //buildUpdateTutor
 } from "main/services/Tutor/TutorService";
 
 import { useHistory } from "react-router-dom";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
-  const { name, picture, email } = user;
+  const { email } = user;
   const history = useHistory();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
-  const { addToast } = useToasts();
 
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutors", getToken],
@@ -37,7 +36,7 @@ const Tutor = () => {
   useEffect(() => {
     mutateTutors();
     mutateInstructorTutors();
-  }, []);
+  }, [mutateInstructorTutors, mutateTutors]);
 
   const { data: instructorCourseList } = useSWR(
     [`/api/member/courses/forInstructor/${email}`, getToken],
@@ -50,7 +49,7 @@ const Tutor = () => {
     instructorCourseList &&
     instructorCourseList.length > 0;
   const isAdmin =
-    roleInfo && roleInfo.role && roleInfo.role.toLowerCase() == "admin";
+    roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
   if (error || errorInstructor) {
     return (

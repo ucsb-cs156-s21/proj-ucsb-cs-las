@@ -1,6 +1,3 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import AppFooter from "main/components/Footer/AppFooter";
 import { buildCreateTutor, buildDeleteTutor, buildUpdateTutor } from "main/services/Tutor/TutorService";
 
 import { fetchWithToken } from "main/utils/fetch";

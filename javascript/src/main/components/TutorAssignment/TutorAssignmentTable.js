@@ -13,7 +13,7 @@ export default ({tutorAssignments, isInstructor}) => {
         )
     }
 
-    const renderDeleteButton = (id) => {
+    const renderDeleteButton = (_id) => {
         return (
             <Button variant="danger" data-testid="delete-button" >Delete</Button>
         )
@@ -32,12 +32,12 @@ export default ({tutorAssignments, isInstructor}) => {
         dataField: 'courseNameYear',
         isDummyField: true,
         text: 'Course',
-        formatter: (cell, row) => renderCourseNameYear(row)
+        formatter: (_cell, row) => renderCourseNameYear(row)
     }, {
         dataField: 'tutorName',
         isDummyField: true,
         text: 'Tutor',
-        formatter: (cell, row) => renderTutorName(row)
+        formatter: (_cell, row) => renderTutorName(row)
     }, {
         dataField: 'assignmentType',
         text: 'Assignment Type'
@@ -48,13 +48,13 @@ export default ({tutorAssignments, isInstructor}) => {
             text: "Edit",
             isDummyField: true,
             dataField: "edit",
-            formatter: (cell, row) => renderEditButton(row.id)
+            formatter: (_cell, row) => renderEditButton(row.id)
         });
         columns.push({
             text: "Delete",
             isDummyField: true,
             dataField: "delete",
-            formatter: (cell, row) => renderDeleteButton(row.id)
+            formatter: (_cell, row) => renderDeleteButton(row.id)
         });
     }
 
