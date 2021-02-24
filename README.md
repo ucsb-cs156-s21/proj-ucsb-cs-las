@@ -120,3 +120,14 @@ cp src/main/resources/data.sql.SAMPLE src/main/resources/data.sql
 ```
 
 You can also add fixtures via SQL statements by adding sql statements to the `data.sql` file.
+# Storybook Support
+
+To run React Storybook:
+
+* cd into `javascript`
+* use: `npm run storybook`
+* This should put the storybook on <http://localhost:6006>
+
+Additional stories are added under `javascript/src/stories`
+
+For documentation on React Storybook, see: <https://storybook.js.org/>
