@@ -47,6 +47,18 @@ export default ({ courses, admin, deleteCourse }) => {
         
     }
 
+    function stripesFormatter(cell) {
+
+        return (
+
+            <span>
+                <a href='mailto:${cell}'> {cell} </a>
+            </span>
+
+        );
+
+    }
+
     const columns = [{
         dataField: 'id',
         text: 'id',
@@ -66,17 +78,21 @@ export default ({ courses, admin, deleteCourse }) => {
         dataField: 'instructorFirstName',
         text: 'First',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
+
     }, {
         dataField: 'instructorLastName',
         text: 'Last',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
     }, {
         dataField: 'instructorEmail',
         text: 'Email',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
     }];
 
     if (admin) {
