@@ -52,7 +52,7 @@ export default ({ courses, admin, deleteCourse }) => {
         return (
 
             <span>
-                <a href='mailto:${cell}'> {cell} </a>
+                <a href={`mailto:${cell}`}> {cell} </a>
             </span>
 
         );
