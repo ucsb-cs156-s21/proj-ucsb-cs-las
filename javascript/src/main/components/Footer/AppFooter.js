@@ -5,9 +5,9 @@ const AppFooter = () => {
     <footer className="bg-light p-3 text-center">
       This app is a class project of {" "}
       <a href="https://ucsb-cs156.github.io">
-        CMPSC 156
+        CMPSC 156 
       </a>
-       at {" "}
+         at {" "}
       <a href="https://ucsb.edu">
         UCSB
       </a>
