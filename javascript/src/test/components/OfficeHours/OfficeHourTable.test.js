@@ -21,6 +21,15 @@ describe("OfficeHour table tests", () => {
     render(<OfficeHourTable officeHours = {sampleOfficeHour}/>);
   });
 
+  //test the presence of new <a> tag
+  // test("render the zoomLinkFormatter", () => {
+  //   const expectedLink = "https://anc.zoom.com";
+  //   const cellContent = "test.zoom.com";
+  //   const row = 0;
+  //   const actual = zoomRoomLinkFormatter(cellContent, row);
+
+  //   expect(actual).toEqual(expectedLink);
+  // });
 
 
 });
