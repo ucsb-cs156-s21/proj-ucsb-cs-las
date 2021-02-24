@@ -11,9 +11,9 @@ const AppFooter = () => {
       <a href="https://ucsb.edu">
         UCSB
       </a>
-      . Check out the source code {" "}
+      . Check out the source code on {" "}
       <a href="https://github.com/ucsb-cs156-w21/proj-ucsb-cs-las">
-        on GitHub
+        GitHub
       </a>
       !
     </footer>
