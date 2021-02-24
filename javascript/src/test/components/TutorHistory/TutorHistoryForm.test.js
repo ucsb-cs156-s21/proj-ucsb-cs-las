@@ -1,5 +1,5 @@
 import React from "react";
-import { getByText, render  } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import TutorHistoryForm from "main/components/TutorHistory/TutorHistoryForm";
 import userEvent from "@testing-library/user-event";
 
