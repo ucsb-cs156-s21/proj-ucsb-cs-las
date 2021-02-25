@@ -12,24 +12,27 @@ describe("OfficeHour table tests", () => {
     "instructorFirstName": "Phill",
     "instructorLastName": "Conrad",
     "instructorEmail": "phtcon@ucsb.edu"
-
   }]
 
-
+  const testZoomLinkOfficeHour = [{
+    "id": 1,
+    "startTime": "12pm",
+    "endTime": "1pm",
+    "dayOfWeek": "Mon",
+    "zoomRoomLink": "test.zoom.com",
+  }]
 
   test("renders without crashing", () => {
     render(<OfficeHourTable officeHours = {sampleOfficeHour}/>);
   });
 
   //test the presence of new <a> tag
-  // test("render the zoomLinkFormatter", () => {
-  //   const expectedLink = "https://anc.zoom.com";
-  //   const cellContent = "test.zoom.com";
-  //   const row = 0;
-  //   const actual = zoomRoomLinkFormatter(cellContent, row);
-
-  //   expect(actual).toEqual(expectedLink);
-  // });
+  test("test Zoom Link Clickable", () => {
+    const expectedLink = "https://test.zoom.com";
+    const { getByText } = render(<OfficeHourTable officeHours = { testZoomLinkOfficeHour }/>);
+    const actual = getByText("test.zoom.com").closest('a').getAttribute("href");
+    expect(actual).toEqual(expectedLink);
+  });
 
 
 });

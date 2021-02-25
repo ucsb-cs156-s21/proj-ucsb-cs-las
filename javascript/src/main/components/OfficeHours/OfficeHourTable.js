@@ -11,13 +11,12 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
     }
 
     function zoomRoomLinkFormatter(cell,row) {
-    
         var httpsPrefix = 'https://';
-        var linkWithHttps = httpsPrefix + cell
+        var linkWithHttps = httpsPrefix + cell;
         return (
             <div><a rel={'external'} target="_blank" href={linkWithHttps}> { cell } </a></div>
         );
-      }
+    }
    
     const columns = [{
         dataField: 'id',
