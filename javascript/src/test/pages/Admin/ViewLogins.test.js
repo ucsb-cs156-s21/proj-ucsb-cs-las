@@ -3,17 +3,16 @@ import { render } from "@testing-library/react";
 import ViewLogins from "main/pages/Admin/ViewLogins";
 
 import useSWR from "swr";
-jest.mock("swr");
 
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 
-import { fetchWithToken } from "main/utils/fetch";
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
 
 describe("ChannelList tests", () => {
   
-      const logins = [
+      const _logins = [
         {
             "timestamp": "2020-12-08 14:41:48.481 -0800",
             "email": "matthew_wong@ucsb.edu",
@@ -28,14 +27,14 @@ describe("ChannelList tests", () => {
         });
       });
   
-  const mockBackend = (results) => {
-        useSWR.mockImplementation(([endpoint, getToken], fetch) => {
+  const _mockBackend = (results) => {
+        useSWR.mockImplementation(([endpoint, _getToken], _fetch) => {
             if (endpoint === "/api/admin/logins")
               return {
                 data: results,
               };
             else
-                fail(`test called on unexpected endpoint: ${endpoint}`);
+                throw new Error(`test called on unexpected endpoint: ${endpoint}`);
           });
     }
   

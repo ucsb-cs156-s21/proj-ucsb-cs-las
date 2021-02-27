@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import { render, waitFor } from "@testing-library/react";
+import React from "react";
+import { render } from "@testing-library/react";
 import TutorTable from "main/components/Tutor/TutorTable";
 import userEvent from "@testing-library/user-event";
 import { Router } from "react-router-dom";

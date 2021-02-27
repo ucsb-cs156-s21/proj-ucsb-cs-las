@@ -5,7 +5,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable"
-import { buildDeleteOfficeHour, buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
 import {useHistory} from "react-router-dom";
 
 
