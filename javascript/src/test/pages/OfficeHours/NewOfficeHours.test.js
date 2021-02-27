@@ -1,13 +1,17 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
-import useSWR from "swr";
-jest.mock("swr");
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 import NewOfficeHour from "main/pages/OfficeHours/NewOfficeHours";
 import userEvent from "@testing-library/user-event";
 import { useHistory } from 'react-router-dom';
 import { buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+
+
+import { fetchWithToken } from "main/utils/fetch";
+
+import { useToasts } from 'react-toast-notifications'
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
 jest.mock("main/services/OfficeHours/OfficeHourService");
 
 
@@ -16,14 +20,9 @@ jest.mock("react-router-dom", () => ({
 }));
 
 jest.mock("main/utils/fetch");
-
-
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
 }));
-
-import { useToasts } from 'react-toast-notifications'
 
 jest.mock('react-toast-notifications', () => ({
   useToasts: jest.fn()
@@ -37,7 +36,7 @@ describe("NewOfficeHours page test", () => {
   };
 
   const getAccessTokenSilentlySpy = jest.fn();
-  const officeHours =
+  const _officeHours =
   {
 
     id: 1,
@@ -82,7 +81,7 @@ describe("NewOfficeHours page test", () => {
 
 
 
-    buildCreateOfficeHour.mockImplementation((getToken, onSuccess, onError) => {
+    buildCreateOfficeHour.mockImplementation((_getToken, onSuccess, _onError) => {
       return () => {
         onSuccess();
       }
@@ -107,7 +106,7 @@ describe("NewOfficeHours page test", () => {
       throw new Error();
     });
 
-    buildCreateOfficeHour.mockImplementation((getToken, onSuccess, onError) => {
+    buildCreateOfficeHour.mockImplementation((_getToken, _onSuccess, onError) => {
       return () => {
         onError();
       }

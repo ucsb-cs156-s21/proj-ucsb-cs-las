@@ -28,7 +28,7 @@ describe("fetch tests", () => {
         status: 200,
         json: jsonSpy,
       });
-      const response = await fetchWithToken("/api/test", getToken, {
+      const _response = await fetchWithToken("/api/test", getToken, {
         noJSON: true,
       });
       expect(jsonSpy).toHaveBeenCalledTimes(0);
@@ -67,7 +67,7 @@ describe("fetch tests", () => {
           status: 200,
           json: jsonSpy,
         });
-        const response = await fetchWithoutToken("/api/test",  {
+        const _response = await fetchWithoutToken("/api/test",  {
           noJSON: true,
         });
         expect(jsonSpy).toHaveBeenCalledTimes(0);

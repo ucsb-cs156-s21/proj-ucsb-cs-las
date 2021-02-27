@@ -1,17 +1,17 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
-jest.mock("swr");
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignments";
 import userEvent from "@testing-library/user-event";
+import { useHistory } from "react-router-dom";
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
 
 jest.mock("main/services/TutorAssignment/TutorAssignmentService", () => ({
   buildCreateTutorAssignment: jest.fn(),
   buildUpdateTutorAssignment: jest.fn()
 }) );
-import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));

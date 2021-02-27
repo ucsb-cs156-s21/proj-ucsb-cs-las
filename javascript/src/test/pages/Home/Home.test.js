@@ -39,7 +39,7 @@ describe("Home tests", () => {
 	];
 
 	beforeEach(() => {
-	  useSWR.mockImplementation((key, getter) => {
+	  useSWR.mockImplementation((key, _getter) => {
 		  if(key[0] === "/api/public/courses/") {
 			  return {
 				  data : courses
@@ -60,7 +60,7 @@ describe("Home tests", () => {
   });
 
   	test("Existing filterData, and the value is an array with one element in it with the above data", () => {
-		useSWR.mockImplementation((key, getter) => {
+		useSWR.mockImplementation((key, _getter) => {
 			if(key === "/api/public/courses/") {
 				return {
 					data : courses
@@ -77,7 +77,7 @@ describe("Home tests", () => {
 	});
 
 	test("Existing filterData, and the value is refering to all the quarters", () => {
-		useSWR.mockImplementation((key, getter) => {
+		useSWR.mockImplementation((key, _getter) => {
 			if (key === "/api/public/courses/") {
 				return {
 					data: courses

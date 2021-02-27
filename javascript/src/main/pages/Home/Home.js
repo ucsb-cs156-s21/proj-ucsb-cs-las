@@ -3,9 +3,6 @@ import { Jumbotron } from "react-bootstrap";
 import CourseList from "main/components/Courses/CourseList"
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
-import { useHistory } from "react-router-dom";
-
-
 
 const Home = () => {
     const { data: courses } = useSWR(

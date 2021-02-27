@@ -18,7 +18,7 @@ export function asQuarterObject(q: QuarterLike): QuarterObject {
       };
     }
 
-    throw "Invalid quarter format";
+    throw new Error("Invalid quarter format");
   }
 
   return q as QuarterObject;
