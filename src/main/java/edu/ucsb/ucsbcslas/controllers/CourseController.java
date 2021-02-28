@@ -133,6 +133,16 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
+  @GetMapping(value = "/api/public/courses/forQuarter/{qtr}", produces = "application/json")
+  public ResponseEntity<String> getCoursesForQuarter(@PathVariable("qtr") String qtr) throws JsonProcessingException {
+
+    List <Course> courseList = courseRepository.findByQuarter(qtr);
+    ObjectMapper mapper = new ObjectMapper();
+
+    String body = mapper.writeValueAsString(courseList);
+    return ResponseEntity.ok().body(body);
+  }
+
   @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
   public ResponseEntity<String> getCourse(@PathVariable("id") Long id) throws JsonProcessingException {
     Optional<Course> course = courseRepository.findById(id);
