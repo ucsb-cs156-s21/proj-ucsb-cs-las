@@ -22,26 +22,33 @@
 // // array is sorted by date if birth in descending order
 // singers.sort(compareValues('born', 'desc'));
 
-export function compareValues(key, order = 'asc') {
-    return function innerSort(a, b) {
+export function compareValues(key = null, order = 'asc') {
+  return function innerSort(a, b) {
+
+    var varA = null;
+    var varB = null;
+
+    if (key === null) {
+      varA = (typeof a === 'string') ? a.toUpperCase() : a;
+      varB = (typeof b === 'string') ? b.toUpperCase() : b;
+    } else {
+
       if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         // property doesn't exist on either object
         return 0;
       }
-  
-      const varA = (typeof a[key] === 'string')
-        ? a[key].toUpperCase() : a[key];
-      const varB = (typeof b[key] === 'string')
-        ? b[key].toUpperCase() : b[key];
-  
-      let comparison = 0;
-      if (varA > varB) {
-        comparison = 1;
-      } else if (varA < varB) {
-        comparison = -1;
-      }
-      return (
-        (order === 'desc') ? (comparison * -1) : comparison
-      );
-    };
-  }
+
+      varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+      varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+    }
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return (
+      (order === 'desc') ? (comparison * -1) : comparison
+    );
+  };
+}
