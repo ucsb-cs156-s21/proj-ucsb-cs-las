@@ -9,13 +9,6 @@ export default {
   component: SelectTutorAssignment
 };
 
-const emptyTA = {
-    tutor: {
-        firstName: "",
-        lastName: ""
-    },
-    assignmentType: ""
-};
 
 const Template = (args) => {
   const [taIndex, setTaIndex] = useState(0);
@@ -28,10 +21,10 @@ const Template = (args) => {
 
 export const tutorAssignments_courseId_1_quarter_20211 = Template.bind({});
 tutorAssignments_courseId_1_quarter_20211.args = {
-  tutorAssignments: [ {...emptyTA}, ...tutorAssignmentFixtures.tutorAssignments_courseId_1_quarter_20211]
+  tutorAssignments: [ {...tutorAssignmentFixtures.emptyTa}, ...tutorAssignmentFixtures.tutorAssignments_courseId_1_quarter_20211]
 };
 
 export const tutorAssignments_courseId_2_quarter_20212 = Template.bind({});
 tutorAssignments_courseId_2_quarter_20212.args = {
-  tutorAssignments: [ {...emptyTA}, ...tutorAssignmentFixtures.tutorAssignments_courseId_2_quarter_20212]
+  tutorAssignments: [ {...tutorAssignmentFixtures.emptyTa}, ...tutorAssignmentFixtures.tutorAssignments_courseId_2_quarter_20212]
 };

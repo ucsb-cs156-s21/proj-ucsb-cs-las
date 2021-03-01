@@ -15,14 +15,21 @@ const Template = (args) => {
     const [quarter, setQuarter] = useState("");
     const [courseIndex, setCourseIndex] = useState(0);
     const [courses, setCourses] = useState([{quarter: ""}]);
-
+    const [taIndex, setTaIndex] = useState(0);
+    const [tutorAssignments, setTutorAssignments] = useState([tutorAssignmentFixtures.emptyTA]);
 
     const getCoursesForQuarter =  (quarter) => {
       if (! (quarter in courseFixtures.quarterToCourses) )
         return [ { quarter: "" } ]
       const coursesForQuarter = courseFixtures.quarterToCourses[quarter];
-      console.log("coursesForQuarter:",coursesForQuarter)
       return [  { quarter: "" }, ...coursesForQuarter]
+    }
+
+    const getTAsForCourse =  (courseId) => {
+      if (! (courseId in tutorAssignmentFixtures.courseId_to_tutorAssignments) )
+        return [ tutorAssignmentFixtures.emptyTA ]
+      const tasForCourse = tutorAssignmentFixtures.courseId_to_tutorAssignments[courseId];
+      return [ tutorAssignmentFixtures.emptyTA, ...tasForCourse]
     }
 
     const updateQuarter =  (quarter) => {
@@ -30,16 +37,28 @@ const Template = (args) => {
       const courses = getCoursesForQuarter (quarter)
       setQuarter(quarter);
       setCourses(courses);
+      setTutorAssignments([ tutorAssignmentFixtures.emptyTA] )
       setCourseIndex(0);
+      setTaIndex(0);
       console.log(`quarter=${quarter} courseIndex=${courseIndex} courses=`,courses);
+    }
+
+    const updateCourseIndex =  (courseIndex) => {
+      console.log("Update course, courseIndex=", courseIndex);
+      const taAssignments = getTAsForCourse (courses[courseIndex].id);
+      setCourseIndex(courseIndex);
+      setTutorAssignments(taAssignments);
+      setTaIndex(0);      
     }
 
     console.log(`courses=`,courses);
     return (
       <TutorAssignmentSelector 
       setQuarter={updateQuarter} quarter={quarter} 
-      setCourseIndex={setCourseIndex} courseIndex={courseIndex}
+      setCourseIndex={updateCourseIndex} courseIndex={courseIndex}
       setCourses={setCourses} courses = {courses}
+      setTaIndex={setTaIndex} taIndex={taIndex}
+      setTutorAssignments={setTutorAssignments} tutorAssignments = {tutorAssignments}
       {...args}
      />
     )

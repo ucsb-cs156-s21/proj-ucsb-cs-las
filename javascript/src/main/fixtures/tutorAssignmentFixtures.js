@@ -1,3 +1,11 @@
+export const emptyTA = {
+    tutor: {
+        firstName: "",
+        lastName: ""
+    },
+    assignmentType: ""
+};
+
 export const tutorAssignments_courseId_1_quarter_20211 = [
     {
         id: 13,

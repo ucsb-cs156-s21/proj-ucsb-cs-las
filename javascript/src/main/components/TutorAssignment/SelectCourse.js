@@ -14,13 +14,10 @@ export default ({ courseIndex, setCourseIndex, courses }) => {
 
     const initialCourseInfo = briefCourseInfo(courses[courseIndex]);
     console.log("initialCourseInfo=",initialCourseInfo);
-    // const [courseText, setCourseText] = useState(initialCourseInfo);
 
     const handleCourseOnChange = (event) => {
         setCourseIndex(event.target.value);
-        // setCourseText(briefCourseInfo(courses[event.target.value]));
     };
-
 
     courses.sort(compareValues("name"));
 

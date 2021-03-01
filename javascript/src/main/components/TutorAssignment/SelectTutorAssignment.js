@@ -10,25 +10,28 @@ const briefTutorAssignmentInfo = (ta) => {
         return "no tutor assignment selected"
 }
 
-export default ({ taIndex, setTaIndex, tutorAssignments }) => {
-
-    const initialTaInfo = briefTutorAssignmentInfo(tutorAssignments[taIndex]);
-    console.log("initialTaInfo=",initialTaInfo);
-    const [taText, setTaText] = useState(initialTaInfo);
-
-    const handleTaOnChange = (event) => {
-        setTaIndex(event.target.value);
-        setTaText(briefTutorAssignmentInfo(tutorAssignments[event.target.value]));
-    };
-
-    const formatTutorAssignmentLabel = (tutorAssignment) => {
+const formatTutorAssignmentLabel = (tutorAssignment) => {
+    try {
         const first = tutorAssignment.tutor.firstName;
         const last = tutorAssignment.tutor.lastName;
         const type = tutorAssignment.assignmentType;
-        if (first === "" && last === "" && type === "")
-            return ("");
-        return first + " " + last + " (" + type + ")";
+        if (first || last || type)
+            return first + " " + last + " (" + type + ")";
+        else
+            return ""
+    } catch (err) {
+        return "";
     }
+}
+
+export default ({ taIndex, setTaIndex, tutorAssignments }) => {
+
+    const initialTaInfo = briefTutorAssignmentInfo(tutorAssignments[taIndex]);
+    console.log("initialTaInfo=", initialTaInfo);
+
+    const handleTaOnChange = (event) => {
+        setTaIndex(event.target.value);
+    };
 
     return (
         <Form.Group controlId="SelectTutor.Tutor">
@@ -39,7 +42,7 @@ export default ({ taIndex, setTaIndex, tutorAssignments }) => {
                 })}
             </Form.Control>
             <Form.Text className="text-muted">
-                {taText}
+                {briefTutorAssignmentInfo(tutorAssignments[taIndex])}
             </Form.Text>
         </Form.Group>
     );

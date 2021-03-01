@@ -6,15 +6,16 @@ import SelectTutorAssignment from "main/components/TutorAssignment/SelectTutorAs
 export default (
     {
         quarters, quarter, setQuarter,
-        courses, setCourses,
-        courseIndex, setCourseIndex
+        courses, courseIndex, setCourseIndex,
+        taIndex, setTaIndex, tutorAssignments, 
     }
 ) => {
 
     return (
         <>
             <SelectQuarter quarters={quarters} setQuarter={setQuarter} quarter={quarter} />
-            <SelectCourse courseIndex={courseIndex} setCourseIndex={setCourseIndex} courses={courses}  />    
+            <SelectCourse courseIndex={courseIndex} setCourseIndex={setCourseIndex} courses={courses}  />  
+            <SelectTutorAssignment taIndex={taIndex} setTaIndex={setTaIndex} tutorAssignments={tutorAssignments}  />    
         </>
     );
 };
