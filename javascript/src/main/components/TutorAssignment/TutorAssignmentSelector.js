@@ -1,24 +1,21 @@
 import React from "react";
-import { Form } from "react-bootstrap";
-import { compareValues } from "main/utils/sortHelper"
+import SelectQuarter from "main/components/TutorAssignment/SelectQuarter";
+import SelectCourse from "main/components/TutorAssignment/SelectCourse";
+import SelectTutorAssignment from "main/components/TutorAssignment/SelectTutorAssignment";
 
-export const SelectQuarter = ({ quarters, quarter, setQuarter}) => {
-
-    const handleQuarterOnChange = (event) => {
-        setQuarter(event.target.value);
-    };
-
-    quarters.sort(compareValues(null));
+export default (
+    {
+        quarters, quarter, setQuarter,
+        courses, setCourses,
+        courseIndex, setCourseIndex
+    }
+) => {
 
     return (
-        <Form.Group controlId="SelectQuarter.Quarter">
-            <Form.Label>Quarter</Form.Label>
-            <Form.Control as="select" onChange={handleQuarterOnChange} value={quarter} >
-                {quarters.map(  (object, i) => {
-                    return <option key={i} value={object}>{object}</option>;
-                })}
-            </Form.Control>
-        </Form.Group>
+        <>
+            <SelectQuarter quarters={quarters} setQuarter={setQuarter} quarter={quarter} />
+            <SelectCourse courseIndex={courseIndex} setCourseIndex={setCourseIndex} courses={courses}  />    
+        </>
     );
 };
 

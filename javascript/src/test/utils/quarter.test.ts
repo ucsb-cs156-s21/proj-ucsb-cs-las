@@ -1,6 +1,7 @@
 import {
     adjustQuarter,
     asHumanQuarter,
+    asQyy,
     asInternalQuarter,
     asQuarterObject,
     QuarterObject,
@@ -50,6 +51,15 @@ import {
       expect(asHumanQuarter("20201")).toBe("Winter 2020");
       expect(asHumanQuarter("20202")).toBe("Spring 2020");
       expect(asHumanQuarter("20203")).toBe("Summer 2020");
+    });
+  });
+
+  describe("asQYY", () => {
+    it("creates human-readable output", () => {
+      expect(asQyy("20194")).toBe("F19");
+      expect(asQyy("20201")).toBe("W20");
+      expect(asQyy("20202")).toBe("S20");
+      expect(asQyy("20203")).toBe("M20");
     });
   });
   
