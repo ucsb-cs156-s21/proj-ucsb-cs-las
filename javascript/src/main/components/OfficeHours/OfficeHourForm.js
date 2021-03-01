@@ -20,7 +20,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         e.preventDefault();
         createOfficeHour(officeHour);
 
-      
+
     }
 
     return (
@@ -38,7 +38,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     })} />
                 </Col>
             </Form.Group>
-          <Form.Group as={Row} controlId="startTime">
+            <Form.Group as={Row} controlId="startTime">
                 <Form.Label column sm={2}>
                     Start Time
                 </Form.Label>

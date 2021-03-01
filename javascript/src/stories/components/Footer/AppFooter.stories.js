@@ -6,7 +6,7 @@ export default {
   title: 'components/Footer/AppFooter',
   component: AppFooter
 };
-
+ 
 const Template = () => <AppFooter />;
 
 export const Empty = Template.bind({});
