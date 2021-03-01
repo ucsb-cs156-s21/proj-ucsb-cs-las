@@ -28,7 +28,7 @@ describe("OfficeHour table tests", () => {
 
   //test the presence of new <a> tag
   test("test Zoom Link Clickable", () => {
-    const expectedLink = "https://test.zoom.com";
+    const expectedLink = "test.zoom.com";
     const { getByText } = render(<OfficeHourTable officeHours = { testZoomLinkOfficeHour }/>);
     const actual = getByText("test.zoom.com").closest('a').getAttribute("href");
     expect(actual).toEqual(expectedLink);
