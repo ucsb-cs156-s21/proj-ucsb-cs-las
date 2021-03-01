@@ -10,11 +10,9 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
         )
     }
 
-    function zoomRoomLinkFormatter(cell,row) {
-        var httpsPrefix = 'https://';
-        var linkWithHttps = httpsPrefix + cell;
+    function zoomRoomLinkFormatter(cell) {
         return (
-            <div><a rel={'external'} target="_blank" href={linkWithHttps}> { cell } </a></div>
+            <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
         );
     }
    
