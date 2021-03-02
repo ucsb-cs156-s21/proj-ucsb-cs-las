@@ -1,6 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import { compareValues } from "main/utils/sortHelper"
+import { asQyy } from "main/utils/quarter";
 
 export default ({ quarters, quarter, setQuarter }) => {
 
@@ -18,7 +19,7 @@ export default ({ quarters, quarter, setQuarter }) => {
             <Form.Control as="select" onChange={handleQuarterOnChange}  >
                 <option key={0} value={0}></option>
                 {quarters.map((object, i) => {
-                    return <option key={i+1} value={object}>{object}</option>;
+                    return <option key={i+1} value={object}>{object===""?"":asQyy(object)}</option>;
                 })}
             </Form.Control>
         </Form.Group>
