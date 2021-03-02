@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { compareValues } from "main/utils/sortHelper";
 import { asQyy } from "main/utils/quarter";
+import CourseShow from "../../pages/Courses/CourseShow";
 
 const briefCourseInfo = (course) => {
     if (course && course.name && course.quarter && course.instructorFirstName && course.instructorLastName )
@@ -19,7 +20,10 @@ export default ({ courseIndex, setCourseIndex, courses }) => {
         setCourseIndex(event.target.value);
     };
 
-    courses.sort(compareValues("name"));
+    console.log("courses=",courses);
+    
+    if ( courses && courses.sort) 
+        courses.sort(compareValues("name"));
 
     return (
         <Form.Group controlId="SelectCourse.Course">

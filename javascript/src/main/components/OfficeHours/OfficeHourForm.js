@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import TutorAssignmentSelector from "main/components/TutorAssignment/TutorAssignmentSelector";
 
-const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
+import { emptyTA } from "main/components/TutorAssignment/TutorAssignmentSelector";
+
+const OfficeHourForm = ({ createOfficeHour, fetchers, quarters /*updateOfficeHour, existingOfficeHour,*/ }) => {
     const emptyOfficeHour = {
         id: "",
         tutorAssignment: {
@@ -19,25 +22,25 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
     const handleOnSubmit = (e) => {
         e.preventDefault();
         createOfficeHour(officeHour);
-
-
     }
+
+    const [quarter, setQuarter] = useState("");
+    const [courseIndex, setCourseIndex] = useState(0);
+    const [courses, setCourses] = useState([{ quarter: "" }]);
+    const [taIndex, setTaIndex] = useState(0);
+    const [tutorAssignments, setTutorAssignments] = useState([emptyTA]);
 
     return (
         <Form onSubmit={handleOnSubmit}>
-            <Form.Group as={Row} controlId="tutorAssignmentId">
-                <Form.Label column sm={2}>
-                    Tutor Assignment ID
-                </Form.Label>
-                <Col sm={10}>
-                    <Form.Control type="text" placeholder="Tutor Assignment Id" value={officeHour.tutorAssignment.id} onChange={(e) => setOfficeHour({
-                        ...officeHour,
-                        tutorAssignment: {
-                            id: e.target.value
-                        }
-                    })} />
-                </Col>
-            </Form.Group>
+            <TutorAssignmentSelector
+                fetchers={fetchers}
+                quarters={quarters}
+                quarter={quarter} setQuarter={setQuarter}
+                courses={courses} setCourses={setCourses}
+                courseIndex={courseIndex} setCourseIndex={setCourseIndex}
+                taIndex={taIndex} setTaIndex={setTaIndex}
+                tutorAssignments={tutorAssignments} setTutorAssignments={setTutorAssignments}
+            />
             <Form.Group as={Row} controlId="startTime">
                 <Form.Label column sm={2}>
                     Start Time
@@ -99,7 +102,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     <Button type="submit">Submit</Button>
                 </Col>
             </Form.Group>
-        </Form>
+        </Form >
     );
 };
 

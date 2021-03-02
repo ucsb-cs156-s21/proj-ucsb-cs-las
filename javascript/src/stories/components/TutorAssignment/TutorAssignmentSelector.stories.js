@@ -2,71 +2,42 @@ import React, { useState } from 'react';
 
 import TutorAssignmentSelector from "main/components/TutorAssignment/TutorAssignmentSelector";
 
-import * as courseFixtures from "main/fixtures/courseFixtures.js"
-import * as tutorAssignmentFixtures from "main/fixtures/tutorAssignmentFixtures.js"
+import * as courseFixtures from "main/fixtures/courseFixtures"
+import * as tutorAssignmentFixtures from "main/fixtures/tutorAssignmentFixtures"
+
+import { emptyTA } from "main/components/TutorAssignment/TutorAssignmentSelector";
+
 
 export default {
   title: 'components/TutorAssignments/TutorAssignmentSelector',
   component: TutorAssignmentSelector
 };
 
-
 const Template = (args) => {
-    const [quarter, setQuarter] = useState("");
-    const [courseIndex, setCourseIndex] = useState(0);
-    const [courses, setCourses] = useState([{quarter: ""}]);
-    const [taIndex, setTaIndex] = useState(0);
-    const [tutorAssignments, setTutorAssignments] = useState([tutorAssignmentFixtures.emptyTA]);
+  const [quarter, setQuarter] = useState("");
+  const [courseIndex, setCourseIndex] = useState(0);
+  const [courses, setCourses] = useState([{ quarter: "" }]);
+  const [taIndex, setTaIndex] = useState(0);
+  const [tutorAssignments, setTutorAssignments] = useState([emptyTA]);
 
-    const getCoursesForQuarter =  (quarter) => {
-      if (! (quarter in courseFixtures.quarterToCourses) )
-        return [ { quarter: "" } ]
-      const coursesForQuarter = courseFixtures.quarterToCourses[quarter];
-      return [  { quarter: "" }, ...coursesForQuarter]
-    }
+  const quarters=tutorAssignmentFixtures.fetchersFromFixtures.getQuarters();
 
-    const getTAsForCourse =  (courseId) => {
-      if (! (courseId in tutorAssignmentFixtures.courseId_to_tutorAssignments) )
-        return [ tutorAssignmentFixtures.emptyTA ]
-      const tasForCourse = tutorAssignmentFixtures.courseId_to_tutorAssignments[courseId];
-      return [ tutorAssignmentFixtures.emptyTA, ...tasForCourse]
-    }
-
-    const updateQuarter =  (quarter) => {
-      console.log("Update quarter",quarter);
-      const courses = getCoursesForQuarter (quarter)
-      setQuarter(quarter);
-      setCourses(courses);
-      setTutorAssignments([ tutorAssignmentFixtures.emptyTA] )
-      setCourseIndex(0);
-      setTaIndex(0);
-      console.log(`quarter=${quarter} courseIndex=${courseIndex} courses=`,courses);
-    }
-
-    const updateCourseIndex =  (courseIndex) => {
-      console.log("Update course, courseIndex=", courseIndex);
-      const taAssignments = getTAsForCourse (courses[courseIndex].id);
-      setCourseIndex(courseIndex);
-      setTutorAssignments(taAssignments);
-      setTaIndex(0);      
-    }
-
-    console.log(`courses=`,courses);
-    return (
-      <TutorAssignmentSelector 
-      setQuarter={updateQuarter} quarter={quarter} 
-      setCourseIndex={updateCourseIndex} courseIndex={courseIndex}
-      setCourses={setCourses} courses = {courses}
-      setTaIndex={setTaIndex} taIndex={taIndex}
-      setTutorAssignments={setTutorAssignments} tutorAssignments = {tutorAssignments}
+  return (
+    <TutorAssignmentSelector
+    fetchers={tutorAssignmentFixtures.fetchersFromFixtures}
+    quarters={quarters}
+    quarter={quarter} setQuarter={setQuarter}
+    courses={courses} setCourses={setCourses}
+    courseIndex={courseIndex} setCourseIndex={setCourseIndex}
+    taIndex={taIndex} setTaIndex={setTaIndex} 
+    tutorAssignments={tutorAssignments} setTutorAssignments={setTutorAssignments}
       {...args}
-     />
-    )
-  };
-  
+    />
+  )
+};
 
-  export const ManyQuartersTAS = Template.bind({});
-  ManyQuartersTAS.args = {
-      quarters: Object.keys(courseFixtures.quarterToCourses)
-  };
-  
+
+export const ManyQuartersTAS = Template.bind({});
+ManyQuartersTAS.args = {
+  quarters: tutorAssignmentFixtures.fetchersFromFixtures.getQuarters()
+};

@@ -465,7 +465,7 @@ public class TutorAssignmentControllerTests {
         expectedTutorAssignments.add(new TutorAssignment(1L, c, t, "TA"));
          // mockito is the library that allows us to do this when stuf
          when(mockTutorAssignmentRepository.findAllByCourseId(1L)).thenReturn((expectedTutorAssignments));
-         MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/1").contentType("application/json")
+         MvcResult response = mockMvc.perform(get("/api/public/tutorAssignment/forCourse/1").contentType("application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
         
             verify(mockTutorAssignmentRepository, times(1)).findAllByCourseId(1L);

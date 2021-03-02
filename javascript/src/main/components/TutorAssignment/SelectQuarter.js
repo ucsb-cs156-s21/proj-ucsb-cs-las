@@ -8,8 +8,10 @@ export default ({ quarters, quarter, setQuarter }) => {
         setQuarter(event.target.value);
     };
 
-    quarters.sort(compareValues(null));
-
+    if (quarters && quarters.sort)
+        quarters.sort(compareValues(null));
+    console.log("quarters",quarters);
+    console.log("typeof quarters",typeof quarters)
     return (
         <Form.Group controlId="SelectQuarter.Quarter">
             <Form.Label>Quarter</Form.Label>
