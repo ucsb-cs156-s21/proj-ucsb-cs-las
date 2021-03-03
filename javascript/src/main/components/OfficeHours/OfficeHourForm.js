@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { checkEmail, checkFilled } from "main/utils/OfficeHoursFormHelpers";
+
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
+    const idRef = useRef(null);
+    const startTimeRef = useRef(null);
+    const endTimeRef = useRef(null);
+    const dayOfWeekRef = useRef(null);
+    const zoomRoomLinkRef = useRef(null);
     const emptyOfficeHour = {
         id: "",
         tutorAssignment: {
@@ -18,9 +25,53 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
+
+        var isValid = checkInputs();
+
         createOfficeHour(officeHour);
 
       
+    }
+
+    function checkInputs() {
+        const validList = [];
+        //check officehour name
+        const idValid = checkFilled(officeHour.id);
+        addFormEffects(idRef, idValid);
+        validList.push(idValid);
+
+        //check start time
+        const startTimeValid = checkFilled(officeHour.startTime);
+        addFormEffects(startTimeRef, startTimeValid);
+        validList.push(startTimeValid);
+
+        //check end time
+        const endTimeValid = checkFilled(officeHour.endTime);
+        addFormEffects(endTimeRef, endTimeValid);
+        validList.push(endTimeValid);
+
+        //check day of week
+        const dayOfWeekValid = checkFilled(officeHour.dayOfWeek);
+        addFormEffects(dayOfWeekRef, dayOfWeekValid);
+        validList.push(dayOfWeekValid);
+
+        //check zoom room Link
+        const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
+        addFormEffects(zoomRoomRef, zoomRoomLinkValid);
+        validList.push(zoomRoomLinkValid);
+
+        return !validList.includes(false);
+    }
+
+    function addFormEffects(ref, isValid) {
+        if (isValid) {
+            ref.current.classList.add('is-valid');
+            ref.current.classList.remove('is-invalid');
+        }
+        else {
+            ref.current.classList.remove('is-valid');
+            ref.current.classList.add('is-invalid');
+        }
     }
 
     return (
@@ -81,6 +132,10 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                         ...officeHour,
                         zoomRoomLink: e.target.value
                     })} />
+                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please provide a valid zoom link.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Please use a valid ucsb zoom link prefixed with https://</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="notes">
