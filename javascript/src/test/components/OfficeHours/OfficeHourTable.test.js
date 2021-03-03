@@ -26,7 +26,6 @@ describe("OfficeHour table tests", () => {
     render(<OfficeHourTable officeHours = {sampleOfficeHour}/>);
   });
 
-  //test the presence of new <a> tag
   test("test Zoom Link Clickable", () => {
     const expectedLink = "test.zoom.com";
     const { getByText } = render(<OfficeHourTable officeHours = { testZoomLinkOfficeHour }/>);

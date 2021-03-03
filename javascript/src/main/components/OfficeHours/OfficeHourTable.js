@@ -51,8 +51,6 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
         });
     }
 
-    //call formatter function
-
     return (
         <BootstrapTable keyField='id' data={officeHours} columns={columns} />
     );
