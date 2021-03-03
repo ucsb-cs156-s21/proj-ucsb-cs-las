@@ -15,7 +15,8 @@ const QuarterFilterForm = ({ upsertFilter }) => {
             quarterRef.current.classList.remove('is-invalid');
         } else {
             quarterRef.current.classList.remove('is-valid');
-            quarterRef.current.classList.add('is-invalid');        }
+            quarterRef.current.classList.add('is-invalid');        
+        }
     }
 
     return (
