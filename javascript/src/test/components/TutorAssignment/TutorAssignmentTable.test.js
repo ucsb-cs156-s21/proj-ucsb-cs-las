@@ -25,6 +25,20 @@ describe("CourseForm tests", () => {
                     id: 1,
                     lastName: "Chow"},
           assignmentType: "TA",
+        },
+        {  // New entry added to facilitate sort testing
+          id: 2,
+          course: {name: "PSTAT 120A",
+                   id: 2,
+                   quarter: "20203",
+                   instructorFirstName: "Uma",
+                   instructorLastName: "Ravat",
+                   instructorEmail: "umaravat@ucsb.edu",
+                  },
+          tutor:  {email: "alexgerber@ucsb.edu",
+                   firstName: "Alex",
+                   id: 2,
+                   lastName: "Gerber"},
         }
       ];
 
@@ -45,4 +59,18 @@ describe("CourseForm tests", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+  test("ascending and descending buttons can be pressed", () => {
+
+    const { getByTestId } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={} />);
+    const tutorAssignmentHeader = getByTestId('id');
+
+    //cycle through both ascending and descending for test coverage
+    userEvent.click(tutorAssignmentHeader);
+    userEvent.click(tutorAssignmentHeader);
+    const descendingOFF = String.fromCharCode(0x25bd);
+    expect(getbyTestId(descendingOFF)).toBeInTheDocument();
+
+  });
+
 });
