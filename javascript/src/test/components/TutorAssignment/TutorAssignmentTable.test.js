@@ -62,14 +62,14 @@ describe("CourseForm tests", () => {
 
   test("ascending and descending buttons can be pressed", () => {
 
-    const { getByTestId } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={} />);
+    const { getByTestId } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true} />);
     const tutorAssignmentHeader = getByTestId('id');
 
     //cycle through both ascending and descending for test coverage
     userEvent.click(tutorAssignmentHeader);
     userEvent.click(tutorAssignmentHeader);
     const descendingOFF = String.fromCharCode(0x25bd);
-    expect(getbyTestId(descendingOFF)).toBeInTheDocument();
+    expect(getByTestId(descendingOFF)).toBeInTheDocument();
 
   });
 
