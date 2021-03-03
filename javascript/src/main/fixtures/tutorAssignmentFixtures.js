@@ -1,5 +1,4 @@
 import * as courseFixtures from "main/fixtures/courseFixtures"
-import { emptyTA } from "main/components/TutorAssignment/TutorAssignmentSelector";
 
 export const tutorAssignments_courseId_1_quarter_20211 = [
     {
@@ -238,16 +237,14 @@ export const courseId_to_tutorAssignments = {
 
 const getCoursesForQuarter = (quarter) => {
     if (!(quarter in courseFixtures.quarterToCourses))
-      return [{ quarter: "" }]
-    const coursesForQuarter = courseFixtures.quarterToCourses[quarter];
-    return [{ quarter: "" }, ...coursesForQuarter]
+      return []
+    return courseFixtures.quarterToCourses[quarter];
   }
   
   const getTAsForCourse = (courseId) => {
     if (!(courseId in courseId_to_tutorAssignments))
-      return [emptyTA]
-    const tasForCourse = courseId_to_tutorAssignments[courseId];
-    return [emptyTA, ...tasForCourse]
+      return []
+    return courseId_to_tutorAssignments[courseId];
   }
   
   export const fetchersFromFixtures = {

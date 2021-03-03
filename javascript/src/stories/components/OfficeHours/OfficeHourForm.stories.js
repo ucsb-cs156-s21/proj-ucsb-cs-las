@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import OfficeHourForm from "main/components/OfficeHours/OfficeHourForm";
-import * as courseFixtures from "main/fixtures/courseFixtures.js"
 import * as tutorAssignmentFixtures from "main/fixtures/tutorAssignmentFixtures.js"
 
 

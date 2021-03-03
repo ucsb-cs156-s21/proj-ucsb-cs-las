@@ -2,7 +2,6 @@ import React from "react";
 import SelectQuarter from "main/components/TutorAssignment/SelectQuarter";
 import SelectCourse from "main/components/TutorAssignment/SelectCourse";
 import SelectTutorAssignment from "main/components/TutorAssignment/SelectTutorAssignment";
-import * as tutorAssignmentFixtures from "main/fixtures/tutorAssignmentFixtures"
 
 export const emptyTA = {
     tutor: {
@@ -16,7 +15,7 @@ export default (
     {
         fetchers,
         quarters, 
-        quarter, setQuarter,
+        setQuarter,
         courses, setCourses,
         courseIndex, setCourseIndex,
         taIndex, setTaIndex, 
@@ -25,19 +24,18 @@ export default (
 ) => {
 
     const updateQuarter = async (quarter) => {
-          console.log("Update quarter", quarter);
-          const courses = await fetchers.getCoursesForQuarter(quarter)
+          const coursesForQuarter = await fetchers.getCoursesForQuarter(quarter)
+          const courses = [{ quarter: "" }, ...coursesForQuarter]
           setQuarter(quarter);
           setCourses(courses);
           setTutorAssignments([emptyTA])
           setCourseIndex(0);
           setTaIndex(0);
-          console.log(`quarter=${quarter} courseIndex=${courseIndex} courses=`, courses);
         }
       
         const updateCourseIndex = async (courseIndex) => {
-          console.log("Update course, courseIndex=", courseIndex);
-          const taAssignments = await fetchers.getTAsForCourse(courses[courseIndex].id);
+          const tasForCourse = await fetchers.getTAsForCourse(courses[courseIndex].id);
+          const taAssignments = [emptyTA, ...tasForCourse]
           setCourseIndex(courseIndex);
           setTutorAssignments(taAssignments);
           setTaIndex(0);
@@ -45,7 +43,7 @@ export default (
 
     return (
         <>
-            <SelectQuarter quarters={quarters} setQuarter={updateQuarter} quarter={quarter} />
+            <SelectQuarter quarters={quarters} setQuarter={updateQuarter}  />
             <SelectCourse courseIndex={courseIndex} setCourseIndex={updateCourseIndex} courses={courses}  />  
             <SelectTutorAssignment taIndex={taIndex} setTaIndex={setTaIndex} tutorAssignments={tutorAssignments}  />    
         </>

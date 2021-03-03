@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import TutorAssignmentSelector from "main/components/TutorAssignment/TutorAssignmentSelector";
 
-import * as courseFixtures from "main/fixtures/courseFixtures"
 import * as tutorAssignmentFixtures from "main/fixtures/tutorAssignmentFixtures"
 
 import { emptyTA } from "main/components/TutorAssignment/TutorAssignmentSelector";
@@ -14,7 +13,7 @@ export default {
 };
 
 const Template = (args) => {
-  const [quarter, setQuarter] = useState("");
+  const [_quarter, setQuarter] = useState("");
   const [courseIndex, setCourseIndex] = useState(0);
   const [courses, setCourses] = useState([{ quarter: "" }]);
   const [taIndex, setTaIndex] = useState(0);
@@ -26,7 +25,7 @@ const Template = (args) => {
     <TutorAssignmentSelector
     fetchers={tutorAssignmentFixtures.fetchersFromFixtures}
     quarters={quarters}
-    quarter={quarter} setQuarter={setQuarter}
+    setQuarter={setQuarter}
     courses={courses} setCourses={setCourses}
     courseIndex={courseIndex} setCourseIndex={setCourseIndex}
     taIndex={taIndex} setTaIndex={setTaIndex} 

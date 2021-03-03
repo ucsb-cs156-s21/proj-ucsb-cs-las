@@ -15,7 +15,7 @@ const NewOfficeHour = () => {
   const { addToast } = useToasts();
   const { getAccessTokenSilently: getToken } = useAuth0();
 
-  const { data: quarters, error: errorGettingQuarters } = useSWR(
+  const { data: quarters, error: _errorGettingQuarters } = useSWR(
     "/api/public/quarters",
     fetchQuarters,
     {

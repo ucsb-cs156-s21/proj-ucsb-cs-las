@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import { compareValues } from "main/utils/sortHelper"
 import { asQyy } from "main/utils/quarter";
 
-export default ({ quarters, quarter, setQuarter }) => {
+export default ({ quarters, setQuarter }) => {
 
     const handleQuarterOnChange = (event) => {
         setQuarter(event.target.value);

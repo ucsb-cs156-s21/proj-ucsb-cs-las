@@ -10,10 +10,9 @@ export default {
 };
 
 const Template = (args) => {
-  const [quarter, setQuarter] = useState("20211");
-
+  const [_quarter, setQuarter] = useState("");
   return (
-    < SelectQuarter setQuarter={setQuarter} quarter={quarter} {...args} />
+    < SelectQuarter setQuarter={setQuarter}  {...args} />
   )
 };
 
