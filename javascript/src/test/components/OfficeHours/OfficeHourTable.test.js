@@ -1,7 +1,6 @@
 import React from "react";
-import { render, waitForElement, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable";
-import userEvent from "@testing-library/user-event";
 
 
 describe("OfficeHour table tests", () => {

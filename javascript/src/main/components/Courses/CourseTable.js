@@ -14,7 +14,7 @@ export default ({ courses, admin, deleteCourse }) => {
     );
 
     if (filter && courses && filter.length > 0 &&filter[0].activeQuarter !== "All") {
-        if (filter.length > 0 &&filter[0].activeQuarter != "All") {
+        if (filter.length > 0 &&filter[0].activeQuarter !== "All") {
 
 
             courses = !admin ? courses.filter((course) => course.quarter === filter[0].activeQuarter) : courses;
@@ -32,7 +32,7 @@ export default ({ courses, admin, deleteCourse }) => {
         )
     }
 
-    const sortCaret = (order, column) => {
+    const sortCaret = (order, _column) => {
         const ascendingON = String.fromCharCode(0x25b2);
         const descendingON = String.fromCharCode(0x25bc);
         const ascendingOFF = String.fromCharCode(0x25b3);
@@ -45,6 +45,18 @@ export default ({ courses, admin, deleteCourse }) => {
         else 
             return (<span data-testid="sort-desc"><font color="red">{descendingON}</font>{ascendingOFF}</span>);
         
+    }
+
+    function stripesFormatter(cell) {
+
+        return (
+
+            <span>
+                <a href={`mailto:${cell}`}> {cell} </a>
+            </span>
+
+        );
+
     }
 
     const columns = [{
@@ -66,17 +78,21 @@ export default ({ courses, admin, deleteCourse }) => {
         dataField: 'instructorFirstName',
         text: 'First',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
+
     }, {
         dataField: 'instructorLastName',
         text: 'Last',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
     }, {
         dataField: 'instructorEmail',
         text: 'Email',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
     }];
 
     if (admin) {
@@ -84,13 +100,13 @@ export default ({ courses, admin, deleteCourse }) => {
             text: "Edit",
             isDummyField: true,
             dataField: "edit",
-            formatter: (cell, row) => renderEditButton(row.id)
+            formatter: (_cell, row) => renderEditButton(row.id)
         });
         columns.push({
             text: "Delete",
             isDummyField: true,
             dataField: "delete",
-            formatter: (cell, row) => renderDeleteButton(row.id)
+            formatter: (_cell, row) => renderDeleteButton(row.id)
         });
     }
 

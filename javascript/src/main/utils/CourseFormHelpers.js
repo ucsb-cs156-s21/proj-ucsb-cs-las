@@ -1,5 +1,5 @@
 function checkCourseQuarter(quarter) {
-    if (quarter.length != 3) {
+    if (quarter.length !== 3) {
         return false;
     }
     const quarterType = quarter.charAt(0);

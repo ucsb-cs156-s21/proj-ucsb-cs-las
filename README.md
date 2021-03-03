@@ -80,7 +80,6 @@ This section serves as a quick reference for values found in either [`secrets-lo
 | `app.namespace`                                                   |              | See `Getting Started`                                                |
 | `app.admin.emails`                                                |              | A comma separated list of email addresses of permanent admin users.       |
 | `app.member.hosted-domain`                                        |              | The email suffix that identifies members (i.e. `ucsb.edu` vs `gmail.com`) |
-| `app.ucsb.api.consumer_key`                                        |              | The "consumer key" from the site <https://developer.ucsb.edu>; see below for more information. |
 | `spring.data.mongodb.uri` |  | The URL for read only access to the MongoDB database with archived course data; see more information below. |
 | `auth0.domain`                                                    |              | See `Getting Started`                                                |
 | `auth0.clientId`                                                  |              | See `Getting Started`                                                |
@@ -121,3 +120,14 @@ cp src/main/resources/data.sql.SAMPLE src/main/resources/data.sql
 ```
 
 You can also add fixtures via SQL statements by adding sql statements to the `data.sql` file.
+# Storybook Support
+
+To run React Storybook:
+
+* cd into `javascript`
+* use: `npm run storybook`
+* This should put the storybook on <http://localhost:6006>
+
+Additional stories are added under `javascript/src/stories`
+
+For documentation on React Storybook, see: <https://storybook.js.org/>
