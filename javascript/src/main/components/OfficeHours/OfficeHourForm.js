@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { checkEmail, checkFilled } from "main/utils/OfficeHoursFormHelpers";
+import { checkZoomRoomLink, checkFilled } from "main/utils/OfficeHoursFormHelpers";
 
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
@@ -57,7 +57,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
 
         //check zoom room Link
         const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
-        addFormEffects(zoomRoomRef, zoomRoomLinkValid);
+        addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
         validList.push(zoomRoomLinkValid);
 
         return !validList.includes(false);

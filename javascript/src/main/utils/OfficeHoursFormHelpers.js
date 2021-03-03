@@ -6,4 +6,4 @@ function checkFilled(input) {
     return input ? true : false;
 }
 
-export {checkZoomLink, checkFilled };
+export {checkZoomRoomLink, checkFilled };
