@@ -95,6 +95,6 @@ export default ({ courses, admin, deleteCourse }) => {
     }
 
     return (
-        <BootstrapTable keyField='id' data={courses} columns={columns} striped={true} />
+        <BootstrapTable keyField='id' data={courses} columns={columns} striped />
     );
 }
