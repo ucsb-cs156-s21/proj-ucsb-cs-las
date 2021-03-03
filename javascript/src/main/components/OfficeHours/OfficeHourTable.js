@@ -37,7 +37,7 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
 
     if (admin) {
         columns.push({
-            text:  "Delete",
+            text: "Delete",
             isDummyField: true,
             dataField: "delete",
             formatter: (_cell, row) => renderDeleteButton(row.id)
