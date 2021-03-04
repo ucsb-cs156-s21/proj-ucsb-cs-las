@@ -7,8 +7,8 @@ import userEvent from "@testing-library/user-event";
 
 const sampleOfficeHour = {
   "id": "",
-  "startTime": "2",
-  "endTime": "3",
+  "startTime": "2:00PM",
+  "endTime": "3:00PM",
   "dayOfWeek" : "Wednesday",
   "zoomRoomLink": "test.zoom.com",
   "notes" : "noted",
