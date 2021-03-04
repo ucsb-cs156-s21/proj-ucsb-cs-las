@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import TutorAssignment from "../../pages/TutorAssignment/TutorAssignments";
-import {checkTime} from "main/utils/OfficeHourFormHelpers";
-=======
-import React, { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
->>>>>>> main
+import { checkTime } from "main/utils/OfficeHourFormHelpers";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const [validated, setValidated] = useState(false);
