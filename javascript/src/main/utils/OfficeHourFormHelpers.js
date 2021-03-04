@@ -14,7 +14,7 @@ function checkTime(time) {
     if (isNaN(minutes)) {
         return false; 
     }
-    if (isNaN(parseInt(minutes[0])) || parseInt(minutes[0] > 5)) {
+    if (isNaN(parseInt(minutes[0])) || parseInt(minutes[0]) > 5) {
         return false; 
     }
     if (isNaN(parseInt(minutes[1]))) {
@@ -27,16 +27,15 @@ function checkTime(time) {
     }
     
     if (colonIdx == 2) {
-        if (isNaN(parseInt(hour[0])) || parseInt(hour[0] != 1)) {
+        if (isNaN(parseInt(hour[0])) || parseInt(hour[0]) != 1) {
             return false; 
         }
-    
-        if (isNaN(parseInt(hour[1])) || parseInt(hour[1] > 2)) {
+        if (isNaN(parseInt(hour[1])) || parseInt(hour[1]) > 2) {
             return false; 
         }
     }
     else if (colonIdx == 1) {
-        if (isNaN(parseInt(hour[0])) || parseInt(hour[0] == 0 )) {
+        if (isNaN(parseInt(hour[0])) || parseInt(hour[0]) == 0) {
             return false; 
         } 
     }
