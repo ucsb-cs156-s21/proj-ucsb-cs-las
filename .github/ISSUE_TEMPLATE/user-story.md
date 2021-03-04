@@ -4,7 +4,6 @@ about: This is the format for creating a user story.
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 # User Story

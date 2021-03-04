@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkCourseQuarter, checkEmail, checkFilled } from "main/utils/CourseFormHelpers";
 
 const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
-    const [validated, setValidated] = useState(false);
+    //const [validated, setValidated] = useState(false);
     const courseNameRef = useRef(null);
     const quarterRef = useRef(null);
     const firstNameRef = useRef(null);
@@ -21,7 +21,6 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        const form = e.currentTarget;
         var isValid = checkInputs();
         //submit to actual create course
         //in create course API, if course repo already exists, fail

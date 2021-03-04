@@ -1,14 +1,9 @@
 import React from "react";
-import CourseForm from "main/components/Courses/QuarterFilterForm";
-import { buildUpsertFilter, buildDeleteFilter } from "main/services/QuarterFilterService";
+import { buildUpsertFilter } from "main/services/QuarterFilterService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from 'react-toast-notifications'
 import QuarterFilterForm from "../../components/Courses/QuarterFilterForm";
-import useSWR, { cache } from "swr";
-import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
-import Loading from "main/components/Loading/Loading";
-import { Toast } from "react-bootstrap";
 
 
 

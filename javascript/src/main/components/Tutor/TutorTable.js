@@ -2,16 +2,9 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import useSWR from "swr";
-import { fetchWithToken } from "main/utils/fetch";
-import { useAuth0 } from "@auth0/auth0-react";
-
-import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 
 export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
   const history = useHistory();
-  const { getAccessTokenSilently: getToken } = useAuth0();
-  const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
   const renderEditButton = id => {
     const shouldRender =
@@ -79,13 +72,13 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
     text: "Edit",
     isDummyField: true,
     dataField: "edit",
-    formatter: (cell, row) => renderEditButton(row.id)
+    formatter: (_cell, row) => renderEditButton(row.id)
   });
   columns.push({
     text: "Delete",
     isDummyField: true,
     dataField: "delete",
-    formatter: (cell, row) => renderDeleteButton(row.id)
+    formatter: (_cell, row) => renderDeleteButton(row.id)
   });
 
   return <BootstrapTable keyField="id" data={tutors} columns={columns} />;
