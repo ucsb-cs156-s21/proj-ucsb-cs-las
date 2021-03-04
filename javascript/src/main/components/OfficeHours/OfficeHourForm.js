@@ -1,10 +1,8 @@
 import React, { useState, useRef } from "react";
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
-import TutorAssignment from "../../pages/TutorAssignment/TutorAssignments";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkTime, checkFilled } from "main/utils/OfficeHourFormHelpers";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
-    const [validated, setValidated] = useState(false);
     const tutorAssignmentIDRef = useRef(null);
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
@@ -27,7 +25,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        const form = e.currentTarget; 
         var isValid = checkInputs(); 
         if (isValid) {
             createOfficeHour(officeHour);
