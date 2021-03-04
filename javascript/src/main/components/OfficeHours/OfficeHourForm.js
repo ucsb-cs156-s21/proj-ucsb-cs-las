@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import TutorAssignment from "../../pages/TutorAssignment/TutorAssignments";
-import { checkTime } from "main/utils/OfficeHourFormHelpers";
+import { checkTime, checkFilled } from "main/utils/OfficeHourFormHelpers";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const [validated, setValidated] = useState(false);
@@ -9,7 +9,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const dayOfWeekRef = useRef(null);
-    const zoomLinkRef = useRef(null);
+    const zoomRoomLinkRef = useRef(null);
     const notesRef = useRef(null);
     const emptyOfficeHour = {
         id: "",
@@ -36,16 +36,44 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
     }
 
     function checkInputs() {
-
         const validList = [];
-        //check office hour time 
-        const checkStartTime = checkTime(officeHour.startTime); 
-        validList.push(checkStartTime); 
+        // check tutor assignment ID
+        const tutorAssignmentIDValid = checkFilled(officeHour.tutorAssignment.id);
+        addFormEffects(tutorAssignmentIDRef, tutorAssignmentIDValid);
+        validList.push(tutorAssignmentIDValid); 
 
-        const checkEndTime = checkTime(officeHour.endTime); 
-        validList.push(checkEndTime); 
+        // check start time 
+        const startTimeValid = checkTime(officeHour.startTime);
+        addFormEffects(startTimeRef, startTimeValid);
+        validList.push(startTimeValid); 
+
+        // check end time
+        const endTimeValid = checkTime(officeHour.endTime);
+        addFormEffects(endTimeRef, endTimeValid);
+        validList.push(endTimeValid); 
+
+        // check day of week
+        const dayOfWeekValid = checkFilled(officeHour.dayOfWeek);
+        addFormEffects(dayOfWeekRef, dayOfWeekValid);
+        validList.push(dayOfWeekValid); 
+
+        // check zoom room link
+        const zoomRoomLinkValid = checkFilled(officeHour.zoomRoomLink);
+        addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
+        validList.push(zoomRoomLinkValid); 
 
         return !validList.includes(false); 
+    }
+
+    function addFormEffects(ref, isValid) {
+        if (isValid) {
+            ref.current.classList.add('is-valid');
+            ref.current.classList.remove('is-invalid');
+        }
+        else {
+            ref.current.classList.remove('is-valid');
+            ref.current.classList.add('is-invalid');
+        }
     }
 
     return (
@@ -79,7 +107,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a valid start time in the correct format.
                     </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the start time in standard format. Ex (XX:XXAM/PM): 12:00PM</Form.Text>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the start time in standard format. Ex (XX:XXAM/PM): 1:00PM, 4:00AM, 10:00PM</Form.Text>
                 </Col>
             </Form.Group>
 
@@ -88,14 +116,14 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     End Time
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control ref={endTimeRef} type="text" placeholder="Ex: 01:00PM" value={officeHour.endTime} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={endTimeRef} type="text" placeholder="Ex: 1:00PM" value={officeHour.endTime} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         endTime: e.target.value
                     })} />
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a valid end time in the correct format.
                     </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the end time in standard format. Ex (XX:XXAM/PM): 01:00PM</Form.Text>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the end time in standard format. Ex (XX:XXAM/PM): 1:00PM, 4:00AM, 10:00PM</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="dayOfWeek">
@@ -118,7 +146,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Zoom Room Link
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control ref={zoomLinkRef} type="text" placeholder="Ex: https://ucsb.zoom.us/j/XXXXXXXXX" value={officeHour.zoomRoomLink} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={zoomRoomLinkRef} type="text" placeholder="Ex: https://ucsb.zoom.us/j/XXXXXXXXX" value={officeHour.zoomRoomLink} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         zoomRoomLink: e.target.value
                     })} />
