@@ -26,20 +26,20 @@ describe("CourseForm tests", () => {
                     lastName: "Chow"},
           assignmentType: "TA",
         },
-        {  // New entry added to facilitate sort testing
-          id: 2,
-          course: {name: "PSTAT 120A",
-                   id: 2,
-                   quarter: "20203",
-                   instructorFirstName: "Uma",
-                   instructorLastName: "Ravat",
-                   instructorEmail: "umaravat@ucsb.edu",
-                  },
-          tutor:  {email: "alexgerber@ucsb.edu",
-                   firstName: "Alex",
-                   id: 2,
-                   lastName: "Gerber"},
-        }
+        // {  // New entry added to facilitate sort testing
+        //   id: 2,
+        //   course: {name: "PSTAT 120A",
+        //            id: 2,
+        //            quarter: "20203",
+        //            instructorFirstName: "Uma",
+        //            instructorLastName: "Ravat",
+        //            instructorEmail: "umaravat@ucsb.edu",
+        //           },
+        //   tutor:  {email: "alexgerber@ucsb.edu",
+        //            firstName: "Alex",
+        //            id: 2,
+        //            lastName: "Gerber"},
+        // }
       ];
 
   test("renders without crashing", () => {
@@ -62,14 +62,14 @@ describe("CourseForm tests", () => {
 
   test("ascending and descending buttons can be pressed", () => {
 
-    const { getByTestId } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true} />);
-    const tutorAssignmentHeader = getByTestId('id');
+    const { getByText } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true} />);
+    const tutorAssignmentHeader = getByText('Course');
 
     //cycle through both ascending and descending for test coverage
     userEvent.click(tutorAssignmentHeader);
     userEvent.click(tutorAssignmentHeader);
     const descendingOFF = String.fromCharCode(0x25bd);
-    expect(getByTestId(descendingOFF)).toBeInTheDocument();
+    expect(getByText(descendingOFF)).toBeInTheDocument();
 
   });
 
