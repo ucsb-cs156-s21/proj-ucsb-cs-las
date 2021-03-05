@@ -1,14 +1,25 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+<<<<<<< HEAD
 import { checkZoomRoomLink, checkFilled } from "main/utils/OfficeHoursFormHelpers";
 
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const idRef = useRef(null);
+=======
+import { checkTime, checkFilled } from "main/utils/OfficeHourFormHelpers";
+
+const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
+    const tutorAssignmentIDRef = useRef(null);
+>>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const dayOfWeekRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
+<<<<<<< HEAD
+=======
+    const notesRef = useRef(null);
+>>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
     const emptyOfficeHour = {
         id: "",
         tutorAssignment: {
@@ -25,16 +36,24 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
+<<<<<<< HEAD
 
         var isValid = checkInputs();
 
         createOfficeHour(officeHour);
 
+=======
+        var isValid = checkInputs(); 
+        if (isValid) {
+            createOfficeHour(officeHour);
+        }
+>>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
       
     }
 
     function checkInputs() {
         const validList = [];
+<<<<<<< HEAD
         //check officehour name
         const idValid = checkFilled(officeHour.id);
         addFormEffects(idRef, idValid);
@@ -61,6 +80,34 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         validList.push(zoomRoomLinkValid);
 
         return !validList.includes(false);
+=======
+        // check tutor assignment ID
+        const tutorAssignmentIDValid = checkFilled(officeHour.tutorAssignment.id);
+        addFormEffects(tutorAssignmentIDRef, tutorAssignmentIDValid);
+        validList.push(tutorAssignmentIDValid); 
+
+        // check start time 
+        const startTimeValid = checkTime(officeHour.startTime);
+        addFormEffects(startTimeRef, startTimeValid);
+        validList.push(startTimeValid); 
+
+        // check end time
+        const endTimeValid = checkTime(officeHour.endTime);
+        addFormEffects(endTimeRef, endTimeValid);
+        validList.push(endTimeValid); 
+
+        // check day of week
+        const dayOfWeekValid = checkFilled(officeHour.dayOfWeek);
+        addFormEffects(dayOfWeekRef, dayOfWeekValid);
+        validList.push(dayOfWeekValid); 
+
+        // check zoom room link
+        const zoomRoomLinkValid = checkFilled(officeHour.zoomRoomLink);
+        addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
+        validList.push(zoomRoomLinkValid); 
+
+        return !validList.includes(false); 
+>>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
     }
 
     function addFormEffects(ref, isValid) {
@@ -81,12 +128,16 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Tutor Assignment ID
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="Tutor Assignment Id" value={officeHour.tutorAssignment.id} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={tutorAssignmentIDRef} type="text" placeholder="Ex: 1" value={officeHour.tutorAssignment.id} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         tutorAssignment: {
                             id: e.target.value
                         }
                     })} />
+                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please provide a valid tutor assignment ID.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the tutor assignment ID where you can find under "Tutor Assignment" tab. Ex: 1</Form.Text>
                 </Col>
             </Form.Group>
           <Form.Group as={Row} controlId="startTime">
@@ -94,10 +145,14 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Start Time
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="Start Time" value={officeHour.startTime} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={startTimeRef} type="text" placeholder="Ex: 12:00PM" value={officeHour.startTime} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         startTime: e.target.value
                     })} />
+                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please provide a valid start time in the correct format.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the start time in standard format. Ex (XX:XXAM/PM): 1:00PM, 4:00AM, 10:00PM</Form.Text>
                 </Col>
             </Form.Group>
 
@@ -106,10 +161,14 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     End Time
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="End Time" value={officeHour.endTime} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={endTimeRef} type="text" placeholder="Ex: 1:00PM" value={officeHour.endTime} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         endTime: e.target.value
                     })} />
+                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please provide a valid end time in the correct format.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the end time in standard format. Ex (XX:XXAM/PM): 1:00PM, 4:00AM, 10:00PM</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="dayOfWeek">
@@ -117,10 +176,14 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Day of Week
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="Day of Week" value={officeHour.dayOfWeek} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={dayOfWeekRef} type="text" placeholder="Ex: M" value={officeHour.dayOfWeek} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         dayOfWeek: e.target.value
                     })} />
+                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please enter a valid day of week.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the day of week in 1-letter shorthand. Ex: M</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="zoomRoomLink">
@@ -128,14 +191,21 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Zoom Room Link
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="Zoom Room Link" value={officeHour.zoomRoomLink} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={zoomRoomLinkRef} type="text" placeholder="Ex: https://ucsb.zoom.us/j/XXXXXXXXX" value={officeHour.zoomRoomLink} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         zoomRoomLink: e.target.value
                     })} />
+<<<<<<< HEAD
                      <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a valid zoom link.
                     </Form.Control.Feedback>
                     <Form.Text style={{ textAlign: "left" }} muted>Please use a valid ucsb zoom link prefixed with https://</Form.Text>
+=======
+                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please provide a valid zoom link.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Enter the full zoom link. Ex: https://ucsb.zoom.us/j/XXXXXXXXX</Form.Text>
+>>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="notes">
@@ -143,10 +213,14 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Notes
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control type="text" placeholder="Notes" value={officeHour.notes} onChange={(e) => setOfficeHour({
+                    <Form.Control ref={notesRef} type="text" placeholder="(Optional) Ex: midterm review" value={officeHour.notes} onChange={(e) => setOfficeHour({
                         ...officeHour,
                         notes: e.target.value
                     })} />
+                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
+                        Please provide the notes.
+                    </Form.Control.Feedback>
+                    <Form.Text style={{ textAlign: "left" }} muted>Notes about the office hour. Ex: midterm review</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row}>
