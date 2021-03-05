@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { checkTime, checkFilled } from "main/utils/OfficeHourFormHelpers";
+import { checkTime, checkZoomRoomLink, checkFilled } from "main/utils/OfficeHourFormHelpers";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const tutorAssignmentIDRef = useRef(null);
@@ -55,7 +55,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         validList.push(dayOfWeekValid); 
 
         // check zoom room link
-        const zoomRoomLinkValid = checkFilled(officeHour.zoomRoomLink);
+        const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
         addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
         validList.push(zoomRoomLinkValid); 
 

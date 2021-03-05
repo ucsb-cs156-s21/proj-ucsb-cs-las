@@ -37,7 +37,7 @@ describe("NewOfficeHours page test", () => {
     startTime: "2:00PM",
     endTime: "3:00PM",
     dayOfWeek: "test",
-    zoomRoomLink: "test",
+    zoomRoomLink: "https://ucsb.zoom.us.test",
     notes: "test",
     tutorAssignment: {
       id: "3"       
