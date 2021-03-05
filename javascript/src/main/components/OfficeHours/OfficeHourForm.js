@@ -1,25 +1,14 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-<<<<<<< HEAD
-import { checkZoomRoomLink, checkFilled } from "main/utils/OfficeHoursFormHelpers";
-
-
-const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
-    const idRef = useRef(null);
-=======
 import { checkTime, checkFilled } from "main/utils/OfficeHourFormHelpers";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const tutorAssignmentIDRef = useRef(null);
->>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const dayOfWeekRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
-<<<<<<< HEAD
-=======
     const notesRef = useRef(null);
->>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
     const emptyOfficeHour = {
         id: "",
         tutorAssignment: {
@@ -36,51 +25,15 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-<<<<<<< HEAD
-
-        var isValid = checkInputs();
-
-        createOfficeHour(officeHour);
-
-=======
         var isValid = checkInputs(); 
         if (isValid) {
             createOfficeHour(officeHour);
         }
->>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
       
     }
 
     function checkInputs() {
         const validList = [];
-<<<<<<< HEAD
-        //check officehour name
-        const idValid = checkFilled(officeHour.id);
-        addFormEffects(idRef, idValid);
-        validList.push(idValid);
-
-        //check start time
-        const startTimeValid = checkFilled(officeHour.startTime);
-        addFormEffects(startTimeRef, startTimeValid);
-        validList.push(startTimeValid);
-
-        //check end time
-        const endTimeValid = checkFilled(officeHour.endTime);
-        addFormEffects(endTimeRef, endTimeValid);
-        validList.push(endTimeValid);
-
-        //check day of week
-        const dayOfWeekValid = checkFilled(officeHour.dayOfWeek);
-        addFormEffects(dayOfWeekRef, dayOfWeekValid);
-        validList.push(dayOfWeekValid);
-
-        //check zoom room Link
-        const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
-        addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
-        validList.push(zoomRoomLinkValid);
-
-        return !validList.includes(false);
-=======
         // check tutor assignment ID
         const tutorAssignmentIDValid = checkFilled(officeHour.tutorAssignment.id);
         addFormEffects(tutorAssignmentIDRef, tutorAssignmentIDValid);
@@ -107,7 +60,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         validList.push(zoomRoomLinkValid); 
 
         return !validList.includes(false); 
->>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
     }
 
     function addFormEffects(ref, isValid) {
@@ -195,17 +147,10 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                         ...officeHour,
                         zoomRoomLink: e.target.value
                     })} />
-<<<<<<< HEAD
-                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
-                        Please provide a valid zoom link.
-                    </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Please use a valid ucsb zoom link prefixed with https://</Form.Text>
-=======
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a valid zoom link.
                     </Form.Control.Feedback>
                     <Form.Text style={{ textAlign: "left" }} muted>Enter the full zoom link. Ex: https://ucsb.zoom.us/j/XXXXXXXXX</Form.Text>
->>>>>>> 677c8bd8951a5ec4b2096297deab462f1bc3be93
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="notes">
