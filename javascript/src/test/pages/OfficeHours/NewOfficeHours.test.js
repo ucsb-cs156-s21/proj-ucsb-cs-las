@@ -31,16 +31,17 @@ describe("NewOfficeHours page test", () => {
   };
 
   const getAccessTokenSilentlySpy = jest.fn();
-  const _officeHours =
+  const sampleOfficeHour =
   {
-
-    id: 1,
-    startTime: "test",
-    endTime: "test",
+    id: "3",
+    startTime: "2:00PM",
+    endTime: "3:00PM",
     dayOfWeek: "test",
     zoomRoomLink: "test",
     notes: "test",
-    tutorAssignmentid: 1,
+    tutorAssignment: {
+      id: "3"       
+    },
   };
 
   const addToast = jest.fn();
@@ -67,7 +68,7 @@ describe("NewOfficeHours page test", () => {
     render(<NewOfficeHour />);
   });
 
-  test.skip("clicking submit button redirects to office hours page", async () => {
+  test("clicking submit button redirects to office hours page", async () => {
 
     buildCreateOfficeHour.mockImplementation((_getToken, onSuccess, _onError) => {
       return () => {
@@ -75,10 +76,28 @@ describe("NewOfficeHours page test", () => {
       }
     });
 
-    const { getByText } = render(
+    const { getByLabelText, getByText } = render(
       <NewOfficeHour />
     );
 
+    const idInput = getByLabelText("Tutor Assignment ID");
+    userEvent.type(idInput, sampleOfficeHour.tutorAssignment.id);
+
+    const startTimeInput = getByLabelText("Start Time");
+    userEvent.type(startTimeInput, sampleOfficeHour.startTime);
+
+    const endTimeInput = getByLabelText("End Time");
+    userEvent.type(endTimeInput, sampleOfficeHour.endTime);
+
+    const dayOfWeekInput = getByLabelText("Day of Week");
+    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
+
+    const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
+    userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
+
+    const notesInput = getByLabelText("Notes");
+    userEvent.type(notesInput, sampleOfficeHour.notes);
+    
     const submitButton = getByText("Submit");
     expect(submitButton).toBeInTheDocument();
     userEvent.click(submitButton);
@@ -88,7 +107,7 @@ describe("NewOfficeHours page test", () => {
 
   });
 
-  test.skip("clicking submit button redirects to home page on error", async () => {
+  test("clicking submit button redirects to home page on error", async () => {
 
     fetchWithToken.mockImplementation(() => {
       throw new Error();
@@ -100,9 +119,27 @@ describe("NewOfficeHours page test", () => {
       }
     });
 
-    const { getByText } = render(
+    const { getByLabelText, getByText } = render(
       <NewOfficeHour />
     );
+
+    const idInput = getByLabelText("Tutor Assignment ID");
+    userEvent.type(idInput, sampleOfficeHour.tutorAssignment.id);
+
+    const startTimeInput = getByLabelText("Start Time");
+    userEvent.type(startTimeInput, sampleOfficeHour.startTime);
+
+    const endTimeInput = getByLabelText("End Time");
+    userEvent.type(endTimeInput, sampleOfficeHour.endTime);
+
+    const dayOfWeekInput = getByLabelText("Day of Week");
+    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
+
+    const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
+    userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
+
+    const notesInput = getByLabelText("Notes");
+    userEvent.type(notesInput, sampleOfficeHour.notes);
 
     const submitButton = getByText("Submit");
     expect(submitButton).toBeInTheDocument();
