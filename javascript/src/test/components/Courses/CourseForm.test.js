@@ -43,7 +43,32 @@ describe("CourseForm tests", () => {
     userEvent.click(submitButton);
 
     expect(updateCourseMock).toHaveBeenCalledTimes(1);
-    expect(updateCourseMock).toHaveBeenCalledWith(updatedCourse, updatedCourse.id);
+    expect(updateCourseMock).toHaveBeenCalledWith({...updatedCourse, quarter: "20204"}, updatedCourse.id);
+
+  });
+
+  test("updating course quarter works", async () => {
+
+    const updateCourseMock = jest.fn();
+
+    const { getByText, getByDisplayValue } = render
+      (<CourseForm updateCourse={updateCourseMock} existingCourse={sampleCourse}/>)
+    ;
+
+    const updatedCourse = {
+      ...sampleCourse,
+      quarter: "W21",
+    };
+
+    const input = getByDisplayValue(sampleCourse.quarter);
+    userEvent.clear(input);
+    userEvent.type(input, updatedCourse.quarter);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(updateCourseMock).toHaveBeenCalledTimes(1);
+    expect(updateCourseMock).toHaveBeenCalledWith({...updatedCourse, quarter: "20211"}, updatedCourse.id);
 
   });
 
