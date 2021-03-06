@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useToasts } from 'react-toast-notifications';
 import { checkCourseQuarter } from "main/utils/CourseFormHelpers";
 
 const QuarterFilterForm = ({ upsertFilter }) => {
@@ -14,6 +15,9 @@ const QuarterFilterForm = ({ upsertFilter }) => {
             quarterRef.current.classList.add('is-valid');
             quarterRef.current.classList.remove('is-invalid');
         } else {
+            const { addToast } = useToasts();
+            addToast("Error saving filter", { appearance: 'error' });
+
             quarterRef.current.classList.remove('is-valid');
             quarterRef.current.classList.add('is-invalid');        
         }

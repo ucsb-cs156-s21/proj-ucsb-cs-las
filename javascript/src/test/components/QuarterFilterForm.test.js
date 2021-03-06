@@ -11,6 +11,7 @@ describe("QuarterFilterForm tests", () => {
   const formattedFilterVal3 = "21W";
   const formattedFilterVal4 = "w21";
 
+
   test("empty component renders without crashing", () => {
     render(<QuarterFilterForm />);
   });
