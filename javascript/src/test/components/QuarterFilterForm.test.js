@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 
 describe("QuarterFilterForm tests", () => {
 
-  const sampleFilterVal = "no clue";
+  const sampleFilterVal = "W21";
 
   test("empty component renders without crashing", () => {
     render(<QuarterFilterForm />);
