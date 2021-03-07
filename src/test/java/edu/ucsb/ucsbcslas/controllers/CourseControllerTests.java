@@ -69,9 +69,57 @@ public class CourseControllerTests {
   }
 
   @Test
-  public void testGetCourses() throws Exception {
+  public void testGetCourses4() throws Exception {
     List<Course> expectedCourses = new ArrayList<Course>();
     expectedCourses.add(new Course(1L, "course 1", "20204", "fname", "lname", "email"));
+    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
+    MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
+    });
+    assertEquals(actualCourses, expectedCourses);
+  }
+
+  @Test
+  public void testGetCourses3() throws Exception {
+    List<Course> expectedCourses = new ArrayList<Course>();
+    expectedCourses.add(new Course(1L, "course 1", "20203", "fname", "lname", "email"));
+    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
+    MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
+    });
+    assertEquals(actualCourses, expectedCourses);
+  }
+
+  @Test
+  public void testGetCourses2() throws Exception {
+    List<Course> expectedCourses = new ArrayList<Course>();
+    expectedCourses.add(new Course(1L, "course 1", "20202", "fname", "lname", "email"));
+    when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
+    MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
+    });
+    assertEquals(actualCourses, expectedCourses);
+  }
+
+  @Test
+  public void testGetCourses1() throws Exception {
+    List<Course> expectedCourses = new ArrayList<Course>();
+    expectedCourses.add(new Course(1L, "course 1", "20201", "fname", "lname", "email"));
     when(mockCourseRepository.findAll()).thenReturn(expectedCourses);
     MvcResult response = mockMvc.perform(get("/api/public/courses").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -155,7 +203,7 @@ public class CourseControllerTests {
         .perform(post("/api/admin/courses").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isUnauthorized());
-  }
+      }
 
   @Test
   public void testUpdateCourse_courseExists_updateValues() throws Exception {

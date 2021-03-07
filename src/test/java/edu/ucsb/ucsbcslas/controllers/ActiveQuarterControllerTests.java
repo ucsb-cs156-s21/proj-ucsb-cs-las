@@ -52,7 +52,7 @@ public class ActiveQuarterControllerTests {
   }
 
   @Test
-  public void testGetActiveQuarters() throws Exception {
+  public void testGetActiveQuarters4() throws Exception {
     List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
     expectedActiveQuarters.add(new ActiveQuarter(1L, "f20)"));
     when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
@@ -69,7 +69,60 @@ public class ActiveQuarterControllerTests {
     assertEquals(actualActiveQuarters, expectedActiveQuarters);
   }
 
+  @Test
+  public void testGetActiveQuarters3() throws Exception {
+    List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "m20)"));
+    when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
+    MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<ActiveQuarter> actualActiveQuarters = objectMapper.readValue(responseString,
+        new TypeReference<List<ActiveQuarter>>() {
+        });
+    System.out.println(actualActiveQuarters.toString());
+    assertEquals(actualActiveQuarters, expectedActiveQuarters);
+  }
+
+  @Test
+  public void testGetActiveQuarters2() throws Exception {
+    List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "w20)"));
+    when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
+    MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<ActiveQuarter> actualActiveQuarters = objectMapper.readValue(responseString,
+        new TypeReference<List<ActiveQuarter>>() {
+        });
+    System.out.println(actualActiveQuarters.toString());
+    assertEquals(actualActiveQuarters, expectedActiveQuarters);
+  }
   
+  @Test
+  public void testGetActiveQuarters1() throws Exception {
+    List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "s20)"));
+    when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
+    MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).findAll();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<ActiveQuarter> actualActiveQuarters = objectMapper.readValue(responseString,
+        new TypeReference<List<ActiveQuarter>>() {
+        });
+    System.out.println(actualActiveQuarters.toString());
+    assertEquals(actualActiveQuarters, expectedActiveQuarters);
+  }
+
 
   @Test
   public void testSaveActiveQuarter() throws Exception {
