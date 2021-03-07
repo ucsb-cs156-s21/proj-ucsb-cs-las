@@ -36,7 +36,7 @@ const TutorAssignmentHistory = () => {
   		const res = await fetchWithToken(`/api/member/tutorAssignment/byTutor/${tutorEmail}`, getToken)
   		setTutorAssignments(res)
   	}
-  	if(tutorEmail!=""){
+  	if(tutorEmail!==""){
   		getTutorAssignments()
   	}
   },[tutorEmail])
