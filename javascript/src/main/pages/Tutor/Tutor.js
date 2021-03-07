@@ -6,6 +6,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
+import { TutorCSVButton } from "./TutorCSVButton"; 
 //import { useToasts } from "react-toast-notifications";
 
 import {
@@ -15,6 +16,7 @@ import {
 } from "main/services/Tutor/TutorService";
 
 import { useHistory } from "react-router-dom";
+import { uploadTutorsCSV } from "../../services/Tutor/TutorService";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -61,16 +63,20 @@ const Tutor = () => {
   }
 
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
+
+  const uploadTutors = uploadTutorsCSV(getToken, mutateTutors); 
+
   return (
     <>
       {(isInstructor || isAdmin) && (
-        <Button
+        <><Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
           New Tutor
         </Button>
-      )}
+          <TutorCSVButton addTask={uploadTutors} /> </>
+      )};
       {instructorTutorList && (
         <TutorTable
           tutors={tutorList}
