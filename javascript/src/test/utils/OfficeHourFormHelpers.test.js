@@ -1,4 +1,5 @@
 import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers"; 
+import { checkFilled } from "../../main/utils/CourseFormHelpers";
 
 describe("Office Hours form helpers test", () => {
     describe("checkTime", () => {
@@ -32,4 +33,16 @@ describe("Office Hours form helpers test", () => {
             expect(checkZoomRoomLink("https//ucsb.zoom.us/12345678")).toBe(false);
         });
     }); 
-});
+
+    describe("checkFilled", () => {
+        test("filled", () => {
+            expect(checkFilled("https://ucsb.zoom.us")).toBe(true);
+            expect(checkFilled("W")).toBe(true);
+            expect(checkFilled("10:30AM")).toBe(true);
+        });
+
+        test("not filled", () => {
+            expect(checkFilled()).toBe(false);
+        });
+    }); 
+})
