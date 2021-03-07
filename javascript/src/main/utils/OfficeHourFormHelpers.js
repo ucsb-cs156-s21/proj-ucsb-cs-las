@@ -4,8 +4,12 @@ function checkTime(time) {
     return regex.test(time); 
 }
 
+function checkZoomRoomLink(zoomRoomLink) {
+    return zoomRoomLink.startsWith("https://ucsb.zoom.us")
+}
+
 function checkFilled(input) {
     return input ? true : false;
 }
 
-export { checkTime, checkFilled };
+export { checkTime, checkZoomRoomLink, checkFilled };
