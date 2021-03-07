@@ -76,6 +76,9 @@ public class CourseControllerTests {
   @MockBean
   OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
 
+  @MockBean
+  CSVToObjectService mockCSVToObjectService;
+
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
   }
