@@ -32,7 +32,7 @@ describe("QuarterFilterForm tests", () => {
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
 
-    expect(upsertFilterMock).toHaveBeenCalledTimes(0);
+    expect(upsertFilterMock).toHaveBeenCalledTimes(1);
   });
 
   test("set quarter filter format works with right format", async () => {
@@ -65,7 +65,7 @@ describe("QuarterFilterForm tests", () => {
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
 
-      expect(quarterFilterMock).toHaveBeenCalledTimes(0);
+      expect(quarterFilterMock).toHaveBeenCalledTimes(1);
   })
 
   test("set quarter filter format works with wrong format(yyQ)", async () => {
@@ -81,7 +81,7 @@ describe("QuarterFilterForm tests", () => {
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
 
-      expect(quarterFilterMock).toHaveBeenCalledTimes(0);
+      expect(quarterFilterMock).toHaveBeenCalledTimes(1);
   })
 
   test("set quarter filter format works with wrong format(lower case)", async () => {
@@ -97,7 +97,7 @@ describe("QuarterFilterForm tests", () => {
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
 
-      expect(quarterFilterMock).toHaveBeenCalledTimes(0);
+      expect(quarterFilterMock).toHaveBeenCalledTimes(1);
   })
 
 });

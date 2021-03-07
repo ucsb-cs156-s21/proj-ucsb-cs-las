@@ -9,12 +9,6 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
             <Button variant="danger" data-testid="delete-button" onClick={() => deleteOfficeHour(id)}>Delete</Button>
         )
     }
-
-    function zoomRoomLinkFormatter(cell) {
-        return (
-            <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
-        );
-    }
    
     const columns = [{
         dataField: 'id',
@@ -31,7 +25,6 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
     }, {
         dataField: 'zoomRoomLink',
         text: 'Zoom Room',
-        formatter: zoomRoomLinkFormatter
     }, {
         dataField: 'notes',
         text: 'Notes'
@@ -50,8 +43,6 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
             formatter: (_cell, row) => renderDeleteButton(row.id)
         });
     }
-
-    //call formatter function
 
     return (
         <BootstrapTable keyField='id' data={officeHours} columns={columns} />
