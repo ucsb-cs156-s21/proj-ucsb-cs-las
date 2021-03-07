@@ -30,6 +30,6 @@ describe("Office Hours form helpers test", () => {
             expect(checkZoomRoomLink("https.ucsb.zoom.usXXXXXXXXXXXXXXX")).toBe(false);
             expect(checkZoomRoomLink("https:/ucsb.zoom.us/j/8922003499")).toBe(false);
             expect(checkZoomRoomLink("https//ucsb.zoom.us/12345678")).toBe(false);
-        }
-    }
-})
+        });
+    }); 
+});
