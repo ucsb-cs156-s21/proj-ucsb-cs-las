@@ -118,6 +118,25 @@ public class CourseController {
     List <Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
+    for(Course i : courseList){
+      String activeQuarter = i.getQuarter();
+      String quarter = activeQuarter.substring(4);
+      String year = activeQuarter.substring(2,4);
+      if(quarter.equals("1")){
+        quarter = "W";
+      }
+      else if(quarter.equals("2")){
+        quarter = "S";
+      }
+      else if(quarter.equals("3")){
+        quarter = "M";
+      }
+      else {
+        quarter = "F";
+      }
+      i.setQuarter(quarter+year);
+    }
+
     String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
   }
