@@ -1,5 +1,4 @@
-import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers"; 
-import { checkFilled } from "../../main/utils/CourseFormHelpers";
+import { checkTime, checkZoomRoomLink, checkFilled } from "main/utils/OfficeHourFormHelpers"; 
 
 describe("Office Hours form helpers test", () => {
     describe("checkTime", () => {
