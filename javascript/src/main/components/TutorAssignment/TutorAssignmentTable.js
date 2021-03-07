@@ -48,7 +48,6 @@ export default ({tutorAssignments, isInstructor}) => {
         sortCaret: sortCaret
     }, {
         dataField: 'courseNameYear',
-        //isDummyField: true,
         text: 'Course',
         sort: true,
         sortCaret: sortCaret,
