@@ -1,11 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
 import useSWR from "swr";
-import { Button } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
-import { useHistory } from "react-router-dom";
 
 import Select from 'react-select'
 import {useState} from 'react';
@@ -15,12 +13,9 @@ import BootstrapTable from 'react-bootstrap-table-next';
 
 const TutorAssignmentHistory = () => {
 
-  const { user, getAccessTokenSilently: getToken } = useAuth0();
-  const { email } = user;
-  const history = useHistory();
-  const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
+  const { getAccessTokenSilently: getToken } = useAuth0();
 
-  const { data: tutorList, error, mutate: mutateTutors } = useSWR(
+  const { data: tutorList} = useSWR(
     ["/api/member/tutors", getToken],
     fetchWithToken
   );
@@ -39,7 +34,7 @@ const TutorAssignmentHistory = () => {
   	if(tutorEmail!==""){
   		getTutorAssignments()
   	}
-  },[tutorEmail])
+  },[getToken, tutorEmail])
 
   useEffect(()=>{
   	if(tutorAssignments.length>0){
