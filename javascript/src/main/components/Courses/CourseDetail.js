@@ -49,6 +49,7 @@ export default ({member,viewList=[]}) => {
     return (
         <div>
             <BootstrapTable keyField='id' data={viewList} columns={column2} />
+
             <BootstrapTable keyField='id' data={viewList} columns={columns} />
         </div>
     );

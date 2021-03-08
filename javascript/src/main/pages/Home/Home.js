@@ -3,6 +3,7 @@ import { Jumbotron } from "react-bootstrap";
 import CourseList from "main/components/Courses/CourseList"
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
+import BootstrapTable from 'react-bootstrap-table-next';
 
 const Home = () => {
     const { data: courses } = useSWR(

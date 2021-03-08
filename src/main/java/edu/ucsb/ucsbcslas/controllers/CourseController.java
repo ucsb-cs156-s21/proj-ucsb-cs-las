@@ -179,9 +179,12 @@ public class CourseController {
       List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
       for(TutorAssignment temp : tutorAssignments){
         List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findAllByTutorAssignment(temp);
-
-        TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, onlineOfficeHours);
-        viewList.add(tutorAssignmentOfficeHourView);
+        for (OnlineOfficeHours onlineOfficeHour : onlineOfficeHours) {
+          List<OnlineOfficeHours> tempList = new ArrayList<OnlineOfficeHours>();
+          tempList.add(onlineOfficeHour);
+          TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, tempList);
+          viewList.add(tutorAssignmentOfficeHourView);
+        }
       }
       
       ObjectMapper mapper = new ObjectMapper();
