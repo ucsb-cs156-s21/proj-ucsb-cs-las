@@ -69,27 +69,25 @@ public class ActiveQuarterController {
 
     List<ActiveQuarter> activeQList = activeQuarterRepo.findAll();
     ObjectMapper mapper = new ObjectMapper();
-    for(ActiveQuarter i : activeQList){
-      String activeQuarter = i.getActiveQuarter();
-      if(activeQuarter.length() == 5) {
-        String quarter = activeQuarter.substring(4);
-        String year = activeQuarter.substring(2,4);
-        if(quarter.equals("1")){
-          quarter = "W";
-        }
-        else if(quarter.equals("2")){
-          quarter = "S";
-        }
-        else if(quarter.equals("3")){
-          quarter = "M";
-        }
-        else {
-          quarter = "F";
-        }
-        i.setActiveQuarter(quarter+year);
-      } else {
-        i.setActiveQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
+    String activeQuarter = activeQList.get(0).getActiveQuarter();
+    if(activeQuarter.length() == 5) {
+      String quarter = activeQuarter.substring(4);
+      String year = activeQuarter.substring(2,4);
+      if(quarter.equals("1")){
+        quarter = "W";
       }
+      else if(quarter.equals("2")){
+        quarter = "S";
+      }
+      else if(quarter.equals("3")){
+        quarter = "M";
+      }
+      else {
+        quarter = "F";
+      }
+      activeQList.get(0).setActiveQuarter(quarter+year);
+    } else {
+      activeQList.get(0).setActiveQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
     }
 
     String body = mapper.writeValueAsString(activeQList);
