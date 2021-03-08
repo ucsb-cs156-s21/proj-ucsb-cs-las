@@ -183,6 +183,7 @@ public class CourseController {
           List<OnlineOfficeHours> tempList = new ArrayList<OnlineOfficeHours>();
           tempList.add(onlineOfficeHour);
           TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, tempList);
+          tutorAssignmentOfficeHourView.setDay(onlineOfficeHour.getDayOfWeek());
           viewList.add(tutorAssignmentOfficeHourView);
         }
       }
