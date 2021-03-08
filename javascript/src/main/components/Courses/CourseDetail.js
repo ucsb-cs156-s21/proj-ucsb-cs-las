@@ -14,7 +14,7 @@ export default ({member,viewList=[]}) => {
         text: 'Tutor Last Name'
     } ];
 
-    const columns3 = [{
+    const column3 = [{
         dataField: 'tutorAssignment.day',
         text: 'Tutor Assignment day'
     }, {
