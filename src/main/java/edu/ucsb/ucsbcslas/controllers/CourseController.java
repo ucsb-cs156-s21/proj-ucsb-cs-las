@@ -1,5 +1,6 @@
 package edu.ucsb.ucsbcslas.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -187,7 +189,14 @@ public class CourseController {
           viewList.add(tutorAssignmentOfficeHourView);
         }
       }
-      
+      Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {
+        @Override
+      public int compare(TutorAssignmentOfficeHourView o1, TutorAssignmentOfficeHourView o2) {
+        int x = getDayNumber(o1.getDay());
+        int y = getDayNumber(o2.getDay());
+        return  x - y;
+      }
+    });
       ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
@@ -223,6 +232,25 @@ public class CourseController {
       return ResponseEntity.ok().body(body); 
     }   
     return ResponseEntity.notFound().build();
+    }
+
+    public static int getDayNumber(String dayString) {
+      if (StringUtils.equalsIgnoreCase(dayString, "Monday")) {
+        return 1;
+      }
+      if (StringUtils.equalsIgnoreCase(dayString, "Tuesday")) {
+        return 2;
+      }
+      if (StringUtils.equalsIgnoreCase(dayString, "Wednesday")) {
+        return 3;
+      }
+      if (StringUtils.equalsIgnoreCase(dayString, "Thursday")) {
+        return 4;
+      }
+      if (StringUtils.equalsIgnoreCase(dayString, "Friday")) {
+        return 5;
+      }
+      return -1;
     }
 }
   

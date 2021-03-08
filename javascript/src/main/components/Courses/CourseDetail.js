@@ -15,8 +15,8 @@ export default ({member,viewList=[]}) => {
     } ];
 
     const column3 = [{
-        dataField: 'tutorAssignment.day',
-        text: 'Tutor Assignment day'
+        dataField: 'onlineOfficeHours[0].dayOfWeek',
+        text: 'Day of Week'
     }, {
         dataField: 'tutorAssignment.id',
         text: 'Tutor Assignment Id'
@@ -26,9 +26,6 @@ export default ({member,viewList=[]}) => {
     }, {
         dataField: 'tutorAssignment.tutor.lastName',
         text: 'Tutor Last Name'
-    }, {
-        dataField: 'onlineOfficeHours[0].dayOfWeek',
-        text: 'Day of Week'
     }, {
         dataField: 'onlineOfficeHours[0].startTime',
         text: 'Start Time'
