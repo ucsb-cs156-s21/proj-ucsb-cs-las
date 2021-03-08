@@ -53,15 +53,34 @@ public class ActiveQuarterController {
       return getUnauthorizedResponse("admin");
     activeQuarterRepo.deleteAll();
     
+    String quarterId = "";
+    String quarterYear = "20" + String.valueOf(activeValue.substring(1));
+
+    if(activeValue.charAt(0) == 'W'){
+      quarterId = "1";
+    }
+    else if(activeValue.charAt(0) == 'S'){
+      quarterId = "2";
+    }
+    else if(activeValue.charAt(0) == 'M'){
+      quarterId = "3";
+    }
+    else if(activeValue.charAt(0) == 'F'){
+      quarterId = "4";
+    }
+
+    String fullQuarterVal = quarterYear + quarterId;
+
     
     
     ActiveQuarter active = new ActiveQuarter();
-    active.setActiveQuarter(activeValue);
+    active.setActiveQuarter(fullQuarterVal);
     activeQuarterRepo.save(active);
     String body = mapper.writeValueAsString(active);
 
     return ResponseEntity.ok().body(body);
   }
+
 
 
   @GetMapping(value = "/api/public/filter", produces = "application/json")
