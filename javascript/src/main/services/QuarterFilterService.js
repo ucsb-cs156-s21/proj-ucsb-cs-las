@@ -3,12 +3,12 @@ import { checkCourseQuarter } from "main/utils/CourseFormHelpers";
 
 const buildUpsertFilter = (getToken, onSuccess, onError) => {
   const func = async (quarterString) => {
-    var isValid = false;
+    var isValid = quarterString === '' || false;
 
     if (quarterString) {
       isValid = checkCourseQuarter(quarterString);
     }
-    
+
     try {
       if (isValid || typeof quarterString === 'undefined') {
         await fetchWithToken(`/api/admin/filter/${quarterString}`, getToken, {
