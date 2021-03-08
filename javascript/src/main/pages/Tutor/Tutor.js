@@ -48,6 +48,7 @@ const Tutor = () => {
     roleInfo.role &&
     instructorCourseList &&
     instructorCourseList.length > 0;
+
   const isAdmin =
     roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
@@ -73,7 +74,7 @@ const Tutor = () => {
         <TutorTable
           tutors={tutorList}
           instructorTutors={instructorTutorList}
-          admin={isAdmin}
+          admin={isAdmin || isInstructor}
           deleteTutor={deleteTutor}
         />
     </>
