@@ -120,21 +120,24 @@ public class CourseController {
 
     for(Course i : courseList){
       String activeQuarter = i.getQuarter();
-      String quarter = activeQuarter.substring(4);
-      String year = activeQuarter.substring(2,4);
-      if(quarter.equals("1")){
-        quarter = "W";
+      if(activeQuarter.length() == 5) {
+        String quarter = activeQuarter.substring(4);
+        String year = activeQuarter.substring(2,4);
+        if(quarter.equals("1")){
+          quarter = "W";
+        }
+        else if(quarter.equals("2")){
+          quarter = "S";
+        }
+        else if(quarter.equals("3")){
+          quarter = "M";
+        }
+        else {
+          quarter = "F";
+        }
+        i.setQuarter(quarter+year);
       }
-      else if(quarter.equals("2")){
-        quarter = "S";
-      }
-      else if(quarter.equals("3")){
-        quarter = "M";
-      }
-      else {
-        quarter = "F";
-      }
-      i.setQuarter(quarter+year);
+      i.setQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
     }
 
     String body = mapper.writeValueAsString(courseList);
