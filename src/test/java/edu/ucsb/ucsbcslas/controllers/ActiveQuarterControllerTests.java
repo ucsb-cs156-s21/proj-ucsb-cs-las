@@ -72,7 +72,7 @@ public class ActiveQuarterControllerTests {
   
 
   @Test
-  public void testSaveActiveQuarter() throws Exception {
+  public void testSaveActiveQuarter_W() throws Exception {
     ActiveQuarter expectedActiveQuarter = new ActiveQuarter();
     expectedActiveQuarter.setActiveQuarter("20211");
     ObjectMapper mapper = new ObjectMapper();
@@ -89,6 +89,67 @@ public class ActiveQuarterControllerTests {
     ActiveQuarter actualActiveQuarter = objectMapper.readValue(responseString, ActiveQuarter.class);
     assertEquals(actualActiveQuarter, expectedActiveQuarter);
   }
+
+  @Test
+  public void testSaveActiveQuarter_F() throws Exception {
+    ActiveQuarter expectedActiveQuarter = new ActiveQuarter();
+    expectedActiveQuarter.setActiveQuarter("20204");
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedActiveQuarter);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    when(mockQuarterRepo.save(any())).thenReturn(expectedActiveQuarter);
+    MvcResult response = mockMvc
+        .perform(post("/api/admin/filter/F20").with(csrf()).contentType(MediaType.APPLICATION_JSON)            
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).save(expectedActiveQuarter);
+
+    String responseString = response.getResponse().getContentAsString();
+    ActiveQuarter actualActiveQuarter = objectMapper.readValue(responseString, ActiveQuarter.class);
+    assertEquals(actualActiveQuarter, expectedActiveQuarter);
+  }
+
+  @Test
+  public void testSaveActiveQuarter_S() throws Exception {
+    ActiveQuarter expectedActiveQuarter = new ActiveQuarter();
+    expectedActiveQuarter.setActiveQuarter("20212");
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedActiveQuarter);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    when(mockQuarterRepo.save(any())).thenReturn(expectedActiveQuarter);
+    MvcResult response = mockMvc
+        .perform(post("/api/admin/filter/S21").with(csrf()).contentType(MediaType.APPLICATION_JSON)            
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).save(expectedActiveQuarter);
+
+    String responseString = response.getResponse().getContentAsString();
+    ActiveQuarter actualActiveQuarter = objectMapper.readValue(responseString, ActiveQuarter.class);
+    assertEquals(actualActiveQuarter, expectedActiveQuarter);
+  }
+
+  @Test
+  public void testSaveActiveQuarter_M() throws Exception {
+    ActiveQuarter expectedActiveQuarter = new ActiveQuarter();
+    expectedActiveQuarter.setActiveQuarter("20213");
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedActiveQuarter);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+    when(mockQuarterRepo.save(any())).thenReturn(expectedActiveQuarter);
+    MvcResult response = mockMvc
+        .perform(post("/api/admin/filter/M21").with(csrf()).contentType(MediaType.APPLICATION_JSON)            
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(mockQuarterRepo, times(1)).save(expectedActiveQuarter);
+
+    String responseString = response.getResponse().getContentAsString();
+    ActiveQuarter actualActiveQuarter = objectMapper.readValue(responseString, ActiveQuarter.class);
+    assertEquals(actualActiveQuarter, expectedActiveQuarter);
+  }
+
   @Test
   public void test_setFilter_unauthorizedIfNotAdmin() throws Exception {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
