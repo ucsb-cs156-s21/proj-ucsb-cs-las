@@ -15,13 +15,13 @@ export default ({courses}) => {
             courses = courses.filter((course) => course.quarter === filter[0].activeQuarter);
     }
 
-    const cellFormatter = (id, name) => {
-        const link = `/courses/show/${id}`
+    function cellFormatter(id, name){
+        link = `/courses/show/${id}`
         return (  
             <a href={link}>{name}</a>
         )
     }
-
+    
     const columns = [{
         dataField: 'id',
         text: 'id'
