@@ -10,7 +10,7 @@ const QuarterFilterForm = ({ upsertFilter }) => {
         e.preventDefault();
         upsertFilter(filterVal);
 
-        var isValid = filterVal === '' || checkCourseQuarter(filterVal);
+        var isValid = checkCourseQuarter(filterVal);
         
         if (isValid) {
             quarterRef.current.classList.add('is-valid');

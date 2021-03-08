@@ -5,10 +5,7 @@ const buildUpsertFilter = (getToken, onSuccess, onError) => {
   const func = async (quarterString) => {
     var isValid = false;
 
-    if (quarterString === "") {
-      quarterString = "All";
-      isValid = true;
-    } else if (quarterString) {
+    if (quarterString) {
       isValid = checkCourseQuarter(quarterString);
     }
     
