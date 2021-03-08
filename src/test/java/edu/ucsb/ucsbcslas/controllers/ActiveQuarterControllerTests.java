@@ -72,7 +72,7 @@ public class ActiveQuarterControllerTests {
   @Test
   public void testGetActiveQuarters4() throws Exception {
     List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
-    expectedActiveQuarters.add(new ActiveQuarter(1L, "20204)"));
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "20204"));
     when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
     MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -90,7 +90,7 @@ public class ActiveQuarterControllerTests {
   @Test
   public void testGetActiveQuarters3() throws Exception {
     List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
-    expectedActiveQuarters.add(new ActiveQuarter(1L, "20203)"));
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "20203"));
     when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
     MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -108,7 +108,7 @@ public class ActiveQuarterControllerTests {
   @Test
   public void testGetActiveQuarters2() throws Exception {
     List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
-    expectedActiveQuarters.add(new ActiveQuarter(1L, "20202)"));
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "20202"));
     when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
     MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -126,7 +126,7 @@ public class ActiveQuarterControllerTests {
   @Test
   public void testGetActiveQuarters1() throws Exception {
     List<ActiveQuarter> expectedActiveQuarters = new ArrayList<ActiveQuarter>();
-    expectedActiveQuarters.add(new ActiveQuarter(1L, "20201)"));
+    expectedActiveQuarters.add(new ActiveQuarter(1L, "20201"));
     when(mockQuarterRepo.findAll()).thenReturn(expectedActiveQuarters);
     MvcResult response = mockMvc.perform(get("/api/public/filter").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
