@@ -136,8 +136,9 @@ public class CourseController {
           quarter = "F";
         }
         i.setQuarter(quarter+year);
+      } else {
+        i.setQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
       }
-      i.setQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
     }
 
     String body = mapper.writeValueAsString(courseList);

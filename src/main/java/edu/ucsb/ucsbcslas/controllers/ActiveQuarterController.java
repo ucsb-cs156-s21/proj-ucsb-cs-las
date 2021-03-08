@@ -87,8 +87,9 @@ public class ActiveQuarterController {
           quarter = "F";
         }
         i.setActiveQuarter(quarter+year);
+      } else {
+        i.setActiveQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
       }
-      i.setActiveQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
     }
 
     String body = mapper.writeValueAsString(activeQList);
