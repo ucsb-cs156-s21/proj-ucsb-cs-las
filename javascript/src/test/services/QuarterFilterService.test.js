@@ -1,7 +1,6 @@
 import { buildUpsertFilter} from "main/services/QuarterFilterService";
 
 import { fetchWithToken } from "main/utils/fetch";
-import { isExportDeclaration } from "typescript";
 
 jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
