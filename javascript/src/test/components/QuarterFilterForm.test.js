@@ -10,6 +10,7 @@ describe("QuarterFilterForm tests", () => {
   const formattedFilterVal2 = "WW2";
   const formattedFilterVal3 = "21W";
   const formattedFilterVal4 = "w21";
+  const formattedFilterVal5 = "";
 
   test("empty component renders without crashing", () => {
     render(<QuarterFilterForm />);
@@ -97,6 +98,23 @@ describe("QuarterFilterForm tests", () => {
       userEvent.click(submitButton);
 
       expect(quarterFilterMock).toHaveBeenCalledTimes(1);
+  })
+
+  test("set quarter filter format works with right format", async () => {
+
+    const quarterFilterMock = jest.fn();
+
+    const { getByLabelText, getByText } = render
+      (<QuarterFilterForm upsertFilter = {quarterFilterMock} />);
+
+      const nameInput = getByLabelText("Enter quarter to filter by");
+      userEvent.type(nameInput, formattedFilterVal5);
+
+      const submitButton = getByText("Submit");
+      userEvent.click(submitButton);
+
+      expect(quarterFilterMock).toHaveBeenCalledTimes(1);
+      expect(quarterFilterMock).toBeCalledWith("");
   })
 
 });

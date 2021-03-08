@@ -1,6 +1,7 @@
 import { buildUpsertFilter} from "main/services/QuarterFilterService";
 
 import { fetchWithToken } from "main/utils/fetch";
+import { isExportDeclaration } from "typescript";
 
 jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
@@ -19,6 +20,12 @@ describe("CourseService tests", () => {
   test("buildUpsertFilter and invoke buildUpsertFilter", async () => {
     const CreateFilter = buildUpsertFilter(getToken, onSuccess, onError);
     await CreateFilter();
+    expect(onSuccess).toBeCalledTimes(1);
+  });
+
+  test("buildUpsertFilter and invoke buildUpsertFilter with empty filter", async () => {
+    const CreateFilter = buildUpsertFilter(getToken, onSuccess, onError);
+    await CreateFilter("");
     expect(onSuccess).toBeCalledTimes(1);
   });
   

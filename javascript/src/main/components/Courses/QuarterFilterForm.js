@@ -9,9 +9,9 @@ const QuarterFilterForm = ({ upsertFilter }) => {
     const handleOnSubmit = (e) => {
         e.preventDefault();
         upsertFilter(filterVal);
-        
-        var isValid = filterVal === '' || checkCourseQuarter(filterVal);
 
+        var isValid = filterVal === '' || checkCourseQuarter(filterVal);
+        
         if (isValid) {
             quarterRef.current.classList.add('is-valid');
             quarterRef.current.classList.remove('is-invalid');
@@ -20,7 +20,7 @@ const QuarterFilterForm = ({ upsertFilter }) => {
             quarterRef.current.classList.add('is-invalid');
         }
     }
-
+    
     return (
         <Form onSubmit={handleOnSubmit}>
         <Form.Group as={Row} controlId="name">
