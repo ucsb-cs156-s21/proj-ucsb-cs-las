@@ -5,8 +5,6 @@ import { useToasts } from 'react-toast-notifications'
 import QuarterFilterForm from "../../components/Courses/QuarterFilterForm";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
-
 const QuarterFilter = () => {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { addToast } = useToasts();

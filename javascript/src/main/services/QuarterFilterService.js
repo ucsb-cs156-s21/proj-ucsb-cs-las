@@ -1,21 +1,35 @@
 import { fetchWithToken } from "main/utils/fetch";
+import { checkCourseQuarter } from "main/utils/CourseFormHelpers";
 
 const buildUpsertFilter = (getToken, onSuccess, onError) => {
   const func = async (quarterString) => {
-    if (quarterString === "")
-        quarterString = "All"
-    try {
-      await fetchWithToken(`/api/admin/filter/${quarterString}`, getToken, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-      onSuccess();
-    } catch (err) {
-      onError(err);
+    var isValid = false;
+
+    if (quarterString === "") {
+      quarterString = "All";
+      isValid = true;
+    } else if (quarterString) {
+      isValid = checkCourseQuarter(quarterString);
     }
+    
+    try {
+      if (isValid || typeof quarterString === 'undefined') {
+        await fetchWithToken(`/api/admin/filter/${quarterString}`, getToken, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+        });
+        onSuccess();
+      } else {
+        onError('Invalid quarter string');
+      }
+    } catch (e) {
+      onError('Invalid quarter string');
+    }
+
   };
+
   return func
 }
 
