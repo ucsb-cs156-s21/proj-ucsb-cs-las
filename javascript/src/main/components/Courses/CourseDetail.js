@@ -70,7 +70,7 @@ export default ({member,viewList=[]}) => {
         <div>
             <BootstrapTable keyField='id' data={viewList} columns={column2} />
 
-            <BootstrapTable keyField='day' data={viewList} columns={column3} />
+            <BootstrapTable keyField='dayOfWeek' data={viewList} columns={column3} />
 
             <BootstrapTable keyField='id' data={viewList} columns={columns} />
         </div>
