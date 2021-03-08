@@ -54,8 +54,8 @@ public class OnlineOfficeHoursController {
     public ResponseEntity<String> createOfficeHour(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid OnlineOfficeHours officeHour) throws JsonProcessingException {
                 System.out.println(officeHour.toString());
-        if (!authControllerAdvice.getIsAdmin(authorization))
-            return getUnauthorizedResponse("admin");
+        //if (!authControllerAdvice.getIsAdmin(authorization))
+        //    return getUnauthorizedResponse("admin");
         OnlineOfficeHours savedOfficeHour = officeHoursRepository.save(officeHour);
         String body = mapper.writeValueAsString(savedOfficeHour);
         return ResponseEntity.ok().body(body);

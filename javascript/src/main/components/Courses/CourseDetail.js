@@ -14,6 +14,26 @@ export default ({member,viewList=[]}) => {
         text: 'Tutor Last Name'
     } ];
 
+    const column3 = [{
+        dataField: 'onlineOfficeHours[0].dayOfWeek',
+        text: 'Day of Week'
+    }, {
+        dataField: 'tutorAssignment.id',
+        text: 'Tutor Assignment Id'
+    }, {
+        dataField: 'tutorAssignment.tutor.firstName',
+        text: 'Tutor First Name'
+    }, {
+        dataField: 'tutorAssignment.tutor.lastName',
+        text: 'Tutor Last Name'
+    }, {
+        dataField: 'onlineOfficeHours[0].startTime',
+        text: 'Start Time'
+    }, {
+        dataField: 'onlineOfficeHours[0].endTime',
+        text: 'End Time'
+    }];
+
     const columns = [{
         dataField: 'tutorAssignment.id',
         text: 'Tutor Assignment Id'
@@ -49,6 +69,9 @@ export default ({member,viewList=[]}) => {
     return (
         <div>
             <BootstrapTable keyField='id' data={viewList} columns={column2} />
+
+            <BootstrapTable keyField='dayOfWeek' data={viewList} columns={column3} />
+
             <BootstrapTable keyField='id' data={viewList} columns={columns} />
         </div>
     );
