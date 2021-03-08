@@ -63,22 +63,19 @@ const Tutor = () => {
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
   return (
     <>
-      {(isInstructor || isAdmin) && (
         <Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
           New Tutor
         </Button>
-      )}
-      {instructorTutorList && (
+      
         <TutorTable
           tutors={tutorList}
           instructorTutors={instructorTutorList}
           admin={isAdmin}
           deleteTutor={deleteTutor}
         />
-      )}
     </>
   );
 };
