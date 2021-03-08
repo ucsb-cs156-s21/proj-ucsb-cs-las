@@ -74,14 +74,13 @@ public class ActiveQuarterControllerTests {
   @Test
   public void testSaveActiveQuarter() throws Exception {
     ActiveQuarter expectedActiveQuarter = new ActiveQuarter();
-    expectedActiveQuarter.setActiveQuarter("blah");
+    expectedActiveQuarter.setActiveQuarter("20211");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedActiveQuarter);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockQuarterRepo.save(any())).thenReturn(expectedActiveQuarter);
     MvcResult response = mockMvc
-        .perform(post("/api/admin/filter/blah").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .perform(post("/api/admin/filter/W21").with(csrf()).contentType(MediaType.APPLICATION_JSON)            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isOk()).andReturn();
 
     verify(mockQuarterRepo, times(1)).save(expectedActiveQuarter);
