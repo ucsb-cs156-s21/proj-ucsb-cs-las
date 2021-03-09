@@ -80,7 +80,7 @@ public class TutorController {
         return ResponseEntity.ok().body(body);
     }
 
-    @PostMapping(value = "/upload", produces = "application/json")
+    @PostMapping(value = "/api/member/tutors/upload", produces = "application/json")
     public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException {
         logger.info("Starting upload CSV");
         AppUser user = authControllerAdvice.getUser(authorization);

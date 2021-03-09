@@ -77,7 +77,7 @@ const uploadTutorsCSV = (getToken, onSuccess, onError) => {
     const data = new FormData(); 
     data.append("csv", file); 
     try {
-      await fetchWithToken('/api/member/tutors/', getToken, {
+      await fetchWithToken('/api/member/tutors/upload', getToken, {
         method: "POST", 
         body: data
       });
