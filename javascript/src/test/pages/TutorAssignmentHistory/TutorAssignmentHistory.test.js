@@ -4,10 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import TutorAssignmentHistory from "main/pages/TutorAssignmentHistory/TutorAssignmentHistory.js";
 import useSWR from "swr";
 
-import { useToasts } from 'react-toast-notifications'
 import { fetchWithToken } from "main/utils/fetch";
 
-import userEvent from "@testing-library/user-event";
 import { getByText, findByText, fireEvent } from '@testing-library/react';
 
 
