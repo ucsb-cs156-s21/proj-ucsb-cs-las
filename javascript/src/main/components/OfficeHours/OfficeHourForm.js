@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Form, Button, Row, Col} from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import 'react-dropdown/style.css'
-import Select from "react-select";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const emptyOfficeHour = {
@@ -25,15 +24,9 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
 
       
     }
-    const dropdownSelect = (e) => {
-        e.preventDefault();
-        officeHour.dayOfWeek = e.target.value;
-    }
-
 
     const daysOfTheWeek = ["Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
-    const firstDay = daysOfTheWeek[0];
-
+   
     return (
         <Form onSubmit={handleOnSubmit}>
             <Form.Group as={Row} controlId="tutorAssignmentId">
@@ -76,10 +69,10 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                 <Form.Label column sm={2}>
                     Day of Week
                 </Form.Label>
-                <Col sm={10}>
+                <Col sm={10} style = {{textAlign: 'left'}}>
                     <Dropdown options ={daysOfTheWeek} placeholder="Select a day..." value = {officeHour.dayOfWeek} onChange={(e) => setOfficeHour({
                         ...officeHour,
-                        dayOfWeek: e.target.value
+                        dayOfWeek: e
                     })} />
                 </Col>
             </Form.Group>
