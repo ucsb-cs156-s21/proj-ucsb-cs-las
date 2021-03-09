@@ -50,7 +50,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         addFormEffects(endTimeRef, endTimeValid);
         validList.push(endTimeValid); 
 
-        // check day of week
         // check zoom room link
         const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
         addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
