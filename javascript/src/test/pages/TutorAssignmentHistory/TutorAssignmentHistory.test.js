@@ -113,52 +113,11 @@ describe("Tutor Assignment History page test", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-/*
-  beforeEach(() => {
-    useState.mockImplementation(init => [init, setStateSpy]);
-    useAuth0.mockReturnValue({
-      admin: undefined,
-      getAccessTokenSilently: getAccessTokenSilentlySpy,
-      user: user
-    });
 
-    useSWR.mockImplementation((key, _getter) => {
-      if (key[0] === "/api/member/tutorAssignment/byTutor/tutor@ucsb.edu") {
-        return {
-          data: coursesByTutor
-        };
-      } else {
-        return {
-          data: coursesByTutor,
-          error: undefined,
-          mutate: mutateSpy,
-        }
-      }
-    });
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-*/
 
   test("renders without crashing", () => {
     render(<TutorAssignmentHistory />);
   });
-
-/*  maybe add error message
-test("renders an error message when there is an error", () => {
-    useSWR.mockReturnValue({
-      data: undefined,
-      error: new Error("this is an error"),
-      mutate: mutateSpy,
-    });
-    const { getByText } = render(<TutorAssignmentHistory />);
-    const error = getByText(/error/);
-    expect(error).toBeInTheDocument();
-  });
-*/
-
 
 
   test("select a tutor with assignments", async () => {
