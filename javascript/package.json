@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.0.0",
-    "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "cross-env": "^7.0.2",
     "isomorphic-unfetch": "^3.0.0",
