@@ -38,6 +38,8 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 
+import edu.ucsb.ucsbcslas.services.CSVToObjectService; 
+
 @WebMvcTest(value = TutorController.class)
 @WithMockUser
 public class TutorControllerTests {
@@ -59,6 +61,9 @@ public class TutorControllerTests {
   
   @MockBean
   TutorAssignmentRepository mockTutorAssignmentRepository;
+
+  @MockBean
+  CSVToObjectService mockCSVToObjectService; 
 
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";

@@ -102,6 +102,13 @@
 			<version>1.0.0</version>
 		</dependency>
 
+		<!-- http://opencsv.sourceforge.net/ -->
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>5.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -218,6 +225,17 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
+				<configuration>
+					<excludes>
+						<!-- Exclude class from test coverage -->
+						<exclude>**/edu/ucsb/ucsbcslas/config/*</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/DemoApplication.*</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/services/CSVToObjectService.class</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/services/CSVToObjectServiceImpl.class</exclude>
+                        <!-- Exclude full package from test coverage -->
+                        <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
+                    </excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
