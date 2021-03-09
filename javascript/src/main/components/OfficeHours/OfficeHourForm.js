@@ -6,7 +6,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
     const tutorAssignmentIDRef = useRef(null);
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
-    const dayOfWeekRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
     const notesRef = useRef(null);
     const emptyOfficeHour = {
@@ -16,7 +15,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         },
         startTime: "",
         endTime: "",
-        dayOfWeek: "",
+        dayOfWeek: "Monday",
         zoomRoomLink: "",
         notes: ""
     }
@@ -31,7 +30,9 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         }
       
     }
-
+    
+    const daysOfTheWeek = ["Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+   
     function checkInputs() {
         const validList = [];
         // check tutor assignment ID
@@ -48,11 +49,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         const endTimeValid = checkTime(officeHour.endTime);
         addFormEffects(endTimeRef, endTimeValid);
         validList.push(endTimeValid); 
-
-        // check day of week
-        const dayOfWeekValid = checkFilled(officeHour.dayOfWeek);
-        addFormEffects(dayOfWeekRef, dayOfWeekValid);
-        validList.push(dayOfWeekValid); 
 
         // check zoom room link
         const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
@@ -72,7 +68,10 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
             ref.current.classList.add('is-invalid');
         }
     }
-
+    const handleDayOfWeekOnChange = (e) => setOfficeHour({
+        ...officeHour,
+        dayOfWeek: e.target.value
+    });
     return (
         <Form onSubmit={handleOnSubmit}>
             <Form.Group as={Row} controlId="tutorAssignmentId">
@@ -124,18 +123,17 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="dayOfWeek">
-                <Form.Label column sm={2}>
-                    Day of Week
-                </Form.Label>
-                <Col sm={10}>
-                    <Form.Control ref={dayOfWeekRef} type="text" placeholder="Ex: M" value={officeHour.dayOfWeek} onChange={(e) => setOfficeHour({
-                        ...officeHour,
-                        dayOfWeek: e.target.value
-                    })} />
+                <Form.Label column sm={2}>Day of Week</Form.Label>
+                <Col sm={10} style = {{textAlign: 'left'}}>
+                    <Form.Control as="select" onChange={handleDayOfWeekOnChange} >
+                        {daysOfTheWeek.map((day) => {
+                            return <option key={day} value={day}>{day}</option>;
+                        })}
+                    </Form.Control>
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please enter a valid day of week.
                     </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the day of week in 1-letter shorthand. Ex: M</Form.Text>
+                    <Form.Text style={{ textAlign: "left" }} muted>Please select a day of the week from the dropdown menu</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="zoomRoomLink">

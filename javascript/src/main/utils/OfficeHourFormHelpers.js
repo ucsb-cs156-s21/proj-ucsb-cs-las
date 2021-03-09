@@ -5,7 +5,7 @@ function checkTime(time) {
 }
 
 function checkZoomRoomLink(zoomRoomLink) {
-    return zoomRoomLink.startsWith("https://ucsb.zoom.us")
+    return zoomRoomLink.startsWith("https://ucsb.zoom.us") || zoomRoomLink === ""
 }
 
 function checkFilled(input) {
