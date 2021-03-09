@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect } from "react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -19,25 +18,8 @@ const TutorAssignmentHistory = () => {
     ["/api/member/tutors", getToken],
     fetchWithToken
   );
-  //console.log(tutorList);
 
-  const [tutorAssignments, setTutorAssignments] = useState([])
   const [TAMapping, setTAMapping] = useState([])
-
-
-  useEffect(()=>{
-  	if(tutorAssignments.length>0){
-  		const res = tutorAssignments.map((TA,index) => ({
-  		"assignmentType" : TA.assignmentType,
-      	"courseName" : TA.course.name,
-      	"quarter" : TA.course.quarter,
-      	"id": index
-    }))
-  		setTAMapping(res);
-  	}else{
-  		setTAMapping([]);
-  	}
-  },[tutorAssignments])
 
   if (!tutorList) {
     return <Loading/>;
@@ -67,13 +49,22 @@ const TutorAssignmentHistory = () => {
   	const onchangeSelect = (item) => {
       const getTutorAssignments = async () => {
       const res = await fetchWithToken(`/api/member/tutorAssignment/byTutor/${item.email}`, getToken)
-      console.log(res);
-      setTutorAssignments(res)
+      if(res.length>0){
+        const resTA = res.map((TA,index) => ({
+          "assignmentType" : TA.assignmentType,
+          "courseName" : TA.course.name,
+          "quarter" : TA.course.quarter,
+          "id": index
+        }))
+        setTAMapping(resTA);
+      }else{
+        setTAMapping([]);
+      }
+
     }
     if(item.email!==""){
       getTutorAssignments()
     }
-      console.log("onChangeSelect");
   	};
 
 
