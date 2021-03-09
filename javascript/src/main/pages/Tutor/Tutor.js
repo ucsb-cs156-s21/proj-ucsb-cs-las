@@ -48,6 +48,7 @@ const Tutor = () => {
     roleInfo.role &&
     instructorCourseList &&
     instructorCourseList.length > 0;
+
   const isAdmin =
     roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
@@ -63,22 +64,24 @@ const Tutor = () => {
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
   return (
     <>
-      {(isInstructor || isAdmin) && (
+         {(isInstructor || isAdmin) && (
         <Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
           New Tutor
         </Button>
-      )}
-      {instructorTutorList && (
+         )}
+
+        {instructorTutorList && (
+
         <TutorTable
           tutors={tutorList}
           instructorTutors={instructorTutorList}
-          admin={isAdmin}
+          admin={isAdmin || isInstructor}
           deleteTutor={deleteTutor}
         />
-      )}
+        )}
     </>
   );
 };
