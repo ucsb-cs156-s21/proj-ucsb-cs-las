@@ -25,6 +25,21 @@ describe("CourseForm tests", () => {
                     id: 1,
                     lastName: "Chow"},
           assignmentType: "TA",
+        },
+        {  // New entry added to facilitate sort testing
+          id: 2,
+          course: {name: "PSTAT 120A",
+                   id: 2,
+                   quarter: "20203",
+                   instructorFirstName: "Uma",
+                   instructorLastName: "Ravat",
+                   instructorEmail: "umaravat@ucsb.edu",
+                  },
+          tutor:  {email: "alexgerber@ucsb.edu",
+                   firstName: "Alex",
+                   id: 2,
+                   lastName: "Gerber"},
+          assignmentType: "TA",
         }
       ];
 
@@ -40,9 +55,36 @@ describe("CourseForm tests", () => {
     });
 
     const {getByTestId} = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true}/>);
-    const editButton = getByTestId('edit-button');
+    const editButton = getByTestId('edit-button-1');
     userEvent.click(editButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+  test("ascending and descending buttons for course can be pressed", () => {
+
+    const { getByText } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true} />);
+    const tutorAssignmentHeader = getByText(/Course/);
+
+    //cycle through both ascending and descending for test coverage
+    userEvent.click(tutorAssignmentHeader);
+    userEvent.click(tutorAssignmentHeader);
+    const descendingOFF = String.fromCharCode(0x25bd);
+    expect(getByText(descendingOFF)).toBeInTheDocument();
+
+  });
+
+  test("ascending and descending buttons for tutor can be pressed", () => {
+
+    const { getByText } = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true} />);
+    const tutorAssignmentHeader = getByText(/Tutor/);
+
+    //cycle through both ascending and descending for test coverage
+    userEvent.click(tutorAssignmentHeader);
+    userEvent.click(tutorAssignmentHeader);
+    const descendingOFF = String.fromCharCode(0x25bd);
+    expect(getByText(descendingOFF)).toBeInTheDocument();
+
+  });
+
 });
