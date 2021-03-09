@@ -39,6 +39,11 @@ describe("Tutor Assignment History page test", () => {
       firstName: "Tutor",
       id: 1,
       lastName: "Tutor1",
+    },{
+      email: "",
+      firstName: "Tutor",
+      id: 1,
+      lastName: "Tutor2",
     }
   ];
 
@@ -63,6 +68,7 @@ describe("Tutor Assignment History page test", () => {
     }
   ];
 
+  const coursesByTutorEmpty = [];
 
   const getAccessTokenSilentlySpy = jest.fn();
   const mutateSpy = jest.fn();
@@ -157,32 +163,7 @@ test("renders an error message when there is an error", () => {
 
 
 
-  test("select a tutor", async () => {
-
-/*    jest.mock("react-select", () => ({ options, value, onChange }) => {
-      function handleChange(event) {
-        const option = options.find(
-          option => option.value === event.currentTarget.value
-          );
-        onChange(option);
-      }
-      return(
-        <select data-testid="select" value={value} onChange={handleChange}>
-        {options.map(({ label, value }) => (
-          <option key={value} value={value}>
-          {label}
-          </option>
-          ))}
-          </select>
-          );
-      });
-    */
-
-   /*  useSWR.mockReturnValue({
-      data: coursesByTutor,
-      error: undefined,
-      mutate: mutateSpy,
-    });*/
+  test("select a tutor with assignments", async () => {
 
     const keyDownEvent = {
     key: 'ArrowDown',
@@ -198,20 +179,52 @@ test("renders an error message when there is an error", () => {
 
     fetchWithToken.mockReturnValue(coursesByTutor);
     var { getByTestId } = render(<TutorAssignmentHistory />);
-    //const selectQuarter = getByTestId("select")
-    //await userEvent.selectOptions("tutor1@ucsb.edu");
-    await selectOption(getByTestId('ta-select'), 'Tutor Tutor1');
-   // await findByText('CS 1');
 
-   //  getByTestId = render(<TutorAssignmentHistory />);
- ///   const bootstrapTable = getByTestId('ta-table');
-  //  expect(bootstrapTable).toBeInTheDocument();
-  /*  const fakeDeleteFunction = jest.fn();
-    buildDeleteCourse.mockReturnValue(fakeDeleteFunction);
-    const { getAllByTestId } = render(<Courses />);
-    const deleteButtons = getAllByTestId("delete-button");
-    userEvent.click(deleteButtons[0]);
-    await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));*/
+    await selectOption(getByTestId('ta-select'), 'Tutor Tutor1');
+
+  });
+
+
+  test("select a tutor without assignments", async () => {
+
+    const keyDownEvent = {
+    key: 'ArrowDown',
+  };
+
+   async function selectOption(container, optionText) {
+    const placeholder = getByText(container, 'Select...');
+    fireEvent.keyDown(placeholder, keyDownEvent);
+    await findByText(container, optionText);
+    fireEvent.click(getByText(container, optionText));
+  }
+
+
+    fetchWithToken.mockReturnValue(coursesByTutorEmpty);
+    var { getByTestId } = render(<TutorAssignmentHistory />);
+
+    await selectOption(getByTestId('ta-select'), 'Tutor Tutor1');
+
+  });
+
+    test("select a tutor without email", async () => {
+
+    const keyDownEvent = {
+    key: 'ArrowDown',
+  };
+
+   async function selectOption(container, optionText) {
+    const placeholder = getByText(container, 'Select...');
+    fireEvent.keyDown(placeholder, keyDownEvent);
+    await findByText(container, optionText);
+    fireEvent.click(getByText(container, optionText));
+  }
+
+
+    fetchWithToken.mockReturnValue(coursesByTutorEmpty);
+    var { getByTestId } = render(<TutorAssignmentHistory />);
+
+    await selectOption(getByTestId('ta-select'), 'Tutor Tutor2');
+
   });
 
 
