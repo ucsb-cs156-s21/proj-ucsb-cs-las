@@ -5,7 +5,8 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import CourseTable from "main/components/Courses/CourseTable"
-import { buildDeleteCourse, uploadCoursesCSV } from "main/services/Courses/CourseService";
+import { buildDeleteCourse } from "main/services/Courses/CourseService";
+import uploadCoursesCSV from "main/services/Courses/UploadCsv";
 import CourseCSVButton from "main/components/Courses/CourseCSVButton.js";
 import { CSVLink } from "react-csv";
 import { fetchWithoutToken } from "main/utils/fetch";

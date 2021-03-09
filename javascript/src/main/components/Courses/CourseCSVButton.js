@@ -9,6 +9,7 @@ var CourseCSVButton = ({ addTask }) => {
         <form
             onSubmit={async (event) => {
                 event.preventDefault();
+                console.log(file);
                 try{
                     await addTask(file);
                 } catch(error){
