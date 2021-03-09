@@ -67,24 +67,30 @@ const Tutor = () => {
   const uploadTutors = uploadTutorsCSV(getToken, mutateTutors); 
 
   return (
-    <>
-      <Button
-        data-testid={`new-tutor-button`}
-        onClick={() => history.push("/tutors/new")}
-      >
-        New Tutor
-      </Button>
-      <TutorCSVButton admin={isAdmin} addTask={uploadTutors} />
-      <pre style={{whiteSpace: 'pre', textAlign: 'left', width: 'auto', marginLeft: 'auto', marginRight: 'auto', padding: '0em'}} muted>
-      Required Columns: firstName, lastName, email.  Ex: joe, gaucho, joegaucho@ucsb.edu
-      </pre>
 
-      <TutorTable
-        tutors={tutorList}
-        instructorTutors={instructorTutorList}
-        admin={isAdmin}
-        deleteTutor={deleteTutor}
+    <>
+         {(isInstructor || isAdmin) && (
+        <><Button
+          data-testid={`new-tutor-button`}
+          onClick={() => history.push("/tutors/new")}
+        >
+          New Tutor
+        </Button>
+        <TutorCSVButton admin={isAdmin} addTask={uploadTutors} />
+          <pre style={{ whiteSpace: 'pre', textAlign: 'left', width: 'auto', marginLeft: 'auto', marginRight: 'auto', padding: '0em' }} muted>
+            Required Columns: firstName, lastName, email.Ex: joe, gaucho, joegaucho @ucsb.edu
+          </pre></>
+         )}
+
+        {instructorTutorList && (
+
+        <TutorTable
+          tutors={tutorList}
+          instructorTutors={instructorTutorList}
+          admin={isAdmin || isInstructor}
+          deleteTutor={deleteTutor}
         />
+        )}
     </>
   );
 };
