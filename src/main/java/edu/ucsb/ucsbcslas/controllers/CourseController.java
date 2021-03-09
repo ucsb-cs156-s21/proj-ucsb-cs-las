@@ -189,14 +189,7 @@ public class CourseController {
           viewList.add(tutorAssignmentOfficeHourView);
         }
       }
-      Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {
-        @Override
-      public int compare(TutorAssignmentOfficeHourView o1, TutorAssignmentOfficeHourView o2) {
-        int x = getDayNumber(o1.getDay());
-        int y = getDayNumber(o2.getDay());
-        return  x - y;
-      }
-    });
+      sortViewList(viewList);
       ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
@@ -234,23 +227,34 @@ public class CourseController {
     return ResponseEntity.notFound().build();
     }
 
-    public static int getDayNumber(String dayString) {
-      if (StringUtils.equalsIgnoreCase(dayString, "Monday")) {
-        return 1;
+  public static void sortViewList(List<TutorAssignmentOfficeHourView> viewList){
+    Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {
+      @Override
+      public int compare(TutorAssignmentOfficeHourView o1, TutorAssignmentOfficeHourView o2) {
+        int x = getDayNumber(o1.getDay());
+        int y = getDayNumber(o2.getDay());
+        return  x - y;
       }
-      if (StringUtils.equalsIgnoreCase(dayString, "Tuesday")) {
-        return 2;
-      }
-      if (StringUtils.equalsIgnoreCase(dayString, "Wednesday")) {
-        return 3;
-      }
-      if (StringUtils.equalsIgnoreCase(dayString, "Thursday")) {
-        return 4;
-      }
-      if (StringUtils.equalsIgnoreCase(dayString, "Friday")) {
-        return 5;
-      }
-      return -1;
+    });
+  }
+  
+  public static int getDayNumber(String dayString) {
+    if (StringUtils.equalsIgnoreCase(dayString, "Monday")) {
+      return 1;
     }
+    if (StringUtils.equalsIgnoreCase(dayString, "Tuesday")) {
+      return 2;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Wednesday")) {
+      return 3;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Thursday")) {
+      return 4;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Friday")) {
+      return 5;
+    }
+    return -1;
+  }
 }
   
