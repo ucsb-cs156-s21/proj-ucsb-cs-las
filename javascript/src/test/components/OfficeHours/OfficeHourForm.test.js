@@ -39,6 +39,9 @@ describe("OfficeHourForm tests", () => {
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, sampleOfficeHour.endTime);
 
+    const selectDayOfWeek = getByLabelText("Day of Week")
+    userEvent.selectOptions(selectDayOfWeek, sampleOfficeHour.dayOfWeek);
+
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
 

@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import Dropdown from "react-dropdown";
-import 'react-dropdown/style.css'
 import { checkTime, checkZoomRoomLink, checkFilled } from "main/utils/OfficeHourFormHelpers";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
@@ -18,7 +16,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         },
         startTime: "",
         endTime: "",
-        dayOfWeek: "",
+        dayOfWeek: "Monday",
         zoomRoomLink: "",
         notes: ""
     }
@@ -54,10 +52,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         validList.push(endTimeValid); 
 
         // check day of week
-        const dayOfWeekValid = checkFilled(officeHour.dayOfWeek);
-        addFormEffects(dayOfWeekRef, dayOfWeekValid);
-        validList.push(dayOfWeekValid); 
-
         // check zoom room link
         const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
         addFormEffects(zoomRoomLinkRef, zoomRoomLinkValid);
@@ -76,6 +70,10 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
             ref.current.classList.add('is-invalid');
         }
     }
+    const handleDayOfWeekOnChange = (e) => setOfficeHour({
+        ...officeHour,
+        dayOfWeek: e.target.value
+    });
     return (
         <Form onSubmit={handleOnSubmit}>
             <Form.Group as={Row} controlId="tutorAssignmentId">
@@ -127,18 +125,17 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="dayOfWeek">
-                <Form.Label column sm={2}>
-                    Day of Week
-                </Form.Label>
+                <Form.Label column sm={2}>Day of Week</Form.Label>
                 <Col sm={10} style = {{textAlign: 'left'}}>
-                    <Dropdown options ={daysOfTheWeek} placeholder="Select a day..." value = {officeHour.dayOfWeek} onChange={(e) => setOfficeHour({
-                        ...officeHour,
-                        dayOfWeek: e
-                    })} />
+                    <Form.Control as="select" onChange={handleDayOfWeekOnChange} >
+                        {daysOfTheWeek.map((day) => {
+                            return <option key={day} value={day}>{day}</option>;
+                        })}
+                    </Form.Control>
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please enter a valid day of week.
                     </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the day of week in 1-letter shorthand. Ex: M</Form.Text>
+                    <Form.Text style={{ textAlign: "left" }} muted>Please select a day of the week from the dropdown menu</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="zoomRoomLink">
