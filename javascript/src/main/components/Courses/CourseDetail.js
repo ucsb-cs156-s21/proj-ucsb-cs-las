@@ -36,11 +36,11 @@ export default ({member,viewList=[]}) => {
 
 
     if (member) {
-        columns.push({
+        column3.push({
             text: "Email",
             dataField: "tutorAssignment.tutor.email",
         });
-        columns.push({
+        column3.push({
             text: "Zoom Room Link",
             dataField: "onlineOfficeHours[0].zoomRoomLink",
         });
