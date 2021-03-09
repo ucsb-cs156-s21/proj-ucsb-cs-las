@@ -118,8 +118,13 @@ public class CourseController {
     List <Course> courseList = courseRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
 
+    for(Course i : courseList){
+      String activeQuarter = i.getQuarter();
+      i.setQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
+    }
     String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
+
   }
 
   @GetMapping(value = "/api/public/courses/{id}", produces = "application/json")
@@ -221,4 +226,3 @@ public class CourseController {
     return ResponseEntity.notFound().build();
     }
 }
-  

@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.lang.IllegalArgumentException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
@@ -52,7 +53,7 @@ public class ActiveQuarterController {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     activeQuarterRepo.deleteAll();
-    
+
     String quarterId = "";
     String quarterYear = "20" + String.valueOf(activeValue.substring(1));
 
@@ -67,10 +68,11 @@ public class ActiveQuarterController {
     }
     else if(activeValue.charAt(0) == 'F'){
       quarterId = "4";
+    }else{
+      throw new IllegalArgumentException("Invalid argument");
     }
 
     String fullQuarterVal = quarterYear + quarterId;
-
     
     
     ActiveQuarter active = new ActiveQuarter();
@@ -82,12 +84,15 @@ public class ActiveQuarterController {
   }
 
 
-
   @GetMapping(value = "/api/public/filter", produces = "application/json")
   public ResponseEntity<String> getfilter() throws JsonProcessingException {
 
     List<ActiveQuarter> activeQList = activeQuarterRepo.findAll();
     ObjectMapper mapper = new ObjectMapper();
+    String activeQuarter = activeQList.get(0).getActiveQuarter();
+    
+    activeQList.get(0).setActiveQuarter(Character.toUpperCase(activeQuarter.charAt(0))+activeQuarter.substring(1));
+    
 
     String body = mapper.writeValueAsString(activeQList);
     return ResponseEntity.ok().body(body);
