@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import com.opencsv.bean.CsvBindByPosition; 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
@@ -15,10 +16,13 @@ public class Tutor {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 0)
   private String firstName;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 1)
   private String lastName;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 2)
   private String email;
 
   public Tutor() {
