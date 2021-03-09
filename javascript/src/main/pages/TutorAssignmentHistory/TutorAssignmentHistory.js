@@ -82,7 +82,6 @@ const TutorAssignmentHistory = () => {
 		/>
 		{TAMapping.length>0 ? <BootstrapTable keyField='id' data-testid="ta-table" data = {TAMapping} columns={columns} />: <div>This tutor has no tutor assignment history.</div>}
 
-		{/*courseList.length==0 && <div>No Courses</div>*/}
 
       </div>
 
