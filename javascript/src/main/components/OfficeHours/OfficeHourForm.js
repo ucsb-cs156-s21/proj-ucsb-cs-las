@@ -6,7 +6,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
     const tutorAssignmentIDRef = useRef(null);
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
-    const dayOfWeekRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
     const notesRef = useRef(null);
     const emptyOfficeHour = {
