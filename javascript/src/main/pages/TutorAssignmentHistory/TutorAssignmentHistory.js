@@ -19,22 +19,11 @@ const TutorAssignmentHistory = () => {
     ["/api/member/tutors", getToken],
     fetchWithToken
   );
+  //console.log(tutorList);
 
-  const [tutorEmail, setTutorEmail] = useState("")
   const [tutorAssignments, setTutorAssignments] = useState([])
   const [TAMapping, setTAMapping] = useState([])
 
-
-
-  useEffect(()=>{
-  	const getTutorAssignments = async () => {
-  		const res = await fetchWithToken(`/api/member/tutorAssignment/byTutor/${tutorEmail}`, getToken)
-  		setTutorAssignments(res)
-  	}
-  	if(tutorEmail!==""){
-  		getTutorAssignments()
-  	}
-  },[getToken, tutorEmail])
 
   useEffect(()=>{
   	if(tutorAssignments.length>0){
@@ -74,9 +63,17 @@ const TutorAssignmentHistory = () => {
       	"lastName" : tutor.lastName,
       	"email" : tutor.email
       }))
-
+ 
   	const onchangeSelect = (item) => {
-  		setTutorEmail(item.email);
+      const getTutorAssignments = async () => {
+      const res = await fetchWithToken(`/api/member/tutorAssignment/byTutor/${item.email}`, getToken)
+      console.log(res);
+      setTutorAssignments(res)
+    }
+    if(item.email!==""){
+      getTutorAssignments()
+    }
+      console.log("onChangeSelect");
   	};
 
 
@@ -84,14 +81,16 @@ const TutorAssignmentHistory = () => {
     <>
 
       <h1>Search for Tutor Assignment History by Tutor</h1>
-       <div>
+       <div data-testid="ta-select">
         <Select
-			options={tutors}
+        id="dropdown"
+       
+			  options={tutors}
 			onChange={onchangeSelect}
           	getOptionValue={(option) => option.value}
 		/>
-		{TAMapping.length>0 ? <BootstrapTable keyField='id'  data = {TAMapping} columns={columns} />: <div>This tutor has no tutor assignment history.</div>}
-		 
+		{TAMapping.length>0 ? <BootstrapTable keyField='id' data-testid="ta-table" data = {TAMapping} columns={columns} />: <div>This tutor has no tutor assignment history.</div>}
+
 		{/*courseList.length==0 && <div>No Courses</div>*/}
 
       </div>
