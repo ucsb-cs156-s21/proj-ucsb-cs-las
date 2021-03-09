@@ -23,6 +23,7 @@ describe("Office Hours form helpers test", () => {
             expect(checkZoomRoomLink("https://ucsb.zoom.usXXXXXXXXXXXXXXX")).toBe(true);
             expect(checkZoomRoomLink("https://ucsb.zoom.us/j/8922003499")).toBe(true);
             expect(checkZoomRoomLink("https://ucsb.zoom.us/123456789/abcdefghijklmnopqrstuvwxyz")).toBe(true);
+            expect(checkZoomRoomLink("")).toBe(true);
         });
 
         test("bad zoom room link", () => {
