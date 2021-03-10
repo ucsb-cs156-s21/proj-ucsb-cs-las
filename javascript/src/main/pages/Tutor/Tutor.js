@@ -8,8 +8,6 @@ import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
 import { TutorCSVButton } from "./TutorCSVButton"; 
 import { useToasts } from "react-toast-notifications";
-
-import { useHistory } from "react-router-dom";
 import { buildDeleteTutor, uploadTutorsCSV } from "main/services/Tutor/TutorService";
 
 const Tutor = () => {
@@ -76,7 +74,7 @@ const Tutor = () => {
     <>
 
        {(isInstructor || isAdmin) && (
-        <Button
+        <><Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
