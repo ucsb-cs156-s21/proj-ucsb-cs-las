@@ -53,9 +53,12 @@ describe("New Course page test", () => {
       push: pushSpy
     });
 
-    const { getByText } = render(
+    const { getByLabelText, getByText } = render(
       <QuarterFilter />
     );
+
+    const nameInput = getByLabelText("Enter quarter to filter by");
+    userEvent.type(nameInput, "W21");
 
     const submitButton = getByText("Submit");
     expect(submitButton).toBeInTheDocument();
@@ -70,9 +73,11 @@ describe("New Course page test", () => {
   test("clicking submit button on error says so on toast", async () => {
     fetchWithToken.mockImplementation(
       () => { throw new Error(); });
-    const { getByText } = render(
+    const { getByLabelText, getByText } = render(
       <QuarterFilter />
     );
+    const nameInput = getByLabelText("Enter quarter to filter by");
+    userEvent.type(nameInput, "21");
 
     const submitButton = getByText("Submit");
     expect(submitButton).toBeInTheDocument();
