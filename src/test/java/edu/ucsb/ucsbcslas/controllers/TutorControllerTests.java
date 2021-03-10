@@ -455,7 +455,6 @@ public class TutorControllerTests {
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
   }
   
-  @Ignore("Not ready")
   @Test
   public void testUploadFileThrowsRuntime() throws Exception {
     TutorController tutorController = mock(TutorController.class); 
@@ -474,11 +473,10 @@ public class TutorControllerTests {
     verify(mockTutorRepository, never()).saveAll(any());
   }
 
-  @Ignore("Not ready")
   @Test
   public void testUploadFile() throws Exception{
     List<Tutor> expectedTutor = new ArrayList<Tutor>();
-    expectedTutor.add(new Tutor("first", "last", "email@ucsb.edu"));
+    expectedTutor.add(new Tutor(1L, "first", "last", "email@ucsb.edu"));
     when(mockCSVToObjectService.parse(any(Reader.class), eq(Tutor.class))).thenReturn(expectedTutor);
     MockMultipartFile mockFile = new MockMultipartFile(
             "csv",
