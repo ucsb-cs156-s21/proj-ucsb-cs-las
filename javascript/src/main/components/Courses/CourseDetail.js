@@ -1,7 +1,7 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
-export default ({member,viewList=[]}) => {
+export default ({_member,viewList=[]}) => {
 
     const column2 = [{
         dataField: 'tutorAssignment.id',

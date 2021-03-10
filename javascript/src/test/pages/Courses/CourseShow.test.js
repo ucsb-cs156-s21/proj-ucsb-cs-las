@@ -35,7 +35,6 @@ describe("Course Show Page Test", () => {
 	};
 	const getAccessTokenSilentlySpy = jest.fn();
 	const mutateSpy = jest.fn();
-	const setStateSpy = jest.fn();
   
 	beforeEach(() => {
 		useAuth0.mockReturnValue({

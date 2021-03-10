@@ -1,5 +1,6 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import Loading from "main/components/Loading/Loading";
 
 export default ({member,viewListOfficeHours=[]}) => {
 
