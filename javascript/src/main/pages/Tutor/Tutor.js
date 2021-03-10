@@ -65,8 +65,7 @@ const Tutor = () => {
         </Button>
          )}
 
-        {instructorTutorList && (
-
+        {(tutorList && (isInstructor || isAdmin)) && (
         <TutorTable
           tutors={tutorList}
           instructorTutors={instructorTutorList}
