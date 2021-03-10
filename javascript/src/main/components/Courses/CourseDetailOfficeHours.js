@@ -35,6 +35,10 @@ export default ({member,viewListOfficeHours=[]}) => {
         });
     }
 
+    if(!viewListOfficeHours){
+        return <Loading />
+    }
+    
     return (
         <div>
             <BootstrapTable keyField='dayOfWeek' data={viewListOfficeHours} columns={column3} />

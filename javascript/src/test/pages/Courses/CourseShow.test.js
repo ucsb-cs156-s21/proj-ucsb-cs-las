@@ -34,6 +34,8 @@ describe("Course Show Page Test", () => {
 		name: "test user",
 	};
 	const getAccessTokenSilentlySpy = jest.fn();
+	const mutateSpy = jest.fn();
+	const setStateSpy = jest.fn();
   
 	beforeEach(() => {
 		useAuth0.mockReturnValue({
@@ -60,6 +62,45 @@ describe("Course Show Page Test", () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
+
+	test("renders loading while course show is undefined", () => {
+
+		useSWR.mockImplementation((key, _getter) => {
+			console.log("Key[0]=",key[0])
+			if (key[0] === "/api/myRole") {
+				return {
+					data: {
+						role: "Admin"
+					}
+				};
+			} else if(key[0].startsWith("/api/member/courses/show/")){
+				return {
+					data: [course]
+				}
+			} else{
+				return {
+					data: undefined,
+      				error: "ERROR!",
+      				mutate: mutateSpy
+      			}
+			}
+		});
+
+	/*	useSWR.mockReturnValueOnce({
+      		data: undefined,
+      		error: undefined,
+      		mutate: mutateSpy,
+    	}).mockReturnValueOnce({
+      		data: undefined,
+      		error: undefined,
+      		mutate: mutateSpy,
+    	});
+*/
+    	const { getByText } = render(<CourseShow />);
+    	const loading = getByText("We encountered an error; please reload the page and try again.");
+    	expect(loading).toBeInTheDocument();
+    });
+
   
     
 	test("empty component renders without crashing", () => {

@@ -24,12 +24,13 @@ function CourseShow() {
     : [`/api/public/courses/officehours/${courseId}`, fetchWithoutToken];
   }
   const { data: viewList, error } = useSWR(...args);
-  const { data: viewListOfficeHours, error2} = useSWR(...argsOfficeHours);
+  const { data: viewListOfficeHours, error: error2} = useSWR(...argsOfficeHours);
   if (error) {
     return (
       <h1>We encountered an error; please reload the page and try again.</h1>
     );
   }
+  console.log(error2)
   if (error2) {
     return (
       <h1>We encountered an error; please reload the page and try again.</h1>
@@ -38,9 +39,9 @@ function CourseShow() {
   if (!viewList) {
     return <Loading />;
   }
-  if (!viewListOfficeHours) {
+  /*if (!viewListOfficeHours) {
     return <Loading />;
-  }
+  }*/
   return (
     <div>
      <CourseDetail member={roleInfo ? roleInfo.role === "Member" || roleInfo.role === "Admin" : false} viewList={viewList} />
