@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
@@ -9,14 +9,8 @@ import TutorTable from "main/components/Tutor/TutorTable";
 import { TutorCSVButton } from "./TutorCSVButton"; 
 import { useToasts } from "react-toast-notifications";
 
-import {
-  //buildCreateTutor,
-  buildDeleteTutor
-  //buildUpdateTutor
-} from "main/services/Tutor/TutorService";
-
 import { useHistory } from "react-router-dom";
-import { uploadTutorsCSV } from "../../services/Tutor/TutorService";
+import { buildDeleteTutor, uploadTutorsCSV } from "main/services/Tutor/TutorService";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -51,6 +45,7 @@ const Tutor = () => {
     roleInfo.role &&
     instructorCourseList &&
     instructorCourseList.length > 0;
+
   const isAdmin =
     roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
@@ -79,8 +74,9 @@ const Tutor = () => {
 
   return (
     <>
-      {(isInstructor || isAdmin) && (
-      <><Button
+
+       {(isInstructor || isAdmin) && (
+        <Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
@@ -96,8 +92,9 @@ const Tutor = () => {
         instructorTutors={instructorTutorList}
         admin={isAdmin || isInstructor}
         deleteTutor={deleteTutor}
+
         />
-      )}
+        )}
     </>
   );
 };

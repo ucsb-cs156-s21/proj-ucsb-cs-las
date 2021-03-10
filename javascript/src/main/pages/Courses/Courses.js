@@ -6,6 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import CourseTable from "main/components/Courses/CourseTable"
 import { buildDeleteCourse } from "main/services/Courses/CourseService";
+import uploadCoursesCSV from "main/services/Courses/UploadCsv";
+import CourseCSVButton from "main/components/Courses/CourseCSVButton.js";
 import { CSVLink } from "react-csv";
 import { fetchWithoutToken } from "main/utils/fetch";
 import { useHistory } from "react-router-dom";
@@ -57,10 +59,15 @@ const Courses = () => {
     label: 'Email'
   }];
 
+  const uploadedCourses = uploadCoursesCSV(
+    getToken, mutateCourses
+  );
+
   return (
     <>
       <Button onClick={() => history.push("/courses/new")}>New Course</Button>
       <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
+      <CourseCSVButton admin={true} addTask={uploadedCourses} />
       <Button><CSVLink style={{color: "white"}} headers={headers} data={courseList} filename = {"CourseTable.csv"}>Download CSV</CSVLink></Button>
     </>
   );

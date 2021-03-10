@@ -10,7 +10,8 @@ import java.io.Reader;
 import java.util.List;
 
 public interface CSVToObjectService<T> {
-    List<T> parse(Reader csv, Class<T> type); 
+
+    List<T> parse(Reader csv, Class<T> type);
 
     Logger getLogger();
 
@@ -36,4 +37,6 @@ public interface CSVToObjectService<T> {
         }
         return null;
     }
-}
+
+} 
+
