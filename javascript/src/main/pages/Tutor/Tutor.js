@@ -1,20 +1,12 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
-//import { useToasts } from "react-toast-notifications";
-
-import {
-  //buildCreateTutor,
-  buildDeleteTutor
-  //buildUpdateTutor
-} from "main/services/Tutor/TutorService";
-
-import { useHistory } from "react-router-dom";
+import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
