@@ -24,7 +24,7 @@ const QuarterFilterForm = ({ upsertFilter }) => {
             <Form.Group as={Row} controlId="name">
             <Form.Label column sm={2}>Enter quarter to filter by</Form.Label>
             <Col sm={10}>
-                <Form.Control ref={quarterRef} type="text" placeholder="Ex: W21" onChange={
+                <Form.Control data-testid="name" ref={quarterRef} type="text" placeholder="Ex: W21" onChange={
                     (e) => setFilterVal(e.target.value)
                 }
                 />

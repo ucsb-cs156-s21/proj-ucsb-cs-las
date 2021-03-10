@@ -33,11 +33,12 @@ describe("QuarterFilterForm tests", () => {
 
     expect(upsertFilterMock).toHaveBeenCalledTimes(1);
   });
+
   test("set quarter filter format works with right format", async () => {
 
     const quarterFilterMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const { getByLabelText, getByText, getByTestId } = render
       (<QuarterFilterForm upsertFilter = {quarterFilterMock} />);
 
       const nameInput = getByLabelText("Enter quarter to filter by");
@@ -45,6 +46,7 @@ describe("QuarterFilterForm tests", () => {
 
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
+      expect(getByTestId("name")).toHaveClass("is-valid");
 
       expect(quarterFilterMock).toHaveBeenCalledTimes(1);
       expect(quarterFilterMock).toBeCalledWith(formattedFilterVal1);
@@ -54,7 +56,7 @@ describe("QuarterFilterForm tests", () => {
 
     const quarterFilterMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const { getByLabelText, getByText, findByText, getByTestId } = render
       (<QuarterFilterForm upsertFilter = {quarterFilterMock} />);
 
       const nameInput = getByLabelText("Enter quarter to filter by");
@@ -62,6 +64,9 @@ describe("QuarterFilterForm tests", () => {
 
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
+      expect(getByTestId("name")).toHaveClass("is-invalid");
+
+      await findByText("Please provide a valid quarter.");
 
       expect(quarterFilterMock).toHaveBeenCalledTimes(1);
   })
@@ -70,7 +75,7 @@ describe("QuarterFilterForm tests", () => {
 
     const quarterFilterMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const { getByLabelText, getByText, findByText, getByTestId } = render
       (<QuarterFilterForm upsertFilter = {quarterFilterMock} />);
 
       const nameInput = getByLabelText("Enter quarter to filter by");
@@ -78,6 +83,9 @@ describe("QuarterFilterForm tests", () => {
 
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
+      expect(getByTestId("name")).toHaveClass("is-invalid");
+
+      await findByText("Please provide a valid quarter.");
 
       expect(quarterFilterMock).toHaveBeenCalledTimes(1);
   })
@@ -86,7 +94,7 @@ describe("QuarterFilterForm tests", () => {
 
     const quarterFilterMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const { getByLabelText, getByText, findByText, getByTestId } = render
       (<QuarterFilterForm upsertFilter = {quarterFilterMock} />);
 
       const nameInput = getByLabelText("Enter quarter to filter by");
@@ -94,6 +102,9 @@ describe("QuarterFilterForm tests", () => {
 
       const submitButton = getByText("Submit");
       userEvent.click(submitButton);
+      expect(getByTestId("name")).toHaveClass("is-invalid");
+
+      await findByText("Please provide a valid quarter.");
 
       expect(quarterFilterMock).toHaveBeenCalledTimes(1);
   })
