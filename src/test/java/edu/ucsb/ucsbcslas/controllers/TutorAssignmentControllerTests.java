@@ -476,6 +476,29 @@ public class TutorAssignmentControllerTests {
 
     }
 
+        @Test
+    public void testGetTutorAssignmentByTutor() throws Exception{
+        List<TutorAssignment> expectedTutorAssignments = new ArrayList<TutorAssignment>();
+        Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+        Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
+        expectedTutorAssignments.add(new TutorAssignment(1L, c, t, "TA"));
+
+         // mockito is the library that allows us to do this when stuf
+        when(mockTutorRepository.findByEmail("vanbrocklin@ucsb.edu")).thenReturn(Optional.of(t));
+        when(mockTutorAssignmentRepository.findAllByTutor(t)).thenReturn(expectedTutorAssignments);
+
+        MvcResult response = mockMvc.perform(get("/api/member/tutorAssignment/byTutor/vanbrocklin@ucsb.edu").contentType("application/json")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+        
+        verify(mockTutorRepository, times(1)).findByEmail("vanbrocklin@ucsb.edu");
+        verify(mockTutorAssignmentRepository, times(1)).findAllByTutor(t);
+
+        String responseString = response.getResponse().getContentAsString();
+        List<TutorAssignment> actualTA = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignment>>(){});
+        assertEquals(actualTA, expectedTutorAssignments);
+
+    }
+
     @Test
     public void testGetCourse() throws Exception{
         List<TutorAssignment> expectedTutorAssignment =new ArrayList<TutorAssignment>();
