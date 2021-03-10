@@ -228,8 +228,8 @@ describe("Tutor page test", () => {
     await waitFor(() => expect(pushUpload).toHaveBeenCalledTimes(0));
   });
 
-  test.skip("error if user not an admin or instructor and CSV file upload is not visible", () => {
-    useSWR.mockReturnValueOnce({
+  test("error if user not an admin or instructor and CSV file upload is not visible", () => {
+    useSWR.mockReturnValue({
       data: { role: "member" },
       error: undefined,
       mutate: mutateSpy
