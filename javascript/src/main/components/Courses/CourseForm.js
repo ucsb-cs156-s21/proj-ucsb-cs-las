@@ -41,7 +41,7 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
                 createCourse({...course, quarter: formatedQuarter});
             }
             else
-                updateCourse(course, course.id);
+                updateCourse({...course, quarter: formatedQuarter}, course.id);
         }
     }
 
