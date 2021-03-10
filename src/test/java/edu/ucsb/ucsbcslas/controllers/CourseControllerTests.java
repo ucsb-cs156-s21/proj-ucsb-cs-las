@@ -491,4 +491,68 @@ public class CourseControllerTests {
 
     verify(mockCourseRepository, never()).saveAll(any());
   }
+
+  @Test
+  public void testSortViewList(){
+    TutorAssignmentOfficeHourView t1 = new TutorAssignmentOfficeHourView();
+    t1.setDay("Monday");
+    TutorAssignmentOfficeHourView t2 = new TutorAssignmentOfficeHourView();
+    t2.setDay("Tuesday");
+    TutorAssignmentOfficeHourView t3 = new TutorAssignmentOfficeHourView();
+    t3.setDay("Wednesday");
+    TutorAssignmentOfficeHourView t4 = new TutorAssignmentOfficeHourView();
+    t4.setDay("Thursday");
+    TutorAssignmentOfficeHourView t5 = new TutorAssignmentOfficeHourView();
+    t5.setDay("Friday");
+    List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+    viewList.add(t4);
+    viewList.add(t2);
+    viewList.add(t5);
+    viewList.add(t1);
+    viewList.add(t3);
+    CourseController.sortViewList(viewList);
+    List<String> dayInWeek = new ArrayList<>(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
+    for(int i = 0; i<5; i++){
+      assertEquals(dayInWeek.get(i), viewList.get(i).getDay());
+    }
+  }
+
+  @Test
+  public void testSortViewListWithSundayEdgeCase(){
+    TutorAssignmentOfficeHourView t1 = new TutorAssignmentOfficeHourView();
+    t1.setDay("Monday");
+    TutorAssignmentOfficeHourView t2 = new TutorAssignmentOfficeHourView();
+    t2.setDay("Tuesday");
+    TutorAssignmentOfficeHourView t3 = new TutorAssignmentOfficeHourView();
+    t3.setDay("Wednesday");
+    TutorAssignmentOfficeHourView t4 = new TutorAssignmentOfficeHourView();
+    t4.setDay("Thursday");
+    TutorAssignmentOfficeHourView t5 = new TutorAssignmentOfficeHourView();
+    t5.setDay("Friday");
+    TutorAssignmentOfficeHourView t6 = new TutorAssignmentOfficeHourView();
+    t6.setDay("Sunday");
+    List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+    viewList.add(t4);
+    viewList.add(t2);
+    viewList.add(t5);
+    viewList.add(t1);
+    viewList.add(t3);
+    viewList.add(t6);
+    CourseController.sortViewList(viewList);
+    //Since Sunday will return -1, so Sunday will be the first one 
+    List<String> dayInWeek = new ArrayList<>(List.of("Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
+    for(int i = 0; i<6; i++){
+      assertEquals(dayInWeek.get(i), viewList.get(i).getDay());
+    }
+  }
+
+  @Test
+  public void testGetDayNumber(){
+    assertEquals(1, CourseController.getDayNumber("Monday"));    
+    assertEquals(2, CourseController.getDayNumber("Tuesday"));    
+    assertEquals(3, CourseController.getDayNumber("Wednesday"));    
+    assertEquals(4, CourseController.getDayNumber("Thursday"));    
+    assertEquals(5, CourseController.getDayNumber("Friday"));    
+    assertEquals(-1, CourseController.getDayNumber("Sunday"));    
+  }
 }
