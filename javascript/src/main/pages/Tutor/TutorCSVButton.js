@@ -39,7 +39,7 @@ export const TutorCSVButton = ({ addTask }) => {
                         </Form.Group>
                     </Col>
                     <Col xs={1} style={{ padding: 0 }}>
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit">Upload</Button>
                     </Col>
                 </Row>
             </Container>

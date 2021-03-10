@@ -1,14 +1,16 @@
 import React from "react";
-import { waitFor, render } from "@testing-library/react";
+import { waitFor, render, getByLabelText, screen } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import Tutor from "main/pages/Tutor/Tutor";
 import userEvent from "@testing-library/user-event";
 import {
-  buildDeleteTutor
+  buildDeleteTutor,
+  uploadTutorsCSV
 } from "main/services/Tutor/TutorService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
+
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch", () => ({
@@ -17,7 +19,8 @@ jest.mock("main/utils/fetch", () => ({
 jest.mock("main/services/Tutor/TutorService", () => ({
   buildCreateTutor: jest.fn(),
   buildDeleteTutor: jest.fn(),
-  buildUpdateTutor: jest.fn()
+  buildUpdateTutor: jest.fn(),
+  uploadTutorsCSV: jest.fn()
 }));
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn()
@@ -202,6 +205,45 @@ describe("Tutor page test", () => {
     userEvent.click(newButtons[0]);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  });
+
+  test("check if tutor csv is visible if admin", async () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    const pushUpload = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushUpload
+    });
+    const { getByText } = render(<Tutor />);
+    const csvButton = getByText("Upload");
+    userEvent.click(csvButton);
+    await waitFor(() => expect(pushUpload).toHaveBeenCalledTimes(0));
+  });
+
+  test.skip("error if user not an admin or instructor and CSV file upload is not visible", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "member" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    
+    render(<Tutor />);
+    const csvButton = screen.queryByText("Upload");
+    expect(csvButton).toBeNull();
+    ;
   });
 
   // test("can click to add a tutor", async () => {
