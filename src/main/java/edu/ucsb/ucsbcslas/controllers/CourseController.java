@@ -195,7 +195,6 @@ public class CourseController {
       return ResponseEntity.ok().body(body); 
     }   
     return ResponseEntity.notFound().build();
-    
   }
 
   @GetMapping(value = "/api/member/courses/show/{courseId}")

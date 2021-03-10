@@ -25,6 +25,7 @@ function AppNavbar() {
             <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
             <NavDropdown.Item href="/admin/viewLogins">View Logins</NavDropdown.Item>
             <NavDropdown.Item href="/admin/tutorHistory">Tutor History</NavDropdown.Item>
+            <NavDropdown.Item href="/admin/tutorAssignmentHistory">Tutor Assignment History</NavDropdown.Item>
             <NavDropdown.Item href="/admin/setActiveQuarter">Set Quarter Filter</NavDropdown.Item>
           </NavDropdown>
         }
