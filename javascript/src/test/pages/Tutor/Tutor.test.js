@@ -102,6 +102,57 @@ describe("Tutor page test", () => {
     expect(loading).toBeInTheDocument();
   });
 
+  test("can render sort name column by descending", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValueOnce({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [],
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const { getByText } = render(<Tutor />);
+    const tutorHeader = getByText("First Name");
+    userEvent.click(tutorHeader);
+    
+    const descendingON = String.fromCharCode(0x25bc);
+    expect(getByText(descendingON)).toBeInTheDocument();
+  });
+
+  test("can render sort name column by ascending", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValueOnce({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [],
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const { getByText } = render(<Tutor />);
+    const tutorHeader = getByText("First Name");
+    userEvent.click(tutorHeader);
+    userEvent.click(tutorHeader);
+    
+    const ascendingON = String.fromCharCode(0x25b2);
+    expect(getByText(ascendingON)).toBeInTheDocument();
+  });
+
   test("renders without crashing when a member and not an instructor", () => {
     useSWR.mockReturnValueOnce({
       data: { role: "member" },
@@ -311,23 +362,3 @@ describe("Tutor page test", () => {
   //   });
   // });
 });
-
-// fetchWithToken.mockImplementation(() => {
-//   throw new Error();
-// });
-
-// const pushSpy = jest.fn();
-// useHistory.mockReturnValue({
-//   push: pushSpy
-// });
-
-// const { getByText } = render(
-//   <NewTutor />
-// );
-
-// const submitButton = getByText("Submit");
-// expect(submitButton).toBeInTheDocument();
-// userEvent.click(submitButton);
-
-// expect(addToast).toHaveBeenCalledTimes(1);
-// expect(addToast).toHaveBeenCalledWith("Error saving tutor", { appearance: 'error' });

@@ -26,4 +26,5 @@ public class CSVToObjectServiceImpl<T> implements CSVToObjectService<T> {
     public Logger getLogger() {
         return log;
     }
-} 
+}
+
