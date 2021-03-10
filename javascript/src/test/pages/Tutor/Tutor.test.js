@@ -99,7 +99,7 @@ describe("Tutor page test", () => {
     expect(loading).toBeInTheDocument();
   });
 
-  test("can sort name column by descending", () => {
+  test("can render sort name column by descending", () => {
     useSWR.mockReturnValueOnce({
       data: { role: "admin" },
       error: undefined,
@@ -124,7 +124,7 @@ describe("Tutor page test", () => {
     expect(getByText(descendingON)).toBeInTheDocument();
   });
 
-  test("can sort name column by ascending", () => {
+  test("can render sort name column by ascending", () => {
     useSWR.mockReturnValueOnce({
       data: { role: "admin" },
       error: undefined,
