@@ -266,35 +266,5 @@ public class CourseController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
     }
   }
-
-  public static void sortViewList(List<TutorAssignmentOfficeHourView> viewList){
-    Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {
-      @Override
-      public int compare(TutorAssignmentOfficeHourView o1, TutorAssignmentOfficeHourView o2) {
-        int x = getDayNumber(o1.getDay());
-        int y = getDayNumber(o2.getDay());
-        return  x - y;
-      }
-    });
-  }
-  
-  public static int getDayNumber(String dayString) {
-    if (StringUtils.equalsIgnoreCase(dayString, "Monday")) {
-      return 1;
-    }
-    if (StringUtils.equalsIgnoreCase(dayString, "Tuesday")) {
-      return 2;
-    }
-    if (StringUtils.equalsIgnoreCase(dayString, "Wednesday")) {
-      return 3;
-    }
-    if (StringUtils.equalsIgnoreCase(dayString, "Thursday")) {
-      return 4;
-    }
-    if (StringUtils.equalsIgnoreCase(dayString, "Friday")) {
-      return 5;
-    }
-    return -1;
-  }
 }
   
