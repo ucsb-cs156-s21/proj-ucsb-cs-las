@@ -85,16 +85,6 @@ describe("Course Show Page Test", () => {
 			}
 		});
 
-	/*	useSWR.mockReturnValueOnce({
-      		data: undefined,
-      		error: undefined,
-      		mutate: mutateSpy,
-    	}).mockReturnValueOnce({
-      		data: undefined,
-      		error: undefined,
-      		mutate: mutateSpy,
-    	});
-*/
     	const { getByText } = render(<CourseShow />);
     	const loading = getByText("We encountered an error; please reload the page and try again.");
     	expect(loading).toBeInTheDocument();

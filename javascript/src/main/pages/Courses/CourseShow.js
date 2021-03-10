@@ -39,9 +39,8 @@ function CourseShow() {
   if (!viewList) {
     return <Loading />;
   }
-  /*if (!viewListOfficeHours) {
-    return <Loading />;
-  }*/
+
+
   return (
     <div>
      <CourseDetail member={roleInfo ? roleInfo.role === "Member" || roleInfo.role === "Admin" : false} viewList={viewList} />
