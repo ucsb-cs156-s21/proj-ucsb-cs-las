@@ -1,20 +1,12 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
-//import { useToasts } from "react-toast-notifications";
-
-import {
-  //buildCreateTutor,
-  buildDeleteTutor
-  //buildUpdateTutor
-} from "main/services/Tutor/TutorService";
-
-import { useHistory } from "react-router-dom";
+import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -48,6 +40,7 @@ const Tutor = () => {
     roleInfo.role &&
     instructorCourseList &&
     instructorCourseList.length > 0;
+
   const isAdmin =
     roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
@@ -63,22 +56,24 @@ const Tutor = () => {
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
   return (
     <>
-      {(isInstructor || isAdmin) && (
+         {(isInstructor || isAdmin) && (
         <Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
           New Tutor
         </Button>
-      )}
-      {instructorTutorList && (
+         )}
+
+        {instructorTutorList && (
+
         <TutorTable
           tutors={tutorList}
           instructorTutors={instructorTutorList}
-          admin={isAdmin}
+          admin={isAdmin || isInstructor}
           deleteTutor={deleteTutor}
         />
-      )}
+        )}
     </>
   );
 };
