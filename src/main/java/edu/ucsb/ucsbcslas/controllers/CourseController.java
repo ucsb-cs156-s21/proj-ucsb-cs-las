@@ -231,7 +231,7 @@ public class CourseController {
     }   
     return ResponseEntity.notFound().build();
   }
-  @PostMapping(value = "/upload", produces = "application/json")
+  @PostMapping(value = "/api/admin/courses/upload", produces = "application/json")
   public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
     logger.info("Starting upload CSV");
     AppUser user = authControllerAdvice.getUser(authorization);
