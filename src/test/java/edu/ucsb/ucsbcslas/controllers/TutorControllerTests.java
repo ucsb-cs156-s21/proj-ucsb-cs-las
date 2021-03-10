@@ -437,4 +437,40 @@ public class TutorControllerTests {
       mockMvc.perform(get("/api/member/instructorTutors").contentType("application/json")
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
   }
+  
+  @Test
+  public void testUploadFileThrowsRuntime() throws Exception {
+    TutorController tutorController = mock(TutorController.class); 
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Tutor.class))).thenThrow(RuntimeException.class);
+    MockMultipartFile mockFile = new MockMultipartFile(
+      "csv",
+      "test.csv",
+      MediaType.TEXT_PLAIN_VALUE,
+      "value,done\ntodo,false".getBytes()
+    ); 
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/member/tutors/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isBadRequest()).andReturn();
+
+    verify(mockTutorRepository, never()).saveAll(any());
+  }
+
+  @Test
+  public void testUploadFile() throws Exception{
+    List<Tutor> expectedTutor = new ArrayList<Tutor>();
+    expectedTutor.add(new Tutor("first", "last", "email@ucsb.edu"));
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Tutor.class))).thenReturn(expectedTutor);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/member/tutors/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk()).andReturn();
+    verify(mockTutorRepository, times(1)).saveAll(expectedTutor);
+  }
 }
