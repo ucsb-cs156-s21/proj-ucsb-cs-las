@@ -59,6 +59,14 @@ export default ({ courses, admin, deleteCourse }) => {
 
     }
 
+
+    function courseLinkFormatter(id, name){
+        var link = `/courses/show/${id}`
+        return (  
+            <div><a href={link}>{name}</a></div> 
+        )
+    }
+
     const columns = [{
         dataField: 'id',
         text: 'id',
@@ -68,7 +76,8 @@ export default ({ courses, admin, deleteCourse }) => {
         dataField: 'name',
         text: 'Course Number',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: (_cell, row) => courseLinkFormatter(row.id, row.name)
     }, {
         dataField: 'quarter',
         text: 'Quarter',
@@ -111,6 +120,6 @@ export default ({ courses, admin, deleteCourse }) => {
     }
 
     return (
-        <BootstrapTable keyField='id' data={courses} columns={columns} />
+        <BootstrapTable keyField='id' data={courses} columns={columns} striped />
     );
 }

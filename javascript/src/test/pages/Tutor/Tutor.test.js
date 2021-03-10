@@ -99,6 +99,57 @@ describe("Tutor page test", () => {
     expect(loading).toBeInTheDocument();
   });
 
+  test("can render sort name column by descending", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValueOnce({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [],
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const { getByText } = render(<Tutor />);
+    const tutorHeader = getByText("First Name");
+    userEvent.click(tutorHeader);
+    
+    const descendingON = String.fromCharCode(0x25bc);
+    expect(getByText(descendingON)).toBeInTheDocument();
+  });
+
+  test("can render sort name column by ascending", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValueOnce({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [],
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const { getByText } = render(<Tutor />);
+    const tutorHeader = getByText("First Name");
+    userEvent.click(tutorHeader);
+    userEvent.click(tutorHeader);
+    
+    const ascendingON = String.fromCharCode(0x25b2);
+    expect(getByText(ascendingON)).toBeInTheDocument();
+  });
+
   test("renders without crashing when a member and not an instructor", () => {
     useSWR.mockReturnValueOnce({
       data: { role: "member" },
@@ -203,62 +254,4 @@ describe("Tutor page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-  // test("can click to add a tutor", async () => {
-  //   // const fakeDeleteFunction = jest.fn(async () => {
-  //   //   try {
-  //   //     await fetchWithToken(`/api/member/tutors/${id}`, getToken, {
-  //   //       method: "DELETE",
-  //   //       headers: {
-  //   //         "content-type": "application/json"
-  //   //       },
-  //   //       noJSON: true
-  //   //     });
-  //   //     onSuccess();
-  //   //   } catch (err) {
-  //   //     addToast();
-  //   //   }
-  //   // });
-  //   // buildDeleteTutor.mockReturnValue(fakeDeleteFunction);
-
-  //   fetchWithToken.mockImplementation(async () => {
-  //     throw new Error();
-  //   });
-
-  //   const pushSpy = jest.fn();
-  //   useHistory.mockReturnValue({
-  //     push: pushSpy
-  //   });
-
-  //   const { getAllByTestId } = render(<Tutor />);
-
-  //   const deleteButton = getAllByTestId("delete-button-1");
-  //   expect(deleteButton[0]).toBeInTheDocument();
-  //   userEvent.click(deleteButton[0]);
-
-  //   //await waitFor(() => expect(addToast).toHaveBeenCalledTimes(1));
-  //   expect(addToast).toHaveBeenCalledWith("Error deleting tutor", {
-  //     appearance: "error"
-  //   });
-  // });
 });
-
-// fetchWithToken.mockImplementation(() => {
-//   throw new Error();
-// });
-
-// const pushSpy = jest.fn();
-// useHistory.mockReturnValue({
-//   push: pushSpy
-// });
-
-// const { getByText } = render(
-//   <NewTutor />
-// );
-
-// const submitButton = getByText("Submit");
-// expect(submitButton).toBeInTheDocument();
-// userEvent.click(submitButton);
-
-// expect(addToast).toHaveBeenCalledTimes(1);
-// expect(addToast).toHaveBeenCalledWith("Error saving tutor", { appearance: 'error' });
