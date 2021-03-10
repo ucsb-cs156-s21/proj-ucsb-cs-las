@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
 import { TutorCSVButton } from "./TutorCSVButton"; 
-import { useToasts } from "react-toast-notifications";
+//import { useToasts } from "react-toast-notifications";
 
 import {
   //buildCreateTutor,
@@ -17,8 +17,6 @@ import {
 
 import { useHistory } from "react-router-dom";
 import { uploadTutorsCSV } from "../../services/Tutor/TutorService";
-
-const { addToast } = useToasts();
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -66,15 +64,7 @@ const Tutor = () => {
 
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
 
-  const uploadTutors = uploadTutorsCSV(getToken,
-    () => {
-      mutateTutors(); 
-      addToast("CSV Uploaded", { appearance: "success" });
-    },
-    () => {
-      addToast("Error Uploading CSV", { appearance: "error" });
-    }
-  );
+  const uploadTutors = uploadTutorsCSV(getToken, mutateTutors); 
 
   return (
     <>
