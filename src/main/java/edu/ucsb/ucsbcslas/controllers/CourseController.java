@@ -249,7 +249,7 @@ public class CourseController {
       return ResponseEntity.ok().body(body); 
     }   
     return ResponseEntity.notFound().build();
-    }
+  }
 
   public static void sortViewList(List<TutorAssignmentOfficeHourView> viewList){
     Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {

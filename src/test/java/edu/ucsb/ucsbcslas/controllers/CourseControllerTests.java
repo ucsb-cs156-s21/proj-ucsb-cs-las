@@ -517,6 +517,42 @@ public class CourseControllerTests {
   }
 
   @Test
+  public void testUploadFile() throws Exception{
+    List<Course> expectedCourses = new ArrayList<Course>();
+    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Course.class))).thenReturn(expectedCourses);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/admin/courses/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk()).andReturn();
+    verify(mockCourseRepository, times(1)).saveAll(expectedCourses);
+  }
+
+  @Test
+  public void testUploadFileThrowsRuntime() throws Exception{
+    CourseController CourseController = mock(CourseController.class);
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Course.class))).thenThrow(RuntimeException.class);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/admin/courses/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isBadRequest()).andReturn();
+
+    verify(mockCourseRepository, never()).saveAll(any());
+  }
+
+  @Test
   public void testSortViewListWithSundayEdgeCase(){
     TutorAssignmentOfficeHourView t1 = new TutorAssignmentOfficeHourView();
     t1.setDay("Monday");
