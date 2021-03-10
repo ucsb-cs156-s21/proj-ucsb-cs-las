@@ -2,7 +2,7 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
-
+import fromFormat from "main/utils/FromFormat";
 
 export default ({courses}) => {
 
@@ -24,7 +24,8 @@ export default ({courses}) => {
         text: 'Course Number',
     }, {
         dataField: 'quarter',
-        text: 'Quarter'
+        text: 'Quarter',
+        formatter: (_cell, row) => fromFormat(row.quarter)
     }];
 
     return (
