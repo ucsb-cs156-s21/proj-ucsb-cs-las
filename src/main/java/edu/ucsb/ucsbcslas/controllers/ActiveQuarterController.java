@@ -24,6 +24,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.IllegalArgumentException;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
@@ -53,21 +54,12 @@ public class ActiveQuarterController {
       return getUnauthorizedResponse("admin");
     activeQuarterRepo.deleteAll();
     
-    String quarterId = "";
     String quarterYear = "20" + String.valueOf(activeValue.substring(1));
 
-    if(activeValue.charAt(0) == 'W'){
-      quarterId = "1";
-    }
-    else if(activeValue.charAt(0) == 'S'){
-      quarterId = "2";
-    }
-    else if(activeValue.charAt(0) == 'M'){
-      quarterId = "3";
-    }
-    else if(activeValue.charAt(0) == 'F'){
-      quarterId = "4";
-    }
+    int quarterId = "_WSMF".indexOf(activeValue.charAt(0));
+    if (quarterId < 1)
+      throw new IllegalArgumentException("Invalid argument");
+
 
     String fullQuarterVal = quarterYear + quarterId;
     
