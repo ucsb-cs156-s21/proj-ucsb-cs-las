@@ -5,7 +5,7 @@ const uploadCoursesCSV = (getToken, onSuccess, onError) => {
         const data = new FormData();
         data.append("csv", file);
         try{
-            await fetchWithToken(`/api/courses/upload`, getToken, {
+            await fetchWithToken('/api/admin/courses/upload', getToken, {
                 method: "POST",
                 body: data
             });
