@@ -437,6 +437,61 @@ public class CourseControllerTests {
   }
 
   @Test
+  public void testShowMemberCourseOfficeHoursAuthorized() throws Exception {
+    List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
+    List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
+    List<OnlineOfficeHours> expectedOnlineOfficeHoursList2 = new ArrayList<>();
+    List<OnlineOfficeHours> expectedOnlineOfficeHoursList3 = new ArrayList<>();
+    List<TutorAssignment> expectedTutorAssignmentsList = new ArrayList<>();
+
+    Optional <Course> expectedCourses = Optional.empty();
+    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    expectedTutorAssignmentsList.add(expectedTutorAssignments);
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Monday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
+    expectedOnlineOfficeHoursList2.add(onlineOfficeHours_2);
+    TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList); 
+    TutorAssignmentOfficeHourView expectedView_2 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList2); 
+    expectedViewList.add(expectedView_2);
+    expectedViewList.add(expectedView_1);
+
+    expectedOnlineOfficeHoursList3.add(onlineOfficeHours_1);
+    expectedOnlineOfficeHoursList3.add(onlineOfficeHours_2);
+
+    AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
+    // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+    when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
+    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
+    when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList3);
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+    MvcResult response = mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+
+    String responseString = response.getResponse().getContentAsString();
+    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {
+    });
+    assertEquals(actualviewList, expectedViewList);
+  }
+
+  @Test
+  public void testshowMemberCourseOfficeHoursUnauthorized() throws Exception {
+    mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
+    .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void testshowMemberCourseOfficeHoursNoCourse() throws Exception {
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+    mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
+      .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
+
+  @Test
   public void testShowPublicCourseNoCourse() throws Exception {
      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
     mockMvc.perform(get("/api/public/courses/show/1").contentType("application/json")
@@ -453,6 +508,13 @@ public class CourseControllerTests {
   public void testshowMemberCourseNoCourse() throws Exception {
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
     mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
+      .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void testshowMemberCourseNoCourseOfficeHours() throws Exception {
+    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+    mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
   }
 
