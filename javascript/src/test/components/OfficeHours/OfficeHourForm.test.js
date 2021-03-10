@@ -39,8 +39,8 @@ describe("OfficeHourForm tests", () => {
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, sampleOfficeHour.endTime);
 
-    const dayOfWeekInput = getByLabelText("Day of Week");
-    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
+    const selectDayOfWeek = getByLabelText("Day of Week")
+    userEvent.selectOptions(selectDayOfWeek, sampleOfficeHour.dayOfWeek);
 
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
@@ -72,9 +72,6 @@ describe("OfficeHourForm tests", () => {
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, "01:00PM");
 
-    const dayOfWeekInput = getByLabelText("Day of Week");
-    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
-
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
 
@@ -103,9 +100,6 @@ describe("OfficeHourForm tests", () => {
 
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, sampleOfficeHour.endTime);
-
-    const dayOfWeekInput = getByLabelText("Day of Week");
-    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
 
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, "invalid.zoom.link");

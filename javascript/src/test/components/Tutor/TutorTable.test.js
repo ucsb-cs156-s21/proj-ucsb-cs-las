@@ -4,10 +4,6 @@ import TutorTable from "main/components/Tutor/TutorTable";
 import userEvent from "@testing-library/user-event";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-// import { useHistory } from "react-router-dom";
-// jest.mock("react-router-dom", () => ({
-//   useHistory: jest.fn(),
-// }));
 
 describe("TutorForm tests", () => {
   test("renders without crashing admin false", () => {
