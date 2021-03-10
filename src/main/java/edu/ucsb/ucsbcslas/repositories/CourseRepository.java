@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import edu.ucsb.ucsbcslas.models.Course;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,7 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
   Optional<Course> findByName(String name);
   Optional<Course> findById(Long id);
   List<Course> findByQuarter(String quarter);
+
+  @Query("SELECT DISTINCT quarter FROM Course")
+  List<String> selectDistinctQuarter();
 }

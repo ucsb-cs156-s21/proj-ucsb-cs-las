@@ -2,6 +2,25 @@ import React from "react";
 import { render } from "@testing-library/react";
 import OfficeHourForm from "main/components/OfficeHours/OfficeHourForm";
 import userEvent from "@testing-library/user-event";
+/*
+import useSWR from "swr";
+
+jest.mock("react", () => ({
+  ...jest.requireActual("react"),
+  useState: jest.fn()
+}));
+jest.mock("@auth0/auth0-react");
+jest.mock("swr");
+jest.mock("react-router-dom", () => ({
+  useHistory: jest.fn() // and this one too
+}));
+jest.mock("main/utils/fetch", () => ({
+  fetchWithToken: jest.fn()
+}));
+jest.mock('react-toast-notifications', () => ({
+  useToasts: jest.fn()
+}));
+*/
 
 const sampleOfficeHour = {
   "id": "",
@@ -17,6 +36,17 @@ const sampleOfficeHour = {
 }
 
 describe("OfficeHourForm tests", () => {
+ /* const getAccessTokenSilentlySpy = jest.fn();
+  const mutateSpy = jest.fn();
+  const setStateSpy = jest.fn();
+
+  test("renders loading while office hours form is undefined", () => {
+    const { getByAltText } = render(<OfficeHourForm />);
+    const loading = getByAltText("Loading");
+    expect(loading).toBeInTheDocument();
+  });
+*/
+  
 
   test("component renders without crashing", () => {
     render(<OfficeHourForm />);
@@ -39,8 +69,8 @@ describe("OfficeHourForm tests", () => {
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, sampleOfficeHour.endTime);
 
-    const dayOfWeekInput = getByLabelText("Day of Week");
-    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
+    const selectDayOfWeek = getByLabelText("Day of Week")
+    userEvent.selectOptions(selectDayOfWeek, sampleOfficeHour.dayOfWeek);
 
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
@@ -72,9 +102,6 @@ describe("OfficeHourForm tests", () => {
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, "01:00PM");
 
-    const dayOfWeekInput = getByLabelText("Day of Week");
-    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
-
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, sampleOfficeHour.zoomRoomLink);
 
@@ -103,9 +130,6 @@ describe("OfficeHourForm tests", () => {
 
     const endTimeInput = getByLabelText("End Time");
     userEvent.type(endTimeInput, sampleOfficeHour.endTime);
-
-    const dayOfWeekInput = getByLabelText("Day of Week");
-    userEvent.type(dayOfWeekInput, sampleOfficeHour.dayOfWeek);
 
     const zoomRoomLinkInput = getByLabelText("Zoom Room Link");
     userEvent.type(zoomRoomLinkInput, "invalid.zoom.link");

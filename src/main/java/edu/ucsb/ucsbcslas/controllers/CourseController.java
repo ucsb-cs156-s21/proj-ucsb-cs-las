@@ -220,5 +220,25 @@ public class CourseController {
     }   
     return ResponseEntity.notFound().build();
     }
+
+  @GetMapping(value = "/api/public/quarters", produces = "application/json")
+  public ResponseEntity<String> getQuarters() throws JsonProcessingException {
+
+    List <String> quartersList = courseRepository.selectDistinctQuarter();
+    ObjectMapper mapper = new ObjectMapper();
+
+    String body = mapper.writeValueAsString(quartersList);
+    return ResponseEntity.ok().body(body);
+  }
+
+  @GetMapping(value = "/api/public/courses/forQuarter/{qtr}", produces = "application/json")
+  public ResponseEntity<String> getCoursesForQuarter(@PathVariable("qtr") String qtr) throws JsonProcessingException {
+
+    List <Course> courseList = courseRepository.findByQuarter(qtr);
+    ObjectMapper mapper = new ObjectMapper();
+
+    String body = mapper.writeValueAsString(courseList);
+    return ResponseEntity.ok().body(body);
+  }
+
 }
-  

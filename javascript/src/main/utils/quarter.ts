@@ -67,6 +67,27 @@ export function asHumanQuarter(q: QuarterLike) {
   return `${humanQuarterOfYear(quarter.quarter)} ${quarter.year}`;
 }
 
+export function asQyy(q: QuarterLike) {
+  const quarter = asQuarterObject(q);
+  const yy = String(quarter.year).slice(-2);
+  return `${humanQ(quarter.quarter)}${yy}`;
+}
+
+
+export function humanQ(q: QuarterOfYear): string {
+  switch (q) {
+    case 1:
+      return "W";
+    case 2:
+      return "S";
+    case 3:
+      return "M";
+    case 4:
+      return "F";
+  }
+}
+
+
 type QuarterRangeOptions<T> = {
   start: QuarterLike;
   step?: number;
