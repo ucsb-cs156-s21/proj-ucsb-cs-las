@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Col, Row, Container, Form } from "react-bootstrap"; 
 
 export const TutorCSVButton = ({ addTask }) => {
-    const [_value, setValue] = useState(""); 
+    const [value, setValue] = useState(""); 
     const [file, setFile] = React.useState(null); 
     const fileRef = React.useRef(); 
     return (
@@ -27,10 +27,13 @@ export const TutorCSVButton = ({ addTask }) => {
                                 type="file"
                                 accept=".csv"
                                 id="custom-file-input"
-                                label="Upload a CSV of Tutors"
+                                label= { value }
                                 data-testid="csv-input"
                                 custom
-                                onChange={event => {setFile(event.currentTarget.files[0])}}
+                                onChange={event => {
+                                    setFile(event.currentTarget.files[0]);
+                                    setValue(event.currentTarget.files[0].name)
+                                }}
                                 ref={fileRef}
                             />
                         </Form.Group>
