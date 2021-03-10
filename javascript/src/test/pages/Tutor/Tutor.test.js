@@ -99,6 +99,57 @@ describe("Tutor page test", () => {
     expect(loading).toBeInTheDocument();
   });
 
+  test("can sort name column by descending", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValueOnce({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [],
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const { getByText } = render(<Tutor />);
+    const tutorHeader = getByText("First Name");
+    userEvent.click(tutorHeader);
+    
+    const descendingON = String.fromCharCode(0x25bc);
+    expect(getByText(descendingON)).toBeInTheDocument();
+  });
+
+  test("can sort name column by ascending", () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValueOnce({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [],
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const { getByText } = render(<Tutor />);
+    const tutorHeader = getByText("First Name");
+    userEvent.click(tutorHeader);
+    userEvent.click(tutorHeader);
+    
+    const ascendingON = String.fromCharCode(0x25b2);
+    expect(getByText(ascendingON)).toBeInTheDocument();
+  });
+
   test("renders without crashing when a member and not an instructor", () => {
     useSWR.mockReturnValueOnce({
       data: { role: "member" },
