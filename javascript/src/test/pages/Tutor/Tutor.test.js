@@ -1,5 +1,5 @@
 import React from "react";
-import { waitFor, render, getByLabelText, screen } from "@testing-library/react";
+import { waitFor, render, getByLabelText, screen, fireEvent } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import Tutor from "main/pages/Tutor/Tutor";
@@ -243,7 +243,34 @@ describe("Tutor page test", () => {
     render(<Tutor />);
     const csvButton = screen.queryByText("Upload");
     expect(csvButton).toBeNull();
-    ;
+  });
+
+  test("check if the file is uploaded successfully", async () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+
+    const csvFile = new File(['foo'], 'sample.csv', { type: 'file/csv' });
+
+    const { getByText, getByTestId } = render(<Tutor />);
+    const csvButton = getByText("Upload");
+    const csvHolder = getByTestId("csv-input");
+    await waitFor(() =>
+      fireEvent.change(csvHolder, {
+        target: { files: [csvFile] },
+      })
+    );
+
+    const csvF = document.getElementById("custom-file-input");
+    expect(csvF.files[0].name).toBe('sample.csv');
+    expect(csvF.files.length).toBe(1);
   });
 
   // test("can click to add a tutor", async () => {

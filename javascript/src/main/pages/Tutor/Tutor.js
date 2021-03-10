@@ -87,7 +87,7 @@ const Tutor = () => {
           New Tutor
         </Button><TutorCSVButton admin={isAdmin} addTask={uploadTutors} />
           <pre style={{ whiteSpace: 'pre', textAlign: 'left', width: 'auto', marginLeft: 'auto', marginRight: 'auto', padding: '0em' }} muted>
-            Required Columns: firstName, lastName, email.Ex: joe, gaucho, joegaucho @ucsb.edu
+            Required Columns: firstName, lastName, email. Ex: joe, gaucho, joegaucho@ucsb.edu
           </pre></>
       )}
       {tutorList && (isInstructor || isAdmin) && (
