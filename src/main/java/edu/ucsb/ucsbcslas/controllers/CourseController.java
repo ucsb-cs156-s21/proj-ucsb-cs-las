@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.*;
 
 import java.util.*;
 import java.util.HashMap;
@@ -28,15 +36,16 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
 import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
-
 
 @RestController
 public class CourseController {
@@ -48,6 +57,8 @@ public class CourseController {
   
   @Autowired
   private CourseRepository courseRepository;
+  @Autowired
+  CSVToObjectService<Course> csvToObjectService;
   @Autowired
   private TutorAssignmentRepository tutorAssignmentRepository;
   @Autowired
@@ -263,6 +274,7 @@ public class CourseController {
       return ResponseEntity.ok().body(body);
     } catch(RuntimeException e){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+
     }
   }
 
@@ -294,6 +306,9 @@ public class CourseController {
       return 5;
     }
     return -1;
+
+    }
+
   }
 }
   

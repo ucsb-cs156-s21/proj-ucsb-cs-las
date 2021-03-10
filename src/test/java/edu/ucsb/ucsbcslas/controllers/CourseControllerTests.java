@@ -492,6 +492,7 @@ public class CourseControllerTests {
     verify(mockCourseRepository, never()).saveAll(any());
   }
 
+
   @Test
   public void testSortViewList(){
     TutorAssignmentOfficeHourView t1 = new TutorAssignmentOfficeHourView();
@@ -555,4 +556,5 @@ public class CourseControllerTests {
     assertEquals(5, CourseController.getDayNumber("Friday"));    
     assertEquals(-1, CourseController.getDayNumber("Sunday"));    
   }
+
 }
