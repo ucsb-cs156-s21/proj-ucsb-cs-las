@@ -1,6 +1,5 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import Loading from "main/components/Loading/Loading";
 
 export default ({member,viewListOfficeHours=[]}) => {
 
@@ -24,7 +23,6 @@ export default ({member,viewListOfficeHours=[]}) => {
         text: 'End Time'
     }];
 
-
     if (member) {
         column3.push({
             text: "Email",
@@ -36,10 +34,6 @@ export default ({member,viewListOfficeHours=[]}) => {
         });
     }
 
-    if(!viewListOfficeHours){
-        return <Loading />
-    }
-    
     return (
         <div>
             <BootstrapTable keyField='dayOfWeek' data={viewListOfficeHours} columns={column3} />
