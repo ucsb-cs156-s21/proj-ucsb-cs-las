@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
@@ -15,14 +17,19 @@ public class Course {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 0)
   private String name;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 1)
   private String quarter;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 2)
   private String instructorFirstName;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 3)
   private String instructorLastName;
   @Column(nullable = false)
+  @CsvBindByPosition(position = 4)
   private String instructorEmail;
 
   public Course() {

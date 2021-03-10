@@ -8,7 +8,6 @@
       {
         "files": ["src/test/**/*.js"],
         "env": {
-          "browser": false,
           "node": true,
           "jest": true
         }
