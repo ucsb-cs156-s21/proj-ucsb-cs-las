@@ -28,7 +28,7 @@ var CourseCSVButton = ({ addTask }) => {
                                 type="file"
                                 accept=".csv"
                                 id="custom-file-input"
-                                label="Upload a CSV of courses"
+                                label="Upload a CSV of courses (quarter must be in numerical format, Ex: 20211)"
                                 data-testid="csv-input"
                                 custom
                                 onChange={event => {setFile(event.currentTarget.files[0])}}
