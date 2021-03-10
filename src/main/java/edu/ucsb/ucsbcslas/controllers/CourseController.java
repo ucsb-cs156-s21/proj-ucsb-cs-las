@@ -251,6 +251,22 @@ public class CourseController {
     return ResponseEntity.notFound().build();
   }
 
+  @PostMapping(value = "/api/admin/courses/upload", produces = "application/json")
+  public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
+    logger.info("Starting upload CSV");
+    AppUser user = authControllerAdvice.getUser(authorization);
+    try {
+      Reader reader = new InputStreamReader(csv.getInputStream());
+      logger.info(new String(csv.getInputStream().readAllBytes()));
+      List<Course> uploadedCourses = csvToObjectService.parse(reader, Course.class);
+      List<Course> savedCourse = (List<Course>) courseRepository.saveAll(uploadedCourses);
+      String body = mapper.writeValueAsString(savedCourse);
+      return ResponseEntity.ok().body(body);
+    } catch(RuntimeException e){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+    }
+  }
+
   public static void sortViewList(List<TutorAssignmentOfficeHourView> viewList){
     Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {
       @Override

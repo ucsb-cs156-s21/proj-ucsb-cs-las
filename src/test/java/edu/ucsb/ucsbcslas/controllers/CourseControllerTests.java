@@ -9,6 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.View;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +28,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 
 import edu.ucsb.ucsbcslas.entities.AppUser;
 
@@ -54,6 +66,9 @@ public class CourseControllerTests {
   @Autowired
   private ObjectMapper objectMapper;
 
+  @Autowired
+  private WebApplicationContext webApplicationContext;
+
   @MockBean
   CourseRepository mockCourseRepository;
   @MockBean
@@ -63,6 +78,12 @@ public class CourseControllerTests {
   TutorAssignmentRepository mockTutorAssignmentRepository;
   @MockBean
   OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
+
+  @MockBean
+  CSVToObjectService mockCSVToObjectService;
+
+  @MockBean
+  Reader mockReader;
 
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -336,48 +357,6 @@ public class CourseControllerTests {
   }
   
   @Test
-  public void testShowMemberCourseOfficeHoursAuthorized() throws Exception {
-    List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
-    List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
-    List<OnlineOfficeHours> expectedOnlineOfficeHoursList2 = new ArrayList<>();
-    List<OnlineOfficeHours> expectedOnlineOfficeHoursList3 = new ArrayList<>();
-    List<TutorAssignment> expectedTutorAssignmentsList = new ArrayList<>();
-  
-    Optional <Course> expectedCourses = Optional.empty();
-    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
-    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
-    expectedTutorAssignmentsList.add(expectedTutorAssignments);
-
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
-    OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Monday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
-    expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
-    expectedOnlineOfficeHoursList2.add(onlineOfficeHours_2);
-    TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList); 
-    TutorAssignmentOfficeHourView expectedView_2 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList2); 
-    expectedViewList.add(expectedView_2);
-    expectedViewList.add(expectedView_1);
-
-    expectedOnlineOfficeHoursList3.add(onlineOfficeHours_1);
-    expectedOnlineOfficeHoursList3.add(onlineOfficeHours_2);
-
-    AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
-    // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
-    when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
-    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
-    when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList3);
-    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-
-    
-    String responseString = response.getResponse().getContentAsString();
-    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {
-    });
-    assertEquals(actualviewList, expectedViewList);
-  }
-
-  @Test
   public void testShowMemberCourseAuthorized() throws Exception {
     List<TutorAssignmentOfficeHourView> expectedViewList = new ArrayList<>();
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
@@ -465,55 +444,16 @@ public class CourseControllerTests {
   }
 
   @Test
-  public void testshowMemberCourseOfficeHoursUnauthorized() throws Exception {
-    mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
+  public void testshowMemberCourseUnthorized() throws Exception {
+    mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
     .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
-  }
-  @Test
-  public void testshowMemberCourseUnauthorized() throws Exception {
-    //to do get code from main
-        mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
-    .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
-  }
-
-  @Test
-  public void testshowMemberCourseOfficeHoursNoCourse() throws Exception {
-    when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-    mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")
-      .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
   }
 
   @Test
   public void testshowMemberCourseNoCourse() throws Exception {
-    //to do get code from main
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
     mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
-  }
-
-  @Test
-  public void testSortViewList(){
-    TutorAssignmentOfficeHourView t1 = new TutorAssignmentOfficeHourView();
-    t1.setDay("Monday");
-    TutorAssignmentOfficeHourView t2 = new TutorAssignmentOfficeHourView();
-    t2.setDay("Tuesday");
-    TutorAssignmentOfficeHourView t3 = new TutorAssignmentOfficeHourView();
-    t3.setDay("Wednesday");
-    TutorAssignmentOfficeHourView t4 = new TutorAssignmentOfficeHourView();
-    t4.setDay("Thursday");
-    TutorAssignmentOfficeHourView t5 = new TutorAssignmentOfficeHourView();
-    t5.setDay("Friday");
-    List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
-    viewList.add(t4);
-    viewList.add(t2);
-    viewList.add(t5);
-    viewList.add(t1);
-    viewList.add(t3);
-    CourseController.sortViewList(viewList);
-    List<String> dayInWeek = new ArrayList<>(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
-    for(int i = 0; i<5; i++){
-      assertEquals(dayInWeek.get(i), viewList.get(i).getDay());
-    }
   }
 
   @Test
@@ -550,6 +490,31 @@ public class CourseControllerTests {
             .andExpect(status().isBadRequest()).andReturn();
 
     verify(mockCourseRepository, never()).saveAll(any());
+  }
+
+  @Test
+  public void testSortViewList(){
+    TutorAssignmentOfficeHourView t1 = new TutorAssignmentOfficeHourView();
+    t1.setDay("Monday");
+    TutorAssignmentOfficeHourView t2 = new TutorAssignmentOfficeHourView();
+    t2.setDay("Tuesday");
+    TutorAssignmentOfficeHourView t3 = new TutorAssignmentOfficeHourView();
+    t3.setDay("Wednesday");
+    TutorAssignmentOfficeHourView t4 = new TutorAssignmentOfficeHourView();
+    t4.setDay("Thursday");
+    TutorAssignmentOfficeHourView t5 = new TutorAssignmentOfficeHourView();
+    t5.setDay("Friday");
+    List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+    viewList.add(t4);
+    viewList.add(t2);
+    viewList.add(t5);
+    viewList.add(t1);
+    viewList.add(t3);
+    CourseController.sortViewList(viewList);
+    List<String> dayInWeek = new ArrayList<>(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
+    for(int i = 0; i<5; i++){
+      assertEquals(dayInWeek.get(i), viewList.get(i).getDay());
+    }
   }
 
   @Test
