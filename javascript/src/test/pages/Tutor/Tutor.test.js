@@ -7,6 +7,7 @@ import userEvent from "@testing-library/user-event";
 import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
+import { fetchWithToken } from "main/utils/fetch";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
@@ -25,6 +26,7 @@ jest.mock("react-router-dom", () => ({
 jest.mock("react-toast-notifications", () => ({
   useToasts: jest.fn()
 }));
+
 
 describe("Tutor page test", () => {
   const tutors = [
@@ -293,7 +295,7 @@ describe("Tutor page test", () => {
     expect(csvButton).toBeNull();
   });
 
-  test.skip("check if the file is uploaded successfully", async () => {
+  test("check if the file is uploaded successfully", async () => {
     useSWR.mockReturnValueOnce({
       data: { role: "admin" },
       error: undefined,
@@ -318,6 +320,27 @@ describe("Tutor page test", () => {
     const csvF = document.getElementById("custom-file-input");
     expect(csvF.files[0].name).toBe('sample.csv');
     expect(csvF.files.length).toBe(1);
+  });
+
+  test.skip("clicking upload button adds a toast on error", async () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: tutors,
+      error: undefined,
+      mutate: mutateSpy
+    });
+    fetchWithToken.mockImplementation(() => {
+      return {};
+    });
+    const { getByText } = render(<Tutor />);
+    const csvButton = getByText("Upload");
+    userEvent.click(csvButton);
+    await waitFor(() => expect(addToast).toHaveBeenCalledTimes(1));
+    expect(addToast).toHaveBeenCalledWith("Error Uploading CSV", { appearance: 'error' });
   });
 
   // test("can click to add a tutor", async () => {
