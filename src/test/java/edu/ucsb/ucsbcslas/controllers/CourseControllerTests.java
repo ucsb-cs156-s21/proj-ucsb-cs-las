@@ -106,6 +106,34 @@ public class CourseControllerTests {
   }
 
   @Test
+  public void testGetQuarters() throws Exception {
+    List<String> expectedQuarters = new ArrayList<String>();
+    when(mockCourseRepository.selectDistinctQuarter()).thenReturn(expectedQuarters);
+    MvcResult response = mockMvc.perform(get("/api/public/quarters").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).selectDistinctQuarter();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<String> actualQuarters = objectMapper.readValue(responseString, new TypeReference<List<String>>() {});
+    assertEquals(actualQuarters, expectedQuarters);
+  }
+
+  @Test
+  public void testGetCoursesForQuarter() throws Exception {
+    List<Course> expectedCoursesForQuarters = new ArrayList<Course>();
+    when(mockCourseRepository.findByQuarter("1")).thenReturn(expectedCoursesForQuarters);
+    MvcResult response = mockMvc.perform(get("/api/public/courses/forQuarter/1").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+    verify(mockCourseRepository, times(1)).findByQuarter("1");
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Course> actualCoursesForQuarters = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {});
+    assertEquals(actualCoursesForQuarters, expectedCoursesForQuarters);
+  }
+
+  @Test
   public void testGetASingleCourse() throws Exception {
     Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email");
     // mockito is the library that allows us to do this when stuff
