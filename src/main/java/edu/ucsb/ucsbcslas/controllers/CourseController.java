@@ -22,9 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.*;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -308,5 +308,27 @@ public class CourseController {
 
     }
 
+  
+
+  @GetMapping(value = "/api/public/quarters", produces = "application/json")
+  public ResponseEntity<String> getQuarters() throws JsonProcessingException {
+
+    List <String> quartersList = courseRepository.selectDistinctQuarter();
+    ObjectMapper mapper = new ObjectMapper();
+
+    String body = mapper.writeValueAsString(quartersList);
+    return ResponseEntity.ok().body(body);
   }
+
+  @GetMapping(value = "/api/public/courses/forQuarter/{qtr}", produces = "application/json")
+  public ResponseEntity<String> getCoursesForQuarter(@PathVariable("qtr") String qtr) throws JsonProcessingException {
+
+    List <Course> courseList = courseRepository.findByQuarter(qtr);
+    ObjectMapper mapper = new ObjectMapper();
+
+    String body = mapper.writeValueAsString(courseList);
+    return ResponseEntity.ok().body(body);
+  }
+
+}
   
