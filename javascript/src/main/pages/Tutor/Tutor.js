@@ -74,7 +74,7 @@ const Tutor = () => {
     <>
 
        {(isInstructor || isAdmin) && (
-        <Button
+        <><Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
