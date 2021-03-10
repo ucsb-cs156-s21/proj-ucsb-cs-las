@@ -307,7 +307,7 @@ describe("Tutor page test", () => {
 
     const csvFile = new File(['foo'], 'sample.csv', { type: 'file/csv' });
 
-    const { getByText, getByTestId } = render(<Tutor />);
+    const { getByTestId } = render(<Tutor />);
     const csvHolder = getByTestId("csv-input");
     await waitFor(() =>
       fireEvent.change(csvHolder, {
