@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {Button, Col, Row, Container, Form} from "react-bootstrap";
 
 var CourseCSVButton = ({ addTask }) => {
-    const [value, setValue] = useState("");
+    const [_value, setValue] = useState("");
     const [file, setFile] = React.useState(null);
     const fileRef = React.useRef();
     return (
