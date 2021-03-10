@@ -31,7 +31,7 @@ const QuarterFilterForm = ({ upsertFilter }) => {
                 <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                     Please provide a valid quarter.
                 </Form.Control.Feedback>
-                <Form.Text style={{ textAlign: "left" }} muted>Use the first name of the quarter with the last 2 digits of the year. Ex (2020): F20, W20, S20, M20</Form.Text>
+                <Form.Text style={{ textAlign: "left" }} muted>Use the first letter of the quarter with the last 2 digits of the year. Ex (2020): F20, W20, S20, M20</Form.Text>
             </Col>
         </Form.Group>
         <Form.Group as={Row}>
