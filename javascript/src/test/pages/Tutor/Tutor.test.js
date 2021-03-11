@@ -49,8 +49,10 @@ describe("Tutor page test", () => {
   };
 
   const getAccessTokenSilentlySpy = jest.fn();
+  const getToken = jest.fn();
   const mutateSpy = jest.fn();
   const addToast = jest.fn();
+
 
   beforeEach(() => {
     useAuth0.mockReturnValue({
@@ -262,15 +264,10 @@ describe("Tutor page test", () => {
     const mockUploadFunc = jest.fn(async (file) => {
       const data = new FormData(); 
       data.append("csv", file); 
-      try {
-        await fetchWithToken('/api/member/tutors/upload', getToken, {
-          method: "POST", 
-          body: data
+      await fetchWithToken('/api/member/tutors/upload', getToken, {
+        method: "POST", 
+        body: data
         });
-      onSuccess(); 
-      } catch (err) {
-        onError(err); 
-      }
     });
     uploadTutorsCSV.mockReturnValue(mockUploadFunc); 
     useSWR.mockReturnValueOnce({
