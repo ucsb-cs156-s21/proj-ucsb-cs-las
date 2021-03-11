@@ -54,4 +54,39 @@ const buildDeleteTutor = (getToken, onSuccess, onError) => {
   return func;
 };
 
-export { buildCreateTutor, buildDeleteTutor, buildUpdateTutor };
+const buildDeleteAllTutors = (getToken, onSuccess, onError) => {
+  const func = async () => {
+    try {
+      await fetchWithToken(`/api/member/tutors`, getToken, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json"
+        },
+        noJSON: true
+      });
+      onSuccess();
+    } catch (err) {
+      onError(err);
+    }
+  };
+  return func;
+};
+
+const uploadTutorsCSV = (getToken, onSuccess, onError) => {
+  const func = async  (file) => {
+    const data = new FormData(); 
+    data.append("csv", file); 
+    try {
+      await fetchWithToken('/api/member/tutors/upload', getToken, {
+        method: "POST", 
+        body: data
+      });
+      onSuccess(); 
+    } catch (err) {
+      onError(err); 
+    }
+  };
+  return func; 
+}
+
+export { buildCreateTutor, buildDeleteTutor, buildUpdateTutor, buildDeleteAllTutors, uploadTutorsCSV};

@@ -1,6 +1,7 @@
 package edu.ucsb.ucsbcslas.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.junit.Ignore; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -9,6 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.View;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +29,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +50,8 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 
+import edu.ucsb.ucsbcslas.services.CSVToObjectService; 
+
 @WebMvcTest(value = TutorController.class)
 @WithMockUser
 public class TutorControllerTests {
@@ -50,6 +64,9 @@ public class TutorControllerTests {
 
   @MockBean
   TutorRepository mockTutorRepository;
+
+  @Autowired
+  private WebApplicationContext webApplicationContext;
   
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
@@ -59,6 +76,12 @@ public class TutorControllerTests {
   
   @MockBean
   TutorAssignmentRepository mockTutorAssignmentRepository;
+
+  @MockBean
+  CSVToObjectService mockCSVToObjectService; 
+
+  @Mock 
+  Reader mockReader; 
 
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -431,5 +454,41 @@ public class TutorControllerTests {
 
       mockMvc.perform(get("/api/member/instructorTutors").contentType("application/json")
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
+  
+  @Test
+  public void testUploadFileThrowsRuntime() throws Exception {
+    TutorController tutorController = mock(TutorController.class); 
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Tutor.class))).thenThrow(RuntimeException.class);
+    MockMultipartFile mockFile = new MockMultipartFile(
+      "csv",
+      "test.csv",
+      MediaType.TEXT_PLAIN_VALUE,
+      "value,done\ntodo,false".getBytes()
+    ); 
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/member/tutors/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isBadRequest()).andReturn();
+
+    verify(mockTutorRepository, never()).saveAll(any());
+  }
+
+  @Test
+  public void testUploadFile() throws Exception{
+    List<Tutor> expectedTutor = new ArrayList<Tutor>();
+    expectedTutor.add(new Tutor(1L, "first", "last", "email@ucsb.edu"));
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Tutor.class))).thenReturn(expectedTutor);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/member/tutors/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk()).andReturn();
+    verify(mockTutorRepository, times(1)).saveAll(expectedTutor);
   }
 }

@@ -6,13 +6,16 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
-import { buildDeleteTutor } from "main/services/Tutor/TutorService";
+import { TutorCSVButton } from "main/components/Tutor/TutorCSVButton"; 
+import { useToasts } from "react-toast-notifications";
+import { buildDeleteTutor, uploadTutorsCSV } from "main/services/Tutor/TutorService";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { email } = user;
   const history = useHistory();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
+  const { addToast } = useToasts();
 
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutors", getToken],
@@ -54,23 +57,38 @@ const Tutor = () => {
   }
 
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
+
+  const uploadTutors = uploadTutorsCSV(getToken,
+    () => {
+      mutateTutors();
+      addToast("CSV Uploaded", { appearance: "success" });
+    },
+    () => {
+      addToast("Error Uploading CSV", { appearance: "error" });
+    }
+  );
+  
   return (
     <>
-         {(isInstructor || isAdmin) && (
-        <Button
+
+       {(isInstructor || isAdmin) && (
+        <><Button
           data-testid={`new-tutor-button`}
           onClick={() => history.push("/tutors/new")}
         >
           New Tutor
-        </Button>
-         )}
+        </Button><TutorCSVButton admin={isAdmin} addTask={uploadTutors} />
+          <pre style={{ whiteSpace: 'pre', textAlign: 'left', width: 'auto', marginLeft: 'auto', marginRight: 'auto', padding: '0em' }} muted>
+            Required Columns: firstName, lastName, email. Ex: joe, gaucho, joegaucho@ucsb.edu
+          </pre></>
+      )}
+      {tutorList && (isInstructor || isAdmin) && (
+      <TutorTable
+        tutors={tutorList}
+        instructorTutors={instructorTutorList}
+        admin={isAdmin || isInstructor}
+        deleteTutor={deleteTutor}
 
-        {(tutorList && (isInstructor || isAdmin)) && (
-        <TutorTable
-          tutors={tutorList}
-          instructorTutors={instructorTutorList}
-          admin={isAdmin || isInstructor}
-          deleteTutor={deleteTutor}
         />
         )}
     </>

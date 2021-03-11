@@ -108,6 +108,13 @@
 			<version>1.0.0</version>
 		</dependency>
 
+		<!-- http://opencsv.sourceforge.net/ -->
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>5.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -226,6 +233,7 @@
 				<version>0.8.5</version>
 				<configuration>
 					<excludes>
+
 						<!--Exclude class from test coverage -->
 						<exclude>**/edu/ucsb/ucsbcslas/config/*</exclude>
 						<exclude>**/edu/ucsb/ucsbcslas/DemoApplication.*</exclude>

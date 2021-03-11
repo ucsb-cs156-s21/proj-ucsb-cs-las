@@ -1,4 +1,4 @@
-import { buildCreateTutor, buildDeleteTutor, buildUpdateTutor } from "main/services/Tutor/TutorService";
+import { buildCreateTutor, buildDeleteTutor, buildUpdateTutor, uploadTutorsCSV, buildDeleteAllTutors } from "main/services/Tutor/TutorService";
 
 import { fetchWithToken } from "main/utils/fetch";
 
@@ -31,6 +31,17 @@ describe("TutorService tests", () => {
         await deleteTutor();        
         expect(onSuccess).toBeCalledTimes(1);
     });
+    test("uploadTutorsCSV and invoke uploadTutor", async () => {
+        const uploadTutor = uploadTutorsCSV(getToken, onSuccess, onError); 
+        await uploadTutor(); 
+        expect(onSuccess).toBeCalledTimes(1); 
+    });
+    test("buildDeleteAllTutors and invoke deleteAllTutors", async () => {
+        const deleteAllTutors = buildDeleteAllTutors(getToken, onSuccess, onError);
+        await deleteAllTutors();
+        expect(onSuccess).toBeCalledTimes(1);
+    });
+
     test("buildCreateTutor where we expect onError to be called", async () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
         const createTutor = buildCreateTutor(getToken, onSuccess, onError);
@@ -49,6 +60,18 @@ describe("TutorService tests", () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
         const deleteTutor = buildDeleteTutor(getToken, onSuccess, onError);
         await deleteTutor();
+        expect(onError).toBeCalledTimes(1);
+    });
+    test("uploadTutorsCSV where we expect onError to be called", async () => {
+        fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
+        const uploadTutor = uploadTutorsCSV(getToken, onSuccess, onError); 
+        await uploadTutor(); 
+        expect(onError).toBeCalledTimes(1);
+    });
+    test("buildDeleteAllTutors where we expect onError to be called", async () => {
+        fetchWithToken.mockImplementation(async () => { throw new Error("mock error"); });
+        const deleteAllTutors = buildDeleteAllTutors(getToken, onSuccess, onError);
+        await deleteAllTutors();
         expect(onError).toBeCalledTimes(1);
     });
 });

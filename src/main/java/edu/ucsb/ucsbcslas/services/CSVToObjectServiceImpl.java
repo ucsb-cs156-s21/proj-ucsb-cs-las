@@ -9,7 +9,6 @@ import java.io.Reader;
 import java.util.List;
 import java.lang.Class;
 
-
 @Service
 public class CSVToObjectServiceImpl<T> implements CSVToObjectService<T> {
     private static Logger log = LoggerFactory.getLogger(CSVToObjectServiceImpl.class);
@@ -28,3 +27,4 @@ public class CSVToObjectServiceImpl<T> implements CSVToObjectService<T> {
         return log;
     }
 }
+
