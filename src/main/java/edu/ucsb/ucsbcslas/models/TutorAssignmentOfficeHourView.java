@@ -16,6 +16,7 @@ import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 public class TutorAssignmentOfficeHourView {
     private TutorAssignment tutorAssignment;
     private List <OnlineOfficeHours> onlineOfficeHours;
+    private String day;
 
     public TutorAssignmentOfficeHourView() {
     }
@@ -61,5 +62,12 @@ public class TutorAssignmentOfficeHourView {
         this.onlineOfficeHours = onlineOfficeHours;
       }
 
+    public void setDay(String day) {
+      this.day = day;
+    }
+
+    public String getDay() {
+      return this.day;
+    }
 }
 

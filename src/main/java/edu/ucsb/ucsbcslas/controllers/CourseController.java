@@ -1,5 +1,6 @@
 package edu.ucsb.ucsbcslas.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.*;
 
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +179,35 @@ public class CourseController {
     return ResponseEntity.ok().body(body);
   }
 
+  @GetMapping(value = "/api/member/courses/officehours/{courseId}")
+  public ResponseEntity<String> showMemberCourseOfficeHours(@RequestHeader("Authorization") String authorization, @PathVariable("courseId") Long courseId) throws JsonProcessingException {
+    if (!authControllerAdvice.getIsMember(authorization)){
+      return getUnauthorizedResponse("member");
+    }
+    Optional<Course> course = courseRepository.findById(courseId);
+
+    if(course.isPresent()){
+      List<TutorAssignmentOfficeHourView> viewList = new ArrayList<>();
+      
+      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourse(course.get());
+      for(TutorAssignment temp : tutorAssignments){
+        List<OnlineOfficeHours> onlineOfficeHours = onlineOfficeHoursRepository.findAllByTutorAssignment(temp);
+        for (OnlineOfficeHours onlineOfficeHour : onlineOfficeHours) {
+          List<OnlineOfficeHours> tempList = new ArrayList<OnlineOfficeHours>();
+          tempList.add(onlineOfficeHour);
+          TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, tempList);
+          tutorAssignmentOfficeHourView.setDay(onlineOfficeHour.getDayOfWeek());
+          viewList.add(tutorAssignmentOfficeHourView);
+        }
+      }
+      sortViewList(viewList);
+      ObjectMapper mapper = new ObjectMapper();
+      String body = mapper.writeValueAsString(viewList);
+      return ResponseEntity.ok().body(body); 
+    }   
+    return ResponseEntity.notFound().build();
+  }
+
   @GetMapping(value = "/api/member/courses/show/{courseId}")
   public ResponseEntity<String> showMemberCourse(@RequestHeader("Authorization") String authorization, @PathVariable("courseId") Long courseId) throws JsonProcessingException {
     if (!authControllerAdvice.getIsMember(authorization)){
@@ -199,8 +230,7 @@ public class CourseController {
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
     }   
-    return ResponseEntity.notFound().build();
-    
+    return ResponseEntity.notFound().build(); 
   }
     
   @GetMapping(value = "/api/public/courses/show/{courseId}")
@@ -246,6 +276,39 @@ public class CourseController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
     }
   }
+
+  public static void sortViewList(List<TutorAssignmentOfficeHourView> viewList){
+    Collections.sort(viewList, new Comparator<TutorAssignmentOfficeHourView>()  {
+      @Override
+      public int compare(TutorAssignmentOfficeHourView o1, TutorAssignmentOfficeHourView o2) {
+        int x = getDayNumber(o1.getDay());
+        int y = getDayNumber(o2.getDay());
+        return  x - y;
+      }
+    });
+  }
+  
+  public static int getDayNumber(String dayString) {
+    if (StringUtils.equalsIgnoreCase(dayString, "Monday")) {
+      return 1;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Tuesday")) {
+      return 2;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Wednesday")) {
+      return 3;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Thursday")) {
+      return 4;
+    }
+    if (StringUtils.equalsIgnoreCase(dayString, "Friday")) {
+      return 5;
+    }
+    return -1;
+
+    }
+
+  
 
   @GetMapping(value = "/api/public/quarters", produces = "application/json")
   public ResponseEntity<String> getQuarters() throws JsonProcessingException {
