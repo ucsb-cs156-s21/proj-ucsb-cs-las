@@ -15,7 +15,7 @@ const Tutor = () => {
   const { email } = user;
   const history = useHistory();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
-  // const { addToast } = useToasts();
+  const { addToast } = useToasts();
 
   const { data: tutorList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutors", getToken],
