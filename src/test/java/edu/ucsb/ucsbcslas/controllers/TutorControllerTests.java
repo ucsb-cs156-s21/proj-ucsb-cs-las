@@ -79,7 +79,7 @@ public class TutorControllerTests {
   @MockBean
   CSVToObjectService mockCSVToObjectService; 
 
-  @MockBean 
+  @Mock 
   Reader mockReader; 
 
   private String userToken() {
