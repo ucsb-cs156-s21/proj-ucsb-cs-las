@@ -9,11 +9,8 @@ export const TutorCSVButton = ({ addTask }) => {
         <form
             onSubmit={async (event) => {
                 event.preventDefault();
-                try{
-                    await addTask(file);
-                } catch(error){
-                    console.log("Caught error");
-                }
+                await addTask(file);
+        
                 fileRef.current.value = "";
                 setFile(null);
                 setValue("");

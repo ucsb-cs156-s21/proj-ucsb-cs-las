@@ -18,6 +18,7 @@ import org.springframework.web.servlet.View;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +80,7 @@ public class TutorControllerTests {
   @MockBean
   CSVToObjectService mockCSVToObjectService; 
 
-  @MockBean 
+  @Mock 
   Reader mockReader; 
 
   private String userToken() {
