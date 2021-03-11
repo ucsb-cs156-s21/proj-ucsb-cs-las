@@ -58,8 +58,6 @@ const Tutor = () => {
 
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
 
-  const uploadTutors = uploadTutorsCSV(getToken, mutateTutors); 
-  /*
   const uploadTutors = uploadTutorsCSV(getToken,
     () => {
       mutateTutors();
@@ -69,7 +67,7 @@ const Tutor = () => {
       addToast("Error Uploading CSV", { appearance: "error" });
     }
   );
-  */
+  
   return (
     <>
 
