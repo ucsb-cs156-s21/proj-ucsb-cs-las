@@ -8,6 +8,7 @@ import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 import { useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { fetchWithToken } from "main/utils/fetch";
+import { uploadTutorsCSV } from "../../../main/services/Tutor/TutorService";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
@@ -258,6 +259,20 @@ describe("Tutor page test", () => {
   });
 
   test("check if tutor csv is visible if admin", async () => {
+    const mockUploadFunc = jest.fn(async (file) => {
+      const data = new FormData(); 
+      data.append("csv", file); 
+      try {
+        await fetchWithToken('/api/member/tutors/upload', getToken, {
+          method: "POST", 
+          body: data
+        });
+      onSuccess(); 
+      } catch (err) {
+        onError(err); 
+      }
+    });
+    uploadTutorsCSV.mockReturnValue(mockUploadFunc); 
     useSWR.mockReturnValueOnce({
       data: { role: "admin" },
       error: undefined,
