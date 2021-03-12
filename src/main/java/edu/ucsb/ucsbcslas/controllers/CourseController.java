@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +34,16 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
 import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
-
 
 @RestController
 public class CourseController {
@@ -46,6 +55,8 @@ public class CourseController {
   
   @Autowired
   private CourseRepository courseRepository;
+  @Autowired
+  CSVToObjectService<Course> csvToObjectService;
   @Autowired
   private TutorAssignmentRepository tutorAssignmentRepository;
   @Autowired
@@ -219,6 +230,21 @@ public class CourseController {
       return ResponseEntity.ok().body(body); 
     }   
     return ResponseEntity.notFound().build();
+  }
+  @PostMapping(value = "/api/admin/courses/upload", produces = "application/json")
+  public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
+    logger.info("Starting upload CSV");
+    AppUser user = authControllerAdvice.getUser(authorization);
+    try {
+      Reader reader = new InputStreamReader(csv.getInputStream());
+      logger.info(new String(csv.getInputStream().readAllBytes()));
+      List<Course> uploadedCourses = csvToObjectService.parse(reader, Course.class);
+      List<Course> savedCourse = (List<Course>) courseRepository.saveAll(uploadedCourses);
+      String body = mapper.writeValueAsString(savedCourse);
+      return ResponseEntity.ok().body(body);
+    } catch(RuntimeException e){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
     }
+  }
 }
   

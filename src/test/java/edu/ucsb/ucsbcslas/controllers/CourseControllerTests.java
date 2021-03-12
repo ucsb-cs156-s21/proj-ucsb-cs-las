@@ -9,6 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.View;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +28,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 
 import edu.ucsb.ucsbcslas.entities.AppUser;
 
@@ -54,6 +66,9 @@ public class CourseControllerTests {
   @Autowired
   private ObjectMapper objectMapper;
 
+  @Autowired
+  private WebApplicationContext webApplicationContext;
+
   @MockBean
   CourseRepository mockCourseRepository;
   @MockBean
@@ -63,6 +78,12 @@ public class CourseControllerTests {
   TutorAssignmentRepository mockTutorAssignmentRepository;
   @MockBean
   OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
+
+  @MockBean
+  CSVToObjectService mockCSVToObjectService;
+
+  @MockBean
+  Reader mockReader;
 
   private String userToken() {
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -433,5 +454,41 @@ public class CourseControllerTests {
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
     mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void testUploadFile() throws Exception{
+    List<Course> expectedCourses = new ArrayList<Course>();
+    expectedCourses.add(new Course(1L, "course 1", "F20", "fname", "lname", "email"));
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Course.class))).thenReturn(expectedCourses);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/admin/courses/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk()).andReturn();
+    verify(mockCourseRepository, times(1)).saveAll(expectedCourses);
+  }
+
+  @Test
+  public void testUploadFileThrowsRuntime() throws Exception{
+    CourseController CourseController = mock(CourseController.class);
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Course.class))).thenThrow(RuntimeException.class);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/admin/courses/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isBadRequest()).andReturn();
+
+    verify(mockCourseRepository, never()).saveAll(any());
   }
 }

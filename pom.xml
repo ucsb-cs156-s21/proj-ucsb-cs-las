@@ -69,6 +69,12 @@
 			<version>3.10.1</version>
 		</dependency>
 
+		<!-- http://opencsv.sourceforge.net/ -->
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>5.1</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth.boot/spring-security-oauth2-autoconfigure -->
 		<dependency>
@@ -154,11 +160,12 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<phase>generate-resources</phase>
 						<configuration>
-							<target>
+							<target combine.children="append">
 								<copy todir="${project.build.directory}/classes/public">
 									<fileset dir="${project.basedir}/javascript/build" />
 								</copy>
@@ -217,6 +224,15 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
+				<configuration>
+					<excludes>
+						<!--Exclude class from test coverage -->
+						<exclude>**/edu/ucsb/ucsbcslas/config/*</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/DemoApplication.*</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/services/CSVToObjectService.class</exclude>
+						<exclude>**/edu/ucsb/ucsbcslas/services/CSVToObjectServiceImpl.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -256,23 +272,16 @@
 				</resources>
 				<plugins>
 					<plugin>
-						<artifactId>maven-resources-plugin</artifactId>
-						<version>3.1.0</version>
+						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>copy-resources</id>
-								<phase>process-resources</phase>
-								<goals>
-									<goal>copy-resources</goal>
-								</goals>
+								<phase>generate-resources</phase>
 								<configuration>
-									<outputDirectory>${basedir}/target/classes</outputDirectory>
-									<resources>
-										<resource>
-											<directory>.</directory>
-											<include>secrets-localhost.properties</include>
-										</resource>
-									</resources>
+									<target>
+										<copy todir="${project.build.directory}/classes">
+											<file file="${project.basedir}/secrets-localhost.properties" />
+										</copy>
+									</target>
 								</configuration>
 							</execution>
 						</executions>
@@ -328,7 +337,11 @@
 					<groupId>org.postgresql</groupId>
 					<artifactId>postgresql</artifactId>
 				</dependency>
-
+				<dependency>
+					<groupId>commons-configuration</groupId>
+					<artifactId>commons-configuration</artifactId>
+   					<version>1.9</version>
+				</dependency>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-jdbc</artifactId>

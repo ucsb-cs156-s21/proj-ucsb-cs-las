@@ -195,6 +195,20 @@ public class TutorAssignmentController {
         String body = mapper.writeValueAsString(tutorAssignmentsMatchingCourse);
         return ResponseEntity.ok().body(body);
     }
+
+    @GetMapping(value = "/api/member/tutorAssignment/byTutor/{tutor}", produces = "application/json")
+    public ResponseEntity<String> getTutorAssignmentByTutor(@PathVariable("tutor") String tutorEmail)
+            throws JsonProcessingException {
+
+        Optional<Tutor> tutor = tutorRepository.findByEmail(tutorEmail);
+        List<TutorAssignment> tutorAssignments = new ArrayList<TutorAssignment>();
+        tutorAssignments = tutorAssignmentRepository.findAllByTutor(tutor.get());
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(tutorAssignments);
+        return ResponseEntity.ok().body(body);
+
+    }
+  
   
     @GetMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
     public ResponseEntity<String> getTutorAssignment(@PathVariable("id") Long id) throws JsonProcessingException {

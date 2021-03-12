@@ -47,6 +47,26 @@ export default ({ courses, admin, deleteCourse }) => {
         
     }
 
+    function stripesFormatter(cell) {
+
+        return (
+
+            <span>
+                <a href={`mailto:${cell}`}> {cell} </a>
+            </span>
+
+        );
+
+    }
+
+
+    function courseLinkFormatter(id, name){
+        var link = `/courses/show/${id}`
+        return (  
+            <div><a href={link}>{name}</a></div> 
+        )
+    }
+
     const columns = [{
         dataField: 'id',
         text: 'id',
@@ -56,7 +76,8 @@ export default ({ courses, admin, deleteCourse }) => {
         dataField: 'name',
         text: 'Course Number',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: (_cell, row) => courseLinkFormatter(row.id, row.name)
     }, {
         dataField: 'quarter',
         text: 'Quarter',
@@ -66,17 +87,21 @@ export default ({ courses, admin, deleteCourse }) => {
         dataField: 'instructorFirstName',
         text: 'First',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
+
     }, {
         dataField: 'instructorLastName',
         text: 'Last',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
     }, {
         dataField: 'instructorEmail',
         text: 'Email',
         sort: true,
-        sortCaret: sortCaret
+        sortCaret: sortCaret,
+        formatter: stripesFormatter
     }];
 
     if (admin) {
@@ -95,6 +120,6 @@ export default ({ courses, admin, deleteCourse }) => {
     }
 
     return (
-        <BootstrapTable keyField='id' data={courses} columns={columns} />
+        <BootstrapTable keyField='id' data={courses} columns={columns} striped />
     );
 }

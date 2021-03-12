@@ -12,7 +12,6 @@ import {useHistory} from "react-router-dom";
 const TutorAssignment = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
-  //const { name, picture, email } = user;
   const { email } = user;
 
   const { data: roleInfo } = useSWR(

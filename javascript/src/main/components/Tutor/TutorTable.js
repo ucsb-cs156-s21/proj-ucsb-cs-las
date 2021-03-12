@@ -2,16 +2,9 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-// import useSWR from "swr";
-// import { fetchWithToken } from "main/utils/fetch";
-// import { useAuth0 } from "@auth0/auth0-react";
-
-// import { buildDeleteTutor } from "main/services/Tutor/TutorService";
 
 export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
   const history = useHistory();
-  // const { getAccessTokenSilently: getToken } = useAuth0();
-  // const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
   const renderEditButton = id => {
     const shouldRender =
@@ -56,22 +49,46 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
     );
   };
 
+  //function from 7pm-1 PR 139
+  const sortCaret = (order, _column) => {
+    const ascendingON = String.fromCharCode(0x25b2);
+    const descendingON = String.fromCharCode(0x25bc);
+    const ascendingOFF = String.fromCharCode(0x25b3);
+    const descendingOFF = String.fromCharCode(0x25bd);
+
+    if (!order)
+      return (<span data-testid="sort">{descendingOFF}{ascendingOFF}</span>);
+    else if (order === 'asc')
+      return (<span data-testid="sort-asc">{descendingOFF}<font color="red">{ascendingON}</font></span>);
+    else
+      return (<span data-testid="sort-desc"><font color="red">{descendingON}</font>{ascendingOFF}</span>);
+
+  }
+
   const columns = [
     {
       dataField: "id",
-      text: "id"
+      text: "id",
+      sort: true,
+      sortCaret: sortCaret
     },
     {
       dataField: "firstName",
-      text: "First Name"
+      text: "First Name",
+      sort: true,
+      sortCaret: sortCaret
     },
     {
       dataField: "lastName",
-      text: "Last Name"
+      text: "Last Name",
+      sort: true,
+      sortCaret: sortCaret
     },
     {
       dataField: "email",
-      text: "Email"
+      text: "Email",
+      sort: true,
+      sortCaret: sortCaret
     }
   ];
 
