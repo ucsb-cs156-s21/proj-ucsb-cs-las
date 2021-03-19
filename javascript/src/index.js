@@ -6,6 +6,7 @@ import Auth0ProviderWithHistory from "main/components/Auth/Auth0ProviderWithHist
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
+import "antd/dist/antd.css";
 import { ToastProvider } from 'react-toast-notifications'
 
 ReactDOM.render(
