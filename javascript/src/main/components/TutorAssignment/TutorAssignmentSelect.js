@@ -41,7 +41,7 @@ export default function TutorAssignmentSelect(props) {
 
   const loadData = async selectedOptions => {
     if (selectedOptions.length === 1) {
-      const selectedQuarter = selectedOptions[0];
+      const selectedQuarter = selectedOptions[selectorIndices.QUARTER];
       selectedQuarter.loading = true;
 
       const courses = await courseProvider(selectedQuarter.value);
