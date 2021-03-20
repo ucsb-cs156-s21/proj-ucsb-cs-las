@@ -5,7 +5,7 @@ import { asHumanQuarter } from "main/utils/quarter";
 
 const defaultQuarterProvider = () => fetchWithoutToken("/api/public/quarters");
 const defaultCourseProvider = quarter => fetchWithoutToken(`/api/public/courses/forQuarter/${quarter}`);
-const defaultTutorAssignmentProvider = course => fetchWithoutToken(`api/public/tutorAssignment/${course}`);
+const defaultTutorAssignmentProvider = course => fetchWithoutToken(`/api/public/tutorAssignment/${course}`);
 
 export default function TutorAssignmentSelect(props) {
   const {
