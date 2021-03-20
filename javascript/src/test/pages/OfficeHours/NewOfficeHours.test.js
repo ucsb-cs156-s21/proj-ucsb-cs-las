@@ -7,11 +7,11 @@ import { useHistory } from 'react-router-dom';
 import { buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
 import { fetchWithToken } from "main/utils/fetch";
 import { useToasts } from 'react-toast-notifications'
+
+import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/services/OfficeHours/OfficeHourService");
-
-import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
 jest.mock("main/services/selectorSupport");
 
 jest.mock("react-router-dom", () => ({

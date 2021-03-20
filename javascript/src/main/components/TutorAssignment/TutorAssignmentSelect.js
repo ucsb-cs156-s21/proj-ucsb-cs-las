@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Cascader } from "antd";
-import { fetchWithoutToken } from "main/utils/fetch";
 import { asHumanQuarter } from "main/utils/quarter";
 
 import {
@@ -25,13 +24,8 @@ export default function TutorAssignmentSelect(props) {
   } = props;
   const [options, setOptions] = useState(null);
 
-
-  
-
-  const onCascaderChange = (value) => {
-    //if (onChange) {
+  const onCascaderChange = (_value) => {
     onChange(selectorIndices.TUTOR_ASSIGNMENT);
-    //}
   };
 
   useEffect(() => {
