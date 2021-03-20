@@ -3,9 +3,17 @@ import { Cascader } from "antd";
 import { fetchWithoutToken } from "main/utils/fetch";
 import { asHumanQuarter } from "main/utils/quarter";
 
-const defaultQuarterProvider = () => fetchWithoutToken("/api/public/quarters");
-const defaultCourseProvider = quarter => fetchWithoutToken(`/api/public/courses/forQuarter/${quarter}`);
-const defaultTutorAssignmentProvider = course => fetchWithoutToken(`/api/public/tutorAssignment/${course}`);
+import {
+  quarterProvider as defaultQuarterProvider,
+  courseProvider as defaultCourseProvider,
+  tutorAssignmentProvider as defaultTutorAssignmentProvider
+} from "main/services/selectorSupport.js"
+
+export const selectorIndices = {
+  QUARTER: 0,
+  COURSE: 1,
+  TUTOR_ASSIGNMENT: 2
+};
 
 export default function TutorAssignmentSelect(props) {
   const {
@@ -17,10 +25,13 @@ export default function TutorAssignmentSelect(props) {
   } = props;
   const [options, setOptions] = useState(null);
 
+
+  
+
   const onCascaderChange = (value) => {
-    if (onChange) {
-      onChange(value[2]);
-    }
+    //if (onChange) {
+    onChange(selectorIndices.TUTOR_ASSIGNMENT);
+    //}
   };
 
   useEffect(() => {
