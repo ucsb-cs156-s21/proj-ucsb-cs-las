@@ -6,7 +6,7 @@ import {
   quarterProvider as defaultQuarterProvider,
   courseProvider as defaultCourseProvider,
   tutorAssignmentProvider as defaultTutorAssignmentProvider
-} from "main/services/selectorSupport.js"
+} from "main/services/selectorSupport"
 
 export const selectorIndices = {
   QUARTER: 0,
