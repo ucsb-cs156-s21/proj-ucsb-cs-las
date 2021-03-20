@@ -54,7 +54,7 @@ export default function TutorAssignmentSelect(props) {
           isLeaf: false
         }));
     } else {
-      const selectedCourse = selectedOptions[1];
+      const selectedCourse = selectedOptions[selectorIndices.COURSE];
       selectedCourse.loading = true;
 
       const tutorAssignments = await tutorAssignmentProvider(selectedCourse.value);
