@@ -24,8 +24,8 @@ export default function TutorAssignmentSelect(props) {
   } = props;
   const [options, setOptions] = useState(null);
 
-  const onCascaderChange = (_value) => {
-    onChange(selectorIndices.TUTOR_ASSIGNMENT);
+  const onCascaderChange = (value) => {
+    onChange(value[selectorIndices.TUTOR_ASSIGNMENT]);
   };
 
   useEffect(() => {
