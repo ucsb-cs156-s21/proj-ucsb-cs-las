@@ -13,7 +13,7 @@ describe("TutorAssignmentSelect", () => {
     const quarterProvider = jest.fn().mockResolvedValue(["20201"]);
     const courseProvider = jest.fn().mockResolvedValue([{ id: 1, name: "CMPSC 156" }]);
     const tutorAssignmentProvider = jest.fn().mockResolvedValue([{ id: 2, tutor: { firstName: "Foo", lastName: "Bar" }}]);
-    const { debug, getByPlaceholderText, getByText } = render(
+    const { _debug, getByPlaceholderText, getByText } = render(
       <TutorAssignmentSelect
         onChange={onChange}
         quarterProvider={quarterProvider}

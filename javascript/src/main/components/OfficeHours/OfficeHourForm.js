@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { checkTime, checkZoomRoomLink, checkFilled } from "main/utils/OfficeHourFormHelpers";
+import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
