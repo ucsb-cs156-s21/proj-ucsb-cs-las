@@ -18,7 +18,7 @@ describe("TutorAssignmentSelect", () => {
     quarterProvider.mockResolvedValue(["20201"]);
     courseProvider.mockResolvedValue([{ id: 1, name: "CMPSC 156" }]);
     tutorAssignmentProvider.mockResolvedValue([{ id: 2, tutor: { firstName: "Foo", lastName: "Bar" }}]);
-    const { _debug, getByPlaceholderText, getByText } = render(
+    const { getByPlaceholderText, getByText } = render(
       <TutorAssignmentSelect
         onChange={onChange}
       />
@@ -40,5 +40,4 @@ describe("TutorAssignmentSelect", () => {
     expect(onChange).toHaveBeenCalledWith(selectorIndices.TUTOR_ASSIGNMENT);
   });
 });
-
 
