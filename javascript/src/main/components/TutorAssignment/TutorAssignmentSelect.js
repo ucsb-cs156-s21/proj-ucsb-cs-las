@@ -8,7 +8,7 @@ import {
   tutorAssignmentProvider as defaultTutorAssignmentProvider
 } from "main/services/selectorSupport"
 
-export const selectorIndices = {
+const selectorIndices = {
   QUARTER: 0,
   COURSE: 1,
   TUTOR_ASSIGNMENT: 2

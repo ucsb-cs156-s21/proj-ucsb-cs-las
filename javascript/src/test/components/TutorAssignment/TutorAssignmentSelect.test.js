@@ -2,7 +2,6 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
-import { selectorIndices } from "main/components/TutorAssignment/TutorAssignmentSelect";
 
 import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
 jest.mock("main/services/selectorSupport");
@@ -16,8 +15,8 @@ describe("TutorAssignmentSelect", () => {
   it("renders a usable tutor assignment UI", async () => {
     const onChange = jest.fn();
     quarterProvider.mockResolvedValue(["20201"]);
-    courseProvider.mockResolvedValue([{ id: 1, name: "CMPSC 156" }]);
-    tutorAssignmentProvider.mockResolvedValue([{ id: 2, tutor: { firstName: "Foo", lastName: "Bar" }}]);
+    courseProvider.mockResolvedValue([{ id: 17, name: "CMPSC 156" }]);
+    tutorAssignmentProvider.mockResolvedValue([{ id: 42, tutor: { firstName: "Foo", lastName: "Bar" }}]);
     const { getByPlaceholderText, getByText } = render(
       <TutorAssignmentSelect
         onChange={onChange}
@@ -33,11 +32,11 @@ describe("TutorAssignmentSelect", () => {
 
     userEvent.click(getByText("CMPSC 156"));
 
-    await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(1));
+    await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(17));
 
     userEvent.click(getByText("Foo Bar"));
 
-    expect(onChange).toHaveBeenCalledWith(selectorIndices.TUTOR_ASSIGNMENT);
+    expect(onChange).toHaveBeenCalledWith(42);
   });
 });
 
