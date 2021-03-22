@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { checkTime, checkZoomRoomLink, checkFilled } from "main/utils/OfficeHourFormHelpers";
+import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
+import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
-    const tutorAssignmentIDRef = useRef(null);
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
@@ -35,10 +35,6 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
    
     function checkInputs() {
         const validList = [];
-        // check tutor assignment ID
-        const tutorAssignmentIDValid = checkFilled(officeHour.tutorAssignment.id);
-        addFormEffects(tutorAssignmentIDRef, tutorAssignmentIDValid);
-        validList.push(tutorAssignmentIDValid); 
 
         // check start time 
         const startTimeValid = checkTime(officeHour.startTime);
@@ -76,19 +72,13 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         <Form onSubmit={handleOnSubmit}>
             <Form.Group as={Row} controlId="tutorAssignmentId">
                 <Form.Label column sm={2}>
-                    Tutor Assignment ID
+                    Tutor
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control ref={tutorAssignmentIDRef} type="text" placeholder="Ex: 1" value={officeHour.tutorAssignment.id} onChange={(e) => setOfficeHour({
-                        ...officeHour,
-                        tutorAssignment: {
-                            id: e.target.value
-                        }
-                    })} />
-                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
-                        Please provide a valid tutor assignment ID.
-                    </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the tutor assignment ID where you can find under "Tutor Assignment" tab. Ex: 1</Form.Text>
+                    <TutorAssignmentSelect
+                      style={{ textAlign: "left", width: "100%" }}
+                      onChange={tutorAssignmentId => setOfficeHour({...officeHour, tutorAssignment: { id: tutorAssignmentId }})}
+                    />
                 </Col>
             </Form.Group>
           <Form.Group as={Row} controlId="startTime">
