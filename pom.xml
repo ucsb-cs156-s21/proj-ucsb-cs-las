@@ -127,25 +127,6 @@
 
 		<plugins>
 			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<configuration>
-							<target combine.children="append">
-								<copy todir="${project.build.directory}/classes/public">
-									<fileset dir="${project.basedir}/javascript/build" />
-								</copy>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
@@ -336,6 +317,25 @@
 								<configuration>
 									<arguments>run build</arguments>
 								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<configuration>
+									<target>
+										<copy todir="${project.build.directory}/classes/public">
+											<fileset dir="${project.basedir}/javascript/build" />
+										</copy>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
