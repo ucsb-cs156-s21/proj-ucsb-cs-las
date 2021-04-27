@@ -1,37 +1,61 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import OfficeHourForm from "main/components/OfficeHours/OfficeHourForm";
 import userEvent from "@testing-library/user-event";
+
+import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
+jest.mock("main/services/selectorSupport");
 
 const sampleOfficeHour = {
   "id": "",
   "startTime": "2:00PM",
   "endTime": "3:00PM",
-  "dayOfWeek" : "Wednesday",
+  "dayOfWeek": "Wednesday",
   "zoomRoomLink": "https://ucsb.zoom.us.test",
-  "notes" : "noted",
-  "tutorAssignment":  {
-        "id": "3",
-   },
+  "notes": "noted",
+  "tutorAssignment": {
+    "id": 2,
+  },
 
 }
 
 describe("OfficeHourForm tests", () => {
 
-  test("component renders without crashing", () => {
+  beforeEach(() => {
+    quarterProvider.mockResolvedValue(["20201"]);
+    courseProvider.mockResolvedValue([{ id: 1, name: "CMPSC 156" }]);
+    tutorAssignmentProvider.mockResolvedValue([{ id: 2, tutor: { firstName: "Chris", lastName: "McTutorface" } }]);
+  });
+
+  const selectTutor = async (getByPlaceholderText, getByText) => {
+    await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
+
+    userEvent.click(getByPlaceholderText("Select a tutor"));
+    userEvent.click(getByText("Winter 2020"));
+
+    await waitFor(() => expect(courseProvider).toHaveBeenCalledWith("20201"));
+
+    userEvent.click(getByText("CMPSC 156"));
+
+    await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(1));
+
+    userEvent.click(getByText("Chris McTutorface"));
+  }
+
+  test("component renders without crashing", async () => {
     render(<OfficeHourForm />);
+    await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
   });
 
   test("creating OfficeHours works", async () => {
 
     const createOfficeHourMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const { getByPlaceholderText, getByLabelText, getByText } = render
       (<OfficeHourForm createOfficeHour={createOfficeHourMock} />)
-    ;
+      ;
 
-    const idInput = getByLabelText("Tutor Assignment ID");
-    userEvent.type(idInput, sampleOfficeHour.tutorAssignment.id);
+    await selectTutor(getByPlaceholderText, getByText);
 
     const startTimeInput = getByLabelText("Start Time");
     userEvent.type(startTimeInput, sampleOfficeHour.startTime);
@@ -59,12 +83,11 @@ describe("OfficeHourForm tests", () => {
 
     const createOfficeHourMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const { getByPlaceholderText, getByLabelText, getByText } = render
       (<OfficeHourForm createOfficeHour={createOfficeHourMock} />)
-    ;
+      ;
 
-    const idInput = getByLabelText("Tutor Assignment ID");
-    userEvent.type(idInput, sampleOfficeHour.tutorAssignment.id);
+    await selectTutor(getByPlaceholderText, getByText);
 
     const startTimeInput = getByLabelText("Start Time");
     userEvent.type(startTimeInput, "12:60PM");
@@ -88,12 +111,11 @@ describe("OfficeHourForm tests", () => {
 
     const createOfficeHourMock = jest.fn();
 
-    const { getByLabelText, getByText } = render
+    const {getByPlaceholderText, getByLabelText, getByText } = render
       (<OfficeHourForm createOfficeHour={createOfficeHourMock} />)
-    ;
+      ;
 
-    const idInput = getByLabelText("Tutor Assignment ID");
-    userEvent.type(idInput, sampleOfficeHour.tutorAssignment.id);
+    await selectTutor(getByPlaceholderText, getByText);
 
     const startTimeInput = getByLabelText("Start Time");
     userEvent.type(startTimeInput, sampleOfficeHour.startTime);
