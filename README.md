@@ -100,12 +100,7 @@ archived course data.
 
 For students working on the project, you will typically not need to
 set up your own instance of this database; instead the course staff
-will do that for you.
-
-However, if you are *are* the course staff, or you just want to know how
-to set it up yourself,  you should consult
-the repo <https://github.com/ucsb-cs156-f20/ucsb-courses-search-support-scripts> which describes the process for
-setting up that database.
+will do that for you, and then provide you with the URL.
 
 This url is used for the value of `spring.data.mongodb.uri`
 
