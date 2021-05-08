@@ -2,6 +2,7 @@ import React from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AuthNav from "main/components/Nav/AuthNav";
+import DarkModeButton from "./DarkModeButton";
 import ProfileNav from "main/components/Nav/ProfileNav";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -19,7 +20,11 @@ function AppNavbar() {
       <LinkContainer to={""}>
         <Navbar.Brand data-testid="brand">UCSB CS LAs</Navbar.Brand>
       </LinkContainer>
-      <Nav>
+        <LinkContainer to={""}>
+            <DarkModeButton/>
+        </LinkContainer>
+
+        <Nav>
         { isAdmin &&
           <NavDropdown title="Admin">
             <NavDropdown.Item href="/admin">Admin Panel</NavDropdown.Item>
