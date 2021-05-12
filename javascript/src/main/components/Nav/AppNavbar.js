@@ -18,7 +18,8 @@ function AppNavbar() {
     <Navbar bg="dark" variant="dark">
       <LinkContainer to={""}>
         <Navbar.Brand data-testid="brand">
-        <p className="brand"><img className="brand" src={'%PUBLIC_URL%/newLogo.png'} alt = "UCSB CS LAS Logo"/></p>
+        <p className="brand"><img className="brand" src={'/newLogo.png'} alt = "UCSB CS LAS Logo" /></p>
+        
         <p className="brand">UCSB <br />CS LAs</p>
         </Navbar.Brand>
       </LinkContainer>
