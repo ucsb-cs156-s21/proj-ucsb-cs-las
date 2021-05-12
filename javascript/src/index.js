@@ -8,6 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import "antd/dist/antd.css";
 import { ToastProvider } from 'react-toast-notifications'
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 ReactDOM.render(
   <React.StrictMode>
