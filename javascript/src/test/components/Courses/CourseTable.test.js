@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import CourseTable from "main/components/Courses/CourseTable"
-import userEvent from "@testing-library/user-event";
+//import userEvent from "@testing-library/user-event";
 
 
 describe("CourseForm tests", () => {
