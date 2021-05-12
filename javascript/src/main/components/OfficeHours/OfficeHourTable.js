@@ -18,28 +18,34 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
    
     const columns = [{
         dataField: 'id',
-        text: 'id'
+        text: 'id',
+        sort: true
     }, {
         dataField: 'startTime',
-        text: 'Start Time'
+        text: 'Start Time',
+        sort: true
     }, {
         dataField: 'endTime',
-        text: 'End Time'
+        text: 'End Time',
+        sort: true
     }, {
         dataField: 'dayOfWeek',
-        text: 'Day'
+        text: 'Day',
+        sort: true
     }, {
         dataField: 'zoomRoomLink',
         text: 'Zoom Room',
-        formatter: zoomRoomLinkFormatter
+        formatter: zoomRoomLinkFormatter,
+        sort: true
     }, {
         dataField: 'notes',
-        text: 'Notes'
+        text: 'Notes',
+        sort: true
     }, {
         dataField: 'tutorAssignment.id',
-        text: 'Tutor Assignment'
+        text: 'Tutor Assignment',
+        sort: true
     }
-
     ];
 
     if (admin) {
