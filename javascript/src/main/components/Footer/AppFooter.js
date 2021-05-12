@@ -14,8 +14,7 @@ const AppFooter = () => {
         Director of UCSB Associated Students. These images are Copyright © 2021
         UCSB Associated Students, and may not be reused without express written
         permission of the Executive Director of UCSB Associated Students. For
-        more info, visit:
-        <br></br>
+        more info, visit: 
         <a href="https://www.as.ucsb.edu/sticker-packs/>">
           www.as.ucsb.edu/sticker-packs/
         </a>
