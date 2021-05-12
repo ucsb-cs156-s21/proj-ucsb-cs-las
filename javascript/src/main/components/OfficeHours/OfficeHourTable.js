@@ -58,6 +58,12 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
     }
 
     return (
-        <BootstrapTable keyField='id' data={officeHours} columns={columns} striped />
+        <BootstrapTable 
+        bootstrap4=true,
+        keyField='id' 
+        data={officeHours} 
+        columns={columns} 
+        striped 
+        />
     );
 }
