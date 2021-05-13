@@ -23,6 +23,9 @@ const QuarterFilter = () => {
 
   return (
     <>
+      <p>
+      On this page, users with admin access can choose a quarter.  Whatever quarter the admin chooses, on the home page of the app, only courses for that quarter will be shown.    That is the only page of information available to users that don't log in to the app.
+      </p>
       <QuarterFilterForm upsertFilter={upsertFilter}/>
     </>
   );
