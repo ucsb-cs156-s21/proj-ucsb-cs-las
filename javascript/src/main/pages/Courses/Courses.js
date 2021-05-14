@@ -65,7 +65,7 @@ const Courses = () => {
 
   return (
     <>
-      <Button onClick={() => history.push("/courses/new")}>New Course</Button>
+      <Button style={{marginBottom:"20px"}} onClick={() => history.push("/courses/new")}>New Course</Button>
       <CourseTable courses={courseList} admin={true} deleteCourse={deleteCourse} />
       <CourseCSVButton admin={true} addTask={uploadedCourses} />
       <Button><CSVLink style={{color: "white"}} headers={headers} data={courseList} filename = {"CourseTable.csv"}>Download CSV</CSVLink></Button>
