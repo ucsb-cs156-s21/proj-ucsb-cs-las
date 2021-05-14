@@ -17,7 +17,11 @@ function AppNavbar() {
   return (
     <Navbar bg="dark" variant="dark">
       <LinkContainer to={""}>
-        <Navbar.Brand data-testid="brand">UCSB CS LAs</Navbar.Brand>
+        <Navbar.Brand data-testid="brand">
+        <p className="brand"><img className="brand" src={'/newLogo.png'} alt = "UCSB CS LAS Logo" /></p>
+        
+        <p className="brand">UCSB <br />CS LAs</p>
+        </Navbar.Brand>
       </LinkContainer>
       <Nav>
         { isAdmin &&
