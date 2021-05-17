@@ -33,13 +33,4 @@ describe("CourseForm tests", () => {
     render(<CourseTable courses={courses} admin={false} deleteCourse={deleteCourse} />);
   });
 
-  test("ascending and descending buttons can be pressed", () => {
-    const { getByText } = render(<CourseTable courses={courses} admin={true} deleteCourse={deleteCourse} />);
-    const courseNumberHeader = getByText(/Course Number/);
-
-    //cycle through both ascending and descending for test coverage
-    userEvent.click(courseNumberHeader);
-    userEvent.click(courseNumberHeader);
-  });
-
 });
