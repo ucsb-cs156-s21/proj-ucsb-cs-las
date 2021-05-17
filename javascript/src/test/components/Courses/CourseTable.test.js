@@ -40,8 +40,6 @@ describe("CourseForm tests", () => {
     //cycle through both ascending and descending for test coverage
     userEvent.click(courseNumberHeader);
     userEvent.click(courseNumberHeader);
-    // const descendingOFF = String.fromCharCode(0x25bd);
-    // expect(getByText(descendingOFF)).toBeInTheDocument();
   });
 
 });
