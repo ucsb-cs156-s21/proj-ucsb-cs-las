@@ -4,19 +4,30 @@ import BootstrapTable from 'react-bootstrap-table-next';
 export default ({loginTable}) => {
     const columns = [{
         dataField: 'timestamp',
-        text: 'Timestamp'
+        text: 'Timestamp',
+        sort: true,
     }, {
         dataField: 'email',
-        text: 'Email'
+        text: 'Email',
+        sort: true,
     }, {
         dataField: 'firstName',
-        text: 'First Name'
+        text: 'First Name',
+        sort: true,
     }, {
         dataField: 'lastName',
-        text: 'Last Name'
+        text: 'Last Name',
+        sort: true,
     }];
 
     return (
-        <BootstrapTable keyField='timestamp' data={loginTable} columns={columns} />
+         <BootstrapTable 
+         bootstrap4={true}
+        keyField='timestamp' 
+        data={loginTable} 
+        columns={columns} 
+        striped 
+        />
+
     );
 }

@@ -11,6 +11,7 @@ const ViewLogins = () => {
 
   return (
     <>
+      <h2 style={{ display: 'flex', justifyContent: 'left' }}>Login History</h2>
       <LoginTable loginTable={loginTable || []} admin={true}/>
     </>
   );
