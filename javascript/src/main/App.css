@@ -63,7 +63,7 @@ footer {
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 100px;
+  height: auto;
   width: 100%;
   overflow: hidden;
 }
