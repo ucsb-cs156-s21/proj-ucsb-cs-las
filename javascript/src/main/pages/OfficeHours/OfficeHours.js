@@ -48,7 +48,7 @@ const OfficeHours = () => {
     key: 'notes',
     label: 'Notes'
   }, {
-    key: 'tutorAssignment'.id,
+    key: 'tutorAssignment.id',
     label: 'Tutor Assignment'
   }];
 
