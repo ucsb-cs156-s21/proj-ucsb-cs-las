@@ -7,6 +7,7 @@ import Loading from "main/components/Loading/Loading";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable"
 import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
 import {useHistory} from "react-router-dom";
+import { CSVLink } from "react-csv";
 
 
 const OfficeHours = () => {
@@ -28,10 +29,39 @@ const OfficeHours = () => {
   }
   const deleteOfficeHour = buildDeleteOfficeHour(getToken, mutateOfficeHours);
 
+  const headers = [{
+    key: 'id',
+    label: 'id'
+  }, {
+    key: 'startTime',
+    label: 'Start Time'
+  }, {
+    key: 'endTime',
+    label: 'End Time'
+  }, {
+    key: 'dayOfWeek',
+    label: 'Day'
+  }, {
+    key: 'zoomRoom',
+    label: 'Zoom Room'
+  }, {
+    key: 'notes',
+    label: 'Notes'
+  }, {
+    key: 'tutorAssignment',
+    label: 'Tutor Assignment'
+  }];
+
+  // const uploadedOfficeHours = uploadOfficeHoursCSV(
+  //   getToken, mutateOfficeHours
+  // );
+
   return (
     <>
       <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/officehours/new")} >New Office Hour</Button>
       <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour}  />
+      {/* <OfficeHoursCSVButton admin={true} addTask={uploadedOfficeHours} /> */}
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={officeHourList} filename = {"OfficeHours.csv"}>Download CSV</CSVLink></Button>
     </>
   );
 };
