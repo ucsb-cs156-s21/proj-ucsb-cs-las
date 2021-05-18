@@ -42,25 +42,20 @@ const OfficeHours = () => {
     key: 'dayOfWeek',
     label: 'Day'
   }, {
-    key: 'zoomRoom',
+    key: 'zoomRoomLink',
     label: 'Zoom Room'
   }, {
     key: 'notes',
     label: 'Notes'
   }, {
-    key: 'tutorAssignment',
+    key: 'tutorAssignment'[0],
     label: 'Tutor Assignment'
   }];
-
-  // const uploadedOfficeHours = uploadOfficeHoursCSV(
-  //   getToken, mutateOfficeHours
-  // );
 
   return (
     <>
       <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/officehours/new")} >New Office Hour</Button>
       <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour}  />
-      {/* <OfficeHoursCSVButton admin={true} addTask={uploadedOfficeHours} /> */}
       <Button><CSVLink style={{color: "white"}} headers={headers} data={officeHourList} filename = {"OfficeHours.csv"}>Download CSV</CSVLink></Button>
     </>
   );
