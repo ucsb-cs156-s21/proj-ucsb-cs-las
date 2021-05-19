@@ -26,7 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
-import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
 import edu.ucsb.ucsbcslas.repositories.RoomSlotRepository;
 
 @RestController
@@ -52,7 +52,8 @@ public class RoomSlotController {
     @PostMapping(value = "/api/roomslot", produces = "application/json")
     public ResponseEntity<String> createRoomSlot(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid RoomSlot roomSlot) throws JsonProcessingException {
-                System.out.println(roomSlot.toString());
+
+        System.out.println(roomSlot.toString());
 
         // should we require admin authorization to create a room?
         //if (!authControllerAdvice.getIsAdmin(authorization))
@@ -68,40 +69,41 @@ public class RoomSlotController {
     @DeleteMapping(value = "/api/roomslot/{id}", produces = "application/json")
     public ResponseEntity<String> deleteRoomSlot(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
-            Boolean isAdmin = authControllerAdvice.getIsAdmin(authorization);
-
+            
         // should we require admin authorization to delete a room?
-        //if (!isAdmin)
+        // if (!authControllerAdvice.getIsAdmin(authorization))
         //    return getUnauthorizedResponse("admin");
         
-        Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);
-        if (!officeHour.isPresent()) {
+        Optional<RoomSlot> roomSlot = roomSlotRepository.findById(id);
+
+        if (!roomSlot.isPresent()) 
             return ResponseEntity.notFound().build();
-        }
-        officeHoursRepository.deleteById(id);
+        
+        RoomSlotRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     // get all room slots
     @GetMapping(value = "/api/roomslot", produces = "application/json")
-    public ResponseEntity<String> getOfficeHours() throws JsonProcessingException {
-        List<OnlineOfficeHours> officeHourList = officeHoursRepository.findAll();
+    public ResponseEntity<String> getRoomSlots() throws JsonProcessingException {
+        List<RoomSlot> roomSlotList = roomSlotRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
 
-        String body = mapper.writeValueAsString(officeHourList);
+        String body = mapper.writeValueAsString(roomSlot);
         return ResponseEntity.ok().body(body);
     }
 
     // get room slot by ID
     @GetMapping(value = "/api/roomslot/{id}", produces = "application/json")
-    public ResponseEntity<String> getOfficeHour(@PathVariable("id") Long id) throws JsonProcessingException {
-        Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);
-        if (officeHour.isEmpty()) {
+    public ResponseEntity<String> getRoomSlot(@PathVariable("id") Long id) throws JsonProcessingException {
+        Optional<RoomSlot> roomSlot = roomSlotRepository.findById(id);
+
+        if (roomSlot.isEmpty())
             return ResponseEntity.notFound().build();
-        }
+        
 
         ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(officeHour.get());
+        String body = mapper.writeValueAsString(roomSlot.get());
         return ResponseEntity.ok().body(body);
     }
 
