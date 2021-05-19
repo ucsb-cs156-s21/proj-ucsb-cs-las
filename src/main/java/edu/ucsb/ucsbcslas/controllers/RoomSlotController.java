@@ -27,8 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
-import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
-import edu.ucsb.ucsbcslas.repositories.TutorRepository;
+import edu.ucsb.ucsbcslas.repositories.RoomSlotRepository;
 
 @RestController
 public class RoomSlotController {
@@ -37,9 +36,7 @@ public class RoomSlotController {
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
     @Autowired
-    private OnlineOfficeHoursRepository officeHoursRepository;
-    @Autowired
-    private TutorRepository tutorRepository;
+    private RoomSlotRepository roomSlotRepository;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -50,26 +47,33 @@ public class RoomSlotController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping(value = "/api/admin/officeHours", produces = "application/json")
-    public ResponseEntity<String> createOfficeHour(@RequestHeader("Authorization") String authorization,
-            @RequestBody @Valid OnlineOfficeHours officeHour) throws JsonProcessingException {
-                System.out.println(officeHour.toString());
-        if (!authControllerAdvice.getIsAdmin(authorization))
-           return getUnauthorizedResponse("admin");
-        OnlineOfficeHours savedOfficeHour = officeHoursRepository.save(officeHour);
-        String body = mapper.writeValueAsString(savedOfficeHour);
+    
+    // create room slot
+    @PostMapping(value = "/api/roomslot", produces = "application/json")
+    public ResponseEntity<String> createRoomSlot(@RequestHeader("Authorization") String authorization,
+            @RequestBody @Valid RoomSlot roomSlot) throws JsonProcessingException {
+                System.out.println(roomSlot.toString());
+
+        // should we require admin authorization to create a room?
+        //if (!authControllerAdvice.getIsAdmin(authorization))
+        //   return getUnauthorizedResponse("admin");
+
+        RoomSlot savedRoomSlot = roomSlotRepository.save(roomSlot);
+        String body = mapper.writeValueAsString(savedRoomSlot);
         return ResponseEntity.ok().body(body);
     }
 
 
-    @DeleteMapping(value = "/api/admin/officeHours/{id}", produces = "application/json")
-    public ResponseEntity<String> deleteOfficeHour(@RequestHeader("Authorization") String authorization,
+    // delete room slot by ID
+    @DeleteMapping(value = "/api/roomslot/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteRoomSlot(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
             Boolean isAdmin = authControllerAdvice.getIsAdmin(authorization);
-        if (!isAdmin){
-            return getUnauthorizedResponse("admin");
-        }
 
+        // should we require admin authorization to delete a room?
+        //if (!isAdmin)
+        //    return getUnauthorizedResponse("admin");
+        
         Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);
         if (!officeHour.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -78,7 +82,8 @@ public class RoomSlotController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/api/public/officeHours", produces = "application/json")
+    // get all room slots
+    @GetMapping(value = "/api/roomslot", produces = "application/json")
     public ResponseEntity<String> getOfficeHours() throws JsonProcessingException {
         List<OnlineOfficeHours> officeHourList = officeHoursRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
@@ -87,7 +92,8 @@ public class RoomSlotController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping(value = "/api/public/officeHours/{id}", produces = "application/json")
+    // get room slot by ID
+    @GetMapping(value = "/api/roomslot/{id}", produces = "application/json")
     public ResponseEntity<String> getOfficeHour(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);
         if (officeHour.isEmpty()) {
