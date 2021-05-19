@@ -132,4 +132,18 @@ describe("Courses page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+  test("can upload CSV of courses", async () => {
+
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+
+    const { getByText } = render(<Courses />);
+    const submitCSVButton = getByText("Submit");
+    userEvent.click(submitCSVButton);
+
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  });
 });
