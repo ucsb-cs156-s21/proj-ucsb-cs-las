@@ -100,7 +100,6 @@ public class RoomSlotController {
 
         if (roomSlot.isEmpty())
             return ResponseEntity.notFound().build();
-        
 
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(roomSlot.get());

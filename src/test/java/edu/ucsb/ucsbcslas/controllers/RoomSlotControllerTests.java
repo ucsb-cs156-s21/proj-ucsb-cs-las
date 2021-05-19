@@ -70,14 +70,8 @@ public class RoomSlotControllerTests {
     @Test
     public void testGetRoomSlot() throws Exception {
       List<RoomSlot> expectedRoomSlots = new ArrayList<RoomSlot>();
-      // 1L = office hour id ? <- maybe delete this(1L) portion?
-      // does tutor assignment id = "tutor_assignment_id"
-      Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-      Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName",
-          "String instructorLastName", "String instructorEmail");
       TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-      expectedRoomSlots
-          .add(new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00", "link", "notes"));
+      expectedRoomSlots.add(new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00", "link", "notes"));
       // (Long id, TutorAssignment tutorAssignment, String dayOfWeek, String
       // startTime, String endTime, String zoomRoomLink, String notes)
       when(mockRoomSlotRepository.findAll()).thenReturn(expectedRoomSlots);
