@@ -31,8 +31,8 @@ import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 
 @RestController
-public class RoomSlotController {
-    private final Logger logger = LoggerFactory.getLogger(RoomSlotController.class);
+public class OnlineOfficeHoursController {
+    private final Logger logger = LoggerFactory.getLogger(OnlineOfficeHoursController.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
