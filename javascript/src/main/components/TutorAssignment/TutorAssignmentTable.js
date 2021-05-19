@@ -15,7 +15,7 @@ export default ({tutorAssignments, isInstructor}) => {
 
     const renderDeleteButton = (_id) => {
         return (
-            <Button variant="danger" data-testid="delete-button" >Delete</Button>
+            <Button variant="danger" data-testid={"delete-button"} onClick{() => {/* do something */}} >Delete</Button>
         )
     }
 
