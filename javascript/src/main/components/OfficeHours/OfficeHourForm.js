@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 
-const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
+const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour}) => {
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
@@ -20,13 +20,18 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         notes: ""
     }
 
-    const [officeHour, setOfficeHour] = useState(emptyOfficeHour);
+    const [officeHour, setOfficeHour] = useState(existingOfficeHour||emptyOfficeHour);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
         var isValid = checkInputs(); 
         if (isValid) {
-            createOfficeHour(officeHour);
+            if (createOfficeHour) {
+                createOfficeHour(officeHour);
+            }
+            else {
+                updateOfficeHour(officeHour, officeHour.id);
+            }
         }
       
     }
