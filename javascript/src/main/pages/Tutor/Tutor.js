@@ -6,9 +6,12 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorTable from "main/components/Tutor/TutorTable";
-import { TutorCSVButton } from "main/components/Tutor/TutorCSVButton"; 
+import { TutorCSVButton } from "main/components/Tutor/TutorCSVButton";
 import { useToasts } from "react-toast-notifications";
-import { buildDeleteTutor, uploadTutorsCSV } from "main/services/Tutor/TutorService";
+import {
+  buildDeleteTutor,
+  uploadTutorsCSV,
+} from "main/services/Tutor/TutorService";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -25,7 +28,7 @@ const Tutor = () => {
   const {
     data: instructorTutorList,
     errorInstructor,
-    mutate: mutateInstructorTutors
+    mutate: mutateInstructorTutors,
   } = useSWR(["/api/member/instructorTutors", getToken], fetchWithToken);
 
   useEffect(() => {
@@ -58,7 +61,8 @@ const Tutor = () => {
 
   const deleteTutor = buildDeleteTutor(getToken, mutateTutors);
 
-  const uploadTutors = uploadTutorsCSV(getToken,
+  const uploadTutors = uploadTutorsCSV(
+    getToken,
     () => {
       mutateTutors();
       addToast("CSV Uploaded", { appearance: "success" });
@@ -67,30 +71,42 @@ const Tutor = () => {
       addToast("Error Uploading CSV", { appearance: "error" });
     }
   );
-  
+
   return (
     <>
-
-       {(isInstructor || isAdmin) && (
-        <><Button
-          data-testid={`new-tutor-button`}
-          onClick={() => history.push("/tutors/new")}
-        >
-          New Tutor
-        </Button><TutorCSVButton admin={isAdmin} addTask={uploadTutors} />
-          <pre style={{ whiteSpace: 'pre', textAlign: 'left', width: 'auto', marginLeft: 'auto', marginRight: 'auto', padding: '0em' }} muted>
-            Required Columns: firstName, lastName, email. Ex: joe, gaucho, joegaucho@ucsb.edu
-          </pre></>
+      {(isInstructor || isAdmin) && (
+        <>
+          <Button
+            data-testid={`new-tutor-button`}
+            onClick={() => history.push("/tutors/new")}
+          >
+            New Tutor
+          </Button>
+          <TutorCSVButton admin={isAdmin} addTask={uploadTutors} />
+          <pre
+            style={{
+              whiteSpace: "pre",
+              textAlign: "left",
+              width: "auto",
+              marginLeft: "auto",
+              marginRight: "auto",
+              padding: "0em",
+            }}
+            muted
+          >
+            Required Columns: firstName, lastName, email. Ex: joe, gaucho,
+            joegaucho@ucsb.edu
+          </pre>
+        </>
       )}
       {tutorList && (isInstructor || isAdmin) && (
-      <TutorTable
-        tutors={tutorList}
-        instructorTutors={instructorTutorList}
-        admin={isAdmin || isInstructor}
-        deleteTutor={deleteTutor}
-
+        <TutorTable
+          tutors={tutorList}
+          instructorTutors={instructorTutorList}
+          admin={isAdmin || isInstructor}
+          deleteTutor={deleteTutor}
         />
-        )}
+      )}
     </>
   );
 };
