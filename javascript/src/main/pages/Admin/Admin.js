@@ -103,7 +103,7 @@ const Admin = () => {
           }
         </tbody>
       </Table>
-      <Button><CSVLink style={{color: "white"}} headers={headers} data={admins} filename = {"Admins.csv"}>Download CSV</CSVLink></Button>
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={users} filename = {"Admins.csv"}>Download CSV</CSVLink></Button>
     </>
   );
 }
