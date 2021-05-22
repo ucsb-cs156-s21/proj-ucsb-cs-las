@@ -44,7 +44,7 @@ const Admin = () => {
 
   const headers = [{
     key: 'id',
-    label: 'id'
+    label: 'Id'
   }, {
     key: 'email',
     label: 'Email'
@@ -55,6 +55,22 @@ const Admin = () => {
     key: 'lastName',
     label: 'Last Name'
   }];
+  
+  var adminList = [];
+  if (users){
+    users.map(user => {
+      const admin = getAdminForUser(user, admins);
+      if (admin){
+        var obj = { 
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+        };
+        adminList.push(obj);
+      }
+    })
+  }
 
   return (
     <>
@@ -103,7 +119,7 @@ const Admin = () => {
           }
         </tbody>
       </Table>
-      {/* <Button><CSVLink style={{color: "white"}} headers={headers} filename = {"Admins.csv"}>Download CSV</CSVLink></Button> */}
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={adminList || []} filename = {"Admins.csv"}>Download Admins CSV</CSVLink></Button>
     </>
   );
 }
