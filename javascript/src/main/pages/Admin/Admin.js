@@ -119,7 +119,7 @@ const Admin = () => {
           }
         </tbody>
       </Table>
-      <Button><CSVLink style={{color: "white"}} headers={headers} data={adminList || []} filename = {"Admins.csv"}>Download Admins CSV</CSVLink></Button>
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={adminList} filename = {"Admins.csv"}>Download Admins CSV</CSVLink></Button>
     </>
   );
 }
