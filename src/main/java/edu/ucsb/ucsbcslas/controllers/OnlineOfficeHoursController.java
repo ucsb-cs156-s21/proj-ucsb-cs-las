@@ -15,6 +15,17 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//new
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.*;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
+import edu.ucsb.ucsbcslas.entities.AppUser;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +51,10 @@ public class OnlineOfficeHoursController {
     private OnlineOfficeHoursRepository officeHoursRepository;
     @Autowired
     private TutorRepository tutorRepository;
+
+    //new
+    CSVToObjectService<OnlineOfficeHours> csvToObjectService;
+    @Autowired
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -99,4 +114,19 @@ public class OnlineOfficeHoursController {
         return ResponseEntity.ok().body(body);
     }
 
+    @PostMapping(value = "/api/admin/officehours/upload", produces = "application/json")
+    public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
+        logger.info("Starting upload CSV");
+        AppUser user = authControllerAdvice.getUser(authorization);
+        try {
+            Reader reader = new InputStreamReader(csv.getInputStream());
+            logger.info(new String(csv.getInputStream().readAllBytes()));
+            List<OnlineOfficeHours> uploadedOfficeHours = csvToObjectService.parse(reader, OnlineOfficeHours.class);
+            List<OnlineOfficeHours> savedOfficeHour = (List<OnlineOfficeHours>) officeHoursRepository.saveAll(uploadedOfficeHours);
+            String body = mapper.writeValueAsString(savedOfficeHour);
+            return ResponseEntity.ok().body(body);
+        } catch(RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+        }
+    }
 }

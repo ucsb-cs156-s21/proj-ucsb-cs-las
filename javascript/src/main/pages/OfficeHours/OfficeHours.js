@@ -6,6 +6,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable"
 import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+
+import uploadOfficeHoursCSV from "main/services/OfficeHours/UploadCSV";
+
+import OfficeHourCSVButton from "main/components/OfficeHours/OfficeHourCSVButton.js";
+// import { CSVLink } from "react-csv";
 import {useHistory} from "react-router-dom";
 
 
@@ -28,13 +33,14 @@ const OfficeHours = () => {
   }
   const deleteOfficeHour = buildDeleteOfficeHour(getToken, mutateOfficeHours);
 
+  const uploadedOfficeHours = uploadOfficeHoursCSV(
+    getToken, mutateOfficeHours
+  );
+
   return (
     <>
       <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/officehours/new")} >New Office Hour</Button>
-      <h1></h1>
-      <Button style={{marginBottom: "1em"}} onClick={()=>history.push("STUB")} >Add Office Hours as CSV</Button>  
-      {/* need to be fix */}
-      <h1></h1>
+      <OfficeHourCSVButton admin = {true} addTask = {uploadedOfficeHours} />
       <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour}  />
     </>
   );
