@@ -37,14 +37,14 @@ const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
 }
 
 const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
-  const func = async (item, id) => {
+  const func = async (id) => {
     try {
       await fetchWithToken(`/api/member/tutorAssignments/${id}`, getToken, {
         method: "DELETE",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(item),
+        noJSON: true,
       });
       onSuccess();
     } catch (err) {
