@@ -274,7 +274,7 @@ public class TutorAssignmentController {
     
     @DeleteMapping (value = "/api/member/tutorAssignments/{id}", produces = "application/json")
     public ResponseEntity<String> deleteTutorAssignment(@RequestHeader("Authorization") String authorization,
-        @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment) throws JsonProcessingException {
+        @PathVariable("id") Long id) throws JsonProcessingException {
 
       if (!authControllerAdvice.getIsAdmin(authorization))
         return getUnauthorizedResponse("admin");
@@ -283,8 +283,7 @@ public class TutorAssignmentController {
         return ResponseEntity.notFound().build();
       }
     
-      tutorAssignmentRepository.delete(tutorAssignment);
-      String body = mapper.writeValueAsString(tutorAssignment); // might be a problem here later, might need work later
-      return ResponseEntity.ok().body(body);
+      tutorAssignmentRepository.deleteById(id);
+      return ResponseEntity.noContent().build();
     }
 }
