@@ -8,12 +8,15 @@ import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmen
 import { TutorAssignmentCSVButton } from "main/components/TutorAssignment/TutorAssignmentCSVButton";
 import { useToasts } from "react-toast-notifications";
 
+import { uploadTutorAssignmentCSV } from "main/services/TutorAssignment/TutorAssignmentService";
+
 import { useHistory } from "react-router-dom";
 
 const TutorAssignment = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { email } = user;
+  const { addToast } = useToasts();
 
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
 
@@ -29,22 +32,24 @@ const TutorAssignment = () => {
     (instructorCourseList.length > 0 ||
       roleInfo.role.toLowerCase() === "admin");
 
-  const { data: tutorAssignmentList, error } = useSWR(
+  const { data: tutorAssignmentList, error, mutate: mutateTutors } = useSWR(
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
+  );
+
+  const newTutorAssignmentButton = (
+    <Button
+      className="mb-3"
+      onClick={() => history.push("/tutorAssignments/new")}
+    >
+      New Tutor Assignment
+    </Button>
   );
 
   if (error) {
     return (
       <>
-        {isInstructor (
-          <Button
-            style={{ marginBottom: "1em" }}
-            onClick={() => history.push("/tutorAssignments/new")}
-          >
-            New Tutor Assignment
-          </Button>
-        )}
+        {isInstructor && newTutorAssignmentButton}
         <h1>
           You have no current Tutor Assignments or we encountered an error;
           please reload the page and try again.
@@ -56,48 +61,40 @@ const TutorAssignment = () => {
     return <Loading />;
   }
 
-  // const uploadTutorAssignment = uploadTutorAssigCSV(
-  //   getToken,
-  //   () => {
-  //     mutateTutors();
-  //     addToast("CSV Uploaded", { appearance: "success" });
-  //   },
-  //   () => {
-  //     addToast("Error Uploading CSV", { appearance: "error" });
-  //   }
-  // );
+  const uploadTutorAssignment = uploadTutorAssignmentCSV(
+    getToken,
+    () => {
+      mutateTutors();
+      addToast("CSV Uploaded", { appearance: "success" });
+    },
+    () => {
+      addToast("Error Uploading CSV", { appearance: "error" });
+    }
+  );
 
   return (
     <>
-      {isInstructor && (
-        
-        <><Button
-          style={{ marginBottom: "1em" }}
-          onClick={() => history.push("/tutorAssignments/new")}
-        >
-          New Tutor Assignment
-        </Button>
-          { <TutorAssignmentCSVButton admin={isInstructor} /*addTask={uploadTutorAssignment}*/ /> }
-          <pre
-            style={{
-              whiteSpace: "pre",
-              textAlign: "left",
-              width: "auto",
-              marginLeft: "auto",
-              marginRight: "auto",
-              padding: "0em",
-            }}
-            muted
-          >
-            Required Columns: Course, Tutor, Assignment type. Ex: CMPSC 48 Fall 2020, Joe Gaucho,
-            LA
-          </pre>
-          </>
-      )}
-      <TutorAssignmentTable
-        tutorAssignments={tutorAssignmentList}
-        isInstructor={isInstructor}
-      />
+      <>
+        {isInstructor && newTutorAssignmentButton}
+        <TutorAssignmentTable
+          tutorAssignments={tutorAssignmentList}
+          isInstructor={isInstructor}
+        />
+      </>
+      <TutorAssignmentCSVButton admin={isInstructor}  addTask={uploadTutorAssignment} />
+      <pre
+        style={{
+          whiteSpace: "pre",
+          textAlign: "left",
+          width: "auto",
+          marginLeft: "auto",
+          marginRight: "auto",
+          padding: "0em",
+        }}
+        muted
+      >
+        Required Columns: Course, First and Last Name, Assignment Type.Ex: CMPSC 48 Fall 2020, Joe Gaucho, LA
+      </pre>
     </>
   );
 };

@@ -36,4 +36,21 @@ const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
   return func
 }
 
-export { buildCreateTutorAssignment, buildUpdateTutorAssignment  };
+const uploadTutorAssignmentCSV = (getToken, onSuccess, onError) => {
+  const func = async (file) => {
+    const data = new FormData();
+    data.append("csv", file);
+    try {
+      await fetchWithToken('/api/member/tutorAssignments/upload', getToken, {
+        method: "POST",
+        body: data
+      });
+      onSuccess();
+    } catch (err) {
+      onError(err);
+    }
+  };
+  return func;
+}
+
+export { buildCreateTutorAssignment, buildUpdateTutorAssignment, uploadTutorAssignmentCSV };

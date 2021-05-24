@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.opencsv.bean.CsvBindByPosition;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import edu.ucsb.ucsbcslas.models.Course;
@@ -22,14 +24,18 @@ public class TutorAssignment {
 
   @ManyToOne
   @JoinColumn(name = "course_id")
+  @CsvBindByPosition(position = 0)
   private Course course;
 
   @ManyToOne
   @JoinColumn(name = "tutor_id")
+  @CsvBindByPosition(position = 1)
   private Tutor tutor;
 
   @Column(nullable = false)
+  @CsvBindByPosition(position = 2)
   private String assignmentType;
+  
 
   public TutorAssignment(Long id, Course course, Tutor tutor, String assignmentType) {
     this.id = id;

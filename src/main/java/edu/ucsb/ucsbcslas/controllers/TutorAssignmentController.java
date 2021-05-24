@@ -14,6 +14,17 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// Imports from BZ when adding uploading CSV functionality to Tutor Assignment
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.*;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
+import edu.ucsb.ucsbcslas.entities.AppUser;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -51,6 +62,8 @@ public class TutorAssignmentController {
     private CourseRepository courseRepository;
     @Autowired
     private TutorRepository tutorRepository;
+    @Autowired
+    CSVToObjectService<TutorAssignment> csvToObjectService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -103,6 +116,8 @@ public class TutorAssignmentController {
         return ResponseEntity.ok().body(body);
     }
 
+
+
     @GetMapping(value = "/api/member/tutorAssignments", produces = "application/json")
     public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
@@ -150,9 +165,10 @@ public class TutorAssignmentController {
         }
         return getUnauthorizedResponse("member");
     }
-    
+
     @GetMapping(value = "/api/public/tutorAssignment/{course_id}", produces = "application/json")
-    public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
+    public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("course_id") Long course_id)
+            throws JsonProcessingException {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourseId(course_id);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -208,8 +224,7 @@ public class TutorAssignmentController {
         return ResponseEntity.ok().body(body);
 
     }
-  
-  
+
     @GetMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
     public ResponseEntity<String> getTutorAssignment(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
@@ -221,55 +236,74 @@ public class TutorAssignmentController {
         String body = mapper.writeValueAsString(tutorAssignment.get());
         return ResponseEntity.ok().body(body);
     }
-  
+
     @PutMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
     public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
-        @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment) throws JsonProcessingException {
+            @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment)
+            throws JsonProcessingException {
 
-      if (!authControllerAdvice.getIsAdmin(authorization))
-        return getUnauthorizedResponse("admin");
-      Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
-      if (!tutorAssignment.isPresent()) {
-        return ResponseEntity.notFound().build();
-      }
-      logger.info(incomingTutorAssignment);
-      JSONObject ta = new JSONObject(incomingTutorAssignment);
-      TutorAssignment newAssignment = new TutorAssignment();
-      logger.info("ta: ", ta.toString());
-      JSONObject cInfo = new JSONObject(ta.get("course").toString());
-      logger.info("cInfo: ", cInfo.toString());
-      Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
-        cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
-      newAssignment.setCourse(c);
-
-
-      logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
-      logger.info("ta: ", ta.getString("tutorEmail"));
-      if(!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))){
-        Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
-        logger.info("tutor: ", tutor);
-        if(tutor.isPresent()){
-          newAssignment.setTutor(tutor.get());
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+        if (!tutorAssignment.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
-        else{
-          return getIncorrectInputResponse();
+        logger.info(incomingTutorAssignment);
+        JSONObject ta = new JSONObject(incomingTutorAssignment);
+        TutorAssignment newAssignment = new TutorAssignment();
+        logger.info("ta: ", ta.toString());
+        JSONObject cInfo = new JSONObject(ta.get("course").toString());
+        logger.info("cInfo: ", cInfo.toString());
+        Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"),
+                cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"),
+                cInfo.getString("instructorEmail"));
+        newAssignment.setCourse(c);
+
+        logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
+        logger.info("ta: ", ta.getString("tutorEmail"));
+        if (!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))) {
+            Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
+            logger.info("tutor: ", tutor);
+            if (tutor.isPresent()) {
+                newAssignment.setTutor(tutor.get());
+            } else {
+                return getIncorrectInputResponse();
+            }
+        } else {
+
+            JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
+            Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"), tInfo.getString("lastName"),
+                    tInfo.getString("email"));
+            newAssignment.setTutor(t);
+
         }
-      } else {
+        newAssignment.setAssignmentType(ta.getString("assignmentType"));
 
-        JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
-        Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"), tInfo.getString("lastName"), 
-        tInfo.getString("email"));
-        newAssignment.setTutor(t);
-
-
-      }
-      newAssignment.setAssignmentType(ta.getString("assignmentType"));
-
-
-      newAssignment.setId(id);
-      tutorAssignmentRepository.save(newAssignment);
-      String body = mapper.writeValueAsString(newAssignment);
-      return ResponseEntity.ok().body(body);
+        newAssignment.setId(id);
+        tutorAssignmentRepository.save(newAssignment);
+        String body = mapper.writeValueAsString(newAssignment);
+        return ResponseEntity.ok().body(body);
     }
-  
+
+
+        // Controller to upload CSV for tutorAssignment Service
+
+        @PostMapping(value = "/api/member/tutorAssignments/upload", produces = "application/json")
+        public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv,
+                @RequestHeader("Authorization") String authorization) throws IOException {
+            logger.info("Starting upload CSV");
+            AppUser user = authControllerAdvice.getUser(authorization);
+            try {
+                Reader reader = new InputStreamReader(csv.getInputStream());
+                logger.info(new String(csv.getInputStream().readAllBytes()));
+                List<TutorAssignment> uploadedTutorAssignments = csvToObjectService.parse(reader, TutorAssignment.class);
+                List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
+                        .saveAll(uploadedTutorAssignments);
+                String body = mapper.writeValueAsString(savedTutorAssignments);
+                return ResponseEntity.ok().body(body);
+            } catch (RuntimeException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+            }
+        }
+
 }
