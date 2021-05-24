@@ -1,33 +1,47 @@
 package edu.ucsb.ucsbcslas.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import java.util.Objects;
+import java.time.LocalTime;
+import java.time.DayOfWeek;
 
 @Entity
 public class RoomSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false)
     private String location;
+
+    @ManyToOne
+    @JoinColumn(name = "room_slot_id")
     @Column(nullable = false)
-    private ActiveQuarter activeQuarter;
+    public ActiveQuarter activeQuarter;
+
     @Column(nullable = false)
-    private Time.DayOfWeek dayOfWeek;
+    private DayOfWeek dayOfWeek;
+
     @Column(nullable = false)
-    private Time.LocalTime startTime;
+    private LocalTime startTime;
+
     @Column(nullable = false)
-    private Time.LocalTime endTime;
+    private LocalTime endTime;
 
     public RoomSlot() {
      }
 
-    public RoomSlot(Long id, String activeQuarter) {
+    public RoomSlot(Long id, ActiveQuarter activeQuarter) {
         this.id = id;
         this.activeQuarter = activeQuarter;
     }
@@ -56,27 +70,27 @@ public class RoomSlot {
         this.activeQuarter = activeQuarter;
     }
 
-    public String getDayOfWeek() {
+    public DayOfWeek getDayOfWeek() {
         return this.dayOfWeek;
     }
 
-    public void setDayOfWeek(Time.DayOfWeek dayOfWeek) {
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public Time.LocalTime getStartTime() {
+    public LocalTime getStartTime() {
         return this.startTime;
     }
 
-    public void setStartTime(Time.LocalTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Time.LocalTime getEndTime() {
+    public LocalTime getEndTime() {
         return this.endTime;
     }
 
-    public void setEndTime(Time.LocalTime EndTime) {
+    public void setEndTime(LocalTime EndTime) {
         this.endTime = endTime;
     }
 
@@ -91,11 +105,11 @@ public class RoomSlot {
         RoomSlot other = (RoomSlot) o;
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(id, other.getId())
-               .append(location, other.getLocation(activeQuarter, other.getActiveQuarter())
+               .append(location, other.getLocation())
                .append(activeQuarter, other.getActiveQuarter())
                .append(dayOfWeek, other.getDayOfWeek())
-               .append(startTime, other.getStartTime()
-               .append(endTime, other.getEndTime()));
+               .append(startTime, other.getStartTime())
+               .append(endTime, other.getEndTime());
 
         return builder.isEquals();
     }

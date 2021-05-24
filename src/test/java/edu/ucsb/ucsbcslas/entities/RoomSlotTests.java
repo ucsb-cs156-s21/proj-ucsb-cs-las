@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 
 public class RoomSlotTests {
+
+
+
+/*
   @Test
   public void testQuarter_toString() {
     ActiveQuarter q = new ActiveQuarter(1L, "f20");
@@ -45,4 +49,6 @@ public class RoomSlotTests {
     ActiveQuarter q2 = new ActiveQuarter();
     assertEquals(q1, q2);
   }
+
+  */
 }
