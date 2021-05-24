@@ -28,19 +28,12 @@ const TutorAssignment = () => {
   );
 
   const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
-  const { data: tutorAssignmentList, error} = useSWR(
+  const { data: tutorAssignmentList, error, mutate: mutateCourses} = useSWR(
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
 
-  const deleteTutorAssignment = buildDeleteTutorAssignment(getToken, 
-    () => { 
-      addToast("Tutor Assignment deleted", { appearance: 'success' });
-    }, 
-    () => { 
-      addToast("Error deleting tutor assignment", { appearance: 'error' });
-    }
-  );
+  const deleteTutorAssignment = buildDeleteTutorAssignment(getToken,mutateCourses);
 
 
   if (error) {
