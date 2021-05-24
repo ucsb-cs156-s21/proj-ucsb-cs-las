@@ -1,7 +1,5 @@
 package edu.ucsb.ucsbcslas.entities;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
-import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 import java.time.LocalTime;
 import java.time.DayOfWeek;
 
@@ -21,13 +21,13 @@ public class RoomSlot {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     @Column(nullable = false)
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "room_slot_id")
-    @Column(nullable = false)
-    public ActiveQuarter activeQuarter;
+    @JoinColumn(name = "quarter")
+    public ActiveQuarter quarter;
 
     @Column(nullable = false)
     private DayOfWeek dayOfWeek;
@@ -41,9 +41,8 @@ public class RoomSlot {
     public RoomSlot() {
      }
 
-    public RoomSlot(Long id, ActiveQuarter activeQuarter) {
+    public RoomSlot(Long id) {
         this.id = id;
-        this.activeQuarter = activeQuarter;
     }
 
     public Long getId() {
@@ -62,12 +61,12 @@ public class RoomSlot {
         this.location = location;
     }
 
-    public ActiveQuarter getActiveQuarter() {
-        return this.activeQuarter;
+    public ActiveQuarter getQuarter() {
+        return this.quarter;
     }
 
     public void setActiveQuarter(ActiveQuarter activeQuarter) {
-        this.activeQuarter = activeQuarter;
+        this.quarter = quarter;
     }
 
     public DayOfWeek getDayOfWeek() {
@@ -106,7 +105,7 @@ public class RoomSlot {
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(id, other.getId())
                .append(location, other.getLocation())
-               .append(activeQuarter, other.getActiveQuarter())
+               .append(quarter, other.getQuarter())
                .append(dayOfWeek, other.getDayOfWeek())
                .append(startTime, other.getStartTime())
                .append(endTime, other.getEndTime());
@@ -118,7 +117,7 @@ public class RoomSlot {
     public String toString() {
         return "{" + " id='" + getId() + "'" 
         + ", activeQuarter='" + getLocation() + "'" 
-        + ", activeQuarter='" + getActiveQuarter() + "'" 
+        + ", activeQuarter='" + getQuarter() + "'"
         + ", activeQuarter='" + getStartTime() + "'" 
         + ", activeQuarter='" + getEndTime() + "'" 
         + "}";
