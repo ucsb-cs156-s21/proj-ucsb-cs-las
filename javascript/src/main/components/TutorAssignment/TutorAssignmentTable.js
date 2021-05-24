@@ -3,6 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import { useHistory } from "react-router-dom";
+import { buildDeleteTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 
 export default ({tutorAssignments, isInstructor}) => {
     const history = useHistory();
@@ -14,8 +15,19 @@ export default ({tutorAssignments, isInstructor}) => {
     }
 
     const renderDeleteButton = (_id) => {
+        const deleteTutorAssignment = buildDeleteTutorAssignment(
+            getToken,
+            () => { 
+              addToast("Tutor Assignment Deleted", { appearance: 'success' });
+            },
+            () => {
+              addToast("Error deleting Tutor Assignment", { appearance: 'error' });
+            }
+          );
         return (
-            <Button variant="danger" data-testid={"delete-button"} onClick{() => {/* do something */}} >Delete</Button>
+            <Button variant="danger" data-testid={"delete-button"} onClick{() => {
+                deleteTutorAssignment();
+            }} >Delete</Button>
         )
     }
 

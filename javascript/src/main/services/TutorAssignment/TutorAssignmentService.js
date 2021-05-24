@@ -35,12 +35,12 @@ const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
   };
   return func
 }
-/*
+
 const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
   const func = async (item, id) => {
     try {
       await fetchWithToken(`/api/member/tutorAssignments/${id}`, getToken, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "content-type": "application/json",
         },
@@ -53,6 +53,6 @@ const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
   };
   return func
 }
-*/
 
-export { buildCreateTutorAssignment, buildUpdateTutorAssignment  };
+
+export { buildCreateTutorAssignment, buildUpdateTutorAssignment, buildDeleteTutorAssignment };
