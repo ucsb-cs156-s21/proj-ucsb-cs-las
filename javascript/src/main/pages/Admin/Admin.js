@@ -69,6 +69,7 @@ const Admin = () => {
         };
         adminList.push(obj);
       }
+      return adminList;
     })
   }
 
