@@ -53,9 +53,9 @@ public class OnlineOfficeHoursController {
     private TutorRepository tutorRepository;
 
     //new
+    @Autowired
     CSVToObjectService<OnlineOfficeHours> csvToObjectService;
     @Autowired
-
     private ObjectMapper mapper = new ObjectMapper();
 
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
