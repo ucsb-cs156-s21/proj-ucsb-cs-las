@@ -88,15 +88,15 @@ const Admin = () => {
         };
         adminList.push(obj);
       }
-      var obj = { 
+      var obj1 = { 
         id: user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
         role: role,
       };
-      userList.push(obj);
-      return;
+      userList.push(obj1);
+      return adminList;
     })
   }
 
