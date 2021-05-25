@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
+import { checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
-
+import {checkTime} from "main/utils/FormHelpers";
 const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
