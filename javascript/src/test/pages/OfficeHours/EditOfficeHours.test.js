@@ -34,15 +34,6 @@ const selectTutor = async (getByPlaceholderText, getByText) => {
   userEvent.click(getByText("Chris McTutorface"));
 }
 describe("Edit OfficeHours page test", () => {
-    const course =
-    {
-        name: "CMPSC 156",
-        id: 1,
-        quarter: "20202",
-        instructorFirstName: "Phill",
-        instructorLastName: "Conrad",
-        instructorEmail: "phtcon@ucsb.edu",
-    };
     const courses = [
       {
       name: "CMPSC 156",
@@ -61,32 +52,6 @@ describe("Edit OfficeHours page test", () => {
       instructorEmail: "krintz@example.org",
       },
   ];
-    const tutor =
-    {
-        firstName: "Bob",
-        lastName: "Joe",
-        email: "bobjoe@ucsb.edu",
-        id: 3
-    };
-    const tutorAssignment =
-    {
-        id: 2,
-        course: {
-            name: "CMPSC 156",
-            id: 1,
-            quarter: "20202",
-            instructorFirstName: "Phill",
-            instructorLastName: "Conrad",
-            instructorEmail: "phtcon@ucsb.edu",
-        },
-        tutor: {
-            firstName: "Bob",
-            lastName: "Joe",
-            email: "bobjoe@ucsb.edu",
-            id: 3
-        },
-        assignmentType: "TA"
-    };
     const officeHour =
     {
         id: "4",
