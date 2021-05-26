@@ -135,4 +135,129 @@ describe("OfficeHourForm tests", () => {
     expect(createOfficeHourMock).toHaveBeenCalledTimes(0);
   });
 
+  test("updating OfficeHours start time works", async () => {
+
+    const updateOfficeHoursMock = jest.fn();
+
+    const { getByText, getByDisplayValue } = render
+      (<OfficeHourForm updateOfficeHours={updateOfficeHours} existingOfficeHours={sampleOfficeHour}/>)
+    ;
+
+    const updatedOfficeHour = {
+      ...sampleOfficeHour,
+      startTime: "2:30PM",
+    };
+
+    const input = getByDisplayValue(updatedOfficeHour.startTime);
+    userEvent.clear(input);
+    userEvent.type(input, updatedOfficeHour.startTime);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(updateCourseMock).toHaveBeenCalledTimes(1);
+    expect(updateCourseMock).toHaveBeenCalledWith(updatedOfficeHour.id);
+
+  });
+
+  test("updating OfficeHours end time works", async () => {
+
+    const updateOfficeHoursMock = jest.fn();
+
+    const { getByText, getByDisplayValue } = render
+      (<OfficeHourForm updateOfficeHours={updateOfficeHours} existingOfficeHours={sampleOfficeHour}/>)
+    ;
+
+    const updatedOfficeHour = {
+      ...sampleOfficeHour,
+      endTime: "3:30PM",
+    };
+
+    const input = getByDisplayValue(updatedOfficeHour.endTime);
+    userEvent.clear(input);
+    userEvent.type(input, updatedOfficeHour.endTime);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(updateCourseMock).toHaveBeenCalledTimes(1);
+    expect(updateCourseMock).toHaveBeenCalledWith(updatedOfficeHour.id);
+
+  });
+
+  test("updating OfficeHours day of week works", async () => {
+
+    const updateOfficeHoursMock = jest.fn();
+
+    const { getByText, getByDisplayValue } = render
+      (<OfficeHourForm updateOfficeHours={updateOfficeHours} existingOfficeHours={sampleOfficeHour}/>)
+    ;
+
+    const updatedOfficeHour = {
+      ...sampleOfficeHour,
+      dayOfWeek: "Tuesday",
+    };
+
+    const input = getByDisplayValue(updatedOfficeHour.dayOfWeek);
+    userEvent.clear(input);
+    userEvent.type(input, updatedOfficeHour.dayOfWeek);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(updateCourseMock).toHaveBeenCalledTimes(1);
+    expect(updateCourseMock).toHaveBeenCalledWith(updatedOfficeHour.id);
+
+  });
+
+  test("updating OfficeHours zoom link works", async () => {
+
+    const updateOfficeHoursMock = jest.fn();
+
+    const { getByText, getByDisplayValue } = render
+      (<OfficeHourForm updateOfficeHours={updateOfficeHours} existingOfficeHours={sampleOfficeHour}/>)
+    ;
+
+    const updatedOfficeHour = {
+      ...sampleOfficeHour,
+      zoomRoomLink: "https://ucsb.zoom.us.update",
+    };
+
+    const input = getByDisplayValue(updatedOfficeHour.zoomRoomLink);
+    userEvent.clear(input);
+    userEvent.type(input, updatedOfficeHour.zoomRoomLink);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(updateCourseMock).toHaveBeenCalledTimes(1);
+    expect(updateCourseMock).toHaveBeenCalledWith(updatedOfficeHour.id);
+
+  });
+
+  test("updating OfficeHours notes works", async () => {
+
+    const updateOfficeHoursMock = jest.fn();
+
+    const { getByText, getByDisplayValue } = render
+      (<OfficeHourForm updateOfficeHours={updateOfficeHours} existingOfficeHours={sampleOfficeHour}/>)
+    ;
+
+    const updatedOfficeHour = {
+      ...sampleOfficeHour,
+      notes: "update notes",
+    };
+
+    const input = getByDisplayValue(updatedOfficeHour.notes);
+    userEvent.clear(input);
+    userEvent.type(input, updatedOfficeHour.notes);
+
+    const submitButton = getByText("Submit");
+    userEvent.click(submitButton);
+
+    expect(updateCourseMock).toHaveBeenCalledTimes(1);
+    expect(updateCourseMock).toHaveBeenCalledWith(updatedOfficeHour.id);
+
+  });
+
 });
