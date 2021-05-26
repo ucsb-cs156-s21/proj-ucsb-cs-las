@@ -3,13 +3,15 @@ package edu.ucsb.ucsbcslas.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
+
 import java.time.LocalTime;
 import java.time.DayOfWeek;
 
 public class RoomSlotTests {
 
   public static RoomSlot testRoomSlot;
-  public static Long testId; // testId for the ActiveQuarter
+  public static Long testId = 1L; // testId for the ActiveQuarter
   public static String testLocation = "Campus Point";
   public static ActiveQuarter testQuarter = new ActiveQuarter(testId, "Campus Point");
   public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
@@ -52,9 +54,52 @@ public class RoomSlotTests {
     assertEquals(testEndTime, testRoomSlot.getEndTime());
   }
 
-  // test overloaded constructor with all fields
+  // test equality
   @Test
-  public void test_RoomSlot_OverloadedConstructor() {
+  public void test_RoomSlot_EqualsSelf() {
+    testRoomSlot = new RoomSlot();
+    assertEquals(testRoomSlot, testRoomSlot);
+  }
+
+  @Test
+  public void test_RoomSlot_NotEqualNull() {
+    testRoomSlot = new RoomSlot();
+    assertNotEquals(null, testRoomSlot);
+  }
+
+  @Test
+  public void test_RoomSlot_NotEqualOtherType() {
+    testRoomSlot = new RoomSlot();
+    assertNotEquals(testRoomSlot, new Object());
+  }
+
+  @Test
+  public void test_RoomSlot_EqualsCopy() {
+    testRoomSlot = new RoomSlot();
+    RoomSlot copy = new RoomSlot();
+    assertEquals(testRoomSlot, copy);
+  }
+
+  // test constructors
+  @Test
+  public void test_RoomSlot_DefaultConstructor() {
+    testRoomSlot = new RoomSlot();
+    assertEquals(null, testRoomSlot.getId());
+    assertEquals(null, testRoomSlot.getLocation());
+    assertEquals(null, testRoomSlot.getQuarter());
+    assertEquals(null, testRoomSlot.getDayOfWeek());
+    assertEquals(null, testRoomSlot.getStartTime());
+    assertEquals(null, testRoomSlot.getEndTime());
+  }
+
+  @Test
+  public void test_RoomSlot_OverloadedIDConstructor() {
+    testRoomSlot = new RoomSlot(testId);
+    assertEquals(testId, testRoomSlot.getId());
+  }
+
+  @Test
+  public void test_RoomSlot_OverloadedAllConstructor() {
     testRoomSlot = new RoomSlot(testId,
             testLocation,
             testQuarter,
@@ -68,6 +113,42 @@ public class RoomSlotTests {
     assertEquals(testDayOfWeek, testRoomSlot.getDayOfWeek());
     assertEquals(testStartTime, testRoomSlot.getStartTime());
     assertEquals(testEndTime, testRoomSlot.getEndTime());
+  }
+
+  // to-string
+  @Test
+  public void test_RoomSlot_ToString() {
+    testRoomSlot = new RoomSlot();
+    String expected = "{" + " id='null'"
+            + ", location='null'"
+            + ", quarter='null'"
+            + ", start time='null'"
+            + ", end time='null'"
+            + "}";
+    assertEquals(expected, testRoomSlot.toString());
+
+    testRoomSlot = new RoomSlot(testId);
+    expected = "{" + " id='" + testId + "'"
+            + ", location='null'"
+            + ", quarter='null'"
+            + ", start time='null'"
+            + ", end time='null'"
+            + "}";
+    assertEquals(expected, testRoomSlot.toString());
+
+    testRoomSlot = new RoomSlot(testId,
+            testLocation,
+            testQuarter,
+            testDayOfWeek,
+            testStartTime,
+            testEndTime);
+    expected = "{" + " id='" + testId + "'"
+            + ", location='" + testLocation + "'"
+            + ", quarter='" + testQuarter + "'"
+            + ", start time='" + testStartTime + "'"
+            + ", end time='" + testEndTime + "'"
+            + "}";
+    assertEquals(expected, testRoomSlot.toString());
   }
 
 }
