@@ -63,8 +63,8 @@ public class RoomSlotControllerTests {
     @Test
     public void testGetRoomSlot() throws Exception {
       List<RoomSlot> expectedRoomSlots = new ArrayList<RoomSlot>();
-      expectedRoomSlots.add(new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00"));
-      // (Long id, quarter, String dayOfWeek, String
+      expectedRoomSlots.add(new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00"));
+      // (Long id, location, quarter, String dayOfWeek, String
       // startTime, String endTime)
 
       when(mockRoomSlotRepository.findAll()).thenReturn(expectedRoomSlots);
@@ -83,7 +83,7 @@ public class RoomSlotControllerTests {
 
     @Test
     public void testGetASingleRoomSlot() throws Exception {
-        RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");
+        RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");
         
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
       MvcResult response = mockMvc.perform(get("/api/roomslot/1").contentType("application/json")
@@ -107,7 +107,7 @@ public class RoomSlotControllerTests {
     //Need admin in the path of api or not??
     @Test
     public void testSaveRoomSlot() throws Exception {
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");
       ObjectMapper mapper = new ObjectMapper();
       String requestBody = mapper.writeValueAsString(expectedRoomSlots);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -126,7 +126,7 @@ public class RoomSlotControllerTests {
     
     @Test
     public void test_saveRoomSlot_unauthorizedIfNotAdmin() throws Exception {
-        RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");    
+        RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");    
         ObjectMapper mapper = new ObjectMapper();    
         String requestBody = mapper.writeValueAsString(expectedRoomSlots);
           mockMvc.perform(post("/api/admin/roomslot").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -138,7 +138,7 @@ public class RoomSlotControllerTests {
     //same here
     @Test
     public void testDeleteRoomSlot_RoomSlotExists() throws Exception {
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
       MvcResult response = mockMvc
