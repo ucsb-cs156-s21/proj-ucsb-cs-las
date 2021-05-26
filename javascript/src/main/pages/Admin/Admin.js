@@ -3,6 +3,7 @@ import { Table, Button, Badge } from "react-bootstrap";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
+import { CSVLink } from "react-csv";
 
 const Admin = () => {
   const { getAccessTokenSilently: getToken } = useAuth0();
@@ -39,6 +40,37 @@ const Admin = () => {
       }
     });
     mutateAdmins();
+  }
+
+  const headers = [{
+    key: 'id',
+    label: 'Id'
+  }, {
+    key: 'email',
+    label: 'Email'
+  }, {
+    key: 'firstName',
+    label: 'First Name'
+  }, {
+    key: 'lastName',
+    label: 'Last Name'
+  }];
+  
+  var adminList = [];
+  if (users){
+    users.map(user => {
+      const admin = getAdminForUser(user, admins);
+      if (admin){
+        var obj = { 
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+        };
+        adminList.push(obj);
+      }
+      return adminList;
+    })
   }
 
   return (
@@ -88,6 +120,7 @@ const Admin = () => {
           }
         </tbody>
       </Table>
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={adminList} filename = {"Admins.csv"}>Download Admins CSV</CSVLink></Button>
     </>
   );
 }
