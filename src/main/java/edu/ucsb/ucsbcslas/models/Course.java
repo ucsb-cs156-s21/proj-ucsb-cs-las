@@ -45,6 +45,15 @@ public class Course {
     this.instructorEmail = instructorEmail;
   }
 
+  public Course(String name, String quarter, String instructorFirstName, String instructorLastName,
+      String instructorEmail) {
+    this.name = name;
+    this.quarter = quarter;
+    this.instructorFirstName = instructorFirstName;
+    this.instructorLastName = instructorLastName;
+    this.instructorEmail = instructorEmail;
+  }
+
   @Override
   public String toString() {
     return String.format(

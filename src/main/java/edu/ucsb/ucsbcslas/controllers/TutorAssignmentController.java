@@ -24,6 +24,7 @@ import java.io.Reader;
 import java.lang.*;
 import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 import edu.ucsb.ucsbcslas.entities.AppUser;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentModel;
 
 import org.json.JSONObject;
 
@@ -63,7 +64,7 @@ public class TutorAssignmentController {
     @Autowired
     private TutorRepository tutorRepository;
     @Autowired
-    CSVToObjectService<TutorAssignment> csvToObjectService;
+    CSVToObjectService<TutorAssignmentModel> csvToObjectService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -115,8 +116,6 @@ public class TutorAssignmentController {
         String body = mapper.writeValueAsString(savedTutorAssignment);
         return ResponseEntity.ok().body(body);
     }
-
-
 
     @GetMapping(value = "/api/member/tutorAssignments", produces = "application/json")
     public ResponseEntity<String> getTutorAssignments(@RequestHeader("Authorization") String authorization)
@@ -285,25 +284,48 @@ public class TutorAssignmentController {
         return ResponseEntity.ok().body(body);
     }
 
+    // Controller to upload CSV for tutorAssignment Service
 
-        // Controller to upload CSV for tutorAssignment Service
+    @PostMapping(value = "/api/member/tutorAssignments/upload", produces = "application/json")
+    public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv,
+            @RequestHeader("Authorization") String authorization) throws IOException {
+        logger.info("Starting upload CSV");
+        AppUser user = authControllerAdvice.getUser(authorization);
+        try {
+            Reader reader = new InputStreamReader(csv.getInputStream());
+            logger.info(new String(csv.getInputStream().readAllBytes()));
+            List<TutorAssignmentModel> uploadedTutorAssignments = csvToObjectService.parse(reader,
+                    TutorAssignmentModel.class);
 
-        @PostMapping(value = "/api/member/tutorAssignments/upload", produces = "application/json")
-        public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv,
-                @RequestHeader("Authorization") String authorization) throws IOException {
-            logger.info("Starting upload CSV");
-            AppUser user = authControllerAdvice.getUser(authorization);
-            try {
-                Reader reader = new InputStreamReader(csv.getInputStream());
-                logger.info(new String(csv.getInputStream().readAllBytes()));
-                List<TutorAssignment> uploadedTutorAssignments = csvToObjectService.parse(reader, TutorAssignment.class);
-                List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
-                        .saveAll(uploadedTutorAssignments);
-                String body = mapper.writeValueAsString(savedTutorAssignments);
-                return ResponseEntity.ok().body(body);
-            } catch (RuntimeException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+            logger.info(uploadedTutorAssignments.get(0).toString());
+            for (TutorAssignmentModel i : uploadedTutorAssignments) {
+                Course currentCourse;
+                Tutor currentTutor;
+                List<Course> courseList = courseRepository.findByNameAndQuarterAndInstructorEmail(i.getCourseName(),
+                        i.getQuarter(), i.getInstructorEmail());
+                if (courseList.isEmpty()) {
+                    currentCourse = new Course(i.getCourseName(), i.getQuarter(), i.getInstructorFirstName(),
+                            i.getInstructorLastName(), i.getInstructorEmail());
+                    courseRepository.save(currentCourse);
+                } else {
+                    currentCourse = courseList.get(0);
+                }
+
             }
-        }
 
+            // List<TutorAssignmentModel> savedTutorAssignments =
+            // (List<TutorAssignmentModel>) tutorAssignmentRepository
+            // .saveAll(uploadedTutorAssignments);
+            // String body = mapper.writeValueAsString(savedTutorAssignments);
+            // return ResponseEntity.ok().body(body);
+
+            return ResponseEntity.ok().body("empty");
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+        }
+    }
+    // Possibility of having 2 instances of the same prof teaching 2 classes in the
+    // same quarter (same class name)
+
+    // findByNameAndQuarterAndInstructorEmail
 }

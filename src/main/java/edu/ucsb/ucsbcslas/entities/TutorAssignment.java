@@ -24,18 +24,14 @@ public class TutorAssignment {
 
   @ManyToOne
   @JoinColumn(name = "course_id")
-  @CsvBindByPosition(position = 0)
   private Course course;
 
   @ManyToOne
   @JoinColumn(name = "tutor_id")
-  @CsvBindByPosition(position = 1)
   private Tutor tutor;
 
   @Column(nullable = false)
-  @CsvBindByPosition(position = 2)
   private String assignmentType;
-  
 
   public TutorAssignment(Long id, Course course, Tutor tutor, String assignmentType) {
     this.id = id;
