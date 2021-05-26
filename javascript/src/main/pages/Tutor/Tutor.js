@@ -82,8 +82,7 @@ const Tutor = () => {
     key: 'email',
     label: 'Email'
   }];
-
-  console.log(tutorList);
+  
   return (
     <>
 
