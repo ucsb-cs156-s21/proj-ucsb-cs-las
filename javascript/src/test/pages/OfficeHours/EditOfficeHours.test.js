@@ -196,12 +196,9 @@ describe("Edit OfficeHours page test", () => {
     expect(spinner).toBeInTheDocument();
   });
   test("With existing office hour, pressing submit routes back to OfficeHours page", async () => {
-    fetchWithToken.mockImplementation(() => {
-      throw new Error();
-    });
-    buildUpdateOfficeHour.mockImplementation((_getToken, _onSuccess, onError) => {
+    buildUpdateOfficeHour.mockImplementation((_getToken, onSuccess, _onError) => {
       return () => {
-        onError();
+        onSuccess();
       }
     });
     useSWR.mockReturnValueOnce({
