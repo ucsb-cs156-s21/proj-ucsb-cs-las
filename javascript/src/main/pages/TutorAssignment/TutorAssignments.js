@@ -7,15 +7,14 @@ import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
 import { buildDeleteTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 import {useHistory} from "react-router-dom";
-import { useToasts } from 'react-toast-notifications'
-import { fetchWithoutToken } from "main/utils/fetch";
+//import { ToastProvider, useToasts } from 'react-toast-notifications'
 
 
 const TutorAssignment = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { email } = user;
-  const { addToast } = useToasts();
+  //const { addToast } = useToasts();
 
   const { data: roleInfo } = useSWR(
       ["/api/myRole", getToken],
@@ -28,13 +27,21 @@ const TutorAssignment = () => {
   );
 
   const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
+  
   const { data: tutorAssignmentList, error, mutate: mutateCourses} = useSWR(
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
-
-  const deleteTutorAssignment = buildDeleteTutorAssignment(getToken,mutateCourses);
-
+  
+  const deleteTutorAssignment = buildDeleteTutorAssignment(
+    getToken, mutateCourses
+    /*() => {  
+      addToast("Tutor Assignment deleted", { appearance: 'success' });
+    }, 
+    () => { 
+      addToast("Error deleting tutor assignment", { appearance: 'error' });
+    }*/
+  );
 
   if (error) {
     return (
@@ -51,7 +58,7 @@ const TutorAssignment = () => {
   return (
     <>
       {isInstructor && <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>}
-      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor} deleteTutorAssignment={deleteTutorAssignment}/>
+      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={roleInfo ? isInstructor : false} deleteTutorAssignment={deleteTutorAssignment}/>
     </>
   );
 };
