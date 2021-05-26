@@ -1,16 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import useSWR from "swr";
 import { Button } from "react-bootstrap";
+import { useAuth0 } from "@auth0/auth0-react";
 
+import { fetchWithToken } from "main/utils/fetch";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
+import Loading from "../../components/Loading/Loading";
 
 const RoomSlots = () => {
+  const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const history = useHistory();
+
+  const { data: roomSlotList, error, mutate: mutateRoomSlots } = useSWR(
+    ["/api/member/roomSlots", getToken],
+    fetchWithToken
+  );
+
+  useEffect(() => {
+    mutateRoomSlots();
+  }, [mutateRoomSlots]);
+
+  const isAdmin =
+    roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
+
+  if (error) {
+    return (
+      <h1>We encountered an error fetching room slot data; please reload the page and try again.</h1>
+    );
+  }
+  if (!roomSlotList) {
+    return <Loading />;
+  }
+
   return (
     <>
       <h1>Room Slots</h1>
-      <Button className="mb-3" onClick={()=>history.push("/roomslots/new")} >New Room Slot</Button>
-      <RoomSlotTable roomSlots={[]} admin={true} deleteRoomSlot={() => {}} />
+      {isAdmin && (
+        <Button className="mb-3" onClick={()=>history.push("/roomslots/new")} >New Room Slot</Button>
+      )}
+      {(roomSlotList && isAdmin) && (
+        <RoomSlotTable roomSlots={roomSlotList} admin={isAdmin} deleteRoomSlot={() => {}} />
+      )}
     </>
   );
 }
