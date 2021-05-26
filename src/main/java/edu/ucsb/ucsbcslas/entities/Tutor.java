@@ -35,6 +35,13 @@ public class Tutor {
     this.email = email;
   }
 
+  //new and not tested
+  public Tutor(String firstName, String lastName, String email) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+  }
+
   public Long getId() {
     return this.id;
   }

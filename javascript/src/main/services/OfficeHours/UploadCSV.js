@@ -3,7 +3,8 @@ import { fetchWithToken } from "main/utils/fetch";
 const uploadOfficeHoursCSV = (getToken, onSuccess, onError) => {
     const func = async (file) => {
         const data = new FormData();
-        data.append("csv", file);
+        data.append( "csv",file);
+        
         try{
             await fetchWithToken('/api/admin/officehours/upload', getToken, {
                 method: "POST",
