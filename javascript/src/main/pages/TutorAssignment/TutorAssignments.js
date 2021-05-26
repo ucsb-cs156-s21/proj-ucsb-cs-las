@@ -7,7 +7,7 @@ import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
 
 import {useHistory} from "react-router-dom";
-
+import { CSVLink } from "react-csv";
 
 const TutorAssignment = () => {
   const history = useHistory();
@@ -33,6 +33,20 @@ const TutorAssignment = () => {
 
   const newTutorAssignmentButton = <Button className="mb-3" onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>;
 
+  const headers = [{
+    key: 'id',
+    label: 'id'
+  }, {
+    key: 'course',
+    label: 'Course'
+  }, {
+    key: 'tutor',
+    label: 'Tutor'
+  }, {
+    key: 'assignmentType',
+    label: 'Assignment Type'
+  }];
+
   if (error) {
     return (
       <>
@@ -49,6 +63,7 @@ const TutorAssignment = () => {
     <>
       {isInstructor && newTutorAssignmentButton}
       <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={tutorAssignmentList} filename = {"TutorAssignments.csv"}>Download CSV</CSVLink></Button>
     </>
   );
 };
