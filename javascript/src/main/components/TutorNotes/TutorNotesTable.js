@@ -3,7 +3,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
+export default ({ tutorNotes, instructorTutors, admin, deleteTutorNotes }) => {
   const history = useHistory();
 
   const renderEditButton = id => {
@@ -18,7 +18,7 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
           <Button
             data-testid={`edit-button-${id}`}
             onClick={() => {
-              history.push(`/tutors/edit/${id}`);
+              history.push(`/tutorNotes/edit/${id}`);
             }}
           >
             Edit
@@ -40,7 +40,7 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
           <Button
             variant="danger"
             data-testid={`delete-button-${id}`}
-            onClick={() => deleteTutor(id)}
+            onClick={() => deleteTutorNotes(id)}
           >
             Delete
           </Button>
@@ -73,20 +73,20 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
       sortCaret: sortCaret
     },
     {
-      dataField: "firstName",
-      text: "First Name",
+      dataField: "course",
+      text: "Course",
       sort: true,
       sortCaret: sortCaret
     },
     {
-      dataField: "lastName",
-      text: "Last Name",
+      dataField: "tutor",
+      text: "Tutor",
       sort: true,
       sortCaret: sortCaret
     },
     {
-      dataField: "email",
-      text: "Email",
+      dataField: "message",
+      text: "Message",
       sort: true,
       sortCaret: sortCaret
     }
@@ -105,5 +105,5 @@ export default ({ tutors, instructorTutors, admin, deleteTutor }) => {
     formatter: (_cell, row) => renderDeleteButton(row.id)
   });
 
-  return <BootstrapTable keyField="id" data={tutors} columns={columns} />;
+  return <BootstrapTable keyField="id" data={tutorNotes} columns={columns} />;
 };
