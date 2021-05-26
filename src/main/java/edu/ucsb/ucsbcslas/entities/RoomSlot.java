@@ -76,7 +76,7 @@ public class RoomSlot {
         return this.quarter;
     }
 
-    public void setActiveQuarter(ActiveQuarter activeQuarter) {
+    public void setQuarter(ActiveQuarter quarter) {
         this.quarter = quarter;
     }
 
@@ -100,7 +100,7 @@ public class RoomSlot {
         return this.endTime;
     }
 
-    public void setEndTime(LocalTime EndTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 

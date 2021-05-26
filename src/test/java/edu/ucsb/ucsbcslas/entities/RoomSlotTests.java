@@ -27,8 +27,8 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_GetAndSetQuarter() {
     testRoomSlot = new RoomSlot();
-    testRoomSlot.setActiveQuarter(testQuarter);
-    assertEquals(testQuarter, testRoomSlot.getLocation());
+    testRoomSlot.setQuarter(testQuarter);
+    assertEquals(testQuarter, testRoomSlot.getQuarter());
   }
 
   @Test
@@ -49,7 +49,7 @@ public class RoomSlotTests {
   public void test_RoomSlot_GetAndSetEndTime() {
     testRoomSlot = new RoomSlot();
     testRoomSlot.setEndTime(testEndTime);
-    assertEquals(testEndTime, testRoomSlot.getLocation());
+    assertEquals(testEndTime, testRoomSlot.getEndTime());
   }
 
   // test overloaded constructor with all fields
