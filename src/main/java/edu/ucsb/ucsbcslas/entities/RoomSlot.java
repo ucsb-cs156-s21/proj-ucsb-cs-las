@@ -38,11 +38,22 @@ public class RoomSlot {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    public RoomSlot() {
-     }
+    public RoomSlot() { }
 
     public RoomSlot(Long id) {
         this.id = id;
+    }
+
+    public RoomSlot(Long id, String location,
+        ActiveQuarter quarter, DayOfWeek dayOfWeek,
+        LocalTime startTime, LocalTime endTime) 
+    {
+        this.id = id;
+        this.location = location;
+        this.quarter = quarter;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Long getId() {
@@ -116,10 +127,10 @@ public class RoomSlot {
     @Override
     public String toString() {
         return "{" + " id='" + getId() + "'" 
-        + ", activeQuarter='" + getLocation() + "'" 
-        + ", activeQuarter='" + getQuarter() + "'"
-        + ", activeQuarter='" + getStartTime() + "'" 
-        + ", activeQuarter='" + getEndTime() + "'" 
+        + ", location='" + getLocation() + "'" 
+        + ", quarter='" + getQuarter() + "'"
+        + ", start time='" + getStartTime() + "'" 
+        + ", end time='" + getEndTime() + "'" 
         + "}";
     }
 }

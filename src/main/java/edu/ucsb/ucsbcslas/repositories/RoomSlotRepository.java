@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomSlotRepository extends CrudRepository<RoomSlot, Long> {
 	List<RoomSlot> findAll();
-    List<RoomSlot> findAllByLocation(String location);
-    List<RoomSlot> findAllByQuarter(ActiveQuarter quarter);
-    List<RoomSlot> findAllByDayOfWeek(DayOfWeek dayOfWeek);
-    List<RoomSlot> findAllByStartTime(LocalTime startTime);
-    List<RoomSlot> findAllByEndTime(LocalTime endTime);
+    Optional<RoomSlot> findAllByLocation(String location);
+    Optional<RoomSlot> findAllByQuarter(ActiveQuarter quarter);
+    Optional<RoomSlot> findAllByDayOfWeek(DayOfWeek dayOfWeek);
+    Optional<RoomSlot> findAllByStartTime(LocalTime startTime);
+    Optional<RoomSlot> findAllByEndTime(LocalTime endTime);
 }

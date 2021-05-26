@@ -6,17 +6,62 @@ import org.junit.jupiter.api.Test;
 
 public class RoomSlotTests {
 
-
-
-/*
+  // test getter and setters
   @Test
-  public void testQuarter_toString() {
-    ActiveQuarter q = new ActiveQuarter(1L, "f20");
-    assertEquals("{ id='1', activeQuarter='f20'}", q.toString());
-
-    Admin admin2 = new Admin("admin@test.org");
-    assertEquals("Admin[ id=0, email=admin@test.org, isPermanentAdmin=false ]", admin2.toString());
+  public void test_RoomSlot_GetAndSetLocation() {
+    RoomSlot testRoomSlot = new RoomSlot();
+    testRoomSlot.setLocation("Campus Point");
+    assertEquals("Campus Point", testRoomSlot.getLocation());
   }
+
+  @Test
+  public void test_RoomSlot_GetAndSetQuarter() {
+    RoomSlot testRoomSlot = new RoomSlot();
+    testRoomSlot.setActiveQuarter(ActiveQuarter(1L, "Campus Point"));
+    assertEquals("Campus Point", testRoomSlot.getLocation());
+  }
+
+  @Test
+  public void test_RoomSlot_GetAndSetLocation() {
+    RoomSlot testRoomSlot = new RoomSlot();
+    testRoomSlot.setLocation("Campus Point");
+    assertEquals("Campus Point", testRoomSlot.getLocation());
+  }
+
+  @Test
+  public void test_RoomSlot_GetAndSetLocation() {
+    RoomSlot testRoomSlot = new RoomSlot();
+    testRoomSlot.setLocation("Campus Point");
+    assertEquals("Campus Point", testRoomSlot.getLocation());
+  }
+
+  @Test
+  public void test_RoomSlot_GetAndSetLocation() {
+    RoomSlot testRoomSlot = new RoomSlot();
+    testRoomSlot.setLocation("Campus Point");
+    assertEquals("Campus Point", testRoomSlot.getLocation());
+  }
+
+  // test equality
+  @Test
+  public void test_RoomSlot_Equality() {
+    RoomSlot testRoomSlot = new RoomSlot();
+    testRoomSlot.setLocation("Campus Point");
+    assertEquals("Campus Point", testRoomSlot.getLocation());
+  }
+
+  // test overloaded constructor with all fields
+  @Test
+  public void test_RoomSlot_OverloadedConstructor() {
+    RoomSlot testRoomSlot = new RoomSlot("The Lagoon", ActiveQuarter(id, "S21"),
+      DayOfWeek.Saturday,
+      LocalTime.parse("13:00:00", DateTimeFormatter.ISO_TIME),
+      LocalTime.parse("14:00:00", DateTimeFormatter.ISO_TIME));
+  }
+
+
+
+
 
   @Test
   public void testActiveQuarter_getAndSetId() {
@@ -50,5 +95,4 @@ public class RoomSlotTests {
     assertEquals(q1, q2);
   }
 
-  */
 }
