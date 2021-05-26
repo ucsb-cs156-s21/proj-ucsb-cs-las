@@ -296,6 +296,7 @@ public class TutorAssignmentController {
             logger.info(new String(csv.getInputStream().readAllBytes()));
             List<TutorAssignmentModel> uploadedTutorAssignments = csvToObjectService.parse(reader,
                     TutorAssignmentModel.class);
+            List<TutorAssignment> tutorAssignmentList = new ArrayList<TutorAssignment>();
 
             logger.info(uploadedTutorAssignments.get(0).toString());
             for (TutorAssignmentModel i : uploadedTutorAssignments) {
@@ -312,15 +313,14 @@ public class TutorAssignmentController {
                 } else {
                     currentCourse = courseList.get(0);
                 }
-                List<Tutor> tutorList = tutorRepository.findByEmailList(i.getTutorEmail());
+                Optional<Tutor> tutorList = tutorRepository.findByEmail(i.getTutorEmail());
                 if (tutorList.isEmpty()) {
                     currentTutor = new Tutor(i.getTutorFirstName(), i.getTutorLastName(), i.getTutorEmail());
                     tutorRepository.save(currentTutor);
                 } else {
-                    currentTutor = tutorList.get(0);
+                    currentTutor = tutorList.get();
                 }
-                List<TutorAssignment> tutorAssignmentList = tutorAssignmentRepository
-                        .findByEmailAndByCourse(i.getTutorEmail(), i.getCourseName());
+                tutorAssignmentList = tutorAssignmentRepository.findAllByTutor(currentTutor);
                 if (tutorAssignmentList.isEmpty()) {
                     currentTutorAssignment = new TutorAssignment(currentCourse, currentTutor, i.getAssignmentType());
                     tutorAssignmentRepository.save(currentTutorAssignment);
@@ -329,9 +329,13 @@ public class TutorAssignmentController {
                 }
             }
 
-            List<TutorAssignmentModel> savedTutorAssignments = (List<TutorAssignmentModel>) tutorAssignmentRepository
-                    .saveAll(uploadedTutorAssignments);
+            // List<TutorAssignment> savedTutorAssignments = (List<TutorAssignmentModel>)
+            // tutorAssignmentRepository
+            // .saveAll(uploadedTutorAssignments);
+            List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
+                    .saveAll(tutorAssignmentList);
             String body = mapper.writeValueAsString(savedTutorAssignments);
+            System.out.print(savedTutorAssignments.toString());
             return ResponseEntity.ok().body(body);
 
             // return ResponseEntity.ok().body("empty");

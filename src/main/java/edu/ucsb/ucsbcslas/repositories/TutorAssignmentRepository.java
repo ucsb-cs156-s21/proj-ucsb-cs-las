@@ -15,5 +15,4 @@ public interface TutorAssignmentRepository extends CrudRepository<TutorAssignmen
     List<TutorAssignment> findAllByCourse(Course course);
     List<TutorAssignment> findAllByTutor(Tutor tutor);
     List<TutorAssignment> findAllByCourseId(Long courseId);
-    List<TutorAssignment> findByEmailAndByCourse(String email, String course);
 }

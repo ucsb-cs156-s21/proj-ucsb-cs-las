@@ -11,7 +11,6 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-@Entity
 public class TutorAssignmentModel {
 
     @Column(nullable = false)
