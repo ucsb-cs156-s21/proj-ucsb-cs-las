@@ -9,6 +9,7 @@ import TutorTable from "main/components/Tutor/TutorTable";
 import { TutorCSVButton } from "main/components/Tutor/TutorCSVButton"; 
 import { useToasts } from "react-toast-notifications";
 import { buildDeleteTutor, uploadTutorsCSV } from "main/services/Tutor/TutorService";
+import { CSVLink } from "react-csv";
 
 const Tutor = () => {
   const { user, getAccessTokenSilently: getToken } = useAuth0();
@@ -68,6 +69,20 @@ const Tutor = () => {
     }
   );
   
+  const headers = [{
+    key: 'id',
+    label: 'id'
+  }, {
+    key: 'firstName',
+    label: 'First Name'
+  }, {
+    key: 'lastName',
+    label: 'Last Name'
+  }, {
+    key: 'email',
+    label: 'Email'
+  }];
+  
   return (
     <>
 
@@ -91,6 +106,7 @@ const Tutor = () => {
 
         />
         )}
+        <Button><CSVLink style={{color: "white"}} headers={headers} data={tutorList} filename = {"Tutors.csv"}>Download CSV</CSVLink></Button>
     </>
   );
 };
