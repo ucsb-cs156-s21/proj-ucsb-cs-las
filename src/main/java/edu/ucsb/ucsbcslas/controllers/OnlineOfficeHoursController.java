@@ -152,59 +152,65 @@ public class OnlineOfficeHoursController {
         AppUser user = authControllerAdvice.getUser(authorization);
         try {
             BufferedReader csvReader = new BufferedReader(new InputStreamReader(csv.getInputStream()));
-            // logger.info(new String(csv.getInputStream().readAllBytes()));
-            String row = "";
-            String body = "";
-            // Course
-            String name;
-            String quarter;
-            String instructorFirstName;
-            String instructorLastName;
-            String instructorEmail;
+            logger.info(new String(csv.getInputStream().readAllBytes()));
             
-            //Tutor
-            String firstName;
-            String lastName;
-            String email;
+            String body = "";
+            // // Course
+            // String name;
+            // String quarter;
+            // String instructorFirstName;
+            // String instructorLastName;
+            // String instructorEmail;
+            
+            // // //Tutor
+            // String firstName;
+            // String lastName;
+            // String email;
 
-            // TutorAssignment
-            // Long TA_id;
-            //need coresponding course and tutor
-            String assignmentType;
+            // // TutorAssignment
+            // // Long TA_id;
+            // //need coresponding course and tutor
+            // String assignmentType;
 
-            // Office Hours
-            // Long id;
-            String dayOfWeek;
-            String startTime;
-            String endTime;
-            String zoomRoomLink;
-            String notes;
+            // // // Office Hours
+            // String dayOfWeek;
+            // String startTime;
+            // String endTime;
+            // String zoomRoomLink;
+            // String notes;
             List<OnlineOfficeHours> savedOfficeHour = new ArrayList<>();
-            while((row = csvReader.readLine()) != null){
-                body += row;
-                String [] data = row.split(",");
-                
-                name = data[0];
-                quarter = data[1];
-                instructorFirstName = data[2];
-                instructorLastName = data[3];
-                instructorEmail = data[4];
-                firstName = data[5];
-                lastName = data[6];
-                email = data[7];
-                assignmentType = data[8];
-                dayOfWeek = data[9];
-                startTime = data[10];
-                endTime = data[11];
-                zoomRoomLink = data[12];
-                notes = data[13];
+            String row = csvReader.readLine();
+            String [] data ;
+            while(row != null){
+                // body += row;
+                row = row.substring(1,row.length() - 1);
+                data = row.split("\",\"");
 
-                // System.out.println(data[0]+data[1]);
+                System.out.println(row);
+                // System.out.println(data[13]);
+
+                String name = data[0];
+                String quarter = data[1];
+                String instructorFirstName = data[2];
+                String instructorLastName = data[3];
+                String instructorEmail = data[4];
+                String firstName = data[5];
+                String lastName = data[6];
+                String email = data[7];
+                String assignmentType = data[8];
+                String dayOfWeek = data[9];
+                String startTime = data[10];
+                String endTime = data[11];
+                String zoomRoomLink = data[12];
+                String notes = data[13];
+                // System.out.println("hello"+row);
+                row = csvReader.readLine();
+                System.out.println("!!!!!"+ data[1]);
                 Course course = new Course(name,quarter,instructorFirstName,instructorLastName,instructorEmail);
                 // System.out.println(course.toString());
                 Course existingCourse = courseRepository.findByNameAndQuarter(course.getName(), course.getQuarter());
                 if(existingCourse != null){
-                    System.out.println(course.getName()+"already exist");
+                    System.out.println(course.getName()+" already exist");
                 }
                 else{
                     courseRepository.save(course);
@@ -216,12 +222,14 @@ public class OnlineOfficeHoursController {
                 Optional<Tutor> existingTutor = tutorRepository.findByEmail(email);
                 
                 Course related_course = courseRepository.findByNameAndQuarter(course.getName(), course.getQuarter());
+
                 if(!existingTutor.isPresent()){
                     related_tutor = tutorRepository.save(tutor);
                 }
                 else{
-                    System.out.println("Tutor"+ tutor.toString() + "already exist");
+                    
                     related_tutor = existingTutor.get();
+                    System.out.println("Tutor"+ related_tutor.toString() + " already exist");
                 }
 
                 
@@ -231,7 +239,7 @@ public class OnlineOfficeHoursController {
                 List<TutorAssignment> TAbyTutor = tutorAssignmentRepository.findAllByTutor(related_tutor);
                 List<TutorAssignment> comm =TAbyCourse;
                 comm.retainAll(TAbyTutor);
-                if(comm == null){
+                if(comm.size()==0){
                     TA = tutorAssignmentRepository.save(tutorAssignment);
                 }
                 else{
@@ -251,9 +259,10 @@ public class OnlineOfficeHoursController {
                     OH = new OnlineOfficeHours(TA, dayOfWeek, startTime, endTime, zoomRoomLink, notes);
                     savedOfficeHour.add(officeHoursRepository.save(OH));
                 }
+                
             }
             
-            
+            body = mapper.writeValueAsString(savedOfficeHour);
             return ResponseEntity.ok().body(body);
         } catch(RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
