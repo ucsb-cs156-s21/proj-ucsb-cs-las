@@ -35,13 +35,22 @@ const TutorAssignment = () => {
 
   const headers = [{
     key: 'id',
-    label: 'id'
+    label: 'Course Id'
   }, {
-    key: 'course',
-    label: 'Course'
+    key: 'course.name',
+    label: 'Course Name'
   }, {
-    key: 'tutor',
-    label: 'Tutor'
+    key: 'course.quarter',
+    label: 'Course Quarter'
+  }, {
+    key: 'tutor.firstName',
+    label: 'Tutor First Name'
+  }, {
+    key: 'tutor.lastName',
+    label: 'Tutor Last Name'
+  }, {
+    key: 'tutor.email',
+    label: 'Tutor Email'
   }, {
     key: 'assignmentType',
     label: 'Assignment Type'
