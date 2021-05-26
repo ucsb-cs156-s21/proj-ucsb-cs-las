@@ -1,45 +1,48 @@
+  
 import React from "react";
 import useSWR, { cache } from "swr";
-import TutorForm from "main/components/Tutor/TutorForm";
+import TutorNotesForm from "main/components/TutorNotes/TutorNotesForm";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import { useParams, useHistory } from "react-router-dom";
-import { buildUpdateTutor } from "main/services/Tutor/TutorService";
-import { useToasts } from "react-toast-notifications";
+import { buildUpdateTutorNotes } from "main/services/TutorNotes/TutorNotesService";
+import { useToasts } from 'react-toast-notifications'
 
-const EditTutor = () => {
+
+const EditTutorNotes = () => {
   const { addToast } = useToasts();
   const history = useHistory();
-  const { tutorId } = useParams();
+  const { tutorNotesId } = useParams();
   const { getAccessTokenSilently: getToken } = useAuth0();
-  const updateTutor = buildUpdateTutor(
-    getToken,
-    () => {
-      history.push("/tutors");
-      addToast("Tutor updated", { appearance: "success" });
-    },
-    () => {
-      addToast("Error saving tutor", { appearance: "error" });
+  const updateTutorNotes = buildUpdateTutorNotes(
+    getToken, 
+    () => { 
+      history.push("/tutorNotes"); 
+      addToast("Tutor Notes updated", { appearance: 'success' });
+    }, 
+    () => { 
+      addToast("Error updating tutor Notes", { appearance: 'error' });
     }
   );
 
   cache.clear();
-  const { data: tutor } = useSWR(
-    [`/api/member/tutors/${tutorId}`, getToken],
+  
+  const { data: tutorNotes } = useSWR(
+    [`/api/member/tutorNotes/${tutorNotesId}`, getToken],
     fetchWithToken
   );
 
   return (
     <>
-      <h1>Edit Tutor</h1>
-      {tutor ? (
-        <TutorForm updateTutor={updateTutor} existingTutor={tutor} />
-      ) : (
-        <Loading />
-      )}
+      <h1>Edit Tutor Notes</h1>
+      {
+        tutorNotes ?
+          <TutorNotesForm updateTutorNotes={updateTutorNotes} existingTutorNotes={tutorNotes} /> :
+          <Loading />
+      }
     </>
   );
 };
 
-export default EditTutor;
+export default EditTutorNotes;
