@@ -20,6 +20,13 @@ public class RoomSlotTests {
 
   // test getter and setters
   @Test
+  public void test_RoomSlot_GetAndSetId() {
+    testRoomSlot = new RoomSlot();
+    testRoomSlot.setId(testId);
+    assertEquals(testId, testRoomSlot.getId());
+  }
+
+  @Test
   public void test_RoomSlot_GetAndSetLocation() {
     testRoomSlot = new RoomSlot();
     testRoomSlot.setLocation(testLocation);
