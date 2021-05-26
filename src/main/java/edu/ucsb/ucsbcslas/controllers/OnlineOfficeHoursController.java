@@ -186,8 +186,8 @@ public class OnlineOfficeHoursController {
                 row = row.substring(1,row.length() - 1);
                 data = row.split("\",\"");
 
-                System.out.println(row);
-                // System.out.println(data[13]);
+                
+                
 
                 String name = data[0];
                 String quarter = data[1];
@@ -203,11 +203,11 @@ public class OnlineOfficeHoursController {
                 String endTime = data[11];
                 String zoomRoomLink = data[12];
                 String notes = data[13];
-                // System.out.println("hello"+row);
+                
                 row = csvReader.readLine();
-                System.out.println("!!!!!"+ data[1]);
+                
                 Course course = new Course(name,quarter,instructorFirstName,instructorLastName,instructorEmail);
-                // System.out.println(course.toString());
+                
                 Course existingCourse = courseRepository.findByNameAndQuarter(course.getName(), course.getQuarter());
                 if(existingCourse != null){
                     System.out.println(course.getName()+" already exist");
@@ -250,7 +250,7 @@ public class OnlineOfficeHoursController {
                 OnlineOfficeHours OH = null;
                 List<OnlineOfficeHours> existingOfficeHours = officeHoursRepository.findAllByTutorAssignment(TA);
                 for(int i = 0; i < existingOfficeHours.size(); i++ ){
-                    if (existingOfficeHours.get(i).getDayOfWeek() == dayOfWeek && existingOfficeHours.get(i).getStartTime() == startTime &&existingOfficeHours.get(i).getEndTime() == endTime){
+                    if (existingOfficeHours.get(i).getDayOfWeek().equals(dayOfWeek)  && existingOfficeHours.get(i).getStartTime().equals(startTime) &&existingOfficeHours.get(i).getEndTime().equals(endTime) ){
                         OH = existingOfficeHours.get(i);
                         
                     }
