@@ -55,12 +55,6 @@ public class RoomSlotControllerTests {
   @MockBean
   RoomSlotRepository mockRoomSlotRepository;
   
-  @MockBean
-  TutorAssignmentRepository mockTutorAssignmentRepository;
-
-  @MockBean
-  TutorRepository mockTutorRepository;
-  
   private String userToken() {
       return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
     }
@@ -70,12 +64,13 @@ public class RoomSlotControllerTests {
     @Test
     public void testGetRoomSlot() throws Exception {
       List<RoomSlot> expectedRoomSlots = new ArrayList<RoomSlot>();
-      TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-      expectedRoomSlots.add(new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00", "link", "notes"));
-      // (Long id, TutorAssignment tutorAssignment, String dayOfWeek, String
-      // startTime, String endTime, String zoomRoomLink, String notes)
+      expectedRoomSlots.add(new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00"));
+      // (Long id, quarter, String dayOfWeek, String
+      // startTime, String endTime)
+
       when(mockRoomSlotRepository.findAll()).thenReturn(expectedRoomSlots);
-      MvcResult response = mockMvc.perform(get("/api/roomslot").contentType("application/json")
+
+      MvcResult response = mockMvc.perform(get("/api/public/roomslot").contentType("application/json")
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
       verify(mockRoomSlotRepository, times(1)).findAll();
@@ -89,12 +84,8 @@ public class RoomSlotControllerTests {
 
     @Test
     public void testGetASingleRoomSlot() throws Exception {
-      Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-      Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName",
-          "String instructorLastName", "String instructorEmail");
-      TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00",
-          "link", "notes");
+        RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");
+        
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
       MvcResult response = mockMvc.perform(get("/api/roomslot/1").contentType("application/json")
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -117,11 +108,7 @@ public class RoomSlotControllerTests {
     //Need admin in the path of api or not??
     @Test
     public void testSaveRoomSlot() throws Exception {
-      Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-      Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName",
-          "String instructorLastName", "String instructorEmail");
-      TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00", "link", "notes");
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");
       ObjectMapper mapper = new ObjectMapper();
       String requestBody = mapper.writeValueAsString(expectedRoomSlots);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -138,30 +125,21 @@ public class RoomSlotControllerTests {
       assertEquals(actualRoomSlots, expectedRoomSlots);
     }
     
-    //same here
     @Test
     public void test_saveRoomSlot_unauthorizedIfNotAdmin() throws Exception {
-      Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-      Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName",
-          "String instructorLastName", "String instructorEmail");
-      TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00",
-          "link", "notes");
-      ObjectMapper mapper = new ObjectMapper();
-      String requestBody = mapper.writeValueAsString(expectedRoomSlots);
-      mockMvc.perform(post("/api/admin/roomslot").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");    
+        ObjectMapper mapper = new ObjectMapper();    
+        String requestBody = mapper.writeValueAsString(expectedRoomSlots);
+          mockMvc.perform(post("/api/admin/roomslot").with(csrf()).contentType(MediaType.APPLICATION_JSON)
           .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-          .andExpect(status().isUnauthorized());
-    }
+              .andExpect(status().isUnauthorized());
+    
+        }
 
     //same here
     @Test
     public void testDeleteRoomSlot_RoomSlotExists() throws Exception {
-      Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-      Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName",
-          "String instructorLastName", "String instructorEmail");
-      TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, tutorAssignment, "Wednesday", "8:00", "10:00", "link", "notes");
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "s21", "Wednesday", "8:00", "10:00");
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
       MvcResult response = mockMvc
@@ -185,17 +163,15 @@ public class RoomSlotControllerTests {
           .andExpect(status().isUnauthorized());
     }
 
-    //also same here
     @Test
-    public void testDeleteRoomSlot_courseNotFound() throws Exception {
-      long id = 1L;
-      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-      when(mockRoomSlotRepository.findById(id)).thenReturn(Optional.empty());
-      mockMvc
-          .perform(delete("/api/admin/roomslot/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-          .andExpect(status().isNotFound()).andReturn();
-      verify(mockRoomSlotRepository, times(1)).findById(id);
-      verify(mockRoomSlotRepository, times(0)).deleteById(id);
+    public void testDeleteRoomSlot_slotNotFound() throws Exception {
+        long id = 1L;
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockRoomSlotRepository.findById(id)).thenReturn(Optional.empty());
+        mockMvc.perform(delete("/api/admin/roomslot/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                .andExpect(status().isNotFound()).andReturn();
+        verify(mockRoomSlotRepository, times(1)).findById(id);
+        verify(mockRoomSlotRepository, times(0)).deleteById(id);
     }
-  }
+}
