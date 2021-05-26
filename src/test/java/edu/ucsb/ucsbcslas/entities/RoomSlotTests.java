@@ -3,96 +3,71 @@ package edu.ucsb.ucsbcslas.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
+import java.time.LocalTime;
+import java.time.DayOfWeek;
 
 public class RoomSlotTests {
+
+  public static RoomSlot testRoomSlot;
+  public static Long testId; // testId for the ActiveQuarter
+  public static String testLocation = "Campus Point";
+  public static ActiveQuarter testQuarter = new ActiveQuarter(testId, "Campus Point");
+  public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
+  public static LocalTime testStartTime = LocalTime.NOON;
+  public static LocalTime testEndTime = LocalTime.MIDNIGHT;
 
   // test getter and setters
   @Test
   public void test_RoomSlot_GetAndSetLocation() {
-    RoomSlot testRoomSlot = new RoomSlot();
-    testRoomSlot.setLocation("Campus Point");
-    assertEquals("Campus Point", testRoomSlot.getLocation());
+    testRoomSlot = new RoomSlot();
+    testRoomSlot.setLocation(testLocation);
+    assertEquals(testLocation, testRoomSlot.getLocation());
   }
 
   @Test
   public void test_RoomSlot_GetAndSetQuarter() {
-    RoomSlot testRoomSlot = new RoomSlot();
-    testRoomSlot.setActiveQuarter(ActiveQuarter(1L, "Campus Point"));
-    assertEquals("Campus Point", testRoomSlot.getLocation());
+    testRoomSlot = new RoomSlot();
+    testRoomSlot.setActiveQuarter(testQuarter);
+    assertEquals(testQuarter, testRoomSlot.getLocation());
   }
 
   @Test
-  public void test_RoomSlot_GetAndSetLocation() {
-    RoomSlot testRoomSlot = new RoomSlot();
-    testRoomSlot.setLocation("Campus Point");
-    assertEquals("Campus Point", testRoomSlot.getLocation());
+  public void test_RoomSlot_GetAndSetDayOfWeek() {
+    testRoomSlot = new RoomSlot();
+    testRoomSlot.setDayOfWeek(testDayOfWeek);
+    assertEquals(testDayOfWeek, testRoomSlot.getDayOfWeek());
   }
 
   @Test
-  public void test_RoomSlot_GetAndSetLocation() {
-    RoomSlot testRoomSlot = new RoomSlot();
-    testRoomSlot.setLocation("Campus Point");
-    assertEquals("Campus Point", testRoomSlot.getLocation());
+  public void test_RoomSlot_GetAndSetStartTime() {
+    testRoomSlot = new RoomSlot();
+    testRoomSlot.setStartTime(testStartTime);
+    assertEquals(testStartTime, testRoomSlot.getStartTime());
   }
 
   @Test
-  public void test_RoomSlot_GetAndSetLocation() {
-    RoomSlot testRoomSlot = new RoomSlot();
-    testRoomSlot.setLocation("Campus Point");
-    assertEquals("Campus Point", testRoomSlot.getLocation());
-  }
-
-  // test equality
-  @Test
-  public void test_RoomSlot_Equality() {
-    RoomSlot testRoomSlot = new RoomSlot();
-    testRoomSlot.setLocation("Campus Point");
-    assertEquals("Campus Point", testRoomSlot.getLocation());
+  public void test_RoomSlot_GetAndSetEndTime() {
+    testRoomSlot = new RoomSlot();
+    testRoomSlot.setEndTime(testEndTime);
+    assertEquals(testEndTime, testRoomSlot.getLocation());
   }
 
   // test overloaded constructor with all fields
   @Test
   public void test_RoomSlot_OverloadedConstructor() {
-    RoomSlot testRoomSlot = new RoomSlot("The Lagoon", ActiveQuarter(id, "S21"),
-      DayOfWeek.Saturday,
-      LocalTime.parse("13:00:00", DateTimeFormatter.ISO_TIME),
-      LocalTime.parse("14:00:00", DateTimeFormatter.ISO_TIME));
-  }
+    testRoomSlot = new RoomSlot(testId,
+            testLocation,
+            testQuarter,
+            testDayOfWeek,
+            testStartTime,
+            testEndTime);
 
-
-
-
-
-  @Test
-  public void testActiveQuarter_getAndSetId() {
-    ActiveQuarter q = new ActiveQuarter();
-    q.setId(4L);
-    assertEquals(4L, q.getId());
-  }
-
-  @Test
-  public void testActiveQuarter_notEqualNull() {
-    ActiveQuarter q = new ActiveQuarter();
-    assertNotEquals(q, null);
-  }
-
-  @Test
-  public void testActiveQuarter_notEqualDifferentClass() {
-    ActiveQuarter q = new ActiveQuarter();
-    assertNotEquals(q, new Object());
-  }
-
-  @Test
-  public void testAdmin_equalsSelf() {
-    ActiveQuarter q = new ActiveQuarter();
-    assertEquals(q, q);
-  }
-
-  @Test
-  public void testAdmin_equalsCopy() {
-    ActiveQuarter q1 = new ActiveQuarter();
-    ActiveQuarter q2 = new ActiveQuarter();
-    assertEquals(q1, q2);
+    assertEquals(testId, testRoomSlot.getId());
+    assertEquals(testLocation, testRoomSlot.getLocation());
+    assertEquals(testQuarter, testRoomSlot.getQuarter());
+    assertEquals(testDayOfWeek, testRoomSlot.getDayOfWeek());
+    assertEquals(testStartTime, testRoomSlot.getStartTime());
+    assertEquals(testEndTime, testRoomSlot.getEndTime());
   }
 
 }
