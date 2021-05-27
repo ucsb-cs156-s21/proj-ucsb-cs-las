@@ -71,8 +71,8 @@ const TutorAssignment = () => {
   return (
     <>
       {isInstructor && newTutorAssignmentButton}
-      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
       <Button><CSVLink style={{color: "white"}} headers={headers} data={tutorAssignmentList} filename = {"TutorAssignments.csv"}>Download CSV</CSVLink></Button>
+      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
     </>
   );
 };
