@@ -205,7 +205,7 @@ public class OnlineOfficeHoursController {
                     related_tutor = tutorRepository.save(tutor);
                 }
                 else{
-                    related_tutor = existingTutor.get();//need test
+                    related_tutor = existingTutor.get();
                 }
 
                 
@@ -219,7 +219,7 @@ public class OnlineOfficeHoursController {
                     TA = tutorAssignmentRepository.save(tutorAssignment);
                 }
                 else{
-                    TA = comm.get(0);//need test
+                    TA = comm.get(0);
                 }
                 
 
@@ -227,7 +227,7 @@ public class OnlineOfficeHoursController {
                 List<OnlineOfficeHours> existingOfficeHours = officeHoursRepository.findAllByTutorAssignment(TA);
                 for(int i = 0; i < existingOfficeHours.size(); i++ ){
                     if (existingOfficeHours.get(i).getDayOfWeek().equals(dayOfWeek)  && existingOfficeHours.get(i).getStartTime().equals(startTime) &&existingOfficeHours.get(i).getEndTime().equals(endTime) ){
-                        OH = existingOfficeHours.get(i);//need test
+                        OH = existingOfficeHours.get(i);
                         
                     }
                 }
