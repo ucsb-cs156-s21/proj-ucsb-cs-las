@@ -38,12 +38,13 @@ public class RoomSlotController {
     @Autowired
     private RoomSlotRepository roomSlotRepository;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
         response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
-        String body = mapper.writeValueAsString(response);
+        String body = objectMapper.writeValueAsString(response);
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
@@ -59,7 +60,7 @@ public class RoomSlotController {
            return getUnauthorizedResponse("admin");
 
         RoomSlot savedRoomSlot = roomSlotRepository.save(roomSlot);
-        String body = mapper.writeValueAsString(savedRoomSlot);
+        String body = objectMapper.writeValueAsString(savedRoomSlot);
         return ResponseEntity.ok().body(body);
     }
 
@@ -85,9 +86,8 @@ public class RoomSlotController {
     @GetMapping(value = "/api/public/roomslot", produces = "application/json")
     public ResponseEntity<String> getRoomSlots() throws JsonProcessingException {
         List<RoomSlot> roomSlotList = roomSlotRepository.findAll();
-        ObjectMapper mapper = new ObjectMapper();
 
-        String body = mapper.writeValueAsString(roomSlotList);
+        String body = objectMapper.writeValueAsString(roomSlotList);
         return ResponseEntity.ok().body(body);
     }
 
@@ -99,8 +99,7 @@ public class RoomSlotController {
         if (roomSlot.isEmpty())
             return ResponseEntity.notFound().build();
 
-        ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(roomSlot.get());
+        String body = objectMapper.writeValueAsString(roomSlot.get());
         return ResponseEntity.ok().body(body);
     }
 

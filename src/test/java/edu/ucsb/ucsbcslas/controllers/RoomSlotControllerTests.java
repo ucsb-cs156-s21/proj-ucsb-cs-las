@@ -119,8 +119,7 @@ public class RoomSlotControllerTests {
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);
       RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);
-      ObjectMapper mapper = new ObjectMapper();
-      String requestBody = mapper.writeValueAsString(expectedRoomSlots);
+      String requestBody = objectMapper.writeValueAsString(expectedRoomSlots);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
       when(mockRoomSlotRepository.save(any())).thenReturn(expectedRoomSlots);
       MvcResult response = mockMvc.perform(
@@ -142,8 +141,7 @@ public class RoomSlotControllerTests {
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);    
       RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);    
-      ObjectMapper mapper = new ObjectMapper();    
-      String requestBody = mapper.writeValueAsString(expectedRoomSlots);
+      String requestBody = objectMapper.writeValueAsString(expectedRoomSlots);
         mockMvc.perform(post("/api/admin/roomslot").with(csrf()).contentType(MediaType.APPLICATION_JSON)
         .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
             .andExpect(status().isUnauthorized());
