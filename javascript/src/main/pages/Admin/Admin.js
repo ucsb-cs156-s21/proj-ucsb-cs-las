@@ -42,7 +42,7 @@ const Admin = () => {
     mutateAdmins();
   }
 
-  const headers = [{
+  const adminHeaders = [{
     key: 'id',
     label: 'Id'
   }, {
@@ -55,11 +55,30 @@ const Admin = () => {
     key: 'lastName',
     label: 'Last Name'
   }];
+
+  const userHeaders = [{
+    key: 'id',
+    label: 'Id'
+  }, {
+    key: 'email',
+    label: 'Email'
+  }, {
+    key: 'firstName',
+    label: 'First Name'
+  }, {
+    key: 'lastName',
+    label: 'Last Name'
+  }, {
+    key: 'role',
+    label: 'Role'
+  }];
   
   var adminList = [];
+  var userList = [];
   if (users){
     users.map(user => {
       const admin = getAdminForUser(user, admins);
+      const role = admin ? "Admin" : "User";
       if (admin){
         var obj = { 
             id: user.id,
@@ -69,6 +88,14 @@ const Admin = () => {
         };
         adminList.push(obj);
       }
+      var obj1 = { 
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: role,
+      };
+      userList.push(obj1);
       return adminList;
     })
   }
@@ -120,7 +147,8 @@ const Admin = () => {
           }
         </tbody>
       </Table>
-      <Button><CSVLink style={{color: "white"}} headers={headers} data={adminList} filename = {"Admins.csv"}>Download Admins CSV</CSVLink></Button>
+      <Button><CSVLink style={{color: "white"}} headers={adminHeaders} data={adminList} filename = {"Admins.csv"}>Download Admins CSV</CSVLink></Button>
+      <Button><CSVLink style={{color: "white"}} headers={userHeaders} data={userList} filename = {"Users.csv"}>Download Users CSV</CSVLink></Button>
     </>
   );
 }
