@@ -49,7 +49,7 @@ public class RoomSlotController {
 
     
     // create room slot
-    @PostMapping(value = "/api/roomslot", produces = "application/json")
+    @PostMapping(value = "/api/admin/roomslot", produces = "application/json")
     public ResponseEntity<String> createRoomSlot(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid RoomSlot roomSlot) throws JsonProcessingException {
 
@@ -65,7 +65,7 @@ public class RoomSlotController {
 
 
     // delete room slot by ID
-    @DeleteMapping(value = "/api/roomslot/{id}", produces = "application/json")
+    @DeleteMapping(value = "/api/admin/roomslot/{id}", produces = "application/json")
     public ResponseEntity<String> deleteRoomSlot(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
               
@@ -82,7 +82,7 @@ public class RoomSlotController {
     }
 
     // get all room slots
-    @GetMapping(value = "/api/roomslot", produces = "application/json")
+    @GetMapping(value = "/api/public/roomslot", produces = "application/json")
     public ResponseEntity<String> getRoomSlots() throws JsonProcessingException {
         List<RoomSlot> roomSlotList = roomSlotRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
@@ -92,7 +92,7 @@ public class RoomSlotController {
     }
 
     // get room slot by ID
-    @GetMapping(value = "/api/roomslot/{id}", produces = "application/json")
+    @GetMapping(value = "/api/public/roomslot/{id}", produces = "application/json")
     public ResponseEntity<String> getRoomSlot(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<RoomSlot> roomSlot = roomSlotRepository.findById(id);
 

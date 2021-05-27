@@ -93,7 +93,7 @@ public class RoomSlotControllerTests {
       RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);
         
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
-      MvcResult response = mockMvc.perform(get("/api/roomslot/1").contentType("application/json")
+      MvcResult response = mockMvc.perform(get("/api/public/roomslot/1").contentType("application/json")
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
       verify(mockRoomSlotRepository, times(1)).findById(1L);
@@ -106,7 +106,7 @@ public class RoomSlotControllerTests {
     @Test
     public void testGetANonExistingRoomSlot() throws Exception {
       when(mockRoomSlotRepository.findById(99999L)).thenReturn(Optional.ofNullable(null));
-      mockMvc.perform(get("/api/roomslot/99999").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
+      mockMvc.perform(get("/api/public/roomslot/99999").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
           "Bearer " + userToken())).andExpect(status().isNotFound());
     }
     
