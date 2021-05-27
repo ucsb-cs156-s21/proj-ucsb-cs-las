@@ -10,11 +10,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-//new
-import org.springframework.web.multipart.MultipartFile;
+
+// import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.test.web.servlet.ResultActions;
+// import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.View;
 import static org.mockito.Mockito.eq;
@@ -44,6 +44,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
@@ -72,6 +73,9 @@ public class OnlineOfficeHourControllerTests {
   
     @MockBean
     TutorAssignmentRepository mockTutorAssignmentRepository;
+
+    @MockBean
+    CourseRepository mockCourseRepository;
 
     @MockBean
     TutorRepository mockTutorRepository;
@@ -209,24 +213,31 @@ public class OnlineOfficeHourControllerTests {
     }
 
     @Test
+    //NEED TO BE FIXED
     public void testUploadFile() throws Exception{
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
-        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
-        TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
+        Tutor t = new Tutor( "String firstName", "String lastName", "email@ucsb.edu");
+        Course c = new Course("String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
+        TutorAssignment tutorAss = new TutorAssignment( c, t, "String assignmentType");
         
-        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes"));
-        when(mockCSVToObjectService.parse(any(Reader.class), eq(OnlineOfficeHours.class))).thenReturn(expectedOfficeHours);
+        expectedOfficeHours.add(new OnlineOfficeHours( tutorAss,"Wednesday", "8:00", "10:00", "link", "notes"));
+        
+        String fcontent = "String name,F20,String instructorFirstName,String instructorLastName,insEmail@ucsb.edu,String firstName,String lastName,String email,String assignmentType,Wednesday,8:00,10:00,link,notes";
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockOnlineOfficeHoursRepository.save(any())).thenReturn(expectedOfficeHours);
         MockMultipartFile mockFile = new MockMultipartFile(
             "csv",
             "test.csv",
             MediaType.TEXT_PLAIN_VALUE,
-            "value,done\ntodo,false".getBytes()
+            fcontent.getBytes("utf-8")
         );
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        MvcResult response = mockMvc.perform(multipart("/api/admin/officehours/upload").file(mockFile)
+        mockMvc
+            .perform(post("/api/admin/officehours/upload").file(mockFile)
+            .characterEncoding("utf-8")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-            .andExpect(status().isOk()).andReturn();
+            .andExpect(status().isOk())
+            .andReturn();
         verify(mockOnlineOfficeHoursRepository, times(1)).saveAll(expectedOfficeHours);
     }
 

@@ -54,4 +54,25 @@ public class TutorTests {
     assertEquals(expected, t1.toString());
   }
 
+  @Test
+  public void testWithoutID_equalsAnother() throws Exception {
+    Tutor t1 = new Tutor("Chris", "Gaucho", "cgaucho@example.org");
+    Tutor t2 = new Tutor("Chris", "Gaucho", "cgaucho@example.org");
+    assertEquals(t1, t2);
+  }
+
+  @Test
+  public void testWithoutID_hashCode() throws Exception {
+    Tutor t1 = new Tutor("Chris", "Gaucho", "cgaucho@example.org");
+    Tutor t2 = new Tutor("Chris", "Gaucho", "cgaucho@example.org");
+    assertEquals(t1.hashCode(), t2.hashCode());
+  }
+
+  @Test
+  public void testWithoutID_toString() throws Exception {
+    Tutor t1 = new Tutor( "Chris", "Gaucho", "cgaucho@example.org");
+    String expected = "{ id=null, firstName='Chris', lastName='Gaucho', email='cgaucho@example.org'}";
+    assertEquals(expected, t1.toString());
+  }
+
 }

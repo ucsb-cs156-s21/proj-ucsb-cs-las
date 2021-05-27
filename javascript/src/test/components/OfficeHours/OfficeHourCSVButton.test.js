@@ -13,7 +13,7 @@ describe("Office Hour CSV Upload test", () => {
     const user = {
         name: "test user",
     };
-    const officehours = [
+    const courses = [
         {
             name: "CMPSC 156",
             id: 1,
@@ -39,7 +39,7 @@ describe("Office Hour CSV Upload test", () => {
             getAccessTokenSilently: getAccessTokenSilentlySpy,
         });
         useSWR.mockReturnValue({
-            data: officehours,
+            data: courses,
             error: undefined,
             mutate: mutateSpy,
         });
