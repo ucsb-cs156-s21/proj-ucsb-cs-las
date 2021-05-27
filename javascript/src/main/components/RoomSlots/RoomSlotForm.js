@@ -10,9 +10,9 @@ const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =
     const emptyRoomSlot = {
         location: "",
         quarter: "",
+        dayOfWeek: "Monday",
         startTime: "",
-        endTime: "",
-        dayOfWeek: "Monday"
+        endTime: ""
     }
 
     const [roomSlot, setRoomSlot] = useState(emptyRoomSlot);
@@ -46,6 +46,11 @@ const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =
 
     function checkInputs(){
         const validList = [];
+
+        //check location
+        const locationValid = checkFilled(roomSlot.name);
+        addFormEffects(locationRef, locationValid);
+        validList.push(locationValid);
 
         //check valid quarter
         const quarterValid = checkCourseQuarter(roomSlot.quarter);
