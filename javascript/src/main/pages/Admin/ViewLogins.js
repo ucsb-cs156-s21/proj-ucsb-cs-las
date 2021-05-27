@@ -29,6 +29,7 @@ const ViewLogins = () => {
     <>
       <h2 className="text-left">Login History</h2>
       <Button><CSVLink style={{color: "white"}} headers={headers} data={loginTable || []} filename = {"LoginTable.csv"}>Download CSV</CSVLink></Button>
+      {loginTable && <p className="text-left">Number of logins: {loginTable.length}</p>}
       <LoginTable loginTable={loginTable || []} admin={true}/>
     </>
   );
