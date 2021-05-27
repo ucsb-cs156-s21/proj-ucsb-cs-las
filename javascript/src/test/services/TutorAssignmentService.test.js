@@ -1,4 +1,4 @@
-import { buildCreateTutorAssignment, buildUpdateTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
+import { buildCreateTutorAssignment, buildUpdateTutorAssignment, uploadTutorAssignmentCSV } from "main/services/TutorAssignment/TutorAssignmentService";
 
 import { fetchWithToken } from "main/utils/fetch";
 
@@ -39,6 +39,19 @@ describe("TutorAssignmentService tests", () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
         const updateTutorAssignment = buildUpdateTutorAssignment(getToken, onSuccess, onError);
         await updateTutorAssignment();
+        expect(onError).toBeCalledTimes(1);
+    });
+
+    test("uploadTutorAssignmentCSV and invoke uploadTutorAssignment", async () => {
+        const uploadTutorAssignment = uploadTutorAssignmentCSV(getToken, onSuccess, onError);
+        await uploadTutorAssignment();
+        expect(onSuccess).toBeCalledTimes(1);
+    });
+
+    test("uploadTutorAssignmentCSV where we expect onError to be called", async () => {
+        fetchWithToken.mockImplementation( async () => { throw new Error("mock error");});
+        const uploadTutorAssignment = uploadTutorAssignmentCSV(getToken, onSuccess, onError);
+        await uploadTutorAssignment();
         expect(onError).toBeCalledTimes(1);
     });
 

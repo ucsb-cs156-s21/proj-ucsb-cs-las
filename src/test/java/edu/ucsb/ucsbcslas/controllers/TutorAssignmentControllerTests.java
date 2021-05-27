@@ -24,6 +24,7 @@ import org.junit.Ignore;
 import java.io.IOException;
 import java.io.Reader;
 import edu.ucsb.ucsbcslas.services.CSVToObjectService;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -591,9 +592,12 @@ public class TutorAssignmentControllerTests {
         assertEquals(actualCourseNumber, expectedCourseNumbers);
     }
 
+    // This test currently passes
+
     @Test
     public void testUploadFileThrowsRuntime() throws Exception {
-        TutorAssignmentController tutorAssignmentController = mock(TutorAssignmentController.class);
+        // TutorAssignmentController tutorAssignmentController =
+        // mock(TutorAssignmentController.class);
         when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignment.class)))
                 .thenThrow(RuntimeException.class);
         MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
@@ -609,12 +613,14 @@ public class TutorAssignmentControllerTests {
 
     @Test
     public void testUploadFile() throws Exception {
-        List<TutorAssignment> expectedTutorAssignment = new ArrayList<TutorAssignment>();
+        List<TutorAssignmentModel> expectedTutorAssignmentModel = new ArrayList<TutorAssignmentModel>();
+        expectedTutorAssignmentModel.add(new TutorAssignmentModel("CMPSC 48", "20201", "Joe", "Gaucho",
+                "joegaucho@ucsb.edu", "Joe", "Gaucho", "joegaucho@ucsb.edu", "LA"));
         Course testCour = new Course("CMPSC 48", "20201", "Joe", "Gaucho", "joegaucho@ucsb.edu");
         Tutor testTut = new Tutor("Joe", "Gaucho", "joegaucho@ucsb.edu");
-        expectedTutorAssignment.add(new TutorAssignment(testCour, testTut, "LA"));
-        when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignment.class)))
-                .thenReturn(expectedTutorAssignment);
+        TutorAssignment testTutorAssignment = new TutorAssignment(testCour, testTut, "LA");
+        when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
+                .thenReturn(expectedTutorAssignmentModel);
         MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
                 "value,done\ntodo,false".getBytes());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -622,7 +628,10 @@ public class TutorAssignmentControllerTests {
                 .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer" + userToken()))
                 .andExpect(status().isOk()).andReturn();
-        verify(mockTutorAssignmentRepository, times(1)).saveAll(expectedTutorAssignment);
+        verify(mockTutorAssignmentRepository, times(1)).save(testTutorAssignment);
+        verify(mockTutorRepository, times(1)).save(testTut);
+        verify(mockCourseRepository, times(1)).save(testCour);
+
     }
 
 }
