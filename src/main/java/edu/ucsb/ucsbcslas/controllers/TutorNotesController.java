@@ -151,7 +151,7 @@ public class TutorNotesController {
         return getUnauthorizedResponse("member");
     }
     
-    @GetMapping(value = "/api/public/tutorNotes/{course_id}", produces = "application/json")
+    @GetMapping(value = "/api/member/tutorNotes/{course_id}", produces = "application/json")
     public ResponseEntity<String> getTutorNotesByCourseID(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
         List<TutorNotes> tutorNotes = tutorNotesRepository.findAllByCourseId(course_id);
 
@@ -166,7 +166,7 @@ public class TutorNotesController {
      * @return response containing a list of all course numbers
      * @throws JsonProcessingException
      */
-    @GetMapping(value = "/api/public/tutorNotes/course_numbers", produces = "application/json")
+    @GetMapping(value = "/api/member/tutorNotes/course_numbers", produces = "application/json")
     public ResponseEntity<String> getCourseNumbers() throws JsonProcessingException {
         List<TutorNotes> tutorNotes = tutorNotesRepository.findAll();
         Set<String> courseNumbers = new HashSet<String>();
@@ -180,7 +180,7 @@ public class TutorNotesController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping(value = "/api/public/tutorNotes/byCourseNumber/{courseNumber}", produces = "application/json")
+    @GetMapping(value = "/api/member/tutorNotes/byCourseNumber/{courseNumber}", produces = "application/json")
     public ResponseEntity<String> getTutorNotesByCourseID(@PathVariable("courseNumber") String courseNumber)
             throws JsonProcessingException {
         List<TutorNotes> tutorNotes = tutorNotesRepository.findAll();
