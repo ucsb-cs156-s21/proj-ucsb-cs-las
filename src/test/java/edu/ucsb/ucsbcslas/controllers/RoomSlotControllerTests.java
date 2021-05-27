@@ -10,7 +10,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.lang.IllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.Assert.fail;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
@@ -34,9 +32,6 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.RoomSlot;
 import edu.ucsb.ucsbcslas.repositories.RoomSlotRepository;
 import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
-import edu.ucsb.ucsbcslas.repositories.ActiveQuarterRepository;
-import edu.ucsb.ucsbcslas.models.Course;
-import jdk.jfr.Timestamp;
 
 import java.time.LocalTime;
 import java.time.DayOfWeek;
@@ -44,22 +39,22 @@ import java.time.DayOfWeek;
 @WebMvcTest(value = RoomSlotController.class)
 @WithMockUser
 public class RoomSlotControllerTests {
-  @Autowired
-  private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-  @MockBean
-  AuthControllerAdvice mockAuthControllerAdvice;
+    @MockBean
+    private AuthControllerAdvice mockAuthControllerAdvice;
 
-  @MockBean
-  RoomSlotRepository mockRoomSlotRepository;
+    @MockBean
+    private RoomSlotRepository mockRoomSlotRepository;
   
-  private String userToken() {
+    private String userToken() {
+      // Return a dummy JWT for testing purposes
       return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
     }
-    
     
     @Test
     public void testGetRoomSlot() throws Exception {
