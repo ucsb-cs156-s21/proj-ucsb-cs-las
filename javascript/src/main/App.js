@@ -28,6 +28,7 @@ import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment"
 import QuarterFilter from "main/pages/Admin/QuarterFilter"
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import CourseShow from "main/pages/Courses/CourseShow";
+import TutorNotes from "main/pages/TutorNotes/TutorNotes";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -69,6 +70,7 @@ function App() {
           />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignments" exact component={TutorAssignments} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/tutorNotes" exact component={TutorNotes} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
