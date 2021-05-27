@@ -1,32 +1,51 @@
 import React from 'react';
 
-import UpcomingTable from "main/components/OfficeHours/UpcomingTable";
+import UpcomingOfficeHourTable from "main/components/OfficeHours/UpcomingOfficeHourTable";
 
 export default {
 
-    title: 'components/OfficeHours/UpcomingTable',
-    component: UpcomingTable
+    title: 'components/OfficeHours/UpcomingOfficeHourTable',
+    component: UpcomingOfficeHourTable
 
 };
 
-const Template = args => <UpcomingTable {...args} />;
+// template for office hour table
+const Template = args => <UpcomingOfficeHourTable {...args} />;
 
-// Empty (default) table
-
+// copy template as empty table
 export const Empty = Template.bind({});
 
 Empty.args = {
 
-    courses: []
+    courses: [],
+    roomslots: []
 
 };
 
-// Table with some courses and room slots listed
-
+// copy template with some dummy data
 export const Demo = Template.bind({});
 
 Demo.args = {
 
-
+    /*
+    courses: [
+        {
+            name: "CMPSC 156",
+            id: 1,
+            quarter: "F20",
+            instructorFirstName: "Phill",
+            instructorLastName: "Conrad",
+            instructorEmail: "phtcon@ucsb.edu",
+        },
+        {
+            name: "CMPSC 148",
+            id: 2,
+            quarter: "F20",
+            instructorFirstName: "Chandra",
+            instructorLastName: "Krintz",
+            instructorEmail: "krintz@example.org",
+        },
+    ]
+    */
 
 };
