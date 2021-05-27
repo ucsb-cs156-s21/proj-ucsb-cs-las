@@ -28,7 +28,7 @@ var OfficeHourCSVButton = ({ addTask }) => {
                                 type="file"
                                 accept=".csv"
                                 id="custom-file-input"
-                                label="Upload a CSV of courses (quarter must be in numerical format, Ex: 20211)"
+                                label="Upload a CSV of OfficeHours, format: Course, quarter, Instructor's first name, Instructor's last name, instructor's email, Tutor's First name, Tutor's last name, Tutor's email, Tutor's position, Day of the week, Start time, End time, zoom link, note"
                                 data-testid="csv-input"
                                 custom
                                 onChange={event => {setFile(event.currentTarget.files[0])}}
