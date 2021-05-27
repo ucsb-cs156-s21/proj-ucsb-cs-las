@@ -465,7 +465,7 @@ public class TutorNotesControllerTests {
         expectedTutorNotes.add(new TutorNotes(1L, c, t, "TA"));
          // mockito is the library that allows us to do this when stuf
          when(mockTutorNotesRepository.findAllByCourseId(1L)).thenReturn((expectedTutorNotes));
-         MvcResult response = mockMvc.perform(get("/api/public/tutorNotes/1").contentType("application/json")
+         MvcResult response = mockMvc.perform(get("/api/member/tutorNotes/1").contentType("application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
         
             verify(mockTutorNotesRepository, times(1)).findAllByCourseId(1L);
@@ -514,7 +514,7 @@ public class TutorNotesControllerTests {
         expectedTutorNotes.add(new TutorNotes(1L,c1,t1,"TA"));
 
         when(mockTutorNotesRepository.findAll()).thenReturn((resultingTutorNotes));
-        MvcResult response = mockMvc.perform(get("/api/public/tutorNotes/byCourseNumber/course 1").contentType("application/json")
+        MvcResult response = mockMvc.perform(get("/api/member/tutorNotes/byCourseNumber/course 1").contentType("application/json")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();    
         verify(mockTutorNotesRepository, times(1)).findAll();
         //for in list get name course                                                                          
@@ -538,7 +538,7 @@ public class TutorNotesControllerTests {
         expectedCourseNumbers.add(notes.getCourse().getName());
 
         when(mockTutorNotesRepository.findAll()).thenReturn((expectedTutorNotes));
-        MvcResult response = mockMvc.perform(get("/api/public/tutorNotes/course_numbers").contentType("application/json")
+        MvcResult response = mockMvc.perform(get("/api/member/tutorNotes/course_numbers").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
 
         verify(mockTutorNotesRepository, times(1)).findAll();
