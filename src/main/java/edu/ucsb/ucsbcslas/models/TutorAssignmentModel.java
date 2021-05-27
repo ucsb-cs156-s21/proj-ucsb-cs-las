@@ -149,14 +149,18 @@ public class TutorAssignmentModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseName, quarter, instructorFirstName, instructorEmail, instructorLastName,
+        return Objects.hash(courseName, quarter, instructorFirstName, instructorLastName, instructorEmail,
                 tutorFirstName, tutorLastName, tutorEmail, assignmentType);
     }
 
     @Override
     public String toString() {
-        return "{" + "'" + ", course='" + getCourseName() + "'" + ", tutor first name='" + getTutorFirstName() + "'"
-                + ", assignmentType='" + getAssignmentType() + "'" + "}";
+        return "{" + ", course='" + getCourseName() + "'" + ", quarter='" + getQuarter() + "'"
+                + ", instructorFirstName='" + getInstructorFirstName() + "'" + ", instructorLastName='"
+                + getInstructorLastName() + "'" + ", instructorEmail='" + getInstructorEmail() + ", " + "'"
+                + ", tutorFirstName='" + getTutorFirstName() + "'" + "'" + ", tutorLastName='" + getTutorLastName()
+                + "'" + ", tutorEmail='" + getTutorEmail() + "'" + ", assignmentType='" + getAssignmentType() + "'"
+                + "}";
     }
 
 }
