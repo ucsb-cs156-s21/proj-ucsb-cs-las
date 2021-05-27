@@ -25,10 +25,15 @@ const ViewLogins = () => {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data:loginTable } = useSWR(["/api/admin/logins", getToken], fetchWithToken);
 
+  if (loginTable){
+    var size = loginTable.length;
+  }
+
   return (
     <>
       <h2 className="text-left">Login History</h2>
       <Button><CSVLink style={{color: "white"}} headers={headers} data={loginTable || []} filename = {"LoginTable.csv"}>Download CSV</CSVLink></Button>
+      <p className="text-left">Number of logins: {size}</p>
       <LoginTable loginTable={loginTable || []} admin={true}/>
     </>
   );
