@@ -33,12 +33,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.RoomSlot;
 import edu.ucsb.ucsbcslas.repositories.RoomSlotRepository;
-import edu.ucsb.ucsbcslas.repositories.TutorRepository;
-import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
-import edu.ucsb.ucsbcslas.entities.Tutor;
-import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
+import edu.ucsb.ucsbcslas.repositories.ActiveQuarterRepository;
 import edu.ucsb.ucsbcslas.models.Course;
 import jdk.jfr.Timestamp;
+
+import java.time.LocalTime;
+import java.time.DayOfWeek;
 
 @WebMvcTest(value = RoomSlotController.class)
 @WithMockUser
@@ -63,9 +64,11 @@ public class RoomSlotControllerTests {
     @Test
     public void testGetRoomSlot() throws Exception {
       List<RoomSlot> expectedRoomSlots = new ArrayList<RoomSlot>();
-      expectedRoomSlots.add(new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00"));
-      // (Long id, location, quarter, String dayOfWeek, String
-      // startTime, String endTime)
+      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      DayOfWeek dayofWeek = DayOfWeek.of(1);
+      LocalTime startTime = LocalTime.of(8, 00, 00);
+      LocalTime endTime = LocalTime.of(10, 00, 00);
+      expectedRoomSlots.add(new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime));
 
       when(mockRoomSlotRepository.findAll()).thenReturn(expectedRoomSlots);
 
@@ -83,7 +86,11 @@ public class RoomSlotControllerTests {
 
     @Test
     public void testGetASingleRoomSlot() throws Exception {
-        RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");
+      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      DayOfWeek dayofWeek = DayOfWeek.of(1);
+      LocalTime startTime = LocalTime.of(8, 00, 00);
+      LocalTime endTime = LocalTime.of(10, 00, 00);
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);
         
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
       MvcResult response = mockMvc.perform(get("/api/roomslot/1").contentType("application/json")
@@ -107,7 +114,11 @@ public class RoomSlotControllerTests {
     //Need admin in the path of api or not??
     @Test
     public void testSaveRoomSlot() throws Exception {
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");
+      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      DayOfWeek dayofWeek = DayOfWeek.of(1);
+      LocalTime startTime = LocalTime.of(8, 00, 00);
+      LocalTime endTime = LocalTime.of(10, 00, 00);
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);
       ObjectMapper mapper = new ObjectMapper();
       String requestBody = mapper.writeValueAsString(expectedRoomSlots);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -126,19 +137,27 @@ public class RoomSlotControllerTests {
     
     @Test
     public void test_saveRoomSlot_unauthorizedIfNotAdmin() throws Exception {
-        RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");    
-        ObjectMapper mapper = new ObjectMapper();    
-        String requestBody = mapper.writeValueAsString(expectedRoomSlots);
-          mockMvc.perform(post("/api/admin/roomslot").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-              .andExpect(status().isUnauthorized());
+      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      DayOfWeek dayofWeek = DayOfWeek.of(1);
+      LocalTime startTime = LocalTime.of(8, 00, 00);
+      LocalTime endTime = LocalTime.of(10, 00, 00);    
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);    
+      ObjectMapper mapper = new ObjectMapper();    
+      String requestBody = mapper.writeValueAsString(expectedRoomSlots);
+        mockMvc.perform(post("/api/admin/roomslot").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+        .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isUnauthorized());
     
         }
 
     //same here
     @Test
     public void testDeleteRoomSlot_RoomSlotExists() throws Exception {
-      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", "s21", "Wednesday", "8:00", "10:00");
+      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      DayOfWeek dayofWeek = DayOfWeek.of(1);
+      LocalTime startTime = LocalTime.of(8, 00, 00);
+      LocalTime endTime = LocalTime.of(10, 00, 00);
+      RoomSlot expectedRoomSlots = new RoomSlot(1L, "location", activeQuarter, dayofWeek, startTime, endTime);
       when(mockRoomSlotRepository.findById(1L)).thenReturn(Optional.of(expectedRoomSlots));
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
       MvcResult response = mockMvc

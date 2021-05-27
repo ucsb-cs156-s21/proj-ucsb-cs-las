@@ -55,9 +55,8 @@ public class RoomSlotController {
 
         System.out.println(roomSlot.toString());
 
-        // should we require admin authorization to create a room?
-        //if (!authControllerAdvice.getIsAdmin(authorization))
-        //   return getUnauthorizedResponse("admin");
+        if (!authControllerAdvice.getIsAdmin(authorization))
+           return getUnauthorizedResponse("admin");
 
         RoomSlot savedRoomSlot = roomSlotRepository.save(roomSlot);
         String body = mapper.writeValueAsString(savedRoomSlot);
@@ -69,17 +68,16 @@ public class RoomSlotController {
     @DeleteMapping(value = "/api/roomslot/{id}", produces = "application/json")
     public ResponseEntity<String> deleteRoomSlot(@RequestHeader("Authorization") String authorization,
             @PathVariable("id") Long id) throws JsonProcessingException {
-            
-        // should we require admin authorization to delete a room?
-        // if (!authControllerAdvice.getIsAdmin(authorization))
-        //    return getUnauthorizedResponse("admin");
+              
+        if (!authControllerAdvice.getIsAdmin(authorization))
+           return getUnauthorizedResponse("admin");
         
         Optional<RoomSlot> roomSlot = roomSlotRepository.findById(id);
 
         if (!roomSlot.isPresent()) 
             return ResponseEntity.notFound().build();
         
-        RoomSlotRepository.deleteById(id);
+        roomSlotRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -89,7 +87,7 @@ public class RoomSlotController {
         List<RoomSlot> roomSlotList = roomSlotRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
 
-        String body = mapper.writeValueAsString(roomSlot);
+        String body = mapper.writeValueAsString(roomSlotList);
         return ResponseEntity.ok().body(body);
     }
 

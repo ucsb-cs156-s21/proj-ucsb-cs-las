@@ -5,31 +5,55 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import java.util.Objects;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.time.LocalTime;
+import java.time.DayOfWeek;
 
 @Entity
 public class RoomSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotNull
     @Column(nullable = false)
     private String location;
-    @Column(nullable = false)
-    private ActiveQuarter activeQuarter;
-    @Column(nullable = false)
-    private Time.DayOfWeek dayOfWeek;
-    @Column(nullable = false)
-    private Time.LocalTime startTime;
-    @Column(nullable = false)
-    private Time.LocalTime endTime;
 
-    public RoomSlot() {
-     }
+    @ManyToOne
+    @JoinColumn(name = "quarter")
+    public ActiveQuarter quarter;
 
-    public RoomSlot(Long id, String activeQuarter) {
+    @Column(nullable = false)
+    private DayOfWeek dayOfWeek;
+
+    @Column(nullable = false)
+    private LocalTime startTime;
+
+    @Column(nullable = false)
+    private LocalTime endTime;
+
+    public RoomSlot() { }
+
+    public RoomSlot(Long id) {
         this.id = id;
-        this.activeQuarter = activeQuarter;
+    }
+
+    public RoomSlot(Long id, String location,
+        ActiveQuarter quarter, DayOfWeek dayOfWeek,
+        LocalTime startTime, LocalTime endTime) 
+    {
+        this.id = id;
+        this.location = location;
+        this.quarter = quarter;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Long getId() {
@@ -48,35 +72,35 @@ public class RoomSlot {
         this.location = location;
     }
 
-    public ActiveQuarter getActiveQuarter() {
-        return this.activeQuarter;
+    public ActiveQuarter getQuarter() {
+        return this.quarter;
     }
 
-    public void setActiveQuarter(ActiveQuarter activeQuarter) {
-        this.activeQuarter = activeQuarter;
+    public void setQuarter(ActiveQuarter quarter) {
+        this.quarter = quarter;
     }
 
-    public String getDayOfWeek() {
+    public DayOfWeek getDayOfWeek() {
         return this.dayOfWeek;
     }
 
-    public void setDayOfWeek(Time.DayOfWeek dayOfWeek) {
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public Time.LocalTime getStartTime() {
+    public LocalTime getStartTime() {
         return this.startTime;
     }
 
-    public void setStartTime(Time.LocalTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Time.LocalTime getEndTime() {
+    public LocalTime getEndTime() {
         return this.endTime;
     }
 
-    public void setEndTime(Time.LocalTime EndTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
@@ -91,11 +115,11 @@ public class RoomSlot {
         RoomSlot other = (RoomSlot) o;
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(id, other.getId())
-               .append(location, other.getLocation(activeQuarter, other.getActiveQuarter())
-               .append(activeQuarter, other.getActiveQuarter())
+               .append(location, other.getLocation())
+               .append(quarter, other.getQuarter())
                .append(dayOfWeek, other.getDayOfWeek())
-               .append(startTime, other.getStartTime()
-               .append(endTime, other.getEndTime()));
+               .append(startTime, other.getStartTime())
+               .append(endTime, other.getEndTime());
 
         return builder.isEquals();
     }
@@ -103,10 +127,10 @@ public class RoomSlot {
     @Override
     public String toString() {
         return "{" + " id='" + getId() + "'" 
-        + ", activeQuarter='" + getLocation() + "'" 
-        + ", activeQuarter='" + getActiveQuarter() + "'" 
-        + ", activeQuarter='" + getStartTime() + "'" 
-        + ", activeQuarter='" + getEndTime() + "'" 
+        + ", location='" + getLocation() + "'" 
+        + ", quarter='" + getQuarter() + "'"
+        + ", start time='" + getStartTime() + "'" 
+        + ", end time='" + getEndTime() + "'" 
         + "}";
     }
 }
