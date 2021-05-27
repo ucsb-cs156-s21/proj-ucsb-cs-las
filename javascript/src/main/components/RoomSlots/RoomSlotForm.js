@@ -48,7 +48,7 @@ const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =
         const validList = [];
 
         //check location
-        const locationValid = checkFilled(roomSlot.name);
+        const locationValid = checkFilled(roomSlot.location);
         addFormEffects(locationRef, locationValid);
         validList.push(locationValid);
 

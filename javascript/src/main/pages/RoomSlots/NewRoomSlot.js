@@ -8,23 +8,24 @@ import { useToasts } from 'react-toast-notifications'
 const NewRoomSlot = () => {
     const history = useHistory();
     const {addToast} = useToasts();
-
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    
     const createRoomSlot = buildCreateRoomSlot(
-        // getToken,
-        // (response) => {
-        //   if (response.error) {
-        //     console.log("error message: ", response.error);
-        //     addToast(response.error, { appearance: 'error' });
-        //   }
-        //   else {
-        //     history.push("/roomslots");
-        //     addToast("New Room Slot Saved", { appearance: 'success' });
-        //   }
-        // },
-        // (err) => {
-        //   console.log("error message: ", err);
-        //   addToast("Error saving room slot", { appearance: 'error' });
-        // }
+        getToken,
+        (response) => {
+          if (response.error) {
+            console.log("error message: ", response.error);
+            addToast(response.error, { appearance: 'error' });
+          }
+          else {
+            history.push("/roomslots");
+            addToast("New Room Slot Saved", { appearance: 'success' });
+          }
+        },
+        (err) => {
+          console.log("error message: ", err);
+          addToast("Error saving room slot", { appearance: 'error' });
+        }
       );
 
       return(
