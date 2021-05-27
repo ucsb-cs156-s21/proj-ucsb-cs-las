@@ -23,16 +23,16 @@ const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =
 
         if(isValid){
             let quarterNum = "1";
-            if(course.quarter.substr(0, 1)==="S"){
+            if(roomSlot.quarter.substr(0, 1)==="S"){
                 quarterNum =  "2";
             }
-            else if(course.quarter.substr(0, 1)==="M"){
+            else if(roomSlot.quarter.substr(0, 1)==="M"){
                 quarterNum =  "3";
             }
-            else if(course.quarter.substr(0, 1)==="F"){
+            else if(roomSlot.quarter.substr(0, 1)==="F"){
                 quarterNum =  "4";
             }
-            let formatedQuarter = "20" + course.quarter.substr(1, 2) + quarterNum;
+            let formatedQuarter = "20" + roomSlot.quarter.substr(1, 2) + quarterNum;
 
             if(createRoomSlot){
                 createRoomSlot({...roomSlot, quarter: formatedQuarter});
@@ -92,9 +92,9 @@ const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =
             <Form.Group as={Row} controlId="location">
                 <Form.Label column sm={2}>Location</Form.Label>
                 <Col sm={10}>
-                    <Form.Control ref={firstNameRef} type="text" placeholder="Ex: Library" value={roomSlot.location} onChange={(e) => setRoomSlot({
+                    <Form.Control ref={locationRef} type="text" placeholder="Ex: Library" value={roomSlot.location} onChange={(e) => setRoomSlot({
                         ...roomSlot,
-                        instructorFirstName: e.target.value
+                        location: e.target.value
                     })} />
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
                         Please provide a location.
