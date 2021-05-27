@@ -150,35 +150,16 @@ public class OnlineOfficeHoursController {
     public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
         logger.info("Starting upload CSV");
         AppUser user = authControllerAdvice.getUser(authorization);
+        if (!authControllerAdvice.getIsAdmin(authorization))
+           return getUnauthorizedResponse("admin");
         try {
             BufferedReader csvReader = new BufferedReader(new InputStreamReader(csv.getInputStream()));
             logger.info(new String(csv.getInputStream().readAllBytes()));
             
             String body = "";
-            // // Course
-            // String name;
-            // String quarter;
-            // String instructorFirstName;
-            // String instructorLastName;
-            // String instructorEmail;
-            
-            // // //Tutor
-            // String firstName;
-            // String lastName;
-            // String email;
 
-            // // TutorAssignment
-            // // Long TA_id;
-            // //need coresponding course and tutor
-            // String assignmentType;
-
-            // // // Office Hours
-            // String dayOfWeek;
-            // String startTime;
-            // String endTime;
-            // String zoomRoomLink;
-            // String notes;
             List<OnlineOfficeHours> savedOfficeHour = new ArrayList<>();
+
             String row = csvReader.readLine();
             String [] data ;
             while(row != null){
@@ -209,10 +190,7 @@ public class OnlineOfficeHoursController {
                 Course course = new Course(name,quarter,instructorFirstName,instructorLastName,instructorEmail);
                 
                 Course existingCourse = courseRepository.findByNameAndQuarter(course.getName(), course.getQuarter());
-                if(existingCourse != null){
-                    System.out.println(course.getName()+" already exist");
-                }
-                else{
+                if(existingCourse == null){
                     courseRepository.save(course);
                 }
                 
@@ -227,9 +205,7 @@ public class OnlineOfficeHoursController {
                     related_tutor = tutorRepository.save(tutor);
                 }
                 else{
-                    
-                    related_tutor = existingTutor.get();
-                    System.out.println("Tutor"+ related_tutor.toString() + " already exist");
+                    related_tutor = existingTutor.get();//need test
                 }
 
                 
@@ -243,7 +219,7 @@ public class OnlineOfficeHoursController {
                     TA = tutorAssignmentRepository.save(tutorAssignment);
                 }
                 else{
-                    TA = comm.get(0);
+                    TA = comm.get(0);//need test
                 }
                 
 
@@ -251,7 +227,7 @@ public class OnlineOfficeHoursController {
                 List<OnlineOfficeHours> existingOfficeHours = officeHoursRepository.findAllByTutorAssignment(TA);
                 for(int i = 0; i < existingOfficeHours.size(); i++ ){
                     if (existingOfficeHours.get(i).getDayOfWeek().equals(dayOfWeek)  && existingOfficeHours.get(i).getStartTime().equals(startTime) &&existingOfficeHours.get(i).getEndTime().equals(endTime) ){
-                        OH = existingOfficeHours.get(i);
+                        OH = existingOfficeHours.get(i);//need test
                         
                     }
                 }
@@ -264,6 +240,7 @@ public class OnlineOfficeHoursController {
             
             body = mapper.writeValueAsString(savedOfficeHour);
             return ResponseEntity.ok().body(body);
+
         } catch(RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
         }

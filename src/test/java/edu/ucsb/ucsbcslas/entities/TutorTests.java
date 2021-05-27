@@ -71,7 +71,7 @@ public class TutorTests {
   @Test
   public void testWithoutID_toString() throws Exception {
     Tutor t1 = new Tutor( "Chris", "Gaucho", "cgaucho@example.org");
-    String expected = "{ id=null, firstName='Chris', lastName='Gaucho', email='cgaucho@example.org'}";
+    String expected = "{ id='null', firstName='Chris', lastName='Gaucho', email='cgaucho@example.org'}";
     assertEquals(expected, t1.toString());
   }
 

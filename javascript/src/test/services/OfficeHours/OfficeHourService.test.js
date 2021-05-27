@@ -51,7 +51,7 @@ describe("OfficeHourService tests", () => {
 
     test("uploadOfficeHoursCSV where we expect onError to be called", async () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
-        const uploadOfficeHours = uploadCoursesCSV(getToken, onSuccess, onError);
+        const uploadOfficeHours = uploadOfficeHoursCSV(getToken, onSuccess, onError);
         await uploadOfficeHours();
         expect(onError).toBeCalledTimes(1);
     });
