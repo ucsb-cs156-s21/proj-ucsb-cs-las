@@ -70,8 +70,10 @@ const TutorAssignment = () => {
 
   return (
     <>
-      {isInstructor && newTutorAssignmentButton}
+      {isInstructor && newTutorAssignmentButton}   
+      <br></br>   
       <Button><CSVLink style={{color: "white"}} headers={headers} data={tutorAssignmentList} filename = {"TutorAssignments.csv"}>Download CSV</CSVLink></Button>
+      <hr></hr>
       <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
     </>
   );
