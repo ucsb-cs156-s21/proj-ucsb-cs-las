@@ -14,5 +14,5 @@ public interface TutorNotesRepository extends CrudRepository<TutorNotes, Long> {
     List<TutorNotes> findAll();
     List<TutorNotes> findAllByCourse(Course course);
     List<TutorNotes> findAllByTutor(Tutor tutor);
-    List<TutorNotes> findAllByCourseId(Long courseId);
+    List<TutorNotes> findAllById(Long courseId);
 }

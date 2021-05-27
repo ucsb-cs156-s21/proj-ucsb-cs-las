@@ -39,7 +39,7 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
     if (error) {
         return (
             <>
-            <h1>You must be an instructor or an admin to create new Tutor Notess.</h1>
+            <h1>You must be an instructor or an admin to create new Tutor Notes.</h1>
             </>
         );
     }

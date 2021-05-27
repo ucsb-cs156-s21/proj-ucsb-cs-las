@@ -48,7 +48,7 @@ const TutorNotes = () => {
   return (
     <>
       {isInstructor && newTutorNotesButton}
-      <TutorNotesTable tutorNotess={tutorNotesList} isInstructor={isInstructor}/>
+      <TutorNotesTable tutorNotes={tutorNotesList} isInstructor={isInstructor}/>
     </>
   );
 };
