@@ -31,10 +31,12 @@ const TutorAssignment = () => {
     fetchWithToken
   );
 
+  const newTutorAssignmentButton = <Button className="mb-3" onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>;
+
   if (error) {
     return (
       <>
-        {isInstructor && <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>}
+        {isInstructor && newTutorAssignmentButton}
         <h1>You have no current Tutor Assignments or we encountered an error; please reload the page and try again.</h1>
       </>
     );
@@ -45,7 +47,7 @@ const TutorAssignment = () => {
 
   return (
     <>
-      {isInstructor && <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>}
+      {isInstructor && newTutorAssignmentButton}
       <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
     </>
   );
