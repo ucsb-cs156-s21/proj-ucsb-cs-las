@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 
 export default ({officeHours,admin,deleteOfficeHour}) => {
-    const history = useHistory();
+    let history = useHistory();
 
     const renderEditButton = (id) => {
         return (
