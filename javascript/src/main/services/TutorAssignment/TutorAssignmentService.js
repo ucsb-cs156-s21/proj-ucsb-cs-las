@@ -15,10 +15,10 @@ const buildCreateTutorAssignment = (getToken, onSuccess, onError) => {
       onError(err);
     }
   };
-  return func
-}
+  return func;
+};
 
-const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
+const buildUpdateTutorAssignment = (getToken, onSuccess, onError) => {
   const func = async (item, id) => {
     try {
       await fetchWithToken(`/api/member/tutorAssignments/${id}`, getToken, {
@@ -33,17 +33,17 @@ const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
       onError(err);
     }
   };
-  return func
-}
+  return func;
+};
 
 const uploadTutorAssignmentCSV = (getToken, onSuccess, onError) => {
   const func = async (file) => {
     const data = new FormData();
     data.append("csv", file);
     try {
-      await fetchWithToken('/api/member/tutorAssignments/upload', getToken, {
+      await fetchWithToken("/api/member/tutorAssignments/upload", getToken, {
         method: "POST",
-        body: data
+        body: data,
       });
       onSuccess();
     } catch (err) {
@@ -51,6 +51,10 @@ const uploadTutorAssignmentCSV = (getToken, onSuccess, onError) => {
     }
   };
   return func;
-}
+};
 
-export { buildCreateTutorAssignment, buildUpdateTutorAssignment, uploadTutorAssignmentCSV };
+export {
+  buildCreateTutorAssignment,
+  buildUpdateTutorAssignment,
+  uploadTutorAssignmentCSV,
+};

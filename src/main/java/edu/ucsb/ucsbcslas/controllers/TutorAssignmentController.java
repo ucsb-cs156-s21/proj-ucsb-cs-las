@@ -298,7 +298,6 @@ public class TutorAssignmentController {
                     TutorAssignmentModel.class);
             List<TutorAssignment> tutorAssignmentList = new ArrayList<TutorAssignment>();
 
-            logger.info(uploadedTutorAssignments.get(0).toString());
             for (TutorAssignmentModel i : uploadedTutorAssignments) {
                 Course currentCourse;
                 Tutor currentTutor;
@@ -329,22 +328,16 @@ public class TutorAssignmentController {
                 }
             }
 
-            // List<TutorAssignment> savedTutorAssignments = (List<TutorAssignmentModel>)
-            // tutorAssignmentRepository
-            // .saveAll(uploadedTutorAssignments);
             List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
                     .saveAll(tutorAssignmentList);
             String body = mapper.writeValueAsString(savedTutorAssignments);
             System.out.print(savedTutorAssignments.toString());
             return ResponseEntity.ok().body(body);
 
-            // return ResponseEntity.ok().body("empty");
         } catch (RuntimeException e) {
+            logger.error("Error Uploading CSV", e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
         }
     }
-    // Possibility of having 2 instances of the same prof teaching 2 classes in the
-    // same quarter (same class name)
 
-    // findByNameAndQuarterAndInstructorEmail
 }

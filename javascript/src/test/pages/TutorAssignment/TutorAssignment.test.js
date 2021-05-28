@@ -7,15 +7,24 @@ import TutorAssignment from "main/pages/TutorAssignment/TutorAssignments";
 import userEvent from "@testing-library/user-event";
 import { useHistory } from "react-router-dom";
 import { uploadTutorAssignmentCSV } from "../../../main/services/TutorAssignment/TutorAssignmentService";
+import { useToasts } from "react-toast-notifications";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
+const getAccessTokenSilentlySpy = jest.fn();
+const mutateSpy = jest.fn();
+const getToken = jest.fn();
+
+jest.mock("react-toast-notifications", () => ({
+  useToasts: jest.fn(),
+}));
 
 jest.mock("main/services/TutorAssignment/TutorAssignmentService", () => ({
   buildCreateTutorAssignment: jest.fn(),
   buildUpdateTutorAssignment: jest.fn(),
   uploadTutorAssignmentCSV: jest.fn(),
 }));
+
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));
@@ -62,9 +71,6 @@ describe("TutorAssignment page test", () => {
   const user = {
     name: "test user",
   };
-  const getAccessTokenSilentlySpy = jest.fn();
-  const mutateSpy = jest.fn();
-  const getToken = jest.fn();
 
   beforeEach(() => {
     useAuth0.mockReturnValue({
@@ -76,6 +82,9 @@ describe("TutorAssignment page test", () => {
       data: { role: "admin" },
       error: undefined,
       mutate: mutateSpy,
+    });
+    useToasts.mockReturnValue({
+      addToast: jest.fn(),
     });
   });
 
@@ -178,47 +187,6 @@ describe("TutorAssignment page test", () => {
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
-  test("check if tutor csv is visible if admin", async () => {
-    const mockUploadFunc = jest.fn(async (file) => {
-      const data = new FormData();
-      data.append("csv", file);
-      await fetchWithToken("/api/member/tutors/upload", getToken, {
-        method: "POST",
-        body: data,
-      });
-    });
-    uploadTutorAssignmentCSV.mockReturnValue(mockUploadFunc);
-    useSWR.mockReturnValueOnce({
-      data: { role: "admin" },
-      error: undefined,
-      mutate: mutateSpy,
-    });
-    const pushUpload = jest.fn();
-    useHistory.mockReturnValue({
-      push: pushUpload,
-    });
-    const { getByText } = render(<TutorAssignment />);
-    const csvButton = getByText("Upload");
-    userEvent.click(csvButton);
-    await waitFor(() => expect(pushUpload).toHaveBeenCalledTimes(0));
-  });
-
-  test("error if user not an admin or instructor and CSV file upload is not visible", () => {
-    useSWR.mockReturnValue({
-      data: { role: "member" },
-      error: undefined,
-      mutate: mutateSpy,
-    });
-    useSWR.mockReturnValue({
-      data: tutorAssignments,
-      error: undefined,
-      mutate: mutateSpy,
-    });
-
-    render(<TutorAssignment />);
-    const csvButton = screen.queryByText("Upload");
-    expect(csvButton).toBeNull();
-  });
 
   test("check if the file is uploaded successfully", async () => {
     useSWR.mockReturnValueOnce({

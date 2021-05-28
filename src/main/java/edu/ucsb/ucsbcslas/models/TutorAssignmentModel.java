@@ -79,7 +79,7 @@ public class TutorAssignmentModel {
         return courseName;
     }
 
-    public void setName(String courseName) {
+    public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
 
@@ -157,10 +157,9 @@ public class TutorAssignmentModel {
     public String toString() {
         return "{" + ", course='" + getCourseName() + "'" + ", quarter='" + getQuarter() + "'"
                 + ", instructorFirstName='" + getInstructorFirstName() + "'" + ", instructorLastName='"
-                + getInstructorLastName() + "'" + ", instructorEmail='" + getInstructorEmail() + ", " + "'"
-                + ", tutorFirstName='" + getTutorFirstName() + "'" + "'" + ", tutorLastName='" + getTutorLastName()
-                + "'" + ", tutorEmail='" + getTutorEmail() + "'" + ", assignmentType='" + getAssignmentType() + "'"
-                + "}";
+                + getInstructorLastName() + "'" + ", instructorEmail='" + getInstructorEmail() + "'"
+                + ", tutorFirstName='" + getTutorFirstName() + "'" + ", tutorLastName='" + getTutorLastName() + "'"
+                + ", tutorEmail='" + getTutorEmail() + "'" + ", assignmentType='" + getAssignmentType() + "'" + "}";
     }
 
 }
