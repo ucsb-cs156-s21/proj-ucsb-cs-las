@@ -27,25 +27,29 @@ export const Demo = Template.bind({});
 
 Demo.args = {
 
-    /*
     courses: [
         {
-            name: "CMPSC 156",
             id: 1,
-            quarter: "F20",
-            instructorFirstName: "Phill",
-            instructorLastName: "Conrad",
-            instructorEmail: "phtcon@ucsb.edu",
+            startTime: "12:00PM",
+            endTime: "1:00PM",
+            dayOfWeek: "Monday",
+            tutorName: "Phill Conrad",
+            tutorID: "2",
+            courseNameYear: "CMPSC 156 Fall 2020",
+            email: "phtcon@ucsb.edu",
+            zoomRoomLink: "https://ucsb.zoom.us/j/12345678",
         },
         {
-            name: "CMPSC 148",
-            id: 2,
-            quarter: "F20",
-            instructorFirstName: "Chandra",
-            instructorLastName: "Krintz",
-            instructorEmail: "krintz@example.org",
+            id: 3,
+            startTime: "12:00PM",
+            endTime: "1:00PM",
+            dayOfWeek: "Monday",
+            tutorName: "Chandra Krintz",
+            tutorID: "4",
+            courseNameYear: "CMPSC 148 Fall 2020",
+            email: "krintz@exmaple.org",
+            zoomRoomLink: "https://ucsb.zoom.us/j/12345678",
         },
     ]
-    */
 
 };

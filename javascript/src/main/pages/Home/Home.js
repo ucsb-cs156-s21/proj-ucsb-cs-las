@@ -32,7 +32,9 @@ const Home = () => {
                 {filterLabel(currentFilter)}
                 <CourseList courses={courses || []} />
             </div>
-        </Jumbotron>
+        </Jumbotron>,
+        <>
+        </>
     );
 };
 

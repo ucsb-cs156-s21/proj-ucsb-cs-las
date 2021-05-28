@@ -1,67 +1,66 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Button } from "react-bootstrap";
 
 
-export default ({officeHours,admin,deleteOfficeHour}) => {
-    const renderDeleteButton = (id) => {
-        return (
-            <Button variant="danger" data-testid="delete-button" onClick={() => deleteOfficeHour(id)}>Delete</Button>
-        )
-    }
+export default ({upcomingOfficeHours}) => {
 
     function zoomRoomLinkFormatter(cell) {
         return (
             <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
         );
     }
+
+    const renderTutorName = (row) => row.tutor.firstName + " " + row.tutor.lastName;
+    const renderCourseNameYear = (row) => {
+        const quarter = row.course.quarter;
+        return row.course.name + " " + asHumanQuarter(quarter);
+    }
    
     const columns = [{
         dataField: 'id',
-        text: 'id',
-        sort: true
+        text: 'id'
     }, {
         dataField: 'startTime',
-        text: 'Start Time',
-        sort: true
+        text: 'Start Time'
     }, {
         dataField: 'endTime',
-        text: 'End Time',
-        sort: true
+        text: 'End Time'
     }, {
         dataField: 'dayOfWeek',
-        text: 'Day',
-        sort: true
+        text: 'Day'
     }, {
-        dataField: 'zoomRoomLink',
-        text: 'Zoom Room',
-        formatter: zoomRoomLinkFormatter,
-        sort: true
+        dataField: 'tutorName',
+        text: 'Tutor',
+        formatter: (_cell, row) => renderTutorName(row),
+        sortValue: (_cell, row) => renderTutorName(row)
     }, {
-        dataField: 'notes',
-        text: 'Notes',
-        sort: true
+        dataField: 'tutorID',
+        text: 'Tutor Assignment'
     }, {
-        dataField: 'tutorAssignment.id',
-        text: 'Tutor Assignment',
-        sort: true
-    }
+        dataField: 'courseNameYear',
+        text: 'Course',
+        formatter: (_cell, row) => renderCourseNameYear(row),
+        sortValue: (_cell, row) => renderCourseNameYear(row)
+    },
     ];
 
     if (admin) {
         columns.push({
-            text: "Delete",
-            isDummyField: true,
-            dataField: "delete",
-            formatter: (_cell, row) => renderDeleteButton(row.id)
-        });
+                dataField: 'email',
+                text: 'email'
+            }, {
+                dataField: 'zoomRoomLink',
+                text: 'Zoom Room',
+                formatter: zoomRoomLinkFormatter
+            }
+        );
     }
 
     return (
         <BootstrapTable 
             bootstrap4={true}
             keyField='id' 
-            data={officeHours} 
+            data={upcomingOfficeHours} 
             columns={columns} 
             striped 
         />
