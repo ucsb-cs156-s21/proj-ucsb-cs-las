@@ -10,9 +10,9 @@ jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
 
-jest.mock("main/services/RoomSlots/RoomSlotsService", () => ({
+/**jest.mock("main/services/RoomSlots/RoomSlotsService", () => ({
   buildDeleteRoomSlot: jest.fn(),
-}) );
+}) ); */
 
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
@@ -21,11 +21,20 @@ jest.mock("react-router-dom", () => ({
 describe("RoomSlots page test", () => {
   const roomSlotList = [
     {
+      id: 1,
       location: "Library",
       quarter: "S21",
       dayOfWeek: "Monday",
-      startTime: "P",
-      endTime: "P",
+      startTime: "08:00:00",
+      endTime: "08:50:00",
+    },
+    {
+      id: 2,
+      location: "Phelps 1440",
+      quarter: "S21",
+      dayOfWeek: "Tuesday",
+      startTime: "15:00:00",
+      endTime: "15:50:00",
     },
   ];
 
