@@ -1,5 +1,5 @@
 package edu.ucsb.ucsbcslas.controllers;
-
+import edu.ucsb.ucsbcslas.entities.AppUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -51,7 +51,7 @@ public class TutorNotesControllerTests {
   
     @Autowired
     private ObjectMapper objectMapper;
-  
+    
     @MockBean
     TutorNotesRepository mockTutorNotesRepository;
 
@@ -63,7 +63,7 @@ public class TutorNotesControllerTests {
     
     @MockBean
     AuthControllerAdvice mockAuthControllerAdvice;
-  
+    
     private String userToken() {
       return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
     }
@@ -74,6 +74,10 @@ public class TutorNotesControllerTests {
       Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
       Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
       expectedTutorNotes.add(new TutorNotes(1L, c, t, "TA"));
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockTutorNotesRepository.findAll()).thenReturn(expectedTutorNotes);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
       MvcResult response = mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
@@ -90,6 +94,10 @@ public class TutorNotesControllerTests {
     @Test
     public void testGetTutorNotes_Admin_notFound() throws Exception {
       List<TutorNotes> expectedTutorNotes = new ArrayList<TutorNotes>();
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockTutorNotesRepository.findAll()).thenReturn(expectedTutorNotes);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
      mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
@@ -105,6 +113,7 @@ public class TutorNotesControllerTests {
       expectedCourses.add(c);
       expectedTutorNotes.add(new TutorNotes(1L, c, t, "TA"));
       AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
       when(mockTutorNotesRepository.findAllByCourse(c)).thenReturn(expectedTutorNotes);
       when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
@@ -130,6 +139,7 @@ public class TutorNotesControllerTests {
         List<Course> expectedCourses = new ArrayList<Course>();
         expectedCourses.add(c);
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
         when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockTutorNotesRepository.findAllByCourse(c)).thenReturn(expectedTutorNotes);
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
@@ -145,11 +155,14 @@ public class TutorNotesControllerTests {
         List<Course> expectedCourses = new ArrayList<Course>();
         expectedCourses.add(c);
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
         when(mockCourseRepository.findById(1L)).thenReturn(Optional.empty());
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+
         mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
     }
@@ -162,12 +175,15 @@ public class TutorNotesControllerTests {
         Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
         expectedTutorNotes.add(new TutorNotes(1L, c, t, "TA"));
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
         when(mockTutorNotesRepository.findAllByTutor(t)).thenReturn(expectedTutorNotes);
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
         when(mockTutorRepository.findByEmail("email")).thenReturn(Optional.of(t));
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+
         MvcResult response = mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
     
@@ -187,12 +203,15 @@ public class TutorNotesControllerTests {
         List<Course> expectedCourses= new ArrayList<Course>();
         Tutor t = new Tutor(1L, "Seth", "VanB", "vanbrocklin@ucsb.edu");
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
         when(mockTutorNotesRepository.findAllByTutor(t)).thenReturn(expectedTutorNotes);
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
         when(mockTutorRepository.findByEmail("email")).thenReturn(Optional.of(t));
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+
         mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
     }
@@ -201,11 +220,14 @@ public class TutorNotesControllerTests {
     public void testGetTutorNotes_Member_NotPresent() throws Exception {
         List<Course> expectedCourses = new ArrayList<Course>();
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
         when(mockTutorRepository.findByEmail("email")).thenReturn(Optional.empty());
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+
         mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isNotFound());
     }
@@ -214,10 +236,13 @@ public class TutorNotesControllerTests {
     public void testGetTutorNotes_Unauthorized() throws Exception {
         List<Course> expectedCourses = new ArrayList<Course>();
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
-        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+
         mockMvc.perform(get("/api/member/tutorNotes").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
     }
@@ -228,9 +253,12 @@ public class TutorNotesControllerTests {
         String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203',"
             + "instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, NotesType: 'TA'}";
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
         when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
+
         mockMvc.perform(post("/api/member/tutorNotes").with(csrf()).contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
             .content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
     }
@@ -239,8 +267,14 @@ public class TutorNotesControllerTests {
     public void testSaveTutorNotes_BadRequest() throws Exception {
         String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203', "
             +"instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, NotesType: 'TA'}";
-        when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.empty());
+        AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+        when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.empty());
+
         mockMvc.perform(post("/api/member/tutorNotes").with(csrf()).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
             .andExpect(status().isBadRequest());
@@ -253,9 +287,15 @@ public class TutorNotesControllerTests {
         TutorNotes expectedTutorNotes = new TutorNotes(null, c, t, "TA");
         String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203',"+ 
             "instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, NotesType: 'TA'}";
-        when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
+        AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+        when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
         when(mockTutorNotesRepository.save(any())).thenReturn(expectedTutorNotes);
+
         MvcResult response = mockMvc
             .perform(post("/api/member/tutorNotes").with(csrf()).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
@@ -278,11 +318,15 @@ public class TutorNotesControllerTests {
         String requestBody = "{tutorEmail: 'scottpchow@ucsb.edu', course:  {name: 'CMPSC 148', id: '2', quarter: '20203',"+ 
             "instructorFirstName: 'Chandra', instructorLastName: 'Krintz', instructorEmail: 'krintz@example.org'}, NotesType: 'TA'}";
         AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+
         when(mockCourseRepository.findAllByInstructorEmail("email")).thenReturn(expectedCourses);
         when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
-        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
         when(mockTutorNotesRepository.save(any())).thenReturn(expectedTutorNotes);
+
         MvcResult response = mockMvc
             .perform(post("/api/member/tutorNotes").with(csrf()).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
@@ -337,11 +381,16 @@ public class TutorNotesControllerTests {
 
 
       String body = objectMapper.writeValueAsString(inputTutorNotes);
-  
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
       when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
       when(mockTutorNotesRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutorNotes));
       when(mockTutorNotesRepository.save(inputTutorNotes)).thenReturn(inputTutorNotes);
+
       MvcResult response = mockMvc
           .perform(put("/api/member/tutorNotes/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
               .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(requestBody))
@@ -372,11 +421,16 @@ public class TutorNotesControllerTests {
       
 
       String body = objectMapper.writeValueAsString(inputTutorNotes);
-  
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
+
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
       when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
       when(mockTutorNotesRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutorNotes));
       when(mockTutorNotesRepository.save(inputTutorNotes)).thenReturn(inputTutorNotes);
+
       MvcResult response = mockMvc
           .perform(put("/api/member/tutorNotes/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
               .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(requestBody))
@@ -413,8 +467,12 @@ public class TutorNotesControllerTests {
       TutorNotes inputTutorNotes = new TutorNotes(1L, c1, t, "TA");
   
       String body = objectMapper.writeValueAsString(inputTutorNotes);
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
 
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
       when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
       when(mockTutorNotesRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -446,8 +504,12 @@ public class TutorNotesControllerTests {
       "instructorFirstName: 'fname', instructorLastName: 'lname', instructorEmail: 'email'}, NotesType: 'LA'}";
 
       String body = objectMapper.writeValueAsString(inputTutorNotes);
+      AppUser user = new AppUser(1L, "email", "Seth", "VanB");
 
+      when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+      when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
       when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      
       when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t3));
 
       when(mockTutorNotesRepository.findById(any(Long.class))).thenReturn(Optional.of(savedTutorNotes));

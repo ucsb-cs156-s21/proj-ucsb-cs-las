@@ -1,5 +1,5 @@
 package edu.ucsb.ucsbcslas.controllers;
-
+import edu.ucsb.ucsbcslas.entities.AppUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +72,9 @@ public class TutorNotesController {
     @PostMapping(value = "/api/member/tutorNotes", produces = "application/json")
     public ResponseEntity<String> createTutorNotes(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid String tutorNotes) throws JsonProcessingException {
+        if(!authControllerAdvice.getIsMember(authorization)){
+            return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
+        }
         if (!authControllerAdvice.getIsAdmin(authorization)) {
             if (courseRepository.findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail())
                     .isEmpty()) {
@@ -107,6 +110,9 @@ public class TutorNotesController {
     public ResponseEntity<String> getTutorNotes(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
         List<TutorNotes> tutorNotesList = new ArrayList();
+        if(!authControllerAdvice.getIsMember(authorization)){
+            return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
+        }
         if (authControllerAdvice.getIsAdmin(authorization)) {
             tutorNotesList = tutorNotesRepository.findAll();
             if (tutorNotesList.isEmpty()) {
@@ -152,9 +158,14 @@ public class TutorNotesController {
     }
     
     @GetMapping(value = "/api/member/tutorNotes/{course_id}", produces = "application/json")
-    public ResponseEntity<String> getTutorNotesByCourseID(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
+    public ResponseEntity<String> getTutorNotesByCourseID(@PathVariable("course_id") Long course_id, @RequestHeader("Authorization") String authorization) throws JsonProcessingException {
+        if(!authControllerAdvice.getIsMember(authorization)){
+            return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
+        }
         List<TutorNotes> tutorNotes = tutorNotesRepository.findAllByCourseId(course_id);
-
+        if (tutorNotes.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(tutorNotes);
         return ResponseEntity.ok().body(body);
@@ -225,7 +236,9 @@ public class TutorNotesController {
     @PutMapping(value = "/api/member/tutorNotes/{id}", produces = "application/json")
     public ResponseEntity<String> updateTutorNotes(@RequestHeader("Authorization") String authorization,
         @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorNotes) throws JsonProcessingException {
-
+      if(!authControllerAdvice.getIsMember(authorization)){
+        return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
+      }
       if (!authControllerAdvice.getIsAdmin(authorization))
         return getUnauthorizedResponse("admin");
       Optional<TutorNotes> tutorNotes = tutorNotesRepository.findById(id);
