@@ -1,19 +1,17 @@
 import React from "react";
-import { waitFor, render, screen, fireEvent } from "@testing-library/react";
+import { waitFor, render, fireEvent } from "@testing-library/react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignments";
 import userEvent from "@testing-library/user-event";
 import { useHistory } from "react-router-dom";
-import { uploadTutorAssignmentCSV } from "../../../main/services/TutorAssignment/TutorAssignmentService";
 import { useToasts } from "react-toast-notifications";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 const getAccessTokenSilentlySpy = jest.fn();
 const mutateSpy = jest.fn();
-const getToken = jest.fn();
 
 jest.mock("react-toast-notifications", () => ({
   useToasts: jest.fn(),
