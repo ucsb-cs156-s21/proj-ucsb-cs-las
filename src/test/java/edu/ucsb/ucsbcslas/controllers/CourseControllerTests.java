@@ -1,5 +1,6 @@
 package edu.ucsb.ucsbcslas.controllers;
 
+import edu.ucsb.ucsbcslas.entities.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.IOException;
 import java.io.Reader;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,14 +50,9 @@ import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 
-import edu.ucsb.ucsbcslas.entities.AppUser;
-
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
-import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
-import edu.ucsb.ucsbcslas.entities.Tutor;
-import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 
 @WebMvcTest(value = CourseController.class)
 @WithMockUser
@@ -395,8 +393,9 @@ public class CourseControllerTests {
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
+    RoomSlot rs = new RoomSlot(1L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.WEDNESDAY, LocalTime.NOON, LocalTime.MIDNIGHT);
 
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList);
     expectedViewList.add(expectedView_1);
@@ -429,9 +428,9 @@ public class CourseControllerTests {
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
+    RoomSlot rs = new RoomSlot(1L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.WEDNESDAY, LocalTime.NOON, LocalTime.MIDNIGHT);
 
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM",
-        "6:00 PM", "zoomLink",
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs, "zoomLink",
         "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments,
@@ -477,9 +476,10 @@ public class CourseControllerTests {
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
-
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
-    OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Monday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    RoomSlot rs_1 = new RoomSlot(1L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.TUESDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
+    RoomSlot rs_2 = new RoomSlot(2L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.MONDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs_1, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs_2, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     expectedOnlineOfficeHoursList2.add(onlineOfficeHours_2);
     TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList); 
