@@ -41,18 +41,12 @@ const RoomSlotForm = ({ createRoomSlot/*, updateRoomSlot, existingRoomSlot*/}) =
             let formattedStartTime = formatTimeToLocalTime(roomSlot.startTime);
             let formattedEndTime = formatTimeToLocalTime(roomSlot.endTime);
 
-            // roomSlot.quarter = new ActiveQuarter(0,formatedQuarter);
-            // roomSlot.quarter.id = 0;
-            // if(createRoomSlot)
-                createRoomSlot({...roomSlot,
-                    quarter: formattedQuarter, 
-                    dayOfWeek: formattedDayOfWeek,
-                    startTime: formattedStartTime,
-                    endTime: formattedEndTime
-                });
-            
-            // else
-            //     updateRoomSlot({...roomSlot, quarter: formatedQuarter});
+            createRoomSlot({...roomSlot,
+                quarter: formattedQuarter, 
+                dayOfWeek: formattedDayOfWeek,
+                startTime: formattedStartTime,
+                endTime: formattedEndTime
+            });
         }
     }
 
