@@ -86,8 +86,8 @@ public class OnlineOfficeHourControllerTests {
                 tutor,
                 "String assignmentType");
         RoomSlot rs = new RoomSlot(1L,
-                "The Library",
-                new ActiveQuarter("F20"),
+                "String location",
+                new ActiveQuarter("String quarter"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -122,8 +122,8 @@ public class OnlineOfficeHourControllerTests {
                 tutor,
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
-                "The Library",
-                new ActiveQuarter("F20"),
+                "String location",
+                new ActiveQuarter("String quarter"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -168,8 +168,8 @@ public class OnlineOfficeHourControllerTests {
                 tutor,
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
-                "The Library",
-                new ActiveQuarter("F20"),
+                "String location",
+                new ActiveQuarter("String quarter"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -211,8 +211,8 @@ public class OnlineOfficeHourControllerTests {
                 course, tutor,
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
-                "The Library",
-                new ActiveQuarter("F20"),
+                "String location",
+                new ActiveQuarter("String quarter"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -242,8 +242,8 @@ public class OnlineOfficeHourControllerTests {
                 tutor,
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
-                "The Library",
-                new ActiveQuarter("F20"),
+                "String location",
+                new ActiveQuarter("String quarter"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
