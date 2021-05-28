@@ -1,6 +1,6 @@
 import { fetchWithToken } from "main/utils/fetch";
 
-//maybe not enough?
+//maybe not enough? => In the issue:  If it is a valid CSV file, an entry is created in the database for each tutor in the file
 const uploadRoomSlotCSV = (getToken, onSuccess, onError) => {
     const func = async (file) => {
         const data = new FormData();
