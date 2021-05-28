@@ -155,7 +155,7 @@ public class OnlineOfficeHours {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tutorAssignment, dayOfWeek, startTime, endTime, zoomRoomLink, notes);
+    return Objects.hash(id, tutorAssignment, dayOfWeek, startTime, endTime, zoomRoomLink, notes, tutorName, courseName, quarter);
   }
 
   @Override
