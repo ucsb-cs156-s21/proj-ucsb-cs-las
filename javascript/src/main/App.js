@@ -28,6 +28,7 @@ import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment"
 import QuarterFilter from "main/pages/Admin/QuarterFilter"
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import CourseShow from "main/pages/Courses/CourseShow";
+import EditOfficeHours from "main/pages/OfficeHours/EditOfficeHours";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -39,7 +40,7 @@ function App() {
   return (
     <div className="App">
       <AppNavbar />
-      <div class="flex-wrapper">
+      <div className="d-flex min-vh-100 flex-column justify-content-between">
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
@@ -69,6 +70,7 @@ function App() {
             authorizedRoles={["admin", "member"]}
           />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/officeHours/edit/:officeHourId" exact component={EditOfficeHours} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignments" exact component={TutorAssignments} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
