@@ -2,17 +2,35 @@ import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import {checkTime, checkFilled, checkCourseQuarter} from "main/utils/FormHelpers";
 
-const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =>{
+const RoomSlotForm = ({ createRoomSlot/*, updateRoomSlot, existingRoomSlot*/}) =>{
     const locationRef = useRef(null);
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const quarterRef = useRef(null);
+    
     const emptyRoomSlot = {
         location: "",
         quarter: "",
+        // quarter: {
+        //     activeQuarter:"",
+        //     id: 0    
+        // },
+        id: 0,
         dayOfWeek: "Monday",
-        startTime: "",
-        endTime: ""
+        // startTime: {
+        //     hour: "",
+        //     minute: "",
+        //     nano: "",
+        //     second: "",
+        // }
+        startTime:"",
+        endTime:""
+        // endTime: {
+        //     hour: "",
+        //     minute: "",
+        //     nano: "",
+        //     second: "",
+        // }
     }
 
     const [roomSlot, setRoomSlot] = useState(emptyRoomSlot);
@@ -34,9 +52,11 @@ const RoomSlotForm = ({ createRoomSlot, /*updateRoomSlot, existingRoomSlot*/}) =
             }
             let formatedQuarter = "20" + roomSlot.quarter.substr(1, 2) + quarterNum;
 
-            if(createRoomSlot){
-                createRoomSlot({...roomSlot, quarter: formatedQuarter});
-            }
+            // roomSlot.quarter = new ActiveQuarter(0,formatedQuarter);
+            // roomSlot.quarter.id = 0;
+            // if(createRoomSlot)
+                createRoomSlot({...roomSlot});
+            
             // else
             //     updateRoomSlot({...roomSlot, quarter: formatedQuarter});
         }

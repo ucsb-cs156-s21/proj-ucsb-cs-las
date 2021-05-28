@@ -14,7 +14,7 @@ const RoomSlots = () => {
   const history = useHistory();
 
   const { data: roomSlotList, error, mutate: mutateRoomSlots } = useSWR(
-    ["/api/member/roomSlots", getToken],
+    ["/api/public/roomslot", getToken],
     fetchWithToken
   );
 

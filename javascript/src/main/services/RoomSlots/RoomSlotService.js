@@ -3,7 +3,8 @@ import { fetchWithToken } from "main/utils/fetch";
 const buildCreateRoomSlot = (getToken, onSuccess, onError) => {
   const func = async (roomSlot) => {
     try {
-      const result = await fetchWithToken(`/api/admin/roomslots/`, getToken, {
+      console.log(roomSlot);
+      const result = await fetchWithToken(`/api/admin/roomslot`, getToken, {
         method: "POST",
         headers: {
           "content-type": "application/json",
