@@ -41,6 +41,7 @@ function App() {
   return (
     <div className="App">
       <AppNavbar />
+      <div class="flex-wrapper">
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
@@ -83,6 +84,7 @@ function App() {
         </Switch>
       </Container>
       <AppFooter />
+      </div>
     </div>
   );
 };

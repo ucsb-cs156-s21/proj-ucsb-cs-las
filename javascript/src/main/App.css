@@ -59,13 +59,13 @@ body {
   /* bottom = footer height */
 }
 
-footer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: auto;
-  width: 100%;
-  overflow: hidden;
+
+
+.flex-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .navbar-custom {
