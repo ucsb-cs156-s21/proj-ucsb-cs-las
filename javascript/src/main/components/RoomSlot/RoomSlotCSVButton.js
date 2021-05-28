@@ -28,7 +28,7 @@ var RoomSlotCSVButton = ({ addTask }) => {
                                 type="file"
                                 accept=".csv"
                                 id="custom-file-input"
-                                label="Upload a CSV of RoomSlot, format: Long ID, location, quarter, dayofweek, startTime, endTime"
+                                label="Upload a CSV of RoomSlot, format: ID, location, quarter (ID,quarter), dayofweek, startTime, endTime"
                                 data-testid="csv-input"
                                 custom
                                 onChange={event => { setFile(event.currentTarget.files[0]) }}

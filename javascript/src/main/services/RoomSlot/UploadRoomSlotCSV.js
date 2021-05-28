@@ -1,5 +1,6 @@
 import { fetchWithToken } from "main/utils/fetch";
 
+//maybe not enough?
 const uploadRoomSlotCSV = (getToken, onSuccess, onError) => {
     const func = async (file) => {
         const data = new FormData();
