@@ -122,7 +122,7 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
                 <Col sm={10} style = {{textAlign: 'left'}}>
                     <Form.Control as="select" onChange={handleDayOfWeekOnChange} >
                         {daysOfTheWeek.map((day) => {
-                            return <option key={day} value={day}>{day}</option>;
+                            return <option selected={officeHour.dayOfWeek === day ? true : false } key={day} value={day}>{day}</option>;
                         })}
                     </Form.Control>
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
