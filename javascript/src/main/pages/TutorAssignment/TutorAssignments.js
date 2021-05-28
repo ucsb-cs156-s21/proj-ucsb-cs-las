@@ -11,6 +11,7 @@ import { useToasts } from "react-toast-notifications";
 import { uploadTutorAssignmentCSV } from "main/services/TutorAssignment/TutorAssignmentService";
 
 import { useHistory } from "react-router-dom";
+import { CSVLink } from "react-csv";
 
 const TutorAssignment = () => {
   const history = useHistory();
@@ -45,6 +46,37 @@ const TutorAssignment = () => {
       New Tutor Assignment
     </Button>
   );
+
+  const headers = [
+    {
+      key: "id",
+      label: "Course Id",
+    },
+    {
+      key: "course.name",
+      label: "Course Name",
+    },
+    {
+      key: "course.quarter",
+      label: "Course Quarter",
+    },
+    {
+      key: "tutor.firstName",
+      label: "Tutor First Name",
+    },
+    {
+      key: "tutor.lastName",
+      label: "Tutor Last Name",
+    },
+    {
+      key: "tutor.email",
+      label: "Tutor Email",
+    },
+    {
+      key: "assignmentType",
+      label: "Assignment Type",
+    },
+  ];
 
   if (error) {
     return (
@@ -101,6 +133,17 @@ const TutorAssignment = () => {
         Name, Tutor Email, Assignment Type. Ex: CMPSC 48, 20201, Joe, Gaucho,
         joegaucho@ucsb.edu, Joe, Gaucho, joegaucho@ucsb.edu, LA
       </pre>
+      <br></br>
+      <Button>
+        <CSVLink
+          style={{ color: "white" }}
+          headers={headers}
+          data={tutorAssignmentList}
+          filename={"TutorAssignments.csv"}
+        >
+          Download CSV
+        </CSVLink>
+      </Button>
     </>
   );
 };
