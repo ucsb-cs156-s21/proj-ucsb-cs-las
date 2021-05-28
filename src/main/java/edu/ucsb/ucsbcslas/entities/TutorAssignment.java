@@ -33,7 +33,7 @@ public class TutorAssignment {
 
   // tutor: data belongs to tutor entity
   @ManyToOne(fetch = FetchType.LAZY)
-  @Column(nullable = false)
+  @JoinColumn(nullable = false)
   private Tutor tutor;
 
   public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
