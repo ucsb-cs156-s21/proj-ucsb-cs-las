@@ -40,13 +40,22 @@ public class RoomSlot {
 
     public RoomSlot() { }
 
-    public RoomSlot(Long id) {
-        this.id = id;
-    }
-
-    public RoomSlot(Long id, String location,
+    // constructor with auto-generated id
+    public RoomSlot(String location,
         ActiveQuarter quarter, DayOfWeek dayOfWeek,
         LocalTime startTime, LocalTime endTime) 
+    {
+        this.location = location;
+        this.quarter = quarter;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    // constructor with given room slot id
+    public RoomSlot(Long id, String location,
+                    ActiveQuarter quarter, DayOfWeek dayOfWeek,
+                    LocalTime startTime, LocalTime endTime)
     {
         this.id = id;
         this.location = location;

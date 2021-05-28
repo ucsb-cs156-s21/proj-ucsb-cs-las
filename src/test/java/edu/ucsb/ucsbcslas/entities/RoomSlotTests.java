@@ -13,7 +13,7 @@ public class RoomSlotTests {
   public static RoomSlot testRoomSlot;
   public static Long testId = 1L; // testId for the ActiveQuarter
   public static String testLocation = "Campus Point";
-  public static ActiveQuarter testQuarter = new ActiveQuarter(testId, "Campus Point");
+  public static ActiveQuarter testQuarter = new ActiveQuarter("Campus Point");
   public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
   public static LocalTime testStartTime = LocalTime.NOON;
   public static LocalTime testEndTime = LocalTime.MIDNIGHT;
@@ -83,7 +83,7 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_EqualsCopy() {
     testRoomSlot = new RoomSlot();
-    RoomSlot copy = new RoomSlot();
+    RoomSlot copy = testRoomSlot;
     assertEquals(testRoomSlot, copy);
   }
 
@@ -91,7 +91,8 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_DefaultConstructor() {
     testRoomSlot = new RoomSlot();
-    assertEquals(null, testRoomSlot.getId());
+    testRoomSlot.setId(testId);
+    assertEquals(testId, testRoomSlot.getId());
     assertEquals(null, testRoomSlot.getLocation());
     assertEquals(null, testRoomSlot.getQuarter());
     assertEquals(null, testRoomSlot.getDayOfWeek());
@@ -100,19 +101,13 @@ public class RoomSlotTests {
   }
 
   @Test
-  public void test_RoomSlot_OverloadedIDConstructor() {
-    testRoomSlot = new RoomSlot(testId);
-    assertEquals(testId, testRoomSlot.getId());
-  }
-
-  @Test
-  public void test_RoomSlot_OverloadedAllConstructor() {
-    testRoomSlot = new RoomSlot(testId,
-            testLocation,
+  public void test_RoomSlot_FullyOverloadedConstructor() {
+    testRoomSlot = new RoomSlot(testLocation,
             testQuarter,
             testDayOfWeek,
             testStartTime,
             testEndTime);
+    testRoomSlot.setId(testId);
 
     assertEquals(testId, testRoomSlot.getId());
     assertEquals(testLocation, testRoomSlot.getLocation());
@@ -122,11 +117,13 @@ public class RoomSlotTests {
     assertEquals(testEndTime, testRoomSlot.getEndTime());
   }
 
-  // to-string
+  // test to-string
   @Test
   public void test_RoomSlot_ToString() {
+    // test with default constructor
     testRoomSlot = new RoomSlot();
-    String expected = "{" + " id='null'"
+    testRoomSlot.setId(testId); // an normally auto-generated field
+    String expected = "{" + " id='" + testId +"'"
             + ", location='null'"
             + ", quarter='null'"
             + ", start time='null'"
@@ -134,21 +131,13 @@ public class RoomSlotTests {
             + "}";
     assertEquals(expected, testRoomSlot.toString());
 
-    testRoomSlot = new RoomSlot(testId);
-    expected = "{" + " id='" + testId + "'"
-            + ", location='null'"
-            + ", quarter='null'"
-            + ", start time='null'"
-            + ", end time='null'"
-            + "}";
-    assertEquals(expected, testRoomSlot.toString());
-
-    testRoomSlot = new RoomSlot(testId,
-            testLocation,
+    // test with fully overloaded constructor
+    testRoomSlot = new RoomSlot(testLocation,
             testQuarter,
             testDayOfWeek,
             testStartTime,
             testEndTime);
+    testRoomSlot.setId(testId); // an normally auto-generated field
     expected = "{" + " id='" + testId + "'"
             + ", location='" + testLocation + "'"
             + ", quarter='" + testQuarter + "'"

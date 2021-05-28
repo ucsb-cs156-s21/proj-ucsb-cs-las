@@ -16,26 +16,15 @@ public class OnlineOfficeHours {
   @JoinColumn(name = "tutor_assignment_id")
   private TutorAssignment tutorAssignment;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumns(
-          @JoinColumn(name = "location"),
-          @JoinColumn(name="quarter"),
-          @JoinColumn(name="dayOfWeek"),
-          @JoinColumn(name="startTime"),
-          @JoinColumn(name="endTime")
+          @JoinColumn(name = "room_slot_location", referencedColumnName = "location"),
+          @JoinColumn(name = "room_slot_quarter", referencedColumnName = "quarter"),
+          @JoinColumn(name = "room_slot_dayOfWeek", referencedColumnName ="dayOfWeek"),
+          @JoinColumn(name = "room_slot_startTime", referencedColumnName = "startTime"),
+          @JoinColumn(name = "room_slot_endTime", referencedColumnName ="endTime")
   )
   private RoomSlot roomSlot;
-
-  // this needs to go
-  /*
-  @Column(nullable = false)
-  private String dayOfWeek;
-  @Column(nullable = false)
-  private String startTime;
-  @Column(nullable = false)
-  private String endTime;
-  */
-  // end needs to go
 
   @Column(nullable = false)
   private String zoomRoomLink;
@@ -47,6 +36,16 @@ public class OnlineOfficeHours {
 
   }
 
+  // use auto-generated ID
+  public OnlineOfficeHours(TutorAssignment tutorAssignment,
+                           RoomSlot roomSlot, String zoomRoomLink, String notes) {
+    this.tutorAssignment = tutorAssignment;
+    this.roomSlot = roomSlot;
+    this.zoomRoomLink = zoomRoomLink;
+    this.notes = notes;
+  }
+
+  // constructor with given id
   public OnlineOfficeHours(Long id, TutorAssignment tutorAssignment,
                            RoomSlot roomSlot, String zoomRoomLink, String notes) {
     this.id = id;
@@ -120,11 +119,13 @@ public class OnlineOfficeHours {
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId()
-            + "', tutorAssignment='" + getTutorAssignment()
-            + "', roomSlot='" + getRoomSlot()
-            + "', zoomRoomLink='" + getZoomRoomLink()
-            + "', notes='" + getNotes() + "' }";
+    return "{ " +
+              "id='" + getId() + "', " +
+              "tutorAssignment='{ " + getTutorAssignment() + " }', " +
+              "roomSlot='{ " + getRoomSlot() + " }', " +
+              "zoomRoomLink='" + getZoomRoomLink() + "', " +
+              "notes='" + getNotes() +
+            "' }";
   }
 
 }

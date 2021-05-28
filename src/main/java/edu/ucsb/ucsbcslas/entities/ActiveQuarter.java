@@ -13,14 +13,13 @@ public class ActiveQuarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false)
     private String activeQuarter;
 
-    public ActiveQuarter() {
-    }
+    public ActiveQuarter() { }
 
-    public ActiveQuarter(Long id, String activeQuarter) {
-        this.id = id;
+    public ActiveQuarter(String activeQuarter) {
         this.activeQuarter = activeQuarter;
     }
 
