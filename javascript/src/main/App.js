@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="App">
       <AppNavbar />
-      <div class="flex-wrapper">
+      <div className="d-flex min-vh-100 flex-column justify-content-between">
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
