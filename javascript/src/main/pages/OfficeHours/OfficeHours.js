@@ -6,11 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable"
 import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
-
 import uploadOfficeHoursCSV from "main/services/OfficeHours/UploadCSV";
-
 import OfficeHourCSVButton from "main/components/OfficeHours/OfficeHourCSVButton.js";
-// import { CSVLink } from "react-csv";
 import {useHistory} from "react-router-dom";
 import { CSVLink } from "react-csv";
 

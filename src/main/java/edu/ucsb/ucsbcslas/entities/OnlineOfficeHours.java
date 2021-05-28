@@ -21,19 +21,14 @@ public class OnlineOfficeHours {
   @JoinColumn(name = "tutor_assignment_id")
   private TutorAssignment tutorAssignment;
   @Column(nullable = false)
-  @CsvBindByPosition(position = 0)
   private String dayOfWeek;
   @Column(nullable = false)
-  @CsvBindByPosition(position = 1)
   private String startTime;
   @Column(nullable = false)
-  @CsvBindByPosition(position = 2)
   private String endTime;
   @Column(nullable = false)
-  @CsvBindByPosition(position = 3)
   private String zoomRoomLink;
   @Column(nullable = false)
-  @CsvBindByPosition(position = 4)
   private String notes;
 
   public OnlineOfficeHours() {

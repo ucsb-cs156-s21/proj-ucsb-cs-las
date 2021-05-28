@@ -1,7 +1,6 @@
 package edu.ucsb.ucsbcslas.controllers;
 
 import org.slf4j.Logger;
-import java.io.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,18 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-//new
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
+import edu.ucsb.ucsbcslas.entities.AppUser;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.*;
 import java.lang.*;
-import edu.ucsb.ucsbcslas.services.CSVToObjectService;
-import edu.ucsb.ucsbcslas.entities.AppUser;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,18 +33,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
-
-//new
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.entities.TutorAssignment;
-
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
-
-//new
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
@@ -63,14 +54,12 @@ public class OnlineOfficeHoursController {
     private OnlineOfficeHoursRepository officeHoursRepository;
     @Autowired
     private TutorRepository tutorRepository;
-    //new
     @Autowired
     private CourseRepository courseRepository;
     @Autowired
     private TutorAssignmentRepository tutorAssignmentRepository;
     @Autowired
     CSVToObjectService<OnlineOfficeHours> csvToObjectService;
-    // @Autowired
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -130,21 +119,6 @@ public class OnlineOfficeHoursController {
         return ResponseEntity.ok().body(body);
     }
 
-    // @PostMapping(value = "/api/admin/officehours/upload", produces = "application/json")
-    // public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
-    //     logger.info("Starting upload CSV");
-    //     AppUser user = authControllerAdvice.getUser(authorization);
-    //     try {
-    //         Reader reader = new InputStreamReader(csv.getInputStream());
-    //         logger.info(new String(csv.getInputStream().readAllBytes()));
-    //         List<OnlineOfficeHours> uploadedOfficeHours = csvToObjectService.parse(reader, OnlineOfficeHours.class);
-    //         List<OnlineOfficeHours> savedOfficeHour = (List<OnlineOfficeHours>) officeHoursRepository.saveAll(uploadedOfficeHours);
-    //         String body = mapper.writeValueAsString(savedOfficeHour);
-    //         return ResponseEntity.ok().body(body);
-    //     } catch(RuntimeException e){
-    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
-    //     }
-    // }
 
     @PostMapping(value = "/api/admin/officehours/upload", produces = "application/json")
     public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
@@ -163,12 +137,9 @@ public class OnlineOfficeHoursController {
             String row = csvReader.readLine();
             String [] data ;
             while(row != null){
-                // body += row;
-                row = row.substring(1,row.length() - 1);
-                data = row.split("\",\"");
+                row = row.replace("\"","");
+                data = row.split(",");
 
-                
-                
 
                 String name = data[0];
                 String quarter = data[1];
@@ -201,7 +172,7 @@ public class OnlineOfficeHoursController {
                 
                 Course related_course = courseRepository.findByNameAndQuarter(course.getName(), course.getQuarter());
 
-                if(!existingTutor.isPresent()){
+                if(existingTutor.isEmpty()){
                     related_tutor = tutorRepository.save(tutor);
                 }
                 else{
@@ -215,7 +186,7 @@ public class OnlineOfficeHoursController {
                 List<TutorAssignment> TAbyTutor = tutorAssignmentRepository.findAllByTutor(related_tutor);
                 List<TutorAssignment> comm =TAbyCourse;
                 comm.retainAll(TAbyTutor);
-                if(comm.size()==0){
+                if(comm.isEmpty()){
                     TA = tutorAssignmentRepository.save(tutorAssignment);
                 }
                 else{
@@ -235,7 +206,6 @@ public class OnlineOfficeHoursController {
                     OH = new OnlineOfficeHours(TA, dayOfWeek, startTime, endTime, zoomRoomLink, notes);
                     savedOfficeHour.add(officeHoursRepository.save(OH));
                 }
-                
             }
             
             body = mapper.writeValueAsString(savedOfficeHour);

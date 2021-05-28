@@ -9,12 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-
-// import org.springframework.web.multipart.MultipartFile;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.context.WebApplicationContext;
-// import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.View;
 import static org.mockito.Mockito.eq;
@@ -255,7 +251,6 @@ public class OnlineOfficeHourControllerTests {
     @Test
     public void testUploadFile_prexist() throws Exception{
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
-        // List<OnlineOfficeHours> emptyOHL = new ArrayList<>();
         List<TutorAssignment> TAL = new ArrayList<> ();
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
         Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
@@ -268,12 +263,9 @@ public class OnlineOfficeHourControllerTests {
         String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(c);
-        // when(mockCourseRepository.save(any(Course.class))).thenReturn(c);
         when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(OptTutor);
-        // when(mockTutorRepository.save(any(Tutor.class))).thenReturn(t);
         when(mockTutorAssignmentRepository.findAllByCourse(any(Course.class))).thenReturn(TAL);
         when(mockTutorAssignmentRepository.findAllByTutor(any(Tutor.class))).thenReturn(TAL);
-        // when(mockTutorAssignmentRepository.save(any(TutorAssignment.class))).thenReturn(tutorAss);
         when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(expectedOfficeHours);
         when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
         MockMultipartFile mockFile = new MockMultipartFile(
@@ -295,7 +287,6 @@ public class OnlineOfficeHourControllerTests {
     @Test
     public void testUploadFile_3OH() throws Exception{
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
-        // List<OnlineOfficeHours> emptyOHL = new ArrayList<>();
         List<TutorAssignment> TAL = new ArrayList<> ();
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
         Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
@@ -314,12 +305,9 @@ public class OnlineOfficeHourControllerTests {
         String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(c);
-        // when(mockCourseRepository.save(any(Course.class))).thenReturn(c);
         when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(OptTutor);
-        // when(mockTutorRepository.save(any(Tutor.class))).thenReturn(t);
         when(mockTutorAssignmentRepository.findAllByCourse(any(Course.class))).thenReturn(TAL);
         when(mockTutorAssignmentRepository.findAllByTutor(any(Tutor.class))).thenReturn(TAL);
-        // when(mockTutorAssignmentRepository.save(any(TutorAssignment.class))).thenReturn(tutorAss);
         when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(expectedOfficeHours);
         when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
         MockMultipartFile mockFile = new MockMultipartFile(
@@ -342,7 +330,6 @@ public class OnlineOfficeHourControllerTests {
     @Test
     public void testUploadFile_unauthorizedIfNotAdmin() throws Exception {
         OnlineOfficeHoursController OnlineOfficeHoursController = mock(OnlineOfficeHoursController.class);
-        // when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenThrow(RuntimeException.class);
         MockMultipartFile mockFile = new MockMultipartFile(
             "csv",
