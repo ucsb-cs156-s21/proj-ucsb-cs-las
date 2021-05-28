@@ -7,14 +7,12 @@ import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
 import { buildDeleteTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 import {useHistory} from "react-router-dom";
-//import { ToastProvider, useToasts } from 'react-toast-notifications'
 
 
 const TutorAssignment = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { email } = user;
-  //const { addToast } = useToasts();
 
   const { data: roleInfo } = useSWR(
       ["/api/myRole", getToken],
