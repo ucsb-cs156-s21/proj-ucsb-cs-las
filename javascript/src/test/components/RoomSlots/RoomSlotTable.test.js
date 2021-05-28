@@ -5,18 +5,20 @@ import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable"
 describe("RoomSlotTable tests", () => {
     const slots = [
         {
+            id: 1,
             location: "Library",
             quarter: "S21",
             dayOfWeek: "Monday",
-            startTime: "Placeholder",
-            endTime: "Placeholder",
+            startTime: "08:00:00",
+            endTime: "15:00:00",
         },
         {
+            id: 2,
             location: "HSSB",
             quarter: "S21",
             dayOfWeek: "Tuesday",
-            startTime: "Placeholder",
-            endTime: "Placeholder",
+            startTime: "08:00:00",
+            endTime: "15:00:00",
         },
 
     ]
