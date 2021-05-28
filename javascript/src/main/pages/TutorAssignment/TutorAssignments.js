@@ -81,7 +81,10 @@ const TutorAssignment = () => {
           isInstructor={isInstructor}
         />
       </>
-      <TutorAssignmentCSVButton admin={isInstructor}  addTask={uploadTutorAssignment} />
+      <TutorAssignmentCSVButton
+        admin={isInstructor}
+        addTask={uploadTutorAssignment}
+      />
       <pre
         style={{
           whiteSpace: "pre",
@@ -93,7 +96,10 @@ const TutorAssignment = () => {
         }}
         muted
       >
-        Required Columns: Course, First and Last Name, Assignment Type.Ex: CMPSC 48 Fall 2020, Joe Gaucho, LA
+        Required Columns: Course Name, Quarter, Instructor First Name,
+        Instructor Last Name, Instructor Email, Tutor First Name, Tutor Last
+        Name, Tutor Email, Assignment Type. Ex: CMPSC 48, 20201, Joe, Gaucho,
+        joegaucho@ucsb.edu, Joe, Gaucho, joegaucho@ucsb.edu, LA
       </pre>
     </>
   );
