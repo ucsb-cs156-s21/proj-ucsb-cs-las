@@ -1,6 +1,7 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
-import CourseList from "main/components/Courses/CourseList"
+import CourseList from "main/components/Courses/CourseList";
+import UpcomingOfficeHourTable from "main/components/Courses/CourseList";
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 import fromFormat from "main/utils/FromFormat";
@@ -34,6 +35,7 @@ const Home = () => {
             </div>
         </Jumbotron>,
         <>
+        <UpcomingOfficeHourTable upcomingOfficeHours={upcomingOfficeHours}/>
         </>
     );
 };
