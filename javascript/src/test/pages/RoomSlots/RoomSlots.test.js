@@ -1,9 +1,8 @@
 import React from "react";
-import { waitFor, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import RoomSlots from "main/pages/RoomSlots/RoomSlots";
-import userEvent from "@testing-library/user-event";
 //import { buildDeleteRoomSlot } from "main/services/RoomSlots/RoomSlotsService";
 
 jest.mock("swr");

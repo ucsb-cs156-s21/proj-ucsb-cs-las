@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -9,7 +9,7 @@ import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
 import Loading from "../../components/Loading/Loading";
 
 const RoomSlots = () => {
-  const { user, getAccessTokenSilently: getToken } = useAuth0();
+  const {_user, getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const history = useHistory();
 
