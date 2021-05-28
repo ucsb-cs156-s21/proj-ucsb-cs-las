@@ -10,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 public class ActiveQuarter {
+    // active quarter id: generated value, property of this entity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

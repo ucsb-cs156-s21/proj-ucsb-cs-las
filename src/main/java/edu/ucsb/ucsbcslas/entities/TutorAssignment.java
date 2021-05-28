@@ -10,10 +10,14 @@ import edu.ucsb.ucsbcslas.models.Course;
 
 @Entity
 public class TutorAssignment {
-  // tutor assignment id: property of this entity
+  // tutor assignment id: generated value, property of this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  // assignment type: property of this entity
+  @Column(nullable = false)
+  private String assignmentType;
 
   // course data: from course entity (use one to many)
   @OneToMany(mappedBy = "course_id")
@@ -22,10 +26,6 @@ public class TutorAssignment {
   // tutor information: from tutor entity (use one to many)
   @OneToMany(mappedBy = "tutor_id")
   private Tutor tutor;
-
-  // assignment type: property of this entity
-  @Column(nullable = false)
-  private String assignmentType;
 
   public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
     this.course = course;

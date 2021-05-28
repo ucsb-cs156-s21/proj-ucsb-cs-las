@@ -11,43 +11,43 @@ import java.time.DayOfWeek;
 
 @Entity
 public class RoomSlot {
-    // room slot id: property of this entity
+    // room slot id: generated value, property of this entity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // course data: from course entity (use one to many)
-    @NotNull
-    @Column(nullable = false)
-    private String location;
-
-    // quarter data: from active quarter entity (use one to many)
-    @ManyToOne
-    @JoinColumns(
-        @JoinColumn(name = "id"),
-        @JoinColumn(name = "quarter")
-    )
-    public ActiveQuarter quarter;
-
     // day of week data: property of this entity
     @Column(nullable = false)
+    @NotNull
     private DayOfWeek dayOfWeek;
 
     // start time: property of this entity
     @Column(nullable = false)
+    @NotNull
     private LocalTime startTime;
 
     // end time: property of this entity
+    @NotNull
     @Column(nullable = false)
     private LocalTime endTime;
+
+    // course data: populated from course entity (use one to many)
+    @NotNull
+    @Column(nullable = false)
+    private String location;
+
+    // quarter data: populated from active quarter entity (use one to many)
+    @ManyToOne
+    @JoinColumns(@JoinColumn(name = "id"),
+        @JoinColumn(name = "quarter"))
+    public ActiveQuarter quarter;
 
     public RoomSlot() { }
 
     // constructor with auto-generated id
     public RoomSlot(String location,
         ActiveQuarter quarter, DayOfWeek dayOfWeek,
-        LocalTime startTime, LocalTime endTime) 
-    {
+        LocalTime startTime, LocalTime endTime) {
         this.location = location;
         this.quarter = quarter;
         this.dayOfWeek = dayOfWeek;
@@ -58,8 +58,7 @@ public class RoomSlot {
     // constructor with given room slot id
     public RoomSlot(Long id, String location,
                     ActiveQuarter quarter, DayOfWeek dayOfWeek,
-                    LocalTime startTime, LocalTime endTime)
-    {
+                    LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.location = location;
         this.quarter = quarter;

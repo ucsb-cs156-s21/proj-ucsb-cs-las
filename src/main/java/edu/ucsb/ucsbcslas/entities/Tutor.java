@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class Tutor {
-  // tutor id: property of this entity
+  // tutor id: generated value, property of this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;

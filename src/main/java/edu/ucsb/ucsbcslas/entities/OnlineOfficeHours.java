@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class OnlineOfficeHours {
-  // online office hours id: property of this entity
+  // online office hours id: generated value, property of this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
