@@ -8,8 +8,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ucsb.ucsbcslas.entities.*;
 import org.junit.jupiter.api.Test;
+
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
+import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
 
 public class TutorAssignmentOfficeHourViewTest {
   @Test

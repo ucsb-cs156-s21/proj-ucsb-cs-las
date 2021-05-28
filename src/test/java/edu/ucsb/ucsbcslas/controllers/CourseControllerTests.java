@@ -1,6 +1,5 @@
 package edu.ucsb.ucsbcslas.controllers;
 
-import edu.ucsb.ucsbcslas.entities.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -50,9 +49,16 @@ import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 
+import edu.ucsb.ucsbcslas.entities.AppUser;
+
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentOfficeHourView;
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
+import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
 
 @WebMvcTest(value = CourseController.class)
 @WithMockUser

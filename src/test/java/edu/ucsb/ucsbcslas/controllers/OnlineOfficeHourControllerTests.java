@@ -1,6 +1,5 @@
 package edu.ucsb.ucsbcslas.controllers;
 
-import edu.ucsb.ucsbcslas.entities.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +34,11 @@ import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.Tutor;
+import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
+import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
 import edu.ucsb.ucsbcslas.models.Course;
 
 @WebMvcTest(value = OnlineOfficeHoursController.class)
