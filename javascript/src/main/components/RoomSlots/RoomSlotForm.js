@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import {checkTime, checkFilled, checkCourseQuarter} from "main/utils/FormHelpers";
+import { formatTimeToLocalTime } from "main/utils/RoomSlotFormHelpers";
 
 const RoomSlotForm = ({ createRoomSlot/*, updateRoomSlot, existingRoomSlot*/}) =>{
     const locationRef = useRef(null);
@@ -52,10 +53,13 @@ const RoomSlotForm = ({ createRoomSlot/*, updateRoomSlot, existingRoomSlot*/}) =
             }
             let formatedQuarter = "20" + roomSlot.quarter.substr(1, 2) + quarterNum;
 
+            let formattedStartTime = formatTimeToLocalTime(roomSlot.startTime);
+            let formattedEndTime = formatTimeToLocalTime(roomSlot.endTime);
+
             // roomSlot.quarter = new ActiveQuarter(0,formatedQuarter);
             // roomSlot.quarter.id = 0;
             // if(createRoomSlot)
-                createRoomSlot({...roomSlot});
+                createRoomSlot({...roomSlot, startTime: formattedStartTime, endTime: formattedEndTime});
             
             // else
             //     updateRoomSlot({...roomSlot, quarter: formatedQuarter});
