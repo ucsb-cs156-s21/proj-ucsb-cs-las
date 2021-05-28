@@ -72,6 +72,10 @@ describe("TutorAssignment page test", () => {
     name: "test user",
   };
 
+
+  const addToast = jest.fn();
+
+
   beforeEach(() => {
     useAuth0.mockReturnValue({
       admin: undefined,
@@ -84,7 +88,7 @@ describe("TutorAssignment page test", () => {
       mutate: mutateSpy,
     });
     useToasts.mockReturnValue({
-      addToast: jest.fn(),
+      addToast: addToast,
     });
   });
 
@@ -231,9 +235,11 @@ describe("TutorAssignment page test", () => {
     const { getByText } = render(<TutorAssignment />);
     const csvButton = getByText("Upload");
     userEvent.click(csvButton);
+
     await waitFor(() => expect(addToast).toHaveBeenCalledTimes(1));
     expect(addToast).toHaveBeenCalledWith("Error Uploading CSV", {
-      appearance: "error",
+      appearance: 'error',
+      
     });
   });
 });

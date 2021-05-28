@@ -33,7 +33,7 @@ const TutorAssignment = () => {
     (instructorCourseList.length > 0 ||
       roleInfo.role.toLowerCase() === "admin");
 
-  const { data: tutorAssignmentList, error, mutate: mutateTutors } = useSWR(
+  const { data: tutorAssignmentList, error, mutate: mutateTutorAssignments } = useSWR(
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
@@ -96,7 +96,7 @@ const TutorAssignment = () => {
   const uploadTutorAssignment = uploadTutorAssignmentCSV(
     getToken,
     () => {
-      mutateTutors();
+      mutateTutorAssignments();
       addToast("CSV Uploaded", { appearance: "success" });
     },
     () => {
