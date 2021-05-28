@@ -1,8 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import RoomSlots from "main/pages/RoomSlots/RoomSlots";
+import userEvent from "@testing-library/user-event";
+import { useHistory } from "react-router-dom";
 //import { buildDeleteRoomSlot } from "main/services/RoomSlots/RoomSlotsService";
 
 jest.mock("swr");
@@ -50,10 +52,22 @@ describe("RoomSlots page test", () => {
       getAccessTokenSilently: getAccessTokenSilentlySpy,
       user: user
     });
-    useSWR.mockReturnValue({
-      data: roomSlotList,
-      error: undefined,
-      mutate: mutateSpy,
+
+    useSWR.mockImplementation((key, _getter) => {
+      if (key[0] === "/api/public/roomslot") {
+        return {
+          data: roomSlotList,
+          error: undefined,
+          mutate: mutateSpy,
+        };
+      } else {
+        return {
+          data: {
+            user: "test user",
+            role: "admin"
+          }
+        }
+      }
     });
   });
   
@@ -85,6 +99,20 @@ describe("RoomSlots page test", () => {
       const { getByText } = render(<RoomSlots />);
       const error = getByText(/error/);
       expect(error).toBeInTheDocument();
+    });
+
+    test("renders new room slot button when admin", async () => {
+      const pushSpy = jest.fn();
+      useHistory.mockReturnValue({
+        push: pushSpy
+      });
+
+      const { getByText } = render(<RoomSlots />);
+      const newRoomSlotButton = getByText("New Room Slot");
+      expect(newRoomSlotButton).toBeInTheDocument();
+      userEvent.click(newRoomSlotButton);
+
+      await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
     });
 
   //   test("can delete an office hour", async () => {

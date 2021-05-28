@@ -12,26 +12,9 @@ const RoomSlotForm = ({ createRoomSlot/*, updateRoomSlot, existingRoomSlot*/}) =
     const emptyRoomSlot = {
         location: "",
         quarter: "",
-        // quarter: {
-        //     activeQuarter:"",
-        //     id: 0    
-        // },
-        id: 0,
         dayOfWeek: "Monday",
-        // startTime: {
-        //     hour: "",
-        //     minute: "",
-        //     nano: "",
-        //     second: "",
-        // }
         startTime:"",
         endTime:""
-        // endTime: {
-        //     hour: "",
-        //     minute: "",
-        //     nano: "",
-        //     second: "",
-        // }
     }
 
     const [roomSlot, setRoomSlot] = useState(emptyRoomSlot);
