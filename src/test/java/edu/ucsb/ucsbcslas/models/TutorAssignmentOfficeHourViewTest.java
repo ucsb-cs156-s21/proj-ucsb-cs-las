@@ -3,23 +3,40 @@ package edu.ucsb.ucsbcslas.models;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsb.ucsbcslas.entities.*;
 import org.junit.jupiter.api.Test;
-
-import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
-import edu.ucsb.ucsbcslas.entities.Tutor;
-import edu.ucsb.ucsbcslas.entities.TutorAssignment;
 
 public class TutorAssignmentOfficeHourViewTest {
   @Test
   public void testTutorAssignmentOfficeHourView_notEqualNull() throws Exception {
-    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
-    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    Course course = new Course(1L,
+            "course 1",
+            "F20",
+            "fname",
+            "lname",
+            "email");
+    Tutor tutor = new Tutor(1L,
+            "Chris",
+            "Gaucho",
+            "cgaucho@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L,
+            course,
+            tutor,
+            "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    RoomSlot roomSlot = new RoomSlot(1L,
+            "The Library",
+            new ActiveQuarter("F20"),
+            DayOfWeek.WEDNESDAY,
+            LocalTime.of(20, 0),
+            LocalTime.of(22,0));
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, roomSlot, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(expectedTutorAssignments,expectedOnlineOfficeHoursList);
     
@@ -28,11 +45,29 @@ public class TutorAssignmentOfficeHourViewTest {
 
   @Test
   public void testTutorAssignmentOfficeHourView_notEqualAnotherClass() throws Exception {
-    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
-    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    Course course = new Course(1L,
+            "course 1",
+            "F20",
+            "fname",
+            "lname",
+            "email");
+    Tutor tutor = new Tutor(1L,
+            "Chris",
+            "Gaucho",
+            "cgaucho@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L,
+            course,
+            tutor,
+            "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    RoomSlot roomSlot = new RoomSlot(1L,
+            "The Library",
+            new ActiveQuarter("F20"),
+            DayOfWeek.WEDNESDAY,
+            LocalTime.of(20, 0),
+            LocalTime.of(22,0));
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, roomSlot, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(expectedTutorAssignments,expectedOnlineOfficeHoursList);
     assertNotEquals(tutorAssignmentOfficeHourView, new Object());
@@ -44,7 +79,14 @@ public class TutorAssignmentOfficeHourViewTest {
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    RoomSlot roomSlot = new RoomSlot(1L,
+            "The Library",
+            new ActiveQuarter("F20"),
+            DayOfWeek.WEDNESDAY,
+            LocalTime.of(20, 0),
+            LocalTime.of(22,0));
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, roomSlot, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(expectedTutorAssignments,expectedOnlineOfficeHoursList);
     assertEquals(tutorAssignmentOfficeHourView, tutorAssignmentOfficeHourView);
@@ -56,7 +98,14 @@ public class TutorAssignmentOfficeHourViewTest {
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     List<OnlineOfficeHours> expectedOnlineOfficeHoursList = new ArrayList<>();
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, "Tuesday", "4:00 PM", "6:00 PM", "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    RoomSlot roomSlot = new RoomSlot(1L,
+            "The Library",
+            new ActiveQuarter("F20"),
+            DayOfWeek.WEDNESDAY,
+            LocalTime.of(20, 0),
+            LocalTime.of(22,0));
+
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, roomSlot, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(expectedTutorAssignments,expectedOnlineOfficeHoursList);
     String tutorAssignmentExpected = "{ id='1', course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu'}', assignmentType='TA'},";

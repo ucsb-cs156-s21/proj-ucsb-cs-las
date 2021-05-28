@@ -31,6 +31,12 @@ public class TutorAssignment {
   @Column(nullable = false)
   private String assignmentType;
 
+  public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
+    this.course = course;
+    this.tutor = tutor;
+    this.assignmentType = assignmentType;
+  }
+
   public TutorAssignment(Long id, Course course, Tutor tutor, String assignmentType) {
     this.id = id;
     this.course = course;

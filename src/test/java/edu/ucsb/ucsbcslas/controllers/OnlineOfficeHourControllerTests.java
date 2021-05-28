@@ -83,7 +83,7 @@ public class OnlineOfficeHourControllerTests {
                 "String assignmentType");
         RoomSlot rs = new RoomSlot(1L,
                 "The Library",
-                new ActiveQuarter(1L, "F20"),
+                new ActiveQuarter("F20"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -119,7 +119,7 @@ public class OnlineOfficeHourControllerTests {
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
                 "The Library",
-                new ActiveQuarter(1L, "F20"),
+                new ActiveQuarter("F20"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -165,7 +165,7 @@ public class OnlineOfficeHourControllerTests {
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
                 "The Library",
-                new ActiveQuarter(1L, "F20"),
+                new ActiveQuarter("F20"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -208,7 +208,7 @@ public class OnlineOfficeHourControllerTests {
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
                 "The Library",
-                new ActiveQuarter(1L, "F20"),
+                new ActiveQuarter("F20"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));
@@ -239,7 +239,7 @@ public class OnlineOfficeHourControllerTests {
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
                 "The Library",
-                new ActiveQuarter(1L, "F20"),
+                new ActiveQuarter("F20"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));

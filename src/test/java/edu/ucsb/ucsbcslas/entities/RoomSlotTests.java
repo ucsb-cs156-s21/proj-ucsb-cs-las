@@ -13,7 +13,7 @@ public class RoomSlotTests {
   public static RoomSlot testRoomSlot;
   public static Long testId = 1L; // testId for the ActiveQuarter
   public static String testLocation = "Campus Point";
-  public static ActiveQuarter testQuarter = new ActiveQuarter("Campus Point");
+  public static ActiveQuarter testQuarter = new ActiveQuarter("F20");
   public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
   public static LocalTime testStartTime = LocalTime.NOON;
   public static LocalTime testEndTime = LocalTime.MIDNIGHT;

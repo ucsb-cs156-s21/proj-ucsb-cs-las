@@ -27,12 +27,13 @@ public class OnlineOfficeHoursTests {
   DayOfWeek testRoomSlotDayOfWeek = DayOfWeek.MONDAY;
   LocalTime testRoomSlotStartTime = LocalTime.of(13, 0);
   LocalTime testRoomSlotEndTime = LocalTime.of(16, 0);
+
   RoomSlot testRoomSlot = new RoomSlot(testRoomSlotId,
-          String testRoomSlotLocation,
-          ActiveQuarter testRoomSlotQuarter,
-          DayOfWeek testRoomSlotDayOfWeek,
-          LocalTime testRoomSlotStartTime,
-          LocalTime testRoomSlotEndTime);
+          testRoomSlotLocation,
+          testRoomSlotQuarter,
+          testRoomSlotDayOfWeek,
+          testRoomSlotStartTime,
+          testRoomSlotEndTime);
 
   @Test
   public void testGettersAndSetters() throws Exception {
