@@ -2,17 +2,14 @@ package edu.ucsb.ucsbcslas.entities;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class ActiveQuarter {
@@ -22,12 +19,13 @@ public class ActiveQuarter {
     private Long id;
 
     // active quarter: data belongs to this entity
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private String activeQuarter;
 
-    // get all room slots belonging to this quarter
-    @OneToMany(mappedBy = "activeQuarter")
-    public List<RoomSlot> roomSlotsByStartTime = new ArrayList<RoomSlot>();
+    // an active quarter may belong to many room slots
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    public RoomSlot roomSlotsByStartTime;
 
     public ActiveQuarter() { }
 

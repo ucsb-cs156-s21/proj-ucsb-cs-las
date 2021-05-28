@@ -23,7 +23,7 @@ public class TutorAssignment {
   private Long id;
 
   // assignment type: data belongs to this entity
-  @JoinColumn(nullable = false)
+  @Column(nullable = false)
   private String assignmentType;
 
   // course: data belongs to course entity

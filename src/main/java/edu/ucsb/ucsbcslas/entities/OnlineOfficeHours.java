@@ -1,6 +1,5 @@
 package edu.ucsb.ucsbcslas.entities;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -23,20 +22,20 @@ public class OnlineOfficeHours {
 
   // tutor assignment: data belongs to tutor assignment entity
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="tutorAssignment_id")
+  @JoinColumn(nullable = false)
   private TutorAssignment tutorAssignment;
 
   // room slot: data belongs to room slot entity
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="roomSlot_id")
+  @JoinColumn(nullable = false)
   private RoomSlot roomSlot;
 
   // office hour zoom room link: data belongs to this entity
-  @JoinColumn(name="zoomRoomLink", nullable = false)
+  @Column(nullable = false)
   private String zoomRoomLink;
 
   // office hour notes: data belongs to this entity
-  @JoinColumn(name="notes", nullable = false)
+  @Column(nullable = false)
   private String notes;
 
   public OnlineOfficeHours() { }

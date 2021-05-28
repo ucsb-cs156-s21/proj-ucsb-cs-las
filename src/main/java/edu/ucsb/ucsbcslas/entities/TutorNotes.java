@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,12 +21,12 @@ public class TutorNotes {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "course_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(nullable = false)
   private Course course;
 
-  @ManyToOne
-  @JoinColumn(name = "tutor_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(nullable = false)
   private Tutor tutor;
 
   @Column(nullable = false)
@@ -38,8 +39,7 @@ public class TutorNotes {
     this.message = message;
   }
 
-  public TutorNotes() {
-  }
+  public TutorNotes() { }
 
   public Long getId() {
     return this.id;

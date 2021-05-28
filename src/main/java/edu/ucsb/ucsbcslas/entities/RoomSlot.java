@@ -22,24 +22,24 @@ public class RoomSlot {
     private Long id;
 
     // location: data belongs to this entity
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private String location;
 
     // active quarter data: data belongs to quarter entity
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "activeQuarter_id")
+    @JoinColumn(nullable = false)
     private ActiveQuarter activeQuarter;
 
     // day of week: data belongs to this entity
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private DayOfWeek dayOfWeek;
 
     // start time: data belongs to this entity
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private LocalTime startTime;
 
     // end time: data belongs to this entity
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private LocalTime endTime;
 
     public RoomSlot() { }
