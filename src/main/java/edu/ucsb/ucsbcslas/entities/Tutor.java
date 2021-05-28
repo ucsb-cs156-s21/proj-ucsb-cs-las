@@ -12,21 +12,27 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class Tutor {
+  // tutor id: property of this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  // first name: property of this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 0)
   private String firstName;
+
+  // last name: property of this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 1)
   private String lastName;
+
+  // email: property of this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 2)
   private String email;
 
-  public Tutor() {
-  }
+  public Tutor() { }
 
   public Tutor(Long id, String firstName, String lastName, String email) {
     this.id = id;

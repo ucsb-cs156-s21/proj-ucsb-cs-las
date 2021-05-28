@@ -11,14 +11,17 @@ import java.time.DayOfWeek;
 
 @Entity
 public class RoomSlot {
+    // room slot id: property of this entity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    // course data: from course entity (use one to many)
     @NotNull
     @Column(nullable = false)
     private String location;
 
+    // quarter data: from active quarter entity (use one to many)
     @ManyToOne
     @JoinColumns(
         @JoinColumn(name = "id"),
@@ -26,12 +29,15 @@ public class RoomSlot {
     )
     public ActiveQuarter quarter;
 
+    // day of week data: property of this entity
     @Column(nullable = false)
     private DayOfWeek dayOfWeek;
 
+    // start time: property of this entity
     @Column(nullable = false)
     private LocalTime startTime;
 
+    // end time: property of this entity
     @Column(nullable = false)
     private LocalTime endTime;
 

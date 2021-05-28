@@ -1,5 +1,6 @@
 package edu.ucsb.ucsbcslas.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.*;
@@ -8,33 +9,28 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class OnlineOfficeHours {
+  // online office hours id: property of this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "tutor_assignment_id")
-  private TutorAssignment tutorAssignment;
+  // tutor assignment data: from tutor assignment (use one to many)
+  @OneToMany(mappedBy = "course")
+  private List<TutorAssignment> tutorAssignments;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumns(
-          @JoinColumn(name = "room_slot_location", referencedColumnName = "location"),
-          @JoinColumn(name = "room_slot_quarter", referencedColumnName = "quarter"),
-          @JoinColumn(name = "room_slot_dayOfWeek", referencedColumnName ="dayOfWeek"),
-          @JoinColumn(name = "room_slot_startTime", referencedColumnName = "startTime"),
-          @JoinColumn(name = "room_slot_endTime", referencedColumnName ="endTime")
-  )
-  private RoomSlot roomSlot;
+  // room slot data: from room slot entity (use one to many)
+  @OneToMany(mappedBy = "")
+  private List<RoomSlot> roomSlots;
 
+  // office hour zoom room link: property of this entity
   @Column(nullable = false)
   private String zoomRoomLink;
 
+  // office hour notes: property of this entity
   @Column(nullable = false)
   private String notes;
 
-  public OnlineOfficeHours() {
-
-  }
+  public OnlineOfficeHours() { }
 
   // use auto-generated ID
   public OnlineOfficeHours(TutorAssignment tutorAssignment,
