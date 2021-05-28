@@ -9,30 +9,32 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class OnlineOfficeHours {
-  // online office hours id: generated value, property of this entity
+  // online office hours id: generated value, data belongs to this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  // tutor assignment data: from tutor assignment (use one to many)
-  @OneToMany(mappedBy = "course")
-  private List<TutorAssignment> tutorAssignments;
+  // tutor assignment: data belongs to tutor assignment entity
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name="tutorAssignment_id")
+  private TutorAssignment tutorAssignment;
 
-  // room slot data: from room slot entity (use one to many)
-  @OneToMany(mappedBy = "")
-  private List<RoomSlot> roomSlots;
+  // room slot: data belongs to room slot entity
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name="roomSlot_id")
+  private RoomSlot roomSlot;
 
-  // office hour zoom room link: property of this entity
-  @Column(nullable = false)
+  // office hour zoom room link: data belongs to this entity
+  @JoinColumn(name="zoomRoomLink", nullable = false)
   private String zoomRoomLink;
 
-  // office hour notes: property of this entity
-  @Column(nullable = false)
+  // office hour notes: data belongs to this entity
+  @JoinColumn(name="notes", nullable = false)
   private String notes;
 
   public OnlineOfficeHours() { }
 
-  // use auto-generated ID
+  // constructor using auto-generated ID
   public OnlineOfficeHours(TutorAssignment tutorAssignment,
                            RoomSlot roomSlot, String zoomRoomLink, String notes) {
     this.tutorAssignment = tutorAssignment;
@@ -41,7 +43,9 @@ public class OnlineOfficeHours {
     this.notes = notes;
   }
 
-  // constructor with given id
+  // constructor with a given id
+  // (tests use this, since I think it simplifies things
+  // having consistent known ID, vs generated?)
   public OnlineOfficeHours(Long id, TutorAssignment tutorAssignment,
                            RoomSlot roomSlot, String zoomRoomLink, String notes) {
     this.id = id;

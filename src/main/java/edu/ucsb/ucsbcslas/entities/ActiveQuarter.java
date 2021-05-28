@@ -1,26 +1,36 @@
 package edu.ucsb.ucsbcslas.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class ActiveQuarter {
-    // active quarter id: generated value, property of this entity
+    // active quarter id: generated value, data belongs to this entity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    // active quarter: data belongs to this entity
+    @JoinColumn(nullable = false)
     private String activeQuarter;
+
+    // get all room slots belonging to this quarter
+    @OneToMany(mappedBy = "activeQuarter")
+    public List<RoomSlot> roomSlotsByStartTime = new ArrayList<RoomSlot>();
 
     public ActiveQuarter() { }
 
     public ActiveQuarter(String activeQuarter) {
+        this.activeQuarter = activeQuarter;
+    }
+
+    public ActiveQuarter(Long id, String activeQuarter) {
+        this.id = id;
         this.activeQuarter = activeQuarter;
     }
 

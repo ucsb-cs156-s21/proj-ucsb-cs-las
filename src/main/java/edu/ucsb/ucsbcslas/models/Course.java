@@ -32,8 +32,7 @@ public class Course {
   @CsvBindByPosition(position = 4)
   private String instructorEmail;
 
-  public Course() {
-  }
+  public Course() { }
 
   public Course(Long id, String name, String quarter, String instructorFirstName, String instructorLastName,
       String instructorEmail) {

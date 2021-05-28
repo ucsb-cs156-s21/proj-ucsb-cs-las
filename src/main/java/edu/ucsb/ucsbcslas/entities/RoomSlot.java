@@ -1,55 +1,48 @@
 package edu.ucsb.ucsbcslas.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalTime;
 import java.time.DayOfWeek;
 
 @Entity
 public class RoomSlot {
-    // room slot id: generated value, property of this entity
+    // room slot id: generated value, data belongs to this entity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // day of week data: property of this entity
-    @Column(nullable = false)
-    @NotNull
-    private DayOfWeek dayOfWeek;
-
-    // start time: property of this entity
-    @Column(nullable = false)
-    @NotNull
-    private LocalTime startTime;
-
-    // end time: property of this entity
-    @NotNull
-    @Column(nullable = false)
-    private LocalTime endTime;
-
-    // course data: populated from course entity (use one to many)
-    @NotNull
-    @Column(nullable = false)
+    // location: data belongs to this entity
+    @JoinColumn(nullable = false)
     private String location;
 
-    // quarter data: populated from active quarter entity (use one to many)
-    @ManyToOne
-    @JoinColumns(@JoinColumn(name = "id"),
-        @JoinColumn(name = "quarter"))
-    public ActiveQuarter quarter;
+    // active quarter data: data belongs to quarter entity
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "activeQuarter_id")
+    private ActiveQuarter activeQuarter;
+
+    // day of week: data belongs to this entity
+    @JoinColumn(nullable = false)
+    private DayOfWeek dayOfWeek;
+
+    // start time: data belongs to this entity
+    @JoinColumn(nullable = false)
+    private LocalTime startTime;
+
+    // end time: data belongs to this entity
+    @JoinColumn(nullable = false)
+    private LocalTime endTime;
 
     public RoomSlot() { }
 
     // constructor with auto-generated id
     public RoomSlot(String location,
-        ActiveQuarter quarter, DayOfWeek dayOfWeek,
-        LocalTime startTime, LocalTime endTime) {
+                    ActiveQuarter activeQuarter, DayOfWeek dayOfWeek,
+                    LocalTime startTime, LocalTime endTime) {
         this.location = location;
-        this.quarter = quarter;
+        this.activeQuarter = activeQuarter;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -57,11 +50,11 @@ public class RoomSlot {
 
     // constructor with given room slot id
     public RoomSlot(Long id, String location,
-                    ActiveQuarter quarter, DayOfWeek dayOfWeek,
+                    ActiveQuarter activeQuarter, DayOfWeek dayOfWeek,
                     LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.location = location;
-        this.quarter = quarter;
+        this.activeQuarter = activeQuarter;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -83,12 +76,12 @@ public class RoomSlot {
         this.location = location;
     }
 
-    public ActiveQuarter getQuarter() {
-        return this.quarter;
+    public ActiveQuarter getActiveQuarter() {
+        return this.activeQuarter;
     }
 
-    public void setQuarter(ActiveQuarter quarter) {
-        this.quarter = quarter;
+    public void setActiveQuarter(ActiveQuarter quarter) {
+        this.activeQuarter = quarter;
     }
 
     public DayOfWeek getDayOfWeek() {
@@ -127,7 +120,7 @@ public class RoomSlot {
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(id, other.getId())
                .append(location, other.getLocation())
-               .append(quarter, other.getQuarter())
+               .append(activeQuarter, other.getActiveQuarter())
                .append(dayOfWeek, other.getDayOfWeek())
                .append(startTime, other.getStartTime())
                .append(endTime, other.getEndTime());
@@ -139,7 +132,7 @@ public class RoomSlot {
     public String toString() {
         return "{" + " id='" + getId() + "'" 
         + ", location='" + getLocation() + "'" 
-        + ", quarter='" + getQuarter() + "'"
+        + ", quarter='" + getActiveQuarter() + "'"
         + ", start time='" + getStartTime() + "'" 
         + ", end time='" + getEndTime() + "'" 
         + "}";

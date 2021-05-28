@@ -3,7 +3,6 @@ package edu.ucsb.ucsbcslas.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalTime;
 import java.time.DayOfWeek;
@@ -36,8 +35,8 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_GetAndSetQuarter() {
     testRoomSlot = new RoomSlot();
-    testRoomSlot.setQuarter(testQuarter);
-    assertEquals(testQuarter, testRoomSlot.getQuarter());
+    testRoomSlot.setActiveQuarter(testQuarter);
+    assertEquals(testQuarter, testRoomSlot.getActiveQuarter());
   }
 
   @Test
@@ -94,7 +93,7 @@ public class RoomSlotTests {
     testRoomSlot.setId(testId);
     assertEquals(testId, testRoomSlot.getId());
     assertEquals(null, testRoomSlot.getLocation());
-    assertEquals(null, testRoomSlot.getQuarter());
+    assertEquals(null, testRoomSlot.getActiveQuarter());
     assertEquals(null, testRoomSlot.getDayOfWeek());
     assertEquals(null, testRoomSlot.getStartTime());
     assertEquals(null, testRoomSlot.getEndTime());
@@ -111,7 +110,7 @@ public class RoomSlotTests {
 
     assertEquals(testId, testRoomSlot.getId());
     assertEquals(testLocation, testRoomSlot.getLocation());
-    assertEquals(testQuarter, testRoomSlot.getQuarter());
+    assertEquals(testQuarter, testRoomSlot.getActiveQuarter());
     assertEquals(testDayOfWeek, testRoomSlot.getDayOfWeek());
     assertEquals(testStartTime, testRoomSlot.getStartTime());
     assertEquals(testEndTime, testRoomSlot.getEndTime());

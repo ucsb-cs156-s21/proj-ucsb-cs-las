@@ -12,22 +12,22 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class Tutor {
-  // tutor id: generated value, property of this entity
+  // tutor id: generated value, data belongs to this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  // first name: property of this entity
+  // first name: data belongs to this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 0)
   private String firstName;
 
-  // last name: property of this entity
+  // last name: data belongs to this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 1)
   private String lastName;
 
-  // email: property of this entity
+  // email: data belongs to this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 2)
   private String email;
