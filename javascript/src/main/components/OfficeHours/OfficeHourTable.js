@@ -1,9 +1,18 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 
 export default ({officeHours,admin,deleteOfficeHour}) => {
+    let history = useHistory();
+
+    const renderEditButton = (id) => {
+        return (
+            <Button data-testid={"edit-button-"+id} onClick={() => {history.push(`/officeHours/edit/${id}`) }}>Edit</Button>
+        )
+    }
+
     const renderDeleteButton = (id) => {
         return (
             <Button variant="danger" data-testid="delete-button" onClick={() => deleteOfficeHour(id)}>Delete</Button>
@@ -49,6 +58,12 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
     ];
 
     if (admin) {
+        columns.push({
+            text: "Edit",
+            isDummyField: true,
+            dataField: "edit",
+            formatter: (_cell, row) => renderEditButton(row.id)
+        });
         columns.push({
             text: "Delete",
             isDummyField: true,
