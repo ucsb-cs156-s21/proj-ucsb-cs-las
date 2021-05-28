@@ -40,7 +40,7 @@ const RoomSlots = () => {
       {isAdmin && (
         <Button className="mb-3" onClick={()=>history.push("/roomslots/new")} >New Room Slot</Button>
       )}
-      {(roomSlotList && isAdmin) && (
+      {(roomSlotList) && (
         <RoomSlotTable roomSlots={roomSlotList} admin={isAdmin} deleteRoomSlot={() => {}} />
       )}
     </>
