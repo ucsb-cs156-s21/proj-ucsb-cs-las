@@ -11,7 +11,15 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
     const emptyOfficeHour = {
         id: "",
         tutorAssignment: {
-            id: ""
+            id: "",
+            tutor: {
+                firstName: "",
+                lastName: ""
+            },
+            course: {
+                quarter: "",
+                name: ""
+            }
         },
         startTime: "",
         endTime: "",
@@ -84,6 +92,32 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
                       style={{ textAlign: "left", width: "100%" }}
                       onChange={tutorAssignmentId => setOfficeHour({...officeHour, tutorAssignment: { id: tutorAssignmentId }})}
                     />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="tutorName">
+                <Form.Label column sm={2}>Tutor Name</Form.Label>
+                <Col sm={10}>
+                    <Form.Control type="text" placeholder="tutor name" value={officeHour.tutorAssignment.tutor == null ? "" : officeHour.tutorAssignment.tutor.firstName + " " + officeHour.tutorAssignment.tutor.lastName} onChange={(e) => setOfficeHour({
+                            ...officeHour,
+                            tutorName: e.target.value
+                    })} />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="courseName">
+                <Form.Label column sm={2}>Course Name</Form.Label>
+                <Col sm={10}>
+                    <Form.Control type="text" placeholder="course name" value={officeHour.tutorAssignment.course == null ? "" : officeHour.tutorAssignment.course.name} onChange={(e) => setOfficeHour({
+                            ...officeHour,
+                            courseName: e.target.value
+                    })} />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="quarter">
+                <Form.Label column sm={2}>Quarter</Form.Label>
+                <Col sm={10}>
+                <Form.Control type="text" placeholder="quarter" value={officeHour.tutorAssignment.course == null ? "" : officeHour.tutorAssignment.course.quarter} onChange={(e) => setOfficeHour({                            ...officeHour,
+                        courseName: e.target.value
+                    })} />
                 </Col>
             </Form.Group>
           <Form.Group as={Row} controlId="startTime">

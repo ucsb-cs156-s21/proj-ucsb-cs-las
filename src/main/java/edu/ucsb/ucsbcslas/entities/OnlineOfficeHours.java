@@ -30,12 +30,18 @@ public class OnlineOfficeHours {
   private String zoomRoomLink;
   @Column(nullable = false)
   private String notes;
+  @Column(nullable = false)
+  private String tutorName;
+  @Column(nullable = false)
+  private String courseName;
+  @Column(nullable = false)
+  private String quarter;
 
   public OnlineOfficeHours() {
   }
 
   public OnlineOfficeHours(Long id, TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
-      String zoomRoomLink, String notes) {
+      String zoomRoomLink, String notes, String tutorName, String courseName, String quarter) {
     this.id = id;
     this.tutorAssignment = tutorAssignment;
     this.dayOfWeek = dayOfWeek;
@@ -43,6 +49,9 @@ public class OnlineOfficeHours {
     this.endTime = endTime;
     this.zoomRoomLink = zoomRoomLink;
     this.notes = notes;
+    this.tutorName = tutorName;
+    this.courseName = courseName;
+    this.quarter = quarter;
   }
 
   public Long getId() {
@@ -101,6 +110,30 @@ public class OnlineOfficeHours {
     this.notes = notes;
   }
 
+  public String getTutorName() {
+    return this.tutorName;
+  }
+
+  public void setTutorName(String tutorName) {
+    this.tutorName = tutorName;
+  }
+
+  public String getCourseName() {
+    return this.courseName;
+  }
+
+  public void setCourseName(String courseName) {
+    this.courseName = courseName;
+  }
+
+  public String getQuarter() {
+    return this.quarter;
+  }
+
+  public void setQuarter(String quarter) {
+    this.quarter = quarter;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o == this)
@@ -114,7 +147,8 @@ public class OnlineOfficeHours {
     builder.append(id, onlineOfficeHours.getId()).append(tutorAssignment, onlineOfficeHours.getTutorAssignment())
         .append(dayOfWeek, onlineOfficeHours.getDayOfWeek()).append(startTime, onlineOfficeHours.getStartTime())
         .append(endTime, onlineOfficeHours.getEndTime()).append(zoomRoomLink, onlineOfficeHours.getZoomRoomLink())
-        .append(notes, onlineOfficeHours.getNotes());
+        .append(notes, onlineOfficeHours.getNotes()).append(tutorName, onlineOfficeHours.getTutorName())
+        .append(courseName, onlineOfficeHours.getCourseName()).append(quarter, onlineOfficeHours.getQuarter());
 
     return builder.build();
   }
@@ -128,7 +162,8 @@ public class OnlineOfficeHours {
   public String toString() {
     return "{" + " id='" + getId() + "'" + ", tutorAssignment='" + getTutorAssignment() + "'" + ", dayOfWeek='"
         + getDayOfWeek() + "'" + ", startTime='" + getStartTime() + "'" + ", endTime='" + getEndTime() + "'"
-        + ", zoomRoomLink='" + getZoomRoomLink() + "'" + ", notes='" + getNotes() + "'" + "}";
+        + ", zoomRoomLink='" + getZoomRoomLink() + "'" + ", notes='" + getNotes() + "'" + ", tutorName='" + getTutorName() + "'" + 
+        ", courseName='" + getCourseName() + "'" + ", quarter='" + getQuarter() + "'" + "}";
   }
 
 }
