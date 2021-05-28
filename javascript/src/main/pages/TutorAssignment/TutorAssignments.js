@@ -35,12 +35,12 @@ const TutorAssignment = () => {
   
   const deleteTutorAssignment = buildDeleteTutorAssignment(
     getToken, mutateCourses
-    /*() => {  
-      addToast("Tutor Assignment deleted", { appearance: 'success' });
-    }, 
-    () => { 
-      addToast("Error deleting tutor assignment", { appearance: 'error' });
-    }*/
+    // () => {  
+    //   addToast("Tutor Assignment deleted", { appearance: 'success' });
+    // }, 
+    // () => { 
+    //   addToast("Error deleting tutor assignment", { appearance: 'error' });
+    // }
   );
 
   if (error) {
