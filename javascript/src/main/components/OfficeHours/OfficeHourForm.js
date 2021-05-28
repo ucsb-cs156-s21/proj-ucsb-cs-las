@@ -3,7 +3,8 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 import {checkTime} from "main/utils/FormHelpers";
-const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
+
+const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour}) => {
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
@@ -20,13 +21,18 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         notes: ""
     }
 
-    const [officeHour, setOfficeHour] = useState(emptyOfficeHour);
+    const [officeHour, setOfficeHour] = useState(existingOfficeHour||emptyOfficeHour);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
         var isValid = checkInputs(); 
         if (isValid) {
-            createOfficeHour(officeHour);
+            if (createOfficeHour) {
+                createOfficeHour(officeHour);
+            }
+            else {
+                updateOfficeHour(officeHour, officeHour.id);
+            }
         }
       
     }
@@ -117,7 +123,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                 <Col sm={10} style = {{textAlign: 'left'}}>
                     <Form.Control as="select" onChange={handleDayOfWeekOnChange} >
                         {daysOfTheWeek.map((day) => {
-                            return <option key={day} value={day}>{day}</option>;
+                            return <option selected={officeHour.dayOfWeek === day ? true : false } key={day} value={day}>{day}</option>;
                         })}
                     </Form.Control>
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
