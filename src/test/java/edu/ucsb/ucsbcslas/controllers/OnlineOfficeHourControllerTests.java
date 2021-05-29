@@ -370,8 +370,17 @@ public class OnlineOfficeHourControllerTests {
         verify(mockOnlineOfficeHoursRepository, times(0)).deleteById(id);
     }
 
+    // dummy room slot data
+    Long testRoomSlotId = 1L;
+    String testRoomSlotLocation = "The Library";
+    String testRoomSlotQuarter = "F21";
+    DayOfWeek testRoomSlotDayOfWeek = DayOfWeek.MONDAY;
+    LocalTime testRoomSlotStartTime = LocalTime.of(13, 0);
+    LocalTime testRoomSlotEndTime = LocalTime.of(16, 0);
+
     @Test
     public void testUploadFile() throws Exception{
+
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
         List<OnlineOfficeHours> emptyOHL = new ArrayList<>();
         List<TutorAssignment> TAL = new ArrayList<> ();
@@ -379,7 +388,13 @@ public class OnlineOfficeHourControllerTests {
         Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
         Optional<Tutor> e = Optional.empty();
         TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                testRoomSlotDayOfWeek,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss, testRoomSlot, "link", "notes");
         expectedOfficeHours.add(oh);
         
         String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
@@ -411,6 +426,7 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void testUploadFile_prexist() throws Exception{
+
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
         List<TutorAssignment> TAL = new ArrayList<> ();
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
@@ -418,7 +434,13 @@ public class OnlineOfficeHourControllerTests {
         Optional<Tutor> OptTutor = Optional.of(t);
         TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
         TAL.add(tutorAss);
-        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                testRoomSlotDayOfWeek,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,testRoomSlot, "link", "notes");
         expectedOfficeHours.add(oh);
         
         String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
@@ -453,10 +475,34 @@ public class OnlineOfficeHourControllerTests {
         Optional<Tutor> OptTutor = Optional.of(t);
         TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
         TAL.add(tutorAss);
-        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
-        OnlineOfficeHours oh1 = new OnlineOfficeHours(2L, tutorAss,"Tuesday", "8:00", "10:00", "link", "notes");
-        OnlineOfficeHours oh2 = new OnlineOfficeHours(3L, tutorAss,"Wednesday", "9:00", "10:00", "link", "notes");
-        OnlineOfficeHours oh3 = new OnlineOfficeHours(4L, tutorAss,"Wednesday", "8:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot_1 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.MONDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        RoomSlot testRoomSlot_2 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.TUESDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        RoomSlot testRoomSlot_3 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.TUESDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        RoomSlot testRoomSlot_4 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.TUESDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss, testRoomSlot_1, "link", "notes");
+        OnlineOfficeHours oh1 = new OnlineOfficeHours(2L, tutorAss,testRoomSlot_2, "link", "notes");
+        OnlineOfficeHours oh2 = new OnlineOfficeHours(3L, tutorAss,testRoomSlot_3, "link", "notes");
+        OnlineOfficeHours oh3 = new OnlineOfficeHours(4L, tutorAss,testRoomSlot_4, "link", "notes");
         
         expectedOfficeHours.add(oh1);
         expectedOfficeHours.add(oh2);

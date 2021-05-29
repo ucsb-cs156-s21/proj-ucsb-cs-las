@@ -67,9 +67,7 @@ public class OnlineOfficeHours {
   public OnlineOfficeHours(TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
       String zoomRoomLink, String notes) {
     this.tutorAssignment = tutorAssignment;
-    this.dayOfWeek = dayOfWeek;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    this.roomSlot = roomSlot;
     this.zoomRoomLink = zoomRoomLink;
     this.notes = notes;
   }
