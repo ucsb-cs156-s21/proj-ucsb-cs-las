@@ -1,7 +1,7 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
 import CourseList from "main/components/Courses/CourseList";
-import UpcomingOfficeHourTable from "main/components/Courses/CourseList";
+import UpcomingOfficeHourTable from "main/components/OfficeHours/UpcomingOfficeHoursTable";
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 import fromFormat from "main/utils/FromFormat";

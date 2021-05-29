@@ -2,7 +2,7 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
-export default ({upcomingOfficeHours}) => {
+export default ({upcomingOfficeHours, user}) => {
 
     function zoomRoomLinkFormatter(cell) {
         return (
@@ -44,7 +44,7 @@ export default ({upcomingOfficeHours}) => {
     },
     ];
 
-    if (admin) {
+    if (user) {
         columns.push({
                 dataField: 'email',
                 text: 'email'
