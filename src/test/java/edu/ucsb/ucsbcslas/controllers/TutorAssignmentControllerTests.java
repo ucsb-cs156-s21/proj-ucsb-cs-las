@@ -404,6 +404,21 @@ public class TutorAssignmentControllerTests {
               .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
           .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    public void testDeleteTutorAssignment_unauthorizedIfNotAdmin() throws Exception {
+      Course c1 = new Course(1L, "course 1", "20203", "fname", "lname", "instr@ucsb.edu");
+      Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+
+      TutorAssignment inputTutorAssignment = new TutorAssignment(1L, c1, t, "TA");
+
+      String body = objectMapper.writeValueAsString(inputTutorAssignment);
+  
+      mockMvc
+          .perform(delete("/api/member/tutorAssignments/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+          .andExpect(status().isUnauthorized());
+    }
   
     @Test
     public void testUpdateTutorAssignment_tutorAssignmentNotFound() throws Exception {
@@ -420,6 +435,27 @@ public class TutorAssignmentControllerTests {
 
       mockMvc
           .perform(put("/api/member/tutorAssignments/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+          .andExpect(status().isNotFound()).andReturn();
+      verify(mockTutorAssignmentRepository, times(1)).findById(1L);
+      verify(mockTutorAssignmentRepository, times(0)).save(any(TutorAssignment.class));
+    }
+
+    @Test
+    public void testDeleteTutorAssignment_tutorAssignmentNotFound() throws Exception {
+      Course c1 = new Course(1L, "course 1", "20203", "fname", "lname", "instr@ucsb.edu");
+      Tutor t = new Tutor(1L, "Scott", "Chow", "scottpchow@ucsb.edu");
+  
+      TutorAssignment inputTutorAssignment = new TutorAssignment(1L, c1, t, "TA");
+  
+      String body = objectMapper.writeValueAsString(inputTutorAssignment);
+
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      when(mockTutorRepository.findByEmail("scottpchow@ucsb.edu")).thenReturn(Optional.of(t));
+      when(mockTutorAssignmentRepository.findById(1L)).thenReturn(Optional.empty());
+
+      mockMvc
+          .perform(delete("/api/member/tutorAssignments/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
               .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
           .andExpect(status().isNotFound()).andReturn();
       verify(mockTutorAssignmentRepository, times(1)).findById(1L);
