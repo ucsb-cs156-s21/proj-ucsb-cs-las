@@ -54,7 +54,6 @@ public class OnlineOfficeHoursController {
     @PostMapping(value = "/api/admin/officeHours", produces = "application/json")
     public ResponseEntity<String> createOfficeHour(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid OnlineOfficeHours officeHour) throws JsonProcessingException {
-                System.out.println(officeHour.toString());
         if (!authControllerAdvice.getIsAdmin(authorization))
            return getUnauthorizedResponse("admin");
         OnlineOfficeHours savedOfficeHour = officeHoursRepository.save(officeHour);

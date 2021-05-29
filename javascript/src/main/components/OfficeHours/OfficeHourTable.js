@@ -2,7 +2,7 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-
+import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
 
 export default ({officeHours,admin,deleteOfficeHour}) => {
     let history = useHistory();
@@ -49,17 +49,22 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
         text: 'Quarter',
         sort: true
     }, {
-        dataField: 'startTime',
+        dataField: 'roomSlot.startTime',
         text: 'Start Time',
-        sort: true
+        sort: true,
+        formatter: toAMPMFormat
     }, {
-        dataField: 'endTime',
+        dataField: 'roomSlot.endTime',
         text: 'End Time',
-        sort: true
+        sort: true,
+        formatter: toAMPMFormat
     }, {
-        dataField: 'dayOfWeek',
+        dataField: 'roomSlot.dayOfWeek',
         text: 'Day',
-        sort: true
+        sort: true,
+        formatter: (day) => {
+            return day.substring(0, 1) + day.substring(1).toLowerCase();
+        }
     }, {
         dataField: 'zoomRoomLink',
         text: 'Zoom Room',

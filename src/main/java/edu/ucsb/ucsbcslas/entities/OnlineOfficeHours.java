@@ -21,13 +21,13 @@ public class OnlineOfficeHours {
   private Long id;
 
   // tutor assignment: data belongs to tutor assignment entity
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "tutor_assignment_id")
   private TutorAssignment tutorAssignment;
 
   // room slot: data belongs to room slot entity
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "room_slot_id")
   private RoomSlot roomSlot;
 
   // office hour zoom room link: data belongs to this entity
