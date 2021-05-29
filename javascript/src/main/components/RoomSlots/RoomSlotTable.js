@@ -8,11 +8,6 @@ import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
  * Displays the list of room slots. Code adapted from TutorTable.
  */
 const RoomSlotTable = ({ roomSlots }) => {
-    /*
-    const AdminRenderWrapper = ({children }) => {
-        return (admin && children);
-    };*/
-
     const columns = [
         {
             dataField: "location",

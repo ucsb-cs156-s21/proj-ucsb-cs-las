@@ -18,12 +18,7 @@ const RoomSlots = () => {
     fetchWithToken
   );
 
-  useEffect(() => {
-    mutateRoomSlots();
-  }, [mutateRoomSlots]);
-
-  const isAdmin =
-    roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
+  const isAdmin = roleInfo?.role?.toLowerCase() === "admin";
 
   if (error) {
     return (
