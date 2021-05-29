@@ -45,15 +45,6 @@ describe("Edit Tutor Notes page test", () => {
         },
     ];
 
-    const tutors = [
-      {
-        email: "scottpchow@ucsb.edu",
-        firstName: "Scott",
-        id: 1,
-        lastName: "Chow" 
-      }
-    ];
-
   const sampleTutorNotes = {
     id: 1,
     course:  {name: "CMPSC 148",
