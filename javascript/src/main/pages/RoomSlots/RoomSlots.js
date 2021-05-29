@@ -8,7 +8,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
 import Loading from "../../components/Loading/Loading";
 
-import { uploadRoomSlotCSV } from "main/services/RoomSlots/UploadRoomSlotCSV.js"
+import  uploadRoomSlotCSV  from "main/services/RoomSlots/UploadRoomSlotCSV.js"
 import { RoomSlotCSVButton } from "main/components/RoomSlots/RoomSlotCSVButton"
 
 const RoomSlots = () => {
