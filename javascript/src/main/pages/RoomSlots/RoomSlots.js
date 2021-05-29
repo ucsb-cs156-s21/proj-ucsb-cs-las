@@ -8,14 +8,15 @@ import { fetchWithToken } from "main/utils/fetch";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
 import Loading from "../../components/Loading/Loading";
 
-import { uploadRoomSlotCSV } from "main/services/RoomSlots/uploadRoomSlotCSV"
+import { uploadRoomSlotCSV } from "main/services/RoomSlots/UploadRoomSlotCSV"
 import { RoomSlotCSVButton } from "main/components/RoomSlots/RoomSlotCSVButton"
-import { CSVLink } from "react-csv";
+import { useToasts } from "react-toast-notifications" 
 
 const RoomSlots = () => {
   const {_user, getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const history = useHistory();
+  const { addToast } = useToasts();
 
   const { data: roomSlotList, error} = useSWR(
     ["/api/public/roomslot", getToken],
