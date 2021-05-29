@@ -3,6 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 import {checkTime} from "main/utils/FormHelpers";
+import RoomSlotSelect from "main/components/RoomSlots/RoomSlotSelect"
 
 const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour}) => {
     const startTimeRef = useRef(null);
@@ -11,6 +12,14 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
     const notesRef = useRef(null);
     const emptyOfficeHour = {
         id: "",
+        roomSlot: {
+            id: 0,
+            location: "",
+            quarter: "",
+            dayOfWeek: "Monday",
+            startTime:"",
+            endTime:""
+        },
         tutorAssignment: {
             id: ""
         },
@@ -76,6 +85,25 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
     });
     return (
         <Form onSubmit={handleOnSubmit}>
+            <Form.Group as={Row} controlId="roomSlot">
+                <Form.Label column sm={2}>
+                    Room Slot
+                </Form.Label>
+                <Col sm={10}>
+                    <RoomSlotSelect
+                      style={{ textAlign: "left", width: "100%" }}
+                      onChange={roomSlot => setOfficeHour({...officeHour, roomSlot: { 
+                        id: roomSlot.id,
+                        location: roomSlot.location,
+                        quarter: roomSlot.quarter,
+                        dayOfWeek: roomSlot.dayOfWeek,
+                        startTime: roomSlot.startTime,
+                        endTime: roomSlot.endTime
+                        
+                    }})}
+                    />
+                </Col>
+            </Form.Group>
             <Form.Group as={Row} controlId="tutorAssignmentId">
                 <Form.Label column sm={2}>
                     Tutor
