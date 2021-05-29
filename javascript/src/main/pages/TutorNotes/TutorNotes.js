@@ -24,7 +24,9 @@ const TutorNotes = () => {
     fetchWithToken
   );
 
-  const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
+  const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0);
+
+  const isAdmin = roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
   const { data: tutorNotesList, error } = useSWR(
     ["/api/member/tutorNotes", getToken],
@@ -36,7 +38,7 @@ const TutorNotes = () => {
   if (error) {
     return (
       <>
-        {isInstructor && newTutorNotesButton}
+        {(isInstructor || isAdmin) && newTutorNotesButton}
         <h1>You have no current Tutor Notes or we encountered an error; please reload the page and try again.</h1>
       </>
     );
@@ -47,8 +49,8 @@ const TutorNotes = () => {
 
   return (
     <>
-      {isInstructor && newTutorNotesButton}
-      <TutorNotesTable tutorNotes={tutorNotesList} isInstructor={isInstructor}/>
+      {(isInstructor || isAdmin) && (newTutorNotesButton)}
+      <TutorNotesTable tutorNotes={tutorNotesList} isInstructor={isInstructor || isAdmin}/>
     </>
   );
 };

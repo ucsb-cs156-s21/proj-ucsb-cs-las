@@ -8,12 +8,10 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 
 const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes }) => {
     const emptyTutorNotes = {
+        id: null,
         course: null,
         tutor: null,
-        tutorEmail: "",
-        message: "",
-        index: null, 
-        id: null
+        messsage: "stuff"
     }
 
     const [existingSet, setExistingSet] = useState(false);
@@ -24,7 +22,6 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
             tutor: existingTutorNotes.tutor,
             tutorEmail: existingTutorNotes.tutor.email, 
             message: existingTutorNotes.message, 
-            index: null, 
             id: existingTutorNotes.id});
         setExistingSet(true);
     }
