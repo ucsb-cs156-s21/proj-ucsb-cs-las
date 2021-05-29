@@ -1,11 +1,16 @@
 import React from "react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
+import { useAuth0 } from "@auth0/auth0-react";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import BootstrapTable from 'react-bootstrap-table-next';
+import {useHistory} from "react-router-dom";
 
 
 export default ({officeHours}) => {
+    const history = useHistory();
+    const { user, getAccessTokenSilently: getToken } = useAuth0();
+    const { email } = user;
 
     function zoomRoomLinkFormatter(cell) {
         return (
@@ -23,7 +28,11 @@ export default ({officeHours}) => {
         ["/api/myRole", getToken],
         fetchWithToken
     );
-    const isMember = roleInfo && roleInfo.role && (roleInfo.role.toLowerCase() !== "guest" || roleInfo.role.toLowerCase() === "admin" || roleInfo.role.toLowerCase() === "member");
+    const { data: memberList } = useSWR(
+        [`/api/member/courses/forInstructor/${email}`, getToken],
+        fetchWithToken
+      );
+    const isMember = roleInfo && roleInfo.role && memberList && (memberList.length > 0 || roleInfo.role.toLowerCase() !== "guest" || roleInfo.role.toLowerCase() === "admin" || roleInfo.role.toLowerCase() === "member");
    
     const columns = [{
         dataField: 'id',
