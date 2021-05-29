@@ -125,7 +125,7 @@ public class OnlineOfficeHours {
 
   @Override
   public String toString() {
-    return String.format("{ id='%d', tutorAssignment='%s', roomSlot='%s', zoomRoomLink='%s', notes='%s' }",
+    return String.format("{ id='%d', tutorAssignment='{ %s }', roomSlot='{ %s }', zoomRoomLink='%s', notes='%s' }",
             id, getTutorAssignment(), getRoomSlot(), getZoomRoomLink(), getNotes());
   }
 

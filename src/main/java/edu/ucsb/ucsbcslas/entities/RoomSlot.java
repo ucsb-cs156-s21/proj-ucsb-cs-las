@@ -139,8 +139,8 @@ public class RoomSlot {
 
     @Override
     public String toString() {
-        return String.format("{ id='%d', location='%s', quarter='%s', startTime='%s', endTime = '%s' }",
-                id,
+        return String.format("{ id='%d', location='%s', quarter='%s', start time='%s', end time='%s' }",
+                getId(),
                 getLocation(),
                 getQuarter(),
                 getStartTime().toString(),

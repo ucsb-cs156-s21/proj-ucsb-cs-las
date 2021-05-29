@@ -86,7 +86,9 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_ToString() {
     // test with fully overloaded constructor
-    testRoomSlot = new RoomSlot(testLocation,
+    testRoomSlot = new RoomSlot(
+            testId,
+            testLocation,
             testQuarter,
             testDayOfWeek,
             testStartTime,

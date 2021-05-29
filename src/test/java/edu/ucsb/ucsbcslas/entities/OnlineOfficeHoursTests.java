@@ -77,9 +77,9 @@ public class OnlineOfficeHoursTests {
   public void test_toString() throws Exception {
     OnlineOfficeHours ooh1 = new OnlineOfficeHours(testTutorId, testTutorAssignment, testRoomSlot, testZoomRoomLink, testNotes);
     String expected = "{ id='" + testOfficeHourId + "', " +
-            "tutorAssignment='{ " + testTutorAssignment +" } '," +
+            "tutorAssignment='{ " + testTutorAssignment +" }', " +
             "roomSlot='{ " + testRoomSlot + " }', " +
-            "zoomRoomLink='" + testZoomRoomLink + "'," +
+            "zoomRoomLink='" + testZoomRoomLink + "', " +
             "notes='" + testNotes + "' }";
     assertEquals(expected, ooh1.toString());
   }
