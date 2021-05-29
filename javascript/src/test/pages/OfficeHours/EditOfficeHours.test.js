@@ -28,7 +28,7 @@ const selectTutor = async (getByPlaceholderText, getByText) => {
   await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
   userEvent.click(getByPlaceholderText("Select a tutor"));
   userEvent.click(getByText("Winter 2020"));
-  await waitFor(() => expect(courseProvider).toHaveBeenCalledWith("20201"));
+  await waitFor(() => expect(courseProvider).toHaveBeenCalledWith("20202"));
   userEvent.click(getByText("CMPSC 156"));
   await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(1));
   userEvent.click(getByText("Chris McTutorface"));
