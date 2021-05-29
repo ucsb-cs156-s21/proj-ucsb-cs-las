@@ -1,9 +1,9 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
+import RoomSlotSelect from "main/components/RoomSlots/RoomSlotSelect";
 
-import { quarterProvider, courseProvider, tutorAssignmentProvider, roomSlotProvider } from "main/services/selectorSupport"
+import { quarterProvider, roomSlotProvider } from "main/services/selectorSupport"
 jest.mock("main/services/selectorSupport");
 
 
@@ -15,25 +15,19 @@ describe("RoomSlotSelect", () => {
   it("renders a usable room slot UI", async () => {
     const onChange = jest.fn();
     quarterProvider.mockResolvedValue(["20201"]);
-    courseProvider.mockResolvedValue([{ id: 17, name: "CMPSC 156" }]);
-    tutorAssignmentProvider.mockResolvedValue([{ id: 42, tutor: { firstName: "Foo", lastName: "Bar" }}]);
-    roomSlotProvider.mockResolvedValue([{ id: 42, tutor: { firstName: "Foo", lastName: "Bar" }}]);
+    roomSlotProvider.mockResolvedValue([{ id: 42, location: "location", quarter: "20201", dayOfWeek: "Monday", startTime: "1:00 PM", endTime: "3:00 PM"}]);
     const { getByPlaceholderText, getByText } = render(
-      <TutorAssignmentSelect
+      <RoomSlotSelect
         onChange={onChange}
       />
     );
 
     await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
 
-    userEvent.click(getByPlaceholderText("Select a tutor"));
+    userEvent.click(getByPlaceholderText("Select a quarter"));
     userEvent.click(getByText("Winter 2020"));
 
-    await waitFor(() => expect(courseProvider).toHaveBeenCalledWith("20201"));
-
-    userEvent.click(getByText("CMPSC 156"));
-
-    await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(17));
+    await waitFor(() => expect(roomSlotProvider).toHaveBeenCalledWith(42));
 
     userEvent.click(getByText("Foo Bar"));
 
