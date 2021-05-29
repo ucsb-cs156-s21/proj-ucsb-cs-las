@@ -53,4 +53,25 @@ public class OnlineOfficeHoursTests {
     assertEquals(expected, ooh1.toString());
   }
 
+  @Test
+  public void testWithoutID_equalsAnother() throws Exception {
+    OnlineOfficeHours ooh1 =   new OnlineOfficeHours(new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    OnlineOfficeHours ooh2 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    assertEquals(ooh1, ooh2);
+  }
+
+  @Test
+  public void testWithoutID_hashCode() throws Exception {
+    OnlineOfficeHours ooh1 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    OnlineOfficeHours ooh2 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    assertEquals(ooh1.hashCode(), ooh2.hashCode());
+  }
+
+  @Test
+  public void testWithoutID_toString() throws Exception {
+    OnlineOfficeHours ooh1 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    String expected = "{ id='null', tutorAssignment='{ id='null', course='null', tutor='null', assignmentType='null'}', dayOfWeek='Monday', startTime='12:00', endTime='13:00', zoomRoomLink='https://zoom.example.org/12345', notes='notes'}";
+    assertEquals(expected, ooh1.toString());
+  }
+
 }
