@@ -472,14 +472,14 @@ public class CourseControllerTests {
     List<TutorAssignment> expectedTutorAssignmentsList = new ArrayList<>();
 
     Optional <Course> expectedCourses = Optional.empty();
-    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
-    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    Tutor expectedTutor = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, expectedCourse, expectedTutor, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
-    RoomSlot rs_1 = new RoomSlot(1L, "The Library", "F20", DayOfWeek.TUESDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
-    RoomSlot rs_2 = new RoomSlot(2L, "The Library", "F20", DayOfWeek.MONDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs_1, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
-    OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs_2, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    RoomSlot expectedRoomSlot_1 = new RoomSlot(1L, "The Library", "F20", DayOfWeek.TUESDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
+    RoomSlot expectedRoomSlot_2 = new RoomSlot(2L, "The Library", "F20", DayOfWeek.MONDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
+    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, expectedRoomSlot_1, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, expectedRoomSlot_2, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     expectedOnlineOfficeHoursList2.add(onlineOfficeHours_2);
     TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList); 
@@ -491,8 +491,8 @@ public class CourseControllerTests {
     expectedOnlineOfficeHoursList3.add(onlineOfficeHours_2);
 
     AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
-    when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
-    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
+    when(mockTutorAssignmentRepository.findAllByCourse(expectedCourse)).thenReturn(expectedTutorAssignmentsList);
+    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(expectedCourse));
     when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList3);
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
     MvcResult response = mockMvc.perform(get("/api/member/courses/officehours/1").contentType("application/json")

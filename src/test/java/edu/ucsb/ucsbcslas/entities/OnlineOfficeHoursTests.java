@@ -3,6 +3,7 @@ package edu.ucsb.ucsbcslas.entities;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import edu.ucsb.ucsbcslas.models.Course;
 import org.junit.jupiter.api.Test;
 import net.codebox.javabeantester.JavaBeanTester;
 
@@ -16,10 +17,6 @@ public class OnlineOfficeHoursTests {
   String testZoomRoomLink = "https://zoom.example.org/12345";
   String testNotes = "some notes :)";
 
-  // dummy tutor data
-  Long testTutorId = 1L;
-  TutorAssignment testTutorAssignment;
-
   // dummy room slot data
   Long testRoomSlotId = 1L;
   String testRoomSlotLocation = "The Library";
@@ -27,6 +24,22 @@ public class OnlineOfficeHoursTests {
   DayOfWeek testRoomSlotDayOfWeek = DayOfWeek.MONDAY;
   LocalTime testRoomSlotStartTime = LocalTime.of(13, 0);
   LocalTime testRoomSlotEndTime = LocalTime.of(16, 0);
+
+  // dummy course data
+  Course testCourse = new Course(1L,
+          "course name",
+          "20201",
+          "instr first",
+          "instr last",
+          "instr@ucsb.edu");
+
+  // dummy tutor data
+  Long testTutorId = 1L;
+  String testTutorType = "TA";
+  Tutor testTutor = new Tutor(1L, "tutor first", "tutor last", "tutor@ucsb.edu");
+
+  // dummy tutor assignment data
+  TutorAssignment testTutorAssignment = new TutorAssignment(1L, testCourse, testTutor, testTutorType);
 
   RoomSlot testRoomSlot = new RoomSlot(testRoomSlotId,
           testRoomSlotLocation,
@@ -36,7 +49,39 @@ public class OnlineOfficeHoursTests {
           testRoomSlotEndTime);
 
   @Test
-  public void testGettersAndSetters() throws Exception {
+  public void test_defaultConstructor() throws Exception {
+    OnlineOfficeHours onlineOH = new OnlineOfficeHours();
+    assertEquals(null, onlineOH.getId());
+    assertEquals(null, onlineOH.getTutorAssignment());
+    assertEquals(null, onlineOH.getRoomSlot());
+    assertEquals(null, onlineOH.getZoomRoomLink());
+    assertEquals(null, onlineOH.getNotes());
+  }
+
+  @Test
+  public void test_overloadedConstructorWithId() throws Exception {
+    OnlineOfficeHours onlineOH = new OnlineOfficeHours(testTutorId, testTutorAssignment, testRoomSlot, testZoomRoomLink, testNotes);
+
+    assertNotEquals(null, onlineOH.getId());
+    assertEquals(testTutorAssignment, onlineOH.getTutorAssignment());
+    assertEquals(testRoomSlot, onlineOH.getRoomSlot());
+    assertEquals(testZoomRoomLink, onlineOH.getZoomRoomLink());
+    assertEquals(testNotes, onlineOH.getNotes());
+  }
+
+  @Test
+  public void test_overloadedConstructorWithoutId() throws Exception {
+    OnlineOfficeHours onlineOH = new OnlineOfficeHours(testTutorAssignment, testRoomSlot, testZoomRoomLink, testNotes);
+
+    assertEquals(null, onlineOH.getId());
+    assertEquals(testTutorAssignment, onlineOH.getTutorAssignment());
+    assertEquals(testRoomSlot, onlineOH.getRoomSlot());
+    assertEquals(testZoomRoomLink, onlineOH.getZoomRoomLink());
+    assertEquals(testNotes, onlineOH.getNotes());
+  }
+
+  @Test
+  public void test_gettersAndSetters() throws Exception {
     // See: https://github.com/codebox/javabean-tester
     JavaBeanTester.test(OnlineOfficeHours.class);
   }

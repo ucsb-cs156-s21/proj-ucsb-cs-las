@@ -118,18 +118,18 @@ public class TutorAssignmentOfficeHourViewTest {
             "{ " +
               "id='1', " +
               "course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', " +
-              "tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu'}', " +
+              "tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu' }', " +
               "assignmentType='TA'" +
-            " },";
+            " }";
     String expectedOnlineOfficeHoursOutput =
             "{ " +
               "id='1', " +
-              "tutorAssignment='{ id='1', course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu' }, assignmentType='TA' }, " +
-              "roomSlot='{ id='1', location='The Library', quarter='F20', start time='8:00 PM', end time='10:00 PM' }, " +
+              "tutorAssignment='{ { id='1', course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu' }', assignmentType='TA' } }', " +
+              "roomSlot='{ { id='1', location='The Library', quarter='F20', start time='20:00', end time='22:00' } }', " +
               "zoomRoomLink='zoomLink', " +
-              "notes='notes'" +
+              "notes='Scott closes the room early sometimes but he will still be on slack!'" +
             " }";
     
-    assertEquals(tutorAssignmentOfficeHourView.toString(), "[tutorAssignment=" + expectedTutorAssignmentOutput + ", onlineOfficeHours=" + expectedTutorAssignmentOutput + "]");
+    assertEquals(tutorAssignmentOfficeHourView.toString(), "[tutorAssignment=" + expectedTutorAssignmentOutput + ", onlineOfficeHours=[" + expectedOnlineOfficeHoursOutput + "]]");
   }
 }

@@ -14,6 +14,19 @@ public class ActiveQuarterTests {
     assertEquals("Admin[ id=0, email=admin@test.org, isPermanentAdmin=false ]", admin2.toString());
   }
 
+  // test active quarter
+  @Test
+  public void testActiveQuarter_Constructors() {
+    ActiveQuarter q = new ActiveQuarter();
+    q.setId(4L);
+    assertEquals(4L, q.getId());
+
+    q = new ActiveQuarter("20201");
+    q.setId(4L);
+    assertEquals(4L, q.getId());
+    assertEquals("20201", q.getActiveQuarter());
+  }
+
   @Test
   public void testActiveQuarter_getAndSetId() {
     ActiveQuarter q = new ActiveQuarter();
