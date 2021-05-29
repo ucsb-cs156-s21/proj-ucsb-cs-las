@@ -20,5 +20,5 @@ Scott_Chow_CMPSC_156_S20.args = {
 
 export const Alex_Gerber_PSTAT_120A_M20 = Template.bind({});
 Alex_Gerber_PSTAT_120A_M20.args = {
-    tutorAssignment: tutorAssignmentFixtures. Alex_Gerber_PSTAT_120A_M20
+    tutorAssignment: tutorAssignmentFixtures.Alex_Gerber_PSTAT_120A_M20
 };

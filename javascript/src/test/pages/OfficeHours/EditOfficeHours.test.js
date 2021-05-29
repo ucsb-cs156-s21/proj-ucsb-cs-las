@@ -9,7 +9,6 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useToasts } from 'react-toast-notifications'
 import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
 import { buildUpdateOfficeHour } from "../../../main/services/OfficeHours/OfficeHourService";
-import OfficeHourForm from "main/components/OfficeHours/OfficeHourForm";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
@@ -116,7 +115,7 @@ describe("Edit OfficeHours page test", () => {
       error: undefined,
       mutate: mutateSpy,
     });
-    const { getByPlaceholderText, getByText, getByLabelText } = render(
+    const { getByText, getByLabelText } = render(
        <EditOfficeHours />
     );
     await waitFor(() => (
