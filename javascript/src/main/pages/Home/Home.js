@@ -1,8 +1,11 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
+import { useAuth0 } from "@auth0/auth0-react";
 import CourseList from "main/components/Courses/CourseList";
+import { fetchWithToken } from "main/utils/fetch";
 import UpcomingOfficeHourTable from "main/components/OfficeHours/UpcomingOfficeHourTable";
 import useSWR from "swr";
+import Loading from "main/components/Loading/Loading";
 import { fetchWithoutToken } from "main/utils/fetch";
 import fromFormat from "main/utils/FromFormat";
 import {useHistory} from "react-router-dom";
