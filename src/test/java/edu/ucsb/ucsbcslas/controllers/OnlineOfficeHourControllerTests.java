@@ -169,7 +169,7 @@ public class OnlineOfficeHourControllerTests {
                 "String assignmentType");
         RoomSlot roomSlot = new RoomSlot(1L,
                 "String location",
-                new ActiveQuarter("String quarter"),
+                new ActiveQuarter(1L, "String quarter"),
                 DayOfWeek.WEDNESDAY,
                 LocalTime.of(20, 0),
                 LocalTime.of(22,0));

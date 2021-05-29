@@ -51,7 +51,7 @@ public class TutorNotesTests {
   @Test
   public void test_toString() throws Exception {
     TutorNotes ta1 = new TutorNotes(1L, new Course(), new Tutor(), "Random Message");
-    String expected = "{ id='1', course='Course[ id=null, name=null, quarter=null, instructorFirstName=null, instructorLastName=null, instructorEmail=null ]', tutor='{ id='null', firstName='null', lastName='null', email='null'}', message='Random Message' }";
+    String expected = "{ id='1', course='Course[ id=null, name=null, quarter=null, instructorFirstName=null, instructorLastName=null, instructorEmail=null ]', tutor='{ id='null', firstName='null', lastName='null', email='null' }', message='Random Message' }";
     assertEquals(expected, ta1.toString());
   }
 
