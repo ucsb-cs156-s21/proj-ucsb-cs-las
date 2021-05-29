@@ -4,7 +4,6 @@ import {asHumanQuarter} from "main/utils/quarter.ts"
 
 
 export default function TutorAssignmentDisplay({tutorAssignment}) {
-    console.log("tutorAssignment=",tutorAssignment)
     return (
         <Row>
             <Col>
