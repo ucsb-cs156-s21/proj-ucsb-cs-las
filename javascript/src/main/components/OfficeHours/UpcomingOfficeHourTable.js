@@ -4,11 +4,9 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import BootstrapTable from 'react-bootstrap-table-next';
-import {useHistory} from "react-router-dom";
 
 
 export default ({officeHours}) => {
-    const history = useHistory();
     const { user, getAccessTokenSilently: getToken } = useAuth0();
     const { email } = user;
 
@@ -23,6 +21,7 @@ export default ({officeHours}) => {
         const quarter = row.tutorAssignment.course.quarter;
         return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
     }
+    const renderEmail = (row) => row.tutorAssignment.tutor.email;
   
     const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
@@ -62,7 +61,9 @@ export default ({officeHours}) => {
     if (isMember) {
         columns.push({
                 dataField: 'email',
-                text: 'email'
+                text: 'email',
+                formatter: (_cell, row) => renderEmail(row),
+                sortValue: (_cell, row) => renderEmail(row)
             }, {
                 dataField: 'zoomRoomLink',
                 text: 'Zoom Room',

@@ -8,7 +8,6 @@ import useSWR from "swr";
 import Loading from "main/components/Loading/Loading";
 import { fetchWithoutToken } from "main/utils/fetch";
 import fromFormat from "main/utils/FromFormat";
-import {useHistory} from "react-router-dom";
 
 const Home = () => {
     const { data: courses } = useSWR(
@@ -28,7 +27,6 @@ const Home = () => {
         }
         return <h5>All quarters are being viewed</h5>
     };
-    const history = useHistory();
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: officeHourList, error, mutate: mutateOfficeHours } = useSWR(
         ["/api/public/officeHours", getToken],
@@ -52,9 +50,7 @@ const Home = () => {
                 <CourseList courses={courses || []} />
             </div>
         </Jumbotron>,
-        <>
         <UpcomingOfficeHourTable officeHours={officeHourList}/>
-        </>
     );
 };
 
