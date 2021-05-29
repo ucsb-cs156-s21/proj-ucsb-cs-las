@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 import { Button } from "react-bootstrap";
@@ -13,17 +13,12 @@ const RoomSlots = () => {
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const history = useHistory();
 
-  const { data: roomSlotList, error, mutate: mutateRoomSlots } = useSWR(
+  const { data: roomSlotList, error} = useSWR(
     ["/api/public/roomslot", getToken],
     fetchWithToken
   );
 
-  useEffect(() => {
-    mutateRoomSlots();
-  }, [mutateRoomSlots]);
-
-  const isAdmin =
-    roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
+  const isAdmin = roleInfo?.role?.toLowerCase() === "admin";
 
   if (error) {
     return (
