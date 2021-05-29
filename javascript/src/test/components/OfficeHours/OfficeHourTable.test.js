@@ -1,12 +1,17 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { waitFor, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable";
+import { useHistory } from "react-router-dom";
+jest.mock("react-router-dom", () => ({
+  useHistory: jest.fn(),
+}));
 
 
 describe("OfficeHour table tests", () => {
 
   const sampleOfficeHour = [{
-    "id": 1,
+    "id": 2,
     "name": "CMPSC 156",
     "quarter": "F20",
     "instructorFirstName": "Phill",
@@ -25,6 +30,20 @@ describe("OfficeHour table tests", () => {
   test("renders without crashing", () => {
     render(<OfficeHourTable officeHours = {sampleOfficeHour}/>);
   });
+
+  test("renders with edit buttons when admin true", async () =>{   
+    const pushSpy = jest.fn();
+    useHistory.mockReturnValue({
+      push: pushSpy
+    });
+    const {getByTestId} = render(<OfficeHourTable officeHours = { sampleOfficeHour } admin = {true}/>);
+    const editButton = getByTestId('edit-button-2');
+    expect(editButton).toBeInTheDocument();
+    userEvent.click(editButton);
+    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+
+  });
+
 
   test("test Zoom Link Clickable", () => {
     const expectedLink = "test.zoom.com";
