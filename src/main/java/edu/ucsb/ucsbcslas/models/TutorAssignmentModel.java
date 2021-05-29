@@ -2,42 +2,27 @@ package edu.ucsb.ucsbcslas.models;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class TutorAssignmentModel {
 
-    @Column(nullable = false)
     @CsvBindByPosition(position = 0)
     private String courseName;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 1)
     private String quarter;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 2)
     private String instructorFirstName;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 3)
     private String instructorLastName;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 4)
     private String instructorEmail;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 5)
     private String tutorFirstName;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 6)
     private String tutorLastName;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 7)
     private String tutorEmail;
-    @Column(nullable = false)
     @CsvBindByPosition(position = 8)
     private String assignmentType;
 

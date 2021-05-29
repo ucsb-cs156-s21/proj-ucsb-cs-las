@@ -11,17 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// Imports from BZ when adding uploading CSV functionality to Tutor Assignment
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.*;
 import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.models.TutorAssignmentModel;
@@ -38,8 +35,6 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -323,8 +318,6 @@ public class TutorAssignmentController {
                 if (tutorAssignmentList.isEmpty()) {
                     currentTutorAssignment = new TutorAssignment(currentCourse, currentTutor, i.getAssignmentType());
                     tutorAssignmentRepository.save(currentTutorAssignment);
-                } else {
-                    currentTutorAssignment = tutorAssignmentList.get(0);
                 }
             }
 

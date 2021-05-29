@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.opencsv.bean.CsvBindByPosition;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import edu.ucsb.ucsbcslas.models.Course;

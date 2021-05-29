@@ -33,10 +33,11 @@ const TutorAssignment = () => {
     (instructorCourseList.length > 0 ||
       roleInfo.role.toLowerCase() === "admin");
 
-  const { data: tutorAssignmentList, error, mutate: mutateTutorAssignments } = useSWR(
-    ["/api/member/tutorAssignments", getToken],
-    fetchWithToken
-  );
+  const {
+    data: tutorAssignmentList,
+    error,
+    mutate: mutateTutorAssignments,
+  } = useSWR(["/api/member/tutorAssignments", getToken], fetchWithToken);
 
   const newTutorAssignmentButton = (
     <Button
@@ -45,6 +46,44 @@ const TutorAssignment = () => {
     >
       New Tutor Assignment
     </Button>
+  );
+
+  const uploadTutorAssignment = uploadTutorAssignmentCSV(
+    getToken,
+    () => {
+      mutateTutorAssignments();
+      addToast("CSV Uploaded", { appearance: "success" });
+    },
+    () => {
+      addToast("Error Uploading CSV", { appearance: "error" });
+    }
+  );
+
+  const tutorAssignmentUploadCSVButton = (
+    <>
+
+      <TutorAssignmentCSVButton
+        admin={isInstructor}
+        addTask={uploadTutorAssignment}
+      />
+      <pre
+        style={{
+          whiteSpace: "pre",
+          textAlign: "left",
+          width: "auto",
+          marginLeft: "auto",
+          marginRight: "auto",
+          padding: "0em",
+        }}
+        muted
+      >
+        Required Columns: Course Name, Quarter, Instructor First Name,
+        Instructor Last Name, Instructor Email, Tutor First Name, Tutor Name,
+        Tutor Email, Assignment Type.Ex: CMPSC 48, 20201, Joe, Gaucho, joegaucho
+        @ucsb.edu, Joe, Gaucho, joegaucho @ucsb.edu, LA
+      </pre>
+      <br></br>
+    </>
   );
 
   const headers = [
@@ -81,7 +120,13 @@ const TutorAssignment = () => {
   if (error) {
     return (
       <>
-        {isInstructor && newTutorAssignmentButton}
+        {isInstructor &&
+          newTutorAssignmentButton
+          }
+
+          <>
+          {tutorAssignmentUploadCSVButton}
+          </>
         <h1>
           You have no current Tutor Assignments or we encountered an error;
           please reload the page and try again.
@@ -89,51 +134,20 @@ const TutorAssignment = () => {
       </>
     );
   }
+
   if (!tutorAssignmentList) {
     return <Loading />;
   }
 
-  const uploadTutorAssignment = uploadTutorAssignmentCSV(
-    getToken,
-    () => {
-      mutateTutorAssignments();
-      addToast("CSV Uploaded", { appearance: "success" });
-    },
-    () => {
-      addToast("Error Uploading CSV", { appearance: "error" });
-    }
-  );
-
   return (
     <>
-      <>
-        {isInstructor && newTutorAssignmentButton}
-        <TutorAssignmentTable
-          tutorAssignments={tutorAssignmentList}
-          isInstructor={isInstructor}
-        />
-      </>
-      <TutorAssignmentCSVButton
-        admin={isInstructor}
-        addTask={uploadTutorAssignment}
+      {newTutorAssignmentButton}
+      {tutorAssignmentUploadCSVButton}
+
+      <TutorAssignmentTable
+        tutorAssignments={tutorAssignmentList}
+        isInstructor={isInstructor}
       />
-      <pre
-        style={{
-          whiteSpace: "pre",
-          textAlign: "left",
-          width: "auto",
-          marginLeft: "auto",
-          marginRight: "auto",
-          padding: "0em",
-        }}
-        muted
-      >
-        Required Columns: Course Name, Quarter, Instructor First Name,
-        Instructor Last Name, Instructor Email, Tutor First Name, Tutor Last
-        Name, Tutor Email, Assignment Type. Ex: CMPSC 48, 20201, Joe, Gaucho,
-        joegaucho@ucsb.edu, Joe, Gaucho, joegaucho@ucsb.edu, LA
-      </pre>
-      <br></br>
       <Button>
         <CSVLink
           style={{ color: "white" }}
