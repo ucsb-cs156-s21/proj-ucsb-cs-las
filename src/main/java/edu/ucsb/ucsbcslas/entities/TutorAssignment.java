@@ -104,8 +104,11 @@ public class TutorAssignment {
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId() + "'" + ", course='" + getCourse() + "'" + ", tutor='" + getTutor() + "'"
-        + ", assignmentType='" + getAssignmentType() + "'" + "}";
+    return "{ id='" + getId() +
+            "', course='" + getCourse() +
+            "', tutor='" + getTutor() +
+            "', assignmentType='" + getAssignmentType() +
+            "' }";
   }
 
 }

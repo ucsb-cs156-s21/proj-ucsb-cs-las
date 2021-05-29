@@ -94,8 +94,11 @@ public class TutorNotes {
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId() + "'" + ", course='" + getCourse() + "'" + ", tutor='" + getTutor() + "'"
-        + ", message='" + getMessage() + "'" + "}";
+    return "{ id='" + getId() +
+            "', course='" + getCourse() +
+            "', tutor='" + getTutor() +
+            "', message='" + getMessage() +
+            "' }";
   }
 }
 

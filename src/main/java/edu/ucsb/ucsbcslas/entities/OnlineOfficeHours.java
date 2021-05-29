@@ -125,12 +125,11 @@ public class OnlineOfficeHours {
 
   @Override
   public String toString() {
-    return "{ " +
-              "id='" + getId() + "', " +
-              "tutorAssignment='{ " + getTutorAssignment() + " }', " +
-              "roomSlot='{ " + getRoomSlot() + " }', " +
-              "zoomRoomLink='" + getZoomRoomLink() + "', " +
-              "notes='" + getNotes() +
+    return "{ id='" + getId() +
+            "', tutorAssignment='" + getTutorAssignment() +
+            "', roomSlot='" + getRoomSlot() +
+            "', zoomRoomLink='" + getZoomRoomLink() +
+            "', notes='" + getNotes() +
             "' }";
   }
 

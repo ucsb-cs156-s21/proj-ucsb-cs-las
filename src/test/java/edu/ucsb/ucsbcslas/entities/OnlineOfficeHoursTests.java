@@ -14,7 +14,7 @@ public class OnlineOfficeHoursTests {
   // dummy office hour data
   Long testOfficeHourId = 1L;
   String testZoomRoomLink = "https://zoom.example.org/12345";
-  String testNotes = "Some notes :)";
+  String testNotes = "some notes :)";
 
   // dummy tutor data
   Long testTutorId = 1L;
@@ -79,8 +79,8 @@ public class OnlineOfficeHoursTests {
     String expected = "{ id='" + testOfficeHourId + "', " +
             "tutorAssignment='{ " + testTutorAssignment +" } '," +
             "roomSlot='{ " + testRoomSlot + " }', " +
-            "zoomRoomLink='https://zoom.example.org/12345'," +
-            "notes='notes' }";
+            "zoomRoomLink='" + testZoomRoomLink + "'," +
+            "notes='" + testNotes + "' }";
     assertEquals(expected, ooh1.toString());
   }
 

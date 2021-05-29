@@ -8,7 +8,7 @@ public class ActiveQuarterTests {
   @Test
   public void testQuarter_toString() {
     ActiveQuarter q = new ActiveQuarter(1L, "F20");
-    assertEquals("{ id='1', activeQuarter='F20'}", q.toString());
+    assertEquals("{ id='1', activeQuarter='F20' }", q.toString());
 
     Admin admin2 = new Admin("admin@test.org");
     assertEquals("Admin[ id=0, email=admin@test.org, isPermanentAdmin=false ]", admin2.toString());

@@ -113,8 +113,22 @@ public class TutorAssignmentOfficeHourViewTest {
     OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, roomSlot, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
     TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(expectedTutorAssignments,expectedOnlineOfficeHoursList);
-    String tutorAssignmentExpected = "{ id='1', course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu'}', assignmentType='TA'},";
-    String onlineOfficeHourExpected = "{ id='1', tutorAssignment='{ id='1', course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu'}', assignmentType='TA'}', dayOfWeek='Tuesday', startTime='4:00 PM', endTime='6:00 PM', zoomRoomLink='zoomLink', notes='Scott closes the room early sometimes but he will still be on slack!'}";
-    assertEquals(tutorAssignmentOfficeHourView.toString(), "[tutorAssignment="+tutorAssignmentExpected+" onlineOfficeHours=["+ onlineOfficeHourExpected+"]]" );
+    String tutorAssignmentExpected =
+            "{ " +
+              "id='1', " +
+              "course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', " +
+              "tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu'}', " +
+              "assignmentType='TA'" +
+            " },";
+    String onlineOfficeHourExpected =
+            "{ " +
+              "id='1', " +
+              "tutorAssignment='{ id='1', course='Course[ id=1, name=course 1, quarter=F20, instructorFirstName=fname, instructorLastName=lname, instructorEmail=email ]', tutor='{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@ucsb.edu' }, assignmentType='TA' }, " +
+              "roomSlot='{ id='1', location='The Library', quarter='F20', start time='8:00 PM', end time='10:00 PM' }, " +
+              "zoomRoomLink='zoomLink', " +
+              "notes='notes'" +
+            " }";
+    
+    assertEquals(tutorAssignmentOfficeHourView.toString(), "[tutorAssignment=" + tutorAssignmentExpected + " onlineOfficeHours=[" + onlineOfficeHourExpected + "]]" );
   }
 }

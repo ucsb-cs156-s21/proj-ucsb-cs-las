@@ -11,6 +11,8 @@ import javax.persistence.Id;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
 
@@ -137,11 +139,12 @@ public class RoomSlot {
 
     @Override
     public String toString() {
-        return "{" + " id='" + getId() + "'" 
-        + ", location='" + getLocation() + "'" 
-        + ", quarter='" + getActiveQuarter() + "'"
-        + ", start time='" + getStartTime() + "'" 
-        + ", end time='" + getEndTime() + "'" 
-        + "}";
+        DateFormat format_HHMM_A = new SimpleDateFormat("hh:mm a");
+        return "{ id='" + getId() +
+        "', location='" + getLocation() +
+        "', quarter='" + getActiveQuarter() +
+        "', start time='" + format_HHMM_A.format(getStartTime()) +
+        "', end time='" + format_HHMM_A.format(getEndTime()) +
+        "' }";
     }
 }

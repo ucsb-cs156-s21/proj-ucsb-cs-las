@@ -94,8 +94,11 @@ public class Tutor {
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId() + "'" + ", firstName='" + getFirstName() + "'" + ", lastName='" + getLastName() + "'"
-        + ", email='" + getEmail() + "'" + "}";
+    return "{ id='" + getId() +
+            "', firstName='" + getFirstName() +
+            "', lastName='" + getLastName() +
+            "', email='" + getEmail() +
+            "' }";
   }
 
 }
