@@ -228,8 +228,9 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockOnlineOfficeHoursRepository.findById(any(Long.class))).thenReturn(Optional.of(savedOfficeHour));
@@ -248,7 +249,8 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         mockMvc
         .perform(put("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -260,7 +262,8 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.empty());
