@@ -3,11 +3,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import { useHistory } from "react-router-dom";
-import { useToasts } from 'react-toast-notifications'
-import { useAuth0 } from "@auth0/auth0-react";
 
-//import useSWR, { cache } from "swr";
-//import { fetchWithToken } from "main/utils/fetch";
+
 
 export default ({tutorAssignments, isInstructor, deleteTutorAssignment}) => {
     const history = useHistory();
