@@ -208,7 +208,7 @@ public class OnlineOfficeHoursController {
                 OnlineOfficeHours OH = null;
                 List<OnlineOfficeHours> existingOfficeHours = officeHoursRepository.findAllByTutorAssignment(TA);
                 for(OnlineOfficeHours existingOfficeHour : existingOfficeHours){
-                    if (existingOfficeHour.getDayOfWeek().equals(dayOfWeek)  && existingOfficeHour.getStartTime().equals(startTime) &&existingOfficeHour.getEndTime().equals(endTime) ){
+                    if (existingOfficeHour.getRoomSlot().getDayOfWeek().equals(dayOfWeek)  && existingOfficeHour.getRoomSlot().getStartTime().equals(startTime) &&existingOfficeHour.getRoomSlot().getEndTime().equals(endTime) ){
                         OH = existingOfficeHour;
                         
                     }

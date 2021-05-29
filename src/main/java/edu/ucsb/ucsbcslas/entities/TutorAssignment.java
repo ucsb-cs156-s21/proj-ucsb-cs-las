@@ -48,11 +48,6 @@ public class TutorAssignment {
     this.tutor = tutor;
     this.assignmentType = assignmentType;
   }
-  public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
-    this.course = course;
-    this.tutor = tutor;
-    this.assignmentType = assignmentType;
-  }
 
   public TutorAssignment() { }
 
