@@ -8,7 +8,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
 import Loading from "../../components/Loading/Loading";
 
-import { uploadRoomSlotCSV } from "main/services/RoomSlots/UploadRoomSlotCSV"
+import { uploadRoomSlotCSV } from "main/services/RoomSlots/UploadRoomSlotCSV.js"
 import { RoomSlotCSVButton } from "main/components/RoomSlots/RoomSlotCSVButton"
 
 const RoomSlots = () => {
@@ -23,7 +23,7 @@ const RoomSlots = () => {
 
   const isAdmin = roleInfo?.role?.toLowerCase() === "admin";
 
-  const uploadRoomSlots = uploadRoomSlotCSV(
+  const uploadedRoomSlots = uploadRoomSlotCSV(
     getToken, mutateRoomSlot
   );
 
@@ -45,7 +45,7 @@ const RoomSlots = () => {
       {(roomSlotList) && (
         <RoomSlotTable roomSlots={roomSlotList} />
       )}
-      {isAdmin && (<RoomSlotCSVButton admin={true} addTask={uploadRoomSlots} />)}
+      {isAdmin && (<RoomSlotCSVButton admin={true} addTask={uploadedRoomSlots} />)}
     </>
   );
 }
