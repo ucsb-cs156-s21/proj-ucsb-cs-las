@@ -1,5 +1,8 @@
 import React from "react";
+import useSWR from "swr";
+import { fetchWithToken } from "main/utils/fetch";
 import {asHumanQuarter} from "main/utils/quarter.ts"
+import { useAuth0 } from "@auth0/auth0-react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
@@ -16,6 +19,14 @@ export default ({officeHours, user}) => {
         const quarter = row.tutorAssignment.course.quarter;
         return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
     }
+
+    const { user, getAccessTokenSilently: getToken } = useAuth0();
+  
+    const { data: roleInfo } = useSWR(
+        ["/api/myRole", getToken],
+        fetchWithToken
+    );
+    const isMember = roleInfo && roleInfo.role && (roleInfo.role.toLowerCase() !== "guest" || roleInfo.role.toLowerCase() === "admin" || roleInfo.role.toLowerCase() === "member");
    
     const columns = [{
         dataField: 'id',
@@ -35,9 +46,6 @@ export default ({officeHours, user}) => {
         formatter: (_cell, row) => renderTutorName(row),
         sortValue: (_cell, row) => renderTutorName(row)
     }, {
-        dataField: 'tutorID',
-        text: 'Tutor Assignment'
-    }, {
         dataField: 'courseNameYear',
         text: 'Course',
         formatter: (_cell, row) => renderCourseNameYear(row),
@@ -45,7 +53,7 @@ export default ({officeHours, user}) => {
     },
     ];
 
-    if (user) {
+    if (isMember) {
         columns.push({
                 dataField: 'email',
                 text: 'email'
