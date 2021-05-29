@@ -1,4 +1,4 @@
-import { uploadRoomSlotCSV, buildCreateRoomSlot } from "main/services/RoomSlot/UploadRoomSlotCSV";
+import { uploadRoomSlotCSV, buildCreateRoomSlot } from "main/services/RoomSlots/UploadRoomSlotCSV";
 
 import { fetchWithToken } from "main/utils/fetch";
 

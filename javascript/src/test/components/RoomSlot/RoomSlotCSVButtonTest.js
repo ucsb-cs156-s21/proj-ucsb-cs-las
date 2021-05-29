@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import userEvent from "@testing-library/user-event";
-import { RoomSlotCSVButton } from "main/components/RoomSlot/RoomSlotCSVButton";
+import { RoomSlotCSVButton } from "main/components/RoomSlots/RoomSlotCSVButton";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
