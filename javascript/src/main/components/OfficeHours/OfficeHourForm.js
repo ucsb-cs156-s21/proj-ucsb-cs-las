@@ -82,11 +82,12 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
                 </Form.Label>
                 <Col sm={10}>
 
-                 {createOfficeHour && <TutorAssignmentSelect
+                if({createOfficeHour})
+                    <TutorAssignmentSelect
                       style={{ textAlign: "left", width: "100%" }}
                       onChange={tutorAssignmentId => setOfficeHour({...officeHour, tutorAssignment: { id: tutorAssignmentId }})}
                     />
-                 }
+                 
                  {
                     updateOfficeHour && <TutorAssignmentDisplay 
                         style={{ textAlign: "left", width: "100%" }}
