@@ -41,7 +41,8 @@ public class OnlineOfficeHoursController {
     @Autowired
     private TutorRepository tutorRepository;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper mapper;
 
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
@@ -102,8 +103,6 @@ public class OnlineOfficeHoursController {
     @GetMapping(value = "/api/public/officeHours", produces = "application/json")
     public ResponseEntity<String> getOfficeHours() throws JsonProcessingException {
         List<OnlineOfficeHours> officeHourList = officeHoursRepository.findAll();
-        ObjectMapper mapper = new ObjectMapper();
-
         String body = mapper.writeValueAsString(officeHourList);
         return ResponseEntity.ok().body(body);
     }
@@ -115,7 +114,6 @@ public class OnlineOfficeHoursController {
             return ResponseEntity.notFound().build();
         }
 
-        ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(officeHour.get());
         return ResponseEntity.ok().body(body);
     }
