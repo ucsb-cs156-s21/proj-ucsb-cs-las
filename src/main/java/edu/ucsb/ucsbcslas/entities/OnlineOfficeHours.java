@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
@@ -57,6 +60,16 @@ public class OnlineOfficeHours {
     this.id = id;
     this.tutorAssignment = tutorAssignment;
     this.roomSlot = roomSlot;
+    this.zoomRoomLink = zoomRoomLink;
+    this.notes = notes;
+  }
+
+  public OnlineOfficeHours(TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
+      String zoomRoomLink, String notes) {
+    this.tutorAssignment = tutorAssignment;
+    this.dayOfWeek = dayOfWeek;
+    this.startTime = startTime;
+    this.endTime = endTime;
     this.zoomRoomLink = zoomRoomLink;
     this.notes = notes;
   }
