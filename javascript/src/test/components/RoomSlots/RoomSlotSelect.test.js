@@ -27,9 +27,9 @@ describe("RoomSlotSelect", () => {
     userEvent.click(getByPlaceholderText("Select a quarter"));
     userEvent.click(getByText("Winter 2020"));
 
-    await waitFor(() => expect(roomSlotProvider).toHaveBeenCalledWith(42));
+    await waitFor(() => expect(roomSlotProvider).toHaveBeenCalledWith("20201"));
 
-    userEvent.click(getByText("Foo Bar"));
+    userEvent.click(getByText("Monday"));
 
     expect(onChange).toHaveBeenCalledWith(42);
   });
