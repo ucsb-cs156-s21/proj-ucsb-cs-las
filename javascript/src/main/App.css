@@ -56,16 +56,6 @@ html {
 
 body {
   margin: 0 0 100px;
-  /* bottom = footer height */
-}
-
-
-
-.flex-wrapper {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .navbar-custom {
