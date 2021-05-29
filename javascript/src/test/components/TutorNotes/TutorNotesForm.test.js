@@ -26,20 +26,29 @@ describe("TutorNotesForm tests", () => {
         },
     ];
 
+    const tutors = [
+      {
+        email: "scottpchow@ucsb.edu",
+        firstName: "Scott",
+        id: 1,
+        lastName: "Chow" 
+      }
+    ];
+
     const sampleTutorNotes = {
           id: 1,
-          course:  {name: "CMPSC 148",
-                    id: 2,
-                    quarter: "20203",
-                    instructorFirstName: "Chandra",
-                    instructorLastName: "Krintz",
-                    instructorEmail: "krintz@example.org",
+          course:  {name: "CMPSC 156",
+                    id: 1,
+                    quarter: "20202",
+                    instructorFirstName: "Phill",
+                    instructorLastName: "Conrad",
+                    instructorEmail: "phtcon@ucsb.edu",
                     },
           tutor:    {email: "scottpchow@ucsb.edu",
                     firstName: "Scott",
                     id: 1,
                     lastName: "Chow"},
-          message: "Random Message"
+          message: "Write message here"
         };
 
     const _sampleTutorNotes2 = {
@@ -56,23 +65,58 @@ describe("TutorNotesForm tests", () => {
                 id: 1,
                 lastName: "Chow"},
         message: "TA",
-        index: 1
-      };    
+      };
+      
+      // const setupSWRMocks = (mockRole) => {
+      //   useSWR.mockImplementation( (firstParam, _fetchWithToken) => { 
+      //     const coursesResult = {
+      //       data: []
+      //     };
+      //     const roleResult = {
+      //       data: {
+      //         role: mockRole
+      //       }
+      //     };
+      //     return ( firstParam === "/api/public/courses/" ) ? coursesResult : roleResult;
+      //   });
+      // };
 
     const mutateSpy = jest.fn();
-    beforeEach(() => {
-        useSWR.mockReturnValue({
-            data: courses,
-            error: undefined,
-            mutate: mutateSpy,
-        });
-    });
+    const setupSWRMocks = () => {
+      useSWR.mockImplementation(([endpoint, _getToken], _fetch) => { 
+            const coursesResult = {
+              data: courses,
+              error: undefined,
+              mutate: mutateSpy,
+            };
+            const tutorResult = {
+              data: tutors,
+              error: undefined,
+              mutate: mutateSpy,
+            };
+            if ( endpoint === "/api/member/courses/" ){
+              return coursesResult;
+            } else {
+              return tutorResult;
+            }
+          });
+    };
 
   test("empty component renders without crashing", () => {
+    useSWR.mockReturnValue({
+      data: undefined,
+      error: undefined,
+      mutate: mutateSpy,
+    });
     render(<TutorNotesForm />);
   });
 
   test("component with existing course renders without crashing", () => {
+    useSWR.mockReturnValue({
+      data: undefined,
+      error: undefined,
+      mutate: mutateSpy,
+    });
     render(<TutorNotesForm existingTutorNotes={sampleTutorNotes}/>);
   });
 
@@ -83,7 +127,7 @@ describe("TutorNotesForm tests", () => {
         mutate: mutateSpy,
     });
     const { getByText } = render(<TutorNotesForm />);
-    const errorMessage = getByText("You must be an instructor or an admin to create new Tutor Notes.");
+    const errorMessage = getByText("You must be an instructor or an admin to create new Tutor Notes or we have found no Courses/Tutors.");
     expect(errorMessage).toBeInTheDocument();
   });
 
@@ -100,6 +144,8 @@ describe("TutorNotesForm tests", () => {
 
   test("creating TutorNotes works", async () => {
 
+    setupSWRMocks();
+
     const createTutorNotesMock = jest.fn();
 
     const { getByLabelText, getByText } = render
@@ -107,13 +153,16 @@ describe("TutorNotesForm tests", () => {
     ;
 
     const courseSelect = getByLabelText("Course Name");
-    userEvent.selectOptions(courseSelect, "1");
+    userEvent.selectOptions(courseSelect, "0");
+
+    const tutorSelect = getByLabelText("Tutor");
+    userEvent.selectOptions(tutorSelect, "0");
 
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
 
     expect(createTutorNotesMock).toHaveBeenCalledTimes(1);
-    expect(createTutorNotesMock).toHaveBeenCalledWith({ ...sampleTutorNotes, id: null, index: "1", tutor: null});
+    expect(createTutorNotesMock).toHaveBeenCalledWith({ ...sampleTutorNotes, id: null, index: 0});
   });
 
 

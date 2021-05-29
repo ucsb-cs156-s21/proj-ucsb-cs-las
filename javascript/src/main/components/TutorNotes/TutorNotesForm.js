@@ -43,7 +43,7 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
     if (error || error2) {
         return (
             <>
-            <h1>You must be an instructor or an admin to create new Tutor Notes or we have found no Courses/Tutors</h1>
+            <h1>You must be an instructor or an admin to create new Tutor Notes or we have found no Courses/Tutors.</h1>
             </>
         );
     }
@@ -63,12 +63,12 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
 
     
     if(existingTutorNotes && tutorNotes.index === null){
-        for (var i = 0; i < courseList.length; i++) {
+        for (let i = 0; i < courseList.length; i++) {
             if (courseList[i].id === existingTutorNotes.course.id) {
                 setTutorNotes({...tutorNotes, index: i});
             }
         }
-        for (var i = 0; i < tutorList.length; i++) {
+        for (let i = 0; i < tutorList.length; i++) {
             if (tutorList[i].id === existingTutorNotes.tutor.id) {
                 setTutorNotes({...tutorNotes, index: i});
             }

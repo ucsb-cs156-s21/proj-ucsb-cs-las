@@ -45,6 +45,15 @@ describe("Edit Tutor Notes page test", () => {
         },
     ];
 
+    const tutors = [
+      {
+        email: "scottpchow@ucsb.edu",
+        firstName: "Scott",
+        id: 1,
+        lastName: "Chow" 
+      }
+    ];
+
   const sampleTutorNotes = {
     id: 1,
     course:  {name: "CMPSC 148",
@@ -102,8 +111,8 @@ describe("Edit Tutor Notes page test", () => {
     );
 
     await waitFor(() => (
-      expect(getByText("Tutor Email")).toBeInTheDocument() &&
-      expect(getByLabelText("Tutor Email").value).toEqual(sampleTutorNotes.tutor.email)
+      expect(getByText("Tutor")).toBeInTheDocument() &&
+      expect(getByLabelText("Tutor").value).toEqual(sampleTutorNotes.tutor)
     ));
     
   });
