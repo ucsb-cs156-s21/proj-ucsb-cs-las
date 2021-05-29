@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 import edu.ucsb.ucsbcslas.entities.AppUser;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.*;
 import java.lang.*;
 import java.util.ArrayList;
@@ -42,7 +38,6 @@ import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
-import edu.ucsb.ucsbcslas.controllers.CourseController;
 
 @RestController
 public class OnlineOfficeHoursController {
@@ -58,8 +53,7 @@ public class OnlineOfficeHoursController {
     private CourseRepository courseRepository;
     @Autowired
     private TutorAssignmentRepository tutorAssignmentRepository;
-    @Autowired
-    CSVToObjectService<OnlineOfficeHours> csvToObjectService;
+    
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -196,9 +190,9 @@ public class OnlineOfficeHoursController {
 
                 OnlineOfficeHours OH = null;
                 List<OnlineOfficeHours> existingOfficeHours = officeHoursRepository.findAllByTutorAssignment(TA);
-                for(int i = 0; i < existingOfficeHours.size(); i++ ){
-                    if (existingOfficeHours.get(i).getDayOfWeek().equals(dayOfWeek)  && existingOfficeHours.get(i).getStartTime().equals(startTime) &&existingOfficeHours.get(i).getEndTime().equals(endTime) ){
-                        OH = existingOfficeHours.get(i);
+                for(OnlineOfficeHours existingOfficeHour : existingOfficeHours){
+                    if (existingOfficeHour.getDayOfWeek().equals(dayOfWeek)  && existingOfficeHour.getStartTime().equals(startTime) &&existingOfficeHour.getEndTime().equals(endTime) ){
+                        OH = existingOfficeHour;
                         
                     }
                 }

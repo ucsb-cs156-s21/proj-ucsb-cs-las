@@ -16,9 +16,7 @@ import org.springframework.web.servlet.View;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import java.io.IOException;
 import java.io.Reader;
-import edu.ucsb.ucsbcslas.services.CSVToObjectService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -75,9 +73,6 @@ public class OnlineOfficeHourControllerTests {
 
     @MockBean
     TutorRepository mockTutorRepository;
-
-    @MockBean
-    CSVToObjectService mockCSVToObjectService;
 
     @MockBean
     Reader mockReader;
@@ -329,7 +324,6 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void testUploadFile_unauthorizedIfNotAdmin() throws Exception {
-        OnlineOfficeHoursController OnlineOfficeHoursController = mock(OnlineOfficeHoursController.class);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenThrow(RuntimeException.class);
         MockMultipartFile mockFile = new MockMultipartFile(
             "csv",
@@ -347,7 +341,6 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void testUploadFileThrowsRuntime() throws Exception{
-        OnlineOfficeHoursController OnlineOfficeHoursController = mock(OnlineOfficeHoursController.class);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenThrow(RuntimeException.class);
         MockMultipartFile mockFile = new MockMultipartFile(
