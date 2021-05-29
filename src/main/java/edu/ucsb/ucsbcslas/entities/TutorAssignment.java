@@ -104,11 +104,7 @@ public class TutorAssignment {
 
   @Override
   public String toString() {
-    return "{ id='" + getId() +
-            "', course='" + getCourse() +
-            "', tutor='" + getTutor() +
-            "', assignmentType='" + getAssignmentType() +
-            "' }";
+    return String.format("{ id='%d', course='%s', tutor='%s', assignmentType='%s' }",
+            id, getCourse(), getTutor(), getAssignmentType());
   }
-
 }

@@ -70,8 +70,7 @@ public class ActiveQuarter {
 
     @Override
     public String toString() {
-        return "{ id='" + getId() +
-                "', activeQuarter='" + getActiveQuarter() +
-                "' }";
+        return String.format("{ id='%d', activeQuarter='%s' }",
+                id, getActiveQuarter());
     }
 }

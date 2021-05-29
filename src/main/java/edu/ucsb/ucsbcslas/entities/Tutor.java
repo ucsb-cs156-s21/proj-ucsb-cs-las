@@ -94,12 +94,8 @@ public class Tutor {
 
   @Override
   public String toString() {
-    return "{ " +
-            " id='" + getId() +
-            "', firstName='" + getFirstName() +
-            "', lastName='" + getLastName() +
-            "', email='" + getEmail() +
-            "' }";
+    return String.format("{ id='%d', firstName='%s', lastName='%s', email='%s' }",
+            id, getFirstName(), getLastName(), getEmail());
   }
 
 }

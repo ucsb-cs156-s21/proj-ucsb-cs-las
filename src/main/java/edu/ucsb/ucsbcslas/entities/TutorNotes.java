@@ -94,12 +94,9 @@ public class TutorNotes {
 
   @Override
   public String toString() {
-    return "{ id='" + getId() +
-            "', course='" + getCourse() +
-            "', tutor='" + getTutor() +
-            "', message='" + getMessage() +
-            "' }";
-  }
+    return String.format("{ id='%d', course='%s', tutor='%s', message='%s' }",
+            id, getCourse(), getTutor(), getMessage());
+    }
 }
 
 

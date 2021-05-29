@@ -139,11 +139,11 @@ public class RoomSlot {
     @Override
     public String toString() {
         DateFormat format_HHMM_A = new SimpleDateFormat("hh:mm a");
-        return "{ id='" + getId() +
-        "', location='" + getLocation() +
-        "', quarter='" + getActiveQuarter() +
-        "', start time='" + format_HHMM_A.format(getStartTime()) +
-        "', end time='" + format_HHMM_A.format(getEndTime()) +
-        "' }";
+        return String.format("{ id='%d', location='%s', quarter='%s', startTime='%s', endTime = '%s' }",
+                id,
+                getLocation(),
+                getActiveQuarter(),
+                format_HHMM_A.format(getStartTime()),
+                format_HHMM_A.format(getEndTime()));
     }
 }
