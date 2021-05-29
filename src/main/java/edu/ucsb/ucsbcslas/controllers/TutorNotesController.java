@@ -1,5 +1,4 @@
 package edu.ucsb.ucsbcslas.controllers;
-
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
