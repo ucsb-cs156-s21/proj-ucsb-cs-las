@@ -28,7 +28,7 @@ const Courses = () => {
     "/api/public/filter",
     fetchWithoutToken
   );
-  
+  console.log(active);
   if (error) {
     return (
       <h1>We encountered an error; please reload the page and try again.</h1>

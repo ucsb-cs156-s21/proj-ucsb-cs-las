@@ -28,7 +28,6 @@ const OfficeHours = () => {
     return <Loading />;
   }
   const deleteOfficeHour = buildDeleteOfficeHour(getToken, mutateOfficeHours);
-  console.log(active);
   const headers = [{
     key: 'id',
     label: 'id'
