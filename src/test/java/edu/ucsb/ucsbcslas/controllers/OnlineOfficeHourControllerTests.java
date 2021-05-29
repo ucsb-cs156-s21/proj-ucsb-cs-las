@@ -14,7 +14,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import java.io.Reader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,8 +71,6 @@ public class OnlineOfficeHourControllerTests {
     @MockBean
     TutorRepository mockTutorRepository;
 
-    @MockBean
-    Reader mockReader;
 
     private String userToken() {
       return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -285,8 +282,7 @@ public class OnlineOfficeHourControllerTests {
         when(mockCourseRepository.save(any(Course.class))).thenReturn(c);
         when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(e);
         when(mockTutorRepository.save(any(Tutor.class))).thenReturn(t);
-        when(mockTutorAssignmentRepository.findAllByCourse(any(Course.class))).thenReturn(TAL);
-        when(mockTutorAssignmentRepository.findAllByTutor(any(Tutor.class))).thenReturn(TAL);
+        when(mockTutorAssignmentRepository.findAllByCourseAndTutor(any(Course.class),any(Tutor.class))).thenReturn(TAL);
         when(mockTutorAssignmentRepository.save(any(TutorAssignment.class))).thenReturn(tutorAss);
         when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(emptyOHL);
         when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
@@ -323,8 +319,7 @@ public class OnlineOfficeHourControllerTests {
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(c);
         when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(OptTutor);
-        when(mockTutorAssignmentRepository.findAllByCourse(any(Course.class))).thenReturn(TAL);
-        when(mockTutorAssignmentRepository.findAllByTutor(any(Tutor.class))).thenReturn(TAL);
+        when(mockTutorAssignmentRepository.findAllByCourseAndTutor(any(Course.class),any(Tutor.class))).thenReturn(TAL);
         when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(expectedOfficeHours);
         when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
         MockMultipartFile mockFile = new MockMultipartFile(
@@ -344,7 +339,7 @@ public class OnlineOfficeHourControllerTests {
     }
 
     @Test
-    public void testUploadFile_3OH() throws Exception{
+    public void testUploadFile_DifferentDayofWeekStartandEndtime() throws Exception{
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
         List<TutorAssignment> TAL = new ArrayList<> ();
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
@@ -365,8 +360,7 @@ public class OnlineOfficeHourControllerTests {
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(c);
         when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(OptTutor);
-        when(mockTutorAssignmentRepository.findAllByCourse(any(Course.class))).thenReturn(TAL);
-        when(mockTutorAssignmentRepository.findAllByTutor(any(Tutor.class))).thenReturn(TAL);
+        when(mockTutorAssignmentRepository.findAllByCourseAndTutor(any(Course.class),any(Tutor.class))).thenReturn(TAL);
         when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(expectedOfficeHours);
         when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
         MockMultipartFile mockFile = new MockMultipartFile(

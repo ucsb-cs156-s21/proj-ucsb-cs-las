@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import edu.ucsb.ucsbcslas.entities.AppUser;
-import java.io.*;
-import java.lang.*;
+import java.io.Reader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,10 +199,7 @@ public class OnlineOfficeHoursController {
                 
                 TutorAssignment TA;
                 TutorAssignment tutorAssignment = new TutorAssignment(related_course,related_tutor,assignmentType);
-                List<TutorAssignment> TAbyCourse = tutorAssignmentRepository.findAllByCourse(related_course);
-                List<TutorAssignment> TAbyTutor = tutorAssignmentRepository.findAllByTutor(related_tutor);
-                List<TutorAssignment> comm =TAbyCourse;
-                comm.retainAll(TAbyTutor);
+                List<TutorAssignment> comm =tutorAssignmentRepository.findAllByCourseAndTutor(related_course,related_tutor);
                 if(comm.isEmpty()){
                     TA = tutorAssignmentRepository.save(tutorAssignment);
                 }
