@@ -27,13 +27,13 @@ public class TutorAssignment {
   private String assignmentType;
 
   // course: data belongs to course entity
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "course_id")
   private Course course;
 
   // tutor: data belongs to tutor entity
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "tutor_id")
   private Tutor tutor;
 
   public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
