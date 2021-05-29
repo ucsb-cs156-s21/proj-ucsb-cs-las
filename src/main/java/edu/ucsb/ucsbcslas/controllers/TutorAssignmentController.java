@@ -288,55 +288,56 @@ public class TutorAssignmentController {
         Reader reader = new InputStreamReader(csv.getInputStream());
         logger.info(new String(csv.getInputStream().readAllBytes()));
 
-        String empty = "";
-        empty = new String(csv.getInputStream().readAllBytes());
-        if ((authControllerAdvice.getIsAdmin(authorization)) && ("" != empty)) {
+        String empty = new String(csv.getInputStream().readAllBytes());
+        if ((authControllerAdvice.getIsAdmin(authorization))) {
             try {
-                List<TutorAssignmentModel> uploadedTutorAssignments = csvToObjectService.parse(reader,
-                        TutorAssignmentModel.class);
-                List<TutorAssignment> tutorAssignmentList = new ArrayList<TutorAssignment>();
-
-                for (TutorAssignmentModel i : uploadedTutorAssignments) {
-                    Course currentCourse;
-                    Tutor currentTutor;
-                    TutorAssignment currentTutorAssignment;
-
-                    List<Course> courseList = courseRepository.findByNameAndQuarterAndInstructorEmail(i.getCourseName(),
-                            i.getQuarter(), i.getInstructorEmail());
-                    if (courseList.isEmpty()) {
-                        currentCourse = new Course(i.getCourseName(), i.getQuarter(), i.getInstructorFirstName(),
-                                i.getInstructorLastName(), i.getInstructorEmail());
-                        courseRepository.save(currentCourse);
-                    } else {
-                        currentCourse = courseList.get(0);
-                    }
-                    Optional<Tutor> tutorList = tutorRepository.findByEmail(i.getTutorEmail());
-                    if (tutorList.isEmpty()) {
-                        currentTutor = new Tutor(i.getTutorFirstName(), i.getTutorLastName(), i.getTutorEmail());
-                        tutorRepository.save(currentTutor);
-                    } else {
-                        currentTutor = tutorList.get();
-                    }
-                    tutorAssignmentList = tutorAssignmentRepository.findAllByTutor(currentTutor);
-                    if (tutorAssignmentList.isEmpty()) {
-                        currentTutorAssignment = new TutorAssignment(currentCourse, currentTutor,
-                                i.getAssignmentType());
-                        tutorAssignmentRepository.save(currentTutorAssignment);
-                    }
+                if (empty.isEmpty()) {
+                    throw new RuntimeException();
                 }
+                    List<TutorAssignmentModel> uploadedTutorAssignments = csvToObjectService.parse(reader,
+                            TutorAssignmentModel.class);
+                    List<TutorAssignment> tutorAssignmentList = new ArrayList<TutorAssignment>();
 
-                List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
-                        .saveAll(tutorAssignmentList);
-                String body = mapper.writeValueAsString(savedTutorAssignments);
-                System.out.print(savedTutorAssignments.toString());
-                return ResponseEntity.ok().body(body);
+                    for (TutorAssignmentModel i : uploadedTutorAssignments) {
+                        Course currentCourse;
+                        Tutor currentTutor;
+                        TutorAssignment currentTutorAssignment;
 
+                        List<Course> courseList = courseRepository.findByNameAndQuarterAndInstructorEmail(
+                                i.getCourseName(), i.getQuarter(), i.getInstructorEmail());
+                        if (courseList.isEmpty()) {
+                            currentCourse = new Course(i.getCourseName(), i.getQuarter(), i.getInstructorFirstName(),
+                                    i.getInstructorLastName(), i.getInstructorEmail());
+                            courseRepository.save(currentCourse);
+                        } else {
+                            currentCourse = courseList.get(0);
+                        }
+                        Optional<Tutor> tutorList = tutorRepository.findByEmail(i.getTutorEmail());
+                        if (tutorList.isEmpty()) {
+                            currentTutor = new Tutor(i.getTutorFirstName(), i.getTutorLastName(), i.getTutorEmail());
+                            tutorRepository.save(currentTutor);
+                        } else {
+                            currentTutor = tutorList.get();
+                        }
+                        tutorAssignmentList = tutorAssignmentRepository.findAllByTutor(currentTutor);
+                        if (tutorAssignmentList.isEmpty()) {
+                            currentTutorAssignment = new TutorAssignment(currentCourse, currentTutor,
+                                    i.getAssignmentType());
+                            tutorAssignmentRepository.save(currentTutorAssignment);
+                        }
+                    }
+
+                    List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
+                            .saveAll(tutorAssignmentList);
+                    String body = mapper.writeValueAsString(savedTutorAssignments);
+                    System.out.print(savedTutorAssignments.toString());
+                    return ResponseEntity.ok().body(body);
             } catch (RuntimeException e) {
                 logger.error("Error Uploading CSV", e);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not authorized user");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authorized user");
         }
     }
 

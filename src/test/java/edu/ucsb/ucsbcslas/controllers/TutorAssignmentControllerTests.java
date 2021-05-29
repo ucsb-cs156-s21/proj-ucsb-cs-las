@@ -605,26 +605,37 @@ public class TutorAssignmentControllerTests {
 
 
         // This is a intent of a test that throws runtime exception if user uploads empty csv
-        // @Test
-        // public void testUploadFileThrowsRuntime() throws Exception {
-        //         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        @Test
+        public void testUploadFileThrowsRuntime_unauthorizedUser() throws Exception {
+                when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
 
-        //         when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
-        //                         .thenThrow(RuntimeException.class);
-        //         MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
-        //                         "".getBytes());
-        //         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        //         MvcResult response = mockMvc
-        //                         .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
-        //                                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-        //                         .andExpect(status().isBadRequest()).andReturn();
+                MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                                "".getBytes());
+                MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+                MvcResult response = mockMvc
+                                .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                                .andExpect(status().isUnauthorized()).andReturn();
 
-        //         verify(mockTutorAssignmentRepository, never()).saveAll(any());
-        // }
+                verify(mockTutorAssignmentRepository, never()).saveAll(any());
+        }
+
+        @Test
+        public void testUploadFileThrowsRuntime_isEmptyFile() throws Exception {
+                when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+                MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                                "".getBytes());
+                MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+                MvcResult response = mockMvc
+                                .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                                .andExpect(status().isBadRequest()).andReturn();
+
+                verify(mockTutorAssignmentRepository, never()).saveAll(any());
+        }
 
 
-
-        
 
         @Test
         public void testUploadFileIfNothingExists() throws Exception {
