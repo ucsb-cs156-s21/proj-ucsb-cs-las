@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class RoomSlot {
@@ -139,12 +140,13 @@ public class RoomSlot {
 
     @Override
     public String toString() {
+        DateTimeFormatter HHMM_A = DateTimeFormatter.ofPattern("HH:mm");
         return String.format("{ id='%d', location='%s', quarter='%s', start time='%s', end time='%s' }",
                 getId(),
                 getLocation(),
                 getQuarter(),
-                getStartTime().toString(),
-                getEndTime().toString()
+                getStartTime().format(HHMM_A),
+                getEndTime().format(HHMM_A)
         );
     }
 }
