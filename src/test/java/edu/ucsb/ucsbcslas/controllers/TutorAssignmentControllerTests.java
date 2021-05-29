@@ -601,10 +601,6 @@ public class TutorAssignmentControllerTests {
                 assertEquals(actualCourseNumber, expectedCourseNumbers);
         }
 
-
-
-
-        // This is a intent of a test that throws runtime exception if user uploads empty csv
         @Test
         public void testUploadFileThrowsRuntime_unauthorizedUser() throws Exception {
                 when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
@@ -634,8 +630,6 @@ public class TutorAssignmentControllerTests {
 
                 verify(mockTutorAssignmentRepository, never()).saveAll(any());
         }
-
-
 
         @Test
         public void testUploadFileIfNothingExists() throws Exception {
