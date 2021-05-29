@@ -29,7 +29,7 @@ public class RoomSlot {
 
     // active quarter data: data belongs to this entity
     @Column(nullable = false)
-    private String activeQuarter;
+    public String quarter;
 
     // day of week: data belongs to this entity
     @Column(nullable = false)
@@ -47,10 +47,10 @@ public class RoomSlot {
 
     // constructor with auto-generated id
     public RoomSlot(String location,
-                    String activeQuarter, DayOfWeek dayOfWeek,
+                    String quarter, DayOfWeek dayOfWeek,
                     LocalTime startTime, LocalTime endTime) {
         this.location = location;
-        this.activeQuarter = activeQuarter;
+        this.quarter = quarter;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -58,11 +58,12 @@ public class RoomSlot {
 
     // constructor with given room slot id
     public RoomSlot(Long id, String location,
-                    String activeQuarter, DayOfWeek dayOfWeek,
-                    LocalTime startTime, LocalTime endTime) {
+        String quarter, DayOfWeek dayOfWeek,
+        LocalTime startTime, LocalTime endTime) 
+    {
         this.id = id;
         this.location = location;
-        this.activeQuarter = activeQuarter;
+        this.quarter = quarter;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -84,12 +85,12 @@ public class RoomSlot {
         this.location = location;
     }
 
-    public String getActiveQuarter() {
-        return this.activeQuarter;
+    public String getQuarter() {
+        return this.quarter;
     }
 
-    public void setActiveQuarter(String quarter) {
-        this.activeQuarter = quarter;
+    public void setQuarter(String quarter) {
+        this.quarter = quarter;
     }
 
     public DayOfWeek getDayOfWeek() {
@@ -128,7 +129,7 @@ public class RoomSlot {
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(id, other.getId())
                .append(location, other.getLocation())
-               .append(activeQuarter, other.getActiveQuarter())
+               .append(quarter, other.getQuarter())
                .append(dayOfWeek, other.getDayOfWeek())
                .append(startTime, other.getStartTime())
                .append(endTime, other.getEndTime());
@@ -142,7 +143,7 @@ public class RoomSlot {
         return String.format("{ id='%d', location='%s', quarter='%s', startTime='%s', endTime = '%s' }",
                 id,
                 getLocation(),
-                getActiveQuarter(),
+                getQuarter(),
                 format_HHMM_A.format(getStartTime()),
                 format_HHMM_A.format(getEndTime()));
     }

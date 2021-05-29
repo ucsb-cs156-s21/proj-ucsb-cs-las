@@ -226,6 +226,72 @@ public class OnlineOfficeHourControllerTests {
     }
 
     @Test
+    public void testUpdateOfficeHour_OfficeHourExists_updateValues() throws Exception {
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
+        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
+        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        String body = objectMapper.writeValueAsString(inputOfficeHour);
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockOnlineOfficeHoursRepository.findById(any(Long.class))).thenReturn(Optional.of(savedOfficeHour));
+        when(mockOnlineOfficeHoursRepository.save(inputOfficeHour)).thenReturn(inputOfficeHour);
+        MvcResult response = mockMvc
+            .perform(put("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+            .andExpect(status().isOk()).andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).findById(inputOfficeHour.getId());
+        verify(mockOnlineOfficeHoursRepository, times(1)).save(inputOfficeHour);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(body, responseString);
+    }
+    @Test
+    public void testUpdateOfficeHour_unauthorizedIfNotAdmin() throws Exception {
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
+        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        String body = objectMapper.writeValueAsString(inputOfficeHour);
+        mockMvc
+        .perform(put("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+        .andExpect(status().isUnauthorized());
+    }
+    @Test
+    public void testUpdateOfficeHour_OfficeHourNotFound() throws Exception {
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
+        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        String body = objectMapper.writeValueAsString(inputOfficeHour);
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.empty());
+        mockMvc
+            .perform(put("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+            .andExpect(status().isNotFound()).andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).findById(1L);
+        verify(mockOnlineOfficeHoursRepository, times(0)).save(any(OnlineOfficeHours.class));
+    }
+    @Test
+    public void testUpdateCourse_OfficeHourAtPathOwned_butTryingToOverwriteAnotherOfficeHour() throws Exception {
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
+        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(2L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        String body = objectMapper.writeValueAsString(inputOfficeHour);
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockOnlineOfficeHoursRepository.findById(any(Long.class))).thenReturn(Optional.of(savedOfficeHour));
+        mockMvc
+            .perform(put("/api/admin/officeHours/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+            .andExpect(status().isBadRequest()).andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).findById(2L);
+        verify(mockOnlineOfficeHoursRepository, times(0)).save(any(OnlineOfficeHours.class));
+    }
+
+    @Test
     public void testDeleteOfficeHour_officeHourExists() throws Exception {
         Tutor tutor = new Tutor(1L,
                 "String firstName",

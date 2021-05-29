@@ -14,7 +14,7 @@ public class RoomSlotTests {
   public static RoomSlot testRoomSlot;
   public static Long testId = 1L; // testId for the ActiveQuarter
   public static String testLocation = "Campus Point";
-  public static String testQuarter = "F20";
+  public static String testQuarter = "20212";
   public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
   public static LocalTime testStartTime = LocalTime.NOON;
   public static LocalTime testEndTime = LocalTime.MIDNIGHT;
@@ -59,7 +59,7 @@ public class RoomSlotTests {
     testRoomSlot.setId(testId);
     assertEquals(testId, testRoomSlot.getId());
     assertEquals(null, testRoomSlot.getLocation());
-    assertEquals(null, testRoomSlot.getActiveQuarter());
+    assertEquals(null, testRoomSlot.getQuarter());
     assertEquals(null, testRoomSlot.getDayOfWeek());
     assertEquals(null, testRoomSlot.getStartTime());
     assertEquals(null, testRoomSlot.getEndTime());
@@ -76,7 +76,7 @@ public class RoomSlotTests {
 
     assertEquals(testId, testRoomSlot.getId());
     assertEquals(testLocation, testRoomSlot.getLocation());
-    assertEquals(testQuarter, testRoomSlot.getActiveQuarter());
+    assertEquals(testQuarter, testRoomSlot.getQuarter());
     assertEquals(testDayOfWeek, testRoomSlot.getDayOfWeek());
     assertEquals(testStartTime, testRoomSlot.getStartTime());
     assertEquals(testEndTime, testRoomSlot.getEndTime());
