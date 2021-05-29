@@ -11,7 +11,7 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
         id: null,
         course: null,
         tutor: null,
-        messsage: "stuff"
+        message: "Random Message"
     }
 
     const [existingSet, setExistingSet] = useState(false);
@@ -87,20 +87,17 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
                         Tutor Email
                     </Form.Label>
                     <Col sm={10}>
-                        <Form.Control type="text" placeholder="tutor email" value={tutorNotes.tutorEmail} onChange={(e) => setTutorNotes({
+                        <Form.Control type="text" placeholder="tutor email" value={tutorNotes.tutor} onChange={(e) => setTutorNotes({
                             ...tutorNotes,
-                            tutorEmail: e.target.value
+                            tutor: e.target.value
                         })} />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="message">
                     <Form.Label column sm={2}>Message</Form.Label>
                     <Col sm={10}>
-                        <Form.Control as="select" value={tutorNotes.message} onChange={(e) => setTutorNotes({ 
+                        <Form.Control as="text" value={tutorNotes.message} onChange={(e) => setTutorNotes({ 
                             ...tutorNotes, message: e.target.value})}>
-                            <option value="LA">LA</option>
-                            <option value="146J">190J</option>
-                            <option value="TA">TA</option>
                         </Form.Control>
                     </Col>
                 </Form.Group>

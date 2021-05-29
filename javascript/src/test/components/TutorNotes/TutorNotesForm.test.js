@@ -56,7 +56,7 @@ describe("TutorNotesForm tests", () => {
                 id: 1,
                 lastName: "Chow"},
         message: "TA",
-        index: 1,
+        index: 1
       };    
 
     const mutateSpy = jest.fn();
@@ -108,9 +108,6 @@ describe("TutorNotesForm tests", () => {
 
     const courseSelect = getByLabelText("Course Name");
     userEvent.selectOptions(courseSelect, "1");
-
-    const messageSelect = getByLabelText("Message");
-    userEvent.selectOptions(messageSelect, sampleTutorNotes.message);
 
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
