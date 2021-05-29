@@ -8,7 +8,9 @@ import { fetchWithToken } from "main/utils/fetch";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
 import Loading from "../../components/Loading/Loading";
 
-import { } from "main/components/RoomSlots/RoomSlotCSVButton"
+import { uploadRoomSlotCSV } from "main/services/RoomSlots/uploadRoomSlotCSV"
+import { RoomSlotCSVButton } from "main/components/RoomSlots/RoomSlotCSVButton"
+import { CSVLink } from "react-csv";
 
 const RoomSlots = () => {
   const {_user, getAccessTokenSilently: getToken } = useAuth0();
@@ -21,6 +23,15 @@ const RoomSlots = () => {
   );
 
   const isAdmin = roleInfo?.role?.toLowerCase() === "admin";
+
+  const uploadRoomSlots = uploadRoomSlotCSV(getToken,
+    () => {
+      addToast("CSV Uploaded", { appearance: "success" });
+    },
+    () => {
+      addToast("Error Uploading CSV", { appearance: "error" });
+    }
+  );
 
   if (error) {
     return (
@@ -40,6 +51,7 @@ const RoomSlots = () => {
       {(roomSlotList) && (
         <RoomSlotTable roomSlots={roomSlotList} />
       )}
+      {isAdmin && (<RoomSlotCSVButton admin={true} addTask={uploadRoomSlots} />)}
     </>
   );
 }
