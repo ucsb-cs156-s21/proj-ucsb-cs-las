@@ -3,7 +3,7 @@ import {asHumanQuarter} from "main/utils/quarter.ts"
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
-export default ({upcomingOfficeHours, user}) => {
+export default ({officeHours, user}) => {
 
     function zoomRoomLinkFormatter(cell) {
         return (
@@ -11,10 +11,10 @@ export default ({upcomingOfficeHours, user}) => {
         );
     }
 
-    const renderTutorName = (row) => row.tutor.firstName + " " + row.tutor.lastName;
+    const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
     const renderCourseNameYear = (row) => {
-        const quarter = row.course.quarter;
-        return row.course.name + " " + asHumanQuarter(quarter);
+        const quarter = row.tutorAssignment.course.quarter;
+        return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
     }
    
     const columns = [{
@@ -61,7 +61,7 @@ export default ({upcomingOfficeHours, user}) => {
         <BootstrapTable 
             bootstrap4={true}
             keyField='id' 
-            data={upcomingOfficeHours} 
+            data={officeHours} 
             columns={columns} 
             striped 
         />

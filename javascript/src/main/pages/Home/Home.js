@@ -35,7 +35,7 @@ const Home = () => {
             </div>
         </Jumbotron>,
         <>
-        <UpcomingOfficeHourTable upcomingOfficeHours={upcomingOfficeHours}/>
+        <UpcomingOfficeHourTable officeHours={officeHours}/>
         </>
     );
 };
