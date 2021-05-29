@@ -2,11 +2,10 @@ import React from "react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import {asHumanQuarter} from "main/utils/quarter.ts"
-import { useAuth0 } from "@auth0/auth0-react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
-export default ({officeHours, user}) => {
+export default ({officeHours}) => {
 
     function zoomRoomLinkFormatter(cell) {
         return (
@@ -19,8 +18,6 @@ export default ({officeHours, user}) => {
         const quarter = row.tutorAssignment.course.quarter;
         return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
     }
-
-    const { user, getAccessTokenSilently: getToken } = useAuth0();
   
     const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
