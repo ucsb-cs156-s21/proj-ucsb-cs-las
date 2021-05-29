@@ -601,7 +601,10 @@ public class TutorAssignmentControllerTests {
                 assertEquals(actualCourseNumber, expectedCourseNumbers);
         }
 
-                        // This is a test for the catch statement in totorAssignmentController for uploadCSV. Not sure implement it. Maybe make a PR after merged to fix this?
+
+
+
+        // This is a intent of a test that throws runtime exception if user uploads empty csv
         // @Test
         // public void testUploadFileThrowsRuntime() throws Exception {
         //         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -609,7 +612,7 @@ public class TutorAssignmentControllerTests {
         //         when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
         //                         .thenThrow(RuntimeException.class);
         //         MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
-        //                         "value,done\ntodo,false".getBytes());
+        //                         "".getBytes());
         //         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         //         MvcResult response = mockMvc
         //                         .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
@@ -618,6 +621,10 @@ public class TutorAssignmentControllerTests {
 
         //         verify(mockTutorAssignmentRepository, never()).saveAll(any());
         // }
+
+
+
+        
 
         @Test
         public void testUploadFileIfNothingExists() throws Exception {

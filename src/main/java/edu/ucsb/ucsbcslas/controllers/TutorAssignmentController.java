@@ -336,7 +336,7 @@ public class TutorAssignmentController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
             }
         } else {
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not authorized user");
         }
     }
 
