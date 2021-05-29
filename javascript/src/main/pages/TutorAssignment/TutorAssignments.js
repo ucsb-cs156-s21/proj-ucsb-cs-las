@@ -7,7 +7,7 @@ import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
 import { buildDeleteTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 import {useHistory} from "react-router-dom";
-
+import { CSVLink } from "react-csv";
 
 const TutorAssignment = () => {
   const history = useHistory();
@@ -35,10 +35,35 @@ const TutorAssignment = () => {
     getToken, mutateCourses
   );
 
+  const newTutorAssignmentButton = <Button className="mb-3" onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>;
+
+  const headers = [{
+    key: 'id',
+    label: 'Course Id'
+  }, {
+    key: 'course.name',
+    label: 'Course Name'
+  }, {
+    key: 'course.quarter',
+    label: 'Course Quarter'
+  }, {
+    key: 'tutor.firstName',
+    label: 'Tutor First Name'
+  }, {
+    key: 'tutor.lastName',
+    label: 'Tutor Last Name'
+  }, {
+    key: 'tutor.email',
+    label: 'Tutor Email'
+  }, {
+    key: 'assignmentType',
+    label: 'Assignment Type'
+  }];
+
   if (error) {
     return (
       <>
-        {isInstructor && <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>}
+        {isInstructor && newTutorAssignmentButton}
         <h1>You have no current Tutor Assignments or we encountered an error; please reload the page and try again.</h1>
       </>
     );
