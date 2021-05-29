@@ -19,4 +19,22 @@ const uploadRoomSlotCSV = (getToken, onSuccess, onError) => {
     return func;
 }
 
-export default uploadRoomSlotCSV;
+const buildCreateRoomSlot = (getToken, onSuccess, onError) => {
+    const func = async (roomSlot) => {
+        try {
+            await fetchWithToken(`/api/admin/roomslot/`, getToken, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify(roomSlot),
+            });
+            onSuccess();
+        } catch (err) {
+            onError(err);
+        }
+    };
+    return func;
+}
+
+export default { uploadRoomSlotCSV, buildCreateRoomSlot };

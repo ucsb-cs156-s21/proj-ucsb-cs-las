@@ -1,4 +1,4 @@
-import { uploadRoomSlotCSV } from "main/services/RoomSlot/UploadRoomSlotCSV";
+import { uploadRoomSlotCSV, buildCreateRoomSlot } from "main/services/RoomSlot/UploadRoomSlotCSV";
 
 import { fetchWithToken } from "main/utils/fetch";
 
@@ -7,7 +7,6 @@ jest.mock("main/utils/fetch", () => ({
 }));
 
 
-//need to add more test if there's new functionality in the UploadRoomSlotCSV
 describe("RoomSlot tests", () => {
 
     const getToken = jest.fn();
@@ -29,5 +28,18 @@ describe("RoomSlot tests", () => {
         const uploadRoomSlot = uploadRoomSlotCSV(getToken, onSuccess, onError);
         await uploadRoomSlot();
         expect(onError).toBeCalledTimes(1);
-    }); 
+    });
+    
+    test("buildCreateRoomSlot and invoke createRoomSlot", async () => {
+        const createRoomSlot = buildCreateRoomSlot(getToken, onSuccess, onError);
+        await createRoomSlot();
+        expect(onSuccess).toBeCalledTimes(1);
+    });
+
+    test("buildCreateRoomSlot where we expect onError to be called", async () => {
+        fetchWithToken.mockImplementation(async () => { throw new Error("mock error"); });
+        const createRoomSlot = buildCreateRoomSlot(getToken, onSuccess, onError);
+        await createRoomSlot();
+        expect(onError).toBeCalledTimes(1);
+    });
 });
