@@ -37,14 +37,14 @@ export default ({officeHours}) => {
         dataField: 'id',
         text: 'id'
     }, {
+        dataField: 'dayOfWeek',
+        text: 'Day'
+    }, {
         dataField: 'startTime',
         text: 'Start Time'
     }, {
         dataField: 'endTime',
         text: 'End Time'
-    }, {
-        dataField: 'dayOfWeek',
-        text: 'Day'
     }, {
         dataField: 'tutorName',
         text: 'Tutor',
