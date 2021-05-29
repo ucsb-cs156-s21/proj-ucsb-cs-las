@@ -14,7 +14,7 @@ public class RoomSlotTests {
   public static RoomSlot testRoomSlot;
   public static Long testId = 1L; // testId for the ActiveQuarter
   public static String testLocation = "Campus Point";
-  public static ActiveQuarter testQuarter = new ActiveQuarter(testId, "F20");
+  public static String testQuarter = "F20";
   public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
   public static LocalTime testStartTime = LocalTime.NOON;
   public static LocalTime testEndTime = LocalTime.MIDNIGHT;
@@ -85,30 +85,20 @@ public class RoomSlotTests {
   // test to-string
   @Test
   public void test_RoomSlot_ToString() {
-    // test with default constructor
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setId(testId); // an normally auto-generated field
-    String expected = "{" + " id='" + testId +"'"
-            + ", location='null'"
-            + ", quarter='null'"
-            + ", start time='null'"
-            + ", end time='null'"
-            + "}";
-    assertEquals(expected, testRoomSlot.toString());
-
     // test with fully overloaded constructor
     testRoomSlot = new RoomSlot(testLocation,
             testQuarter,
             testDayOfWeek,
             testStartTime,
             testEndTime);
-    testRoomSlot.setId(testId); // an normally auto-generated field
-    expected = "{" + " id='" + testId + "'"
-            + ", location='" + testLocation + "'"
-            + ", quarter='" + testQuarter + "'"
-            + ", start time='" + testStartTime + "'"
-            + ", end time='" + testEndTime + "'"
-            + "}";
+    String expected =
+            "{" +
+            " id='" + testId + "'" +
+            ", location='" + testLocation + "'" +
+            ", quarter='" + testQuarter + "'" +
+            ", start time='" + testStartTime + "'" +
+            ", end time='" + testEndTime + "'" +
+            " }";
     assertEquals(expected, testRoomSlot.toString());
   }
 

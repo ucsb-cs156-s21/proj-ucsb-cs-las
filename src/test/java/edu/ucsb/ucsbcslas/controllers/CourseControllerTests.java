@@ -348,8 +348,7 @@ public class CourseControllerTests {
     verify(mockCourseRepository, times(1)).findAllByInstructorEmail("email");
 
     String responseString = response.getResponse().getContentAsString();
-    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
-    });
+    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() { });
     assertEquals(actualCourses, expectedCourses);
   }
 
@@ -377,8 +376,7 @@ public class CourseControllerTests {
     verify(mockCourseRepository, times(1)).findAllByInstructorEmail("email");
 
     String responseString = response.getResponse().getContentAsString();
-    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {
-    });
+    List<Course> actualCourses = objectMapper.readValue(responseString, new TypeReference<List<Course>>() {});
     assertEquals(actualCourses, expectedCourses);
   }
 
@@ -395,22 +393,21 @@ public class CourseControllerTests {
     List<TutorAssignment> expectedTutorAssignmentsList = new ArrayList<>();
   
     Optional <Course> expectedCourses = Optional.empty();
-    Course c = new Course(1L, "course 1", "F20", "fname", "lname", "email");
-    Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
-    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
+    Course expectedCourse = new Course(1L, "course 1", "F20", "fname", "lname", "email");
+    Tutor expectedTutor = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
+    TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, expectedCourse, expectedTutor, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
-    RoomSlot rs = new RoomSlot(1L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.WEDNESDAY, LocalTime.NOON, LocalTime.MIDNIGHT);
+    RoomSlot expectedRoomSlot = new RoomSlot(1L, "The Library", "F20", DayOfWeek.WEDNESDAY, LocalTime.NOON, LocalTime.MIDNIGHT);
 
-    OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
-    expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
-    TutorAssignmentOfficeHourView expectedView_1 = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList);
-    expectedViewList.add(expectedView_1);
-
+    OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, expectedTutorAssignments, expectedRoomSlot, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
+    expectedOnlineOfficeHoursList.add(onlineOfficeHours);
+    TutorAssignmentOfficeHourView expectedView = new TutorAssignmentOfficeHourView(expectedTutorAssignments, expectedOnlineOfficeHoursList);
+    expectedViewList.add(expectedView);
 
     AppUser user = new AppUser(1L, "email", "Chris", "Gaucho");
     // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
-    when(mockTutorAssignmentRepository.findAllByCourse(c)).thenReturn(expectedTutorAssignmentsList);
-    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(c));
+    when(mockTutorAssignmentRepository.findAllByCourse(expectedCourse)).thenReturn(expectedTutorAssignmentsList);
+    when(mockCourseRepository.findById(1L)).thenReturn(Optional.of(expectedCourse));
     when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(expectedTutorAssignments)).thenReturn(expectedOnlineOfficeHoursList);
     when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
     MvcResult response = mockMvc.perform(get("/api/member/courses/show/1").contentType("application/json")
@@ -418,8 +415,7 @@ public class CourseControllerTests {
 
     
     String responseString = response.getResponse().getContentAsString();
-    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {
-    });
+    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {});
     assertEquals(actualviewList, expectedViewList);
   }
  
@@ -434,7 +430,7 @@ public class CourseControllerTests {
     Tutor expectedTutor = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, expectedCourse, expectedTutor, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
-    RoomSlot expectedRoomSlot = new RoomSlot(1L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.WEDNESDAY, LocalTime.NOON, LocalTime.MIDNIGHT);
+    RoomSlot expectedRoomSlot = new RoomSlot(1L, "The Library", "F20", DayOfWeek.WEDNESDAY, LocalTime.NOON, LocalTime.MIDNIGHT);
 
     OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, expectedTutorAssignments, expectedRoomSlot, "zoomLink",
         "Scott closes the room early sometimes but he will still be on slack!");
@@ -480,8 +476,8 @@ public class CourseControllerTests {
     Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
     TutorAssignment expectedTutorAssignments = new TutorAssignment(1L, c, t, "TA");
     expectedTutorAssignmentsList.add(expectedTutorAssignments);
-    RoomSlot rs_1 = new RoomSlot(1L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.TUESDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
-    RoomSlot rs_2 = new RoomSlot(2L, "The Library", new ActiveQuarter(1L, "F20"), DayOfWeek.MONDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
+    RoomSlot rs_1 = new RoomSlot(1L, "The Library", "F20", DayOfWeek.TUESDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
+    RoomSlot rs_2 = new RoomSlot(2L, "The Library", "F20", DayOfWeek.MONDAY, LocalTime.of(16, 0), LocalTime.of(18,0));
     OnlineOfficeHours onlineOfficeHours_1 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs_1, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     OnlineOfficeHours onlineOfficeHours_2 = new OnlineOfficeHours(1L, expectedTutorAssignments, rs_2, "zoomLink", "Scott closes the room early sometimes but he will still be on slack!");
     expectedOnlineOfficeHoursList.add(onlineOfficeHours_1);
@@ -504,8 +500,7 @@ public class CourseControllerTests {
 
 
     String responseString = response.getResponse().getContentAsString();
-    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {
-    });
+    List<TutorAssignmentOfficeHourView> actualviewList = objectMapper.readValue(responseString, new TypeReference<List<TutorAssignmentOfficeHourView>>() {});
     assertEquals(actualviewList, expectedViewList);
   }
 

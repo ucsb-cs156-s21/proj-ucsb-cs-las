@@ -23,7 +23,7 @@ public class OnlineOfficeHoursTests {
   // dummy room slot data
   Long testRoomSlotId = 1L;
   String testRoomSlotLocation = "The Library";
-  ActiveQuarter testRoomSlotQuarter = new ActiveQuarter("F21");
+  String testRoomSlotQuarter = "F21";
   DayOfWeek testRoomSlotDayOfWeek = DayOfWeek.MONDAY;
   LocalTime testRoomSlotStartTime = LocalTime.of(13, 0);
   LocalTime testRoomSlotEndTime = LocalTime.of(16, 0);

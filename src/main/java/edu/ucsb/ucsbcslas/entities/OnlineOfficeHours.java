@@ -125,7 +125,8 @@ public class OnlineOfficeHours {
 
   @Override
   public String toString() {
-    return "{ id='" + getId() +
+    return "{ " +
+            "id='" + getId() +
             "', tutorAssignment='" + getTutorAssignment() +
             "', roomSlot='" + getRoomSlot() +
             "', zoomRoomLink='" + getZoomRoomLink() +

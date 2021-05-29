@@ -27,10 +27,9 @@ public class RoomSlot {
     @Column(nullable = false)
     private String location;
 
-    // active quarter data: data belongs to quarter entity
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private ActiveQuarter activeQuarter;
+    // active quarter data: data belongs to this entity
+    @Column(nullable = false)
+    private String activeQuarter;
 
     // day of week: data belongs to this entity
     @Column(nullable = false)
@@ -48,7 +47,7 @@ public class RoomSlot {
 
     // constructor with auto-generated id
     public RoomSlot(String location,
-                    ActiveQuarter activeQuarter, DayOfWeek dayOfWeek,
+                    String activeQuarter, DayOfWeek dayOfWeek,
                     LocalTime startTime, LocalTime endTime) {
         this.location = location;
         this.activeQuarter = activeQuarter;
@@ -59,7 +58,7 @@ public class RoomSlot {
 
     // constructor with given room slot id
     public RoomSlot(Long id, String location,
-                    ActiveQuarter activeQuarter, DayOfWeek dayOfWeek,
+                    String activeQuarter, DayOfWeek dayOfWeek,
                     LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.location = location;
@@ -85,11 +84,11 @@ public class RoomSlot {
         this.location = location;
     }
 
-    public ActiveQuarter getActiveQuarter() {
+    public String getActiveQuarter() {
         return this.activeQuarter;
     }
 
-    public void setActiveQuarter(ActiveQuarter quarter) {
+    public void setActiveQuarter(String quarter) {
         this.activeQuarter = quarter;
     }
 
