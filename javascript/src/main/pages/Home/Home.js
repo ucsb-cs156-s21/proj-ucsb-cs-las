@@ -5,6 +5,7 @@ import UpcomingOfficeHourTable from "main/components/OfficeHours/UpcomingOfficeH
 import useSWR from "swr";
 import { fetchWithoutToken } from "main/utils/fetch";
 import fromFormat from "main/utils/FromFormat";
+import {useHistory} from "react-router-dom";
 
 const Home = () => {
     const { data: courses } = useSWR(
@@ -24,6 +25,20 @@ const Home = () => {
         }
         return <h5>All quarters are being viewed</h5>
     };
+    const history = useHistory();
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const { data: officeHourList, error, mutate: mutateOfficeHours } = useSWR(
+        ["/api/public/officeHours", getToken],
+        fetchWithToken
+    );
+    if (error) {
+        return (
+        <h1>We encountered an error; please reload the page and try again.</h1>
+        );
+    }
+    if (!officeHourList) {
+        return <Loading />;
+    }
 
     return (
         <Jumbotron>
@@ -35,7 +50,7 @@ const Home = () => {
             </div>
         </Jumbotron>,
         <>
-        <UpcomingOfficeHourTable officeHours={officeHours}/>
+        <UpcomingOfficeHourTable officeHours={officeHourList}/>
         </>
     );
 };
