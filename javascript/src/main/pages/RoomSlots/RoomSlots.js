@@ -10,28 +10,21 @@ import Loading from "../../components/Loading/Loading";
 
 import { uploadRoomSlotCSV } from "main/services/RoomSlots/UploadRoomSlotCSV"
 import { RoomSlotCSVButton } from "main/components/RoomSlots/RoomSlotCSVButton"
-import { useToasts } from "react-toast-notifications" 
 
 const RoomSlots = () => {
   const {_user, getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const history = useHistory();
-  const { addToast } = useToasts();
 
-  const { data: roomSlotList, error} = useSWR(
+  const { data: roomSlotList, error, mutate: mutateRoomSlot} = useSWR(
     ["/api/public/roomslot", getToken],
     fetchWithToken
   );
 
   const isAdmin = roleInfo?.role?.toLowerCase() === "admin";
 
-  const uploadRoomSlots = uploadRoomSlotCSV(getToken,
-    () => {
-      addToast("CSV Uploaded", { appearance: "success" });
-    },
-    () => {
-      addToast("Error Uploading CSV", { appearance: "error" });
-    }
+  const uploadRoomSlots = uploadRoomSlotCSV(
+    getToken, mutateRoomSlot
   );
 
   if (error) {
