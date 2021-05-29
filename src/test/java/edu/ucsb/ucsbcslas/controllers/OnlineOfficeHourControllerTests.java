@@ -9,6 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
@@ -47,6 +53,9 @@ public class OnlineOfficeHourControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     @MockBean
     OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
   
@@ -57,7 +66,11 @@ public class OnlineOfficeHourControllerTests {
     TutorAssignmentRepository mockTutorAssignmentRepository;
 
     @MockBean
+    CourseRepository mockCourseRepository;
+
+    @MockBean
     TutorRepository mockTutorRepository;
+
 
     private String userToken() {
       return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -249,6 +262,157 @@ public class OnlineOfficeHourControllerTests {
             .andExpect(status().isNotFound()).andReturn();
         verify(mockOnlineOfficeHoursRepository, times(1)).findById(id);
         verify(mockOnlineOfficeHoursRepository, times(0)).deleteById(id);
+    }
+
+    @Test
+    public void testUploadFile() throws Exception{
+        List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
+        List<OnlineOfficeHours> emptyOHL = new ArrayList<>();
+        List<TutorAssignment> TAL = new ArrayList<> ();
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
+        Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
+        Optional<Tutor> e = Optional.empty();
+        TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        expectedOfficeHours.add(oh);
+        
+        String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(null);
+        when(mockCourseRepository.save(any(Course.class))).thenReturn(c);
+        when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(e);
+        when(mockTutorRepository.save(any(Tutor.class))).thenReturn(t);
+        when(mockTutorAssignmentRepository.findAllByCourseAndTutor(any(Course.class),any(Tutor.class))).thenReturn(TAL);
+        when(mockTutorAssignmentRepository.save(any(TutorAssignment.class))).thenReturn(tutorAss);
+        when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(emptyOHL);
+        when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
+        MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            fcontent.getBytes("utf-8")
+        );
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc
+            .perform(multipart("/api/admin/officehours/upload").file(mockFile)
+                .characterEncoding("utf-8")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).save(any());
+    }
+
+
+    @Test
+    public void testUploadFile_prexist() throws Exception{
+        List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
+        List<TutorAssignment> TAL = new ArrayList<> ();
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
+        Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
+        Optional<Tutor> OptTutor = Optional.of(t);
+        TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
+        TAL.add(tutorAss);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        expectedOfficeHours.add(oh);
+        
+        String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(c);
+        when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(OptTutor);
+        when(mockTutorAssignmentRepository.findAllByCourseAndTutor(any(Course.class),any(Tutor.class))).thenReturn(TAL);
+        when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(expectedOfficeHours);
+        when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
+        MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            fcontent.getBytes("utf-8")
+        );
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc
+            .perform(multipart("/api/admin/officehours/upload").file(mockFile)
+                .characterEncoding("utf-8")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(0)).save(any());
+    }
+
+    @Test
+    public void testUploadFile_DifferentDayofWeekStartandEndtime() throws Exception{
+        List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
+        List<TutorAssignment> TAL = new ArrayList<> ();
+        Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
+        Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
+        Optional<Tutor> OptTutor = Optional.of(t);
+        TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
+        TAL.add(tutorAss);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        OnlineOfficeHours oh1 = new OnlineOfficeHours(2L, tutorAss,"Tuesday", "8:00", "10:00", "link", "notes");
+        OnlineOfficeHours oh2 = new OnlineOfficeHours(3L, tutorAss,"Wednesday", "9:00", "10:00", "link", "notes");
+        OnlineOfficeHours oh3 = new OnlineOfficeHours(4L, tutorAss,"Wednesday", "8:00", "11:00", "link", "notes");
+        
+        expectedOfficeHours.add(oh1);
+        expectedOfficeHours.add(oh2);
+        expectedOfficeHours.add(oh3);
+        expectedOfficeHours.add(oh);
+        String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenReturn(c);
+        when(mockTutorRepository.findByEmail(any(String.class))).thenReturn(OptTutor);
+        when(mockTutorAssignmentRepository.findAllByCourseAndTutor(any(Course.class),any(Tutor.class))).thenReturn(TAL);
+        when(mockOnlineOfficeHoursRepository.findAllByTutorAssignment(any(TutorAssignment.class))).thenReturn(expectedOfficeHours);
+        when(mockOnlineOfficeHoursRepository.save(any(OnlineOfficeHours.class))).thenReturn(oh);
+        MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            fcontent.getBytes("utf-8")
+        );
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc
+            .perform(multipart("/api/admin/officehours/upload").file(mockFile)
+                .characterEncoding("utf-8")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(0)).save(any());
+    }
+
+
+    @Test
+    public void testUploadFile_unauthorizedIfNotAdmin() throws Exception {
+        when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenThrow(RuntimeException.class);
+        MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+        );
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult response = mockMvc.perform(multipart("/api/admin/officehours/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isUnauthorized()).andReturn();
+
+        verify(mockOnlineOfficeHoursRepository, never()).save(any());
+    }
+
+    @Test
+    public void testUploadFileThrowsRuntime() throws Exception{
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+        when(mockCourseRepository.findByNameAndQuarter(any(String.class), any(String.class))).thenThrow(RuntimeException.class);
+        MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+        );
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult response = mockMvc.perform(multipart("/api/admin/officehours/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isBadRequest()).andReturn();
+
+        verify(mockOnlineOfficeHoursRepository, never()).save(any());
     }
 
  }
