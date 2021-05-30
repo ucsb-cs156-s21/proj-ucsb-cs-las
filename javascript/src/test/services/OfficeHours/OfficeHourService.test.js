@@ -1,5 +1,5 @@
 import { buildCreateOfficeHour, buildDeleteOfficeHour, buildUpdateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
-import uploadOfficeHoursCSV from "main/services/OfficeHours/UploadCSV";
+
 import { fetchWithToken } from "main/utils/fetch";
 
 jest.mock("main/utils/fetch", () => ({
@@ -51,19 +51,6 @@ describe("OfficeHourService tests", () => {
         fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
         const deleteOfficeHour = buildDeleteOfficeHour(getToken, onSuccess, onError);
         await deleteOfficeHour();
-        expect(onError).toBeCalledTimes(1);
-    });
-
-    test("uploadOfficeHoursCSV and invoke createOfficeHour", async () => {
-        const uploadOfficeHours = uploadOfficeHoursCSV(getToken, onSuccess, onError);
-        await uploadOfficeHours();        
-        expect(onSuccess).toBeCalledTimes(1);
-    });
-
-    test("uploadOfficeHoursCSV where we expect onError to be called", async () => {
-        fetchWithToken.mockImplementation( async () => { throw new Error("mock error"); } );
-        const uploadOfficeHours = uploadOfficeHoursCSV(getToken, onSuccess, onError);
-        await uploadOfficeHours();
         expect(onError).toBeCalledTimes(1);
     });
 

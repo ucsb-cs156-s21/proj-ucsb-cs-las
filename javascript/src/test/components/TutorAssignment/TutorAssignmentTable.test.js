@@ -42,10 +42,10 @@ describe("CourseForm tests", () => {
           assignmentType: "TA",
         }
       ];
-  const deleteTutorAssignment = jest.fn();
+
   test("renders without crashing", () => {
 
-    render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={false} deleteTutorAssignment={deleteTutorAssignment} />);
+    render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={false}/>);
   });
 
   test("renders delete and edit for admin/instructor", async () => {
@@ -54,13 +54,9 @@ describe("CourseForm tests", () => {
       push: pushSpy
     });
 
-    const {getByTestId} = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true} deleteTutorAssignment={deleteTutorAssignment} />);
+    const {getByTestId} = render(<TutorAssignmentTable tutorAssignments={tutorAssignments} isInstructor={true}/>);
     const editButton = getByTestId('edit-button-1');
     userEvent.click(editButton);
-
-    const deleteButton = getByTestId('delete-button1');
-    userEvent.click(deleteButton);
-
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });

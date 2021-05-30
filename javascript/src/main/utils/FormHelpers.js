@@ -23,20 +23,4 @@ function checkFilled(input) {
     return input ? true : false;
 }
 
-const formatQuarter = (quarter) => {
-    let quarterNum = "1";
-    if(quarter.substr(0, 1)==="S"){
-        quarterNum =  "2";
-    }
-    else if(quarter.substr(0, 1)==="M"){
-        quarterNum =  "3";
-    }
-    else if(quarter.substr(0, 1)==="F"){
-        quarterNum =  "4";
-    }
-  
-    let formattedQuarter = "20" + quarter.substr(1, 2) + quarterNum;
-    return formattedQuarter;
-  }
-
-export { checkCourseQuarter, checkTime, checkFilled, formatQuarter };
+export { checkCourseQuarter, checkTime,checkFilled };

@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import {checkTime, checkFilled, checkCourseQuarter, formatQuarter} from "main/utils/FormHelpers";
-import { formatTimeToLocalTime} from "main/utils/RoomSlotFormHelpers";
+import {checkTime, checkFilled, checkCourseQuarter} from "main/utils/FormHelpers";
+import { formatTimeToLocalTime } from "main/utils/RoomSlotFormHelpers";
 
-const RoomSlotForm = ({ createRoomSlot}) =>{
+const RoomSlotForm = ({ createRoomSlot/*, updateRoomSlot, existingRoomSlot*/}) =>{
     const locationRef = useRef(null);
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
@@ -24,8 +24,20 @@ const RoomSlotForm = ({ createRoomSlot}) =>{
         var isValid = checkInputs();
 
         if(isValid){
-            let formattedQuarter = formatQuarter(roomSlot.quarter);
+            let quarterNum = "1";
+            if(roomSlot.quarter.substr(0, 1)==="S"){
+                quarterNum =  "2";
+            }
+            else if(roomSlot.quarter.substr(0, 1)==="M"){
+                quarterNum =  "3";
+            }
+            else if(roomSlot.quarter.substr(0, 1)==="F"){
+                quarterNum =  "4";
+            }
+            let formattedQuarter = "20" + roomSlot.quarter.substr(1, 2) + quarterNum;
+
             let formattedDayOfWeek = roomSlot.dayOfWeek.toUpperCase();
+
             let formattedStartTime = formatTimeToLocalTime(roomSlot.startTime);
             let formattedEndTime = formatTimeToLocalTime(roomSlot.endTime);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { waitFor, render} from "@testing-library/react";
+import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
@@ -10,6 +10,10 @@ import { useHistory } from "react-router-dom";
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
+
+
+
+
 
 
 jest.mock("main/services/OfficeHours/OfficeHourService", () => ({
@@ -26,7 +30,7 @@ describe("OfficeHours page test", () => {
       startTime: "12:30",
       endTime: "2:30",
       dayOfWeek: "Monday",
-      zoomRoomLink: "zoom.com",
+      zoomRoomLink: "link.com",
       notes: "testNotes"
     },
   ];
@@ -104,5 +108,7 @@ describe("OfficeHours page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
+
+
 
 });

@@ -1,5 +1,4 @@
 import { checkCourseQuarter, checkTime, checkFilled } from "main/utils/FormHelpers";
-import { formatQuarter } from "../../main/utils/FormHelpers";
 
 describe("form helpers test", () => {
     describe("checkCourseQuarter", () => {
@@ -47,18 +46,5 @@ describe("form helpers test", () => {
             expect(checkFilled()).toBe(false);
         });
     });
-
-    describe("formatQuarter", () => {
-        test("correct", () => {
-            expect(formatQuarter("S21")).toBe("20212");
-            expect(formatQuarter("W21")).toBe("20211");
-            expect(formatQuarter("M21")).toBe("20213");
-            expect(formatQuarter("F21")).toBe("20214");
-            expect(checkFilled("10:30AM")).toBe(true);
-        });
-
-    });
-
-    
 
 });

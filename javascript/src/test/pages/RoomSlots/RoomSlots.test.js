@@ -5,10 +5,15 @@ import { useAuth0 } from "@auth0/auth0-react";
 import RoomSlots from "main/pages/RoomSlots/RoomSlots";
 import userEvent from "@testing-library/user-event";
 import { useHistory } from "react-router-dom";
+//import { buildDeleteRoomSlot } from "main/services/RoomSlots/RoomSlotsService";
 
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
+
+/**jest.mock("main/services/RoomSlots/RoomSlotsService", () => ({
+  buildDeleteRoomSlot: jest.fn(),
+}) ); */
 
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
@@ -109,4 +114,28 @@ describe("RoomSlots page test", () => {
 
       await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
     });
+
+  //   test("can delete an office hour", async () => {
+  //     const fakeDeleteFunction = jest.fn();
+  //     buildDeleteOfficeHour.mockReturnValue(fakeDeleteFunction);
+  //     const { getAllByTestId } = render(<OfficeHours />);
+  //     const deleteButtons = getAllByTestId("delete-button");
+  //     userEvent.click(deleteButtons[0]);
+  //     await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
+  //   });
+  
+  //   test("can click to add an office hour", async () => {
+  
+  //     const pushSpy = jest.fn();
+  //     useHistory.mockReturnValue({
+  //       push: pushSpy
+  //     });
+  
+  //     const { getByText } = render(<OfficeHours />);
+  //     const newOfficeHourButton = getByText("New Office Hour");
+  //     userEvent.click(newOfficeHourButton);
+  
+  //     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  //   });
+
 });

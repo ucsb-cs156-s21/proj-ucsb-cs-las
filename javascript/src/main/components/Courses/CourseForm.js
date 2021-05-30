@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import {checkEmail} from "main/utils/CourseFormHelpers";
-import { checkCourseQuarter, checkFilled, formatQuarter} from "main/utils/FormHelpers";
+import { checkCourseQuarter,checkFilled } from "main/utils/FormHelpers";
 const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
     //const [validated, setValidated] = useState(false);
     const courseNameRef = useRef(null);
@@ -25,7 +25,17 @@ const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
         //submit to actual create course
         //in create course API, if course repo already exists, fail
         if (isValid) {
-            let formatedQuarter = formatQuarter(course.quarter);
+            let quarterNum = "1";
+            if(course.quarter.substr(0, 1)==="S"){
+                quarterNum =  "2";
+            }
+            else if(course.quarter.substr(0, 1)==="M"){
+                quarterNum =  "3";
+            }
+            else if(course.quarter.substr(0, 1)==="F"){
+                quarterNum =  "4";
+            }
+            let formatedQuarter = "20" + course.quarter.substr(1, 2) + quarterNum;
             
             if (createCourse) {
                 createCourse({...course, quarter: formatedQuarter});

@@ -7,8 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { buildCreateOfficeHour } from "main/services/OfficeHours/OfficeHourService";
 import { fetchWithToken } from "main/utils/fetch";
 import { useToasts } from 'react-toast-notifications'
-import OfficeHourForm from "main/components/OfficeHours/OfficeHourForm";
-
 
 import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
 jest.mock("swr");
@@ -88,8 +86,7 @@ describe("NewOfficeHours page test", () => {
   });
 
   test("renders without crashing", async () => {
-    const createOfficeHourMock = jest.fn();
-    render(<OfficeHourForm createOfficeHour={createOfficeHourMock}/>);
+    render(<NewOfficeHour />);
     await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
   });
 

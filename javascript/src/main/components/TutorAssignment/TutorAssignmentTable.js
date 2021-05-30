@@ -4,9 +4,7 @@ import { Button } from "react-bootstrap";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import { useHistory } from "react-router-dom";
 
-
-
-export default ({tutorAssignments, isInstructor, deleteTutorAssignment}) => {
+export default ({tutorAssignments, isInstructor}) => {
     const history = useHistory();
 
     const renderEditButton = (id) => {
@@ -15,9 +13,9 @@ export default ({tutorAssignments, isInstructor, deleteTutorAssignment}) => {
         )
     }
 
-    const renderDeleteButton = (id) => {      
+    const renderDeleteButton = (_id) => {
         return (
-            <Button variant="danger" data-testid={"delete-button"+id} onClick={() => deleteTutorAssignment(id)}>Delete</Button>
+            <Button variant="danger" data-testid="delete-button" >Delete</Button>
         )
     }
 
