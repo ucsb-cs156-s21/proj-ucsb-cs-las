@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import {render} from "@testing-library/react";
 import OfficeHoursSelector from "main/components/OfficeHours/OfficeHoursSelector";
 import officeHoursFixtures from 'fixtures/officeHoursFixtures';
 import userEvent from "@testing-library/user-event";
