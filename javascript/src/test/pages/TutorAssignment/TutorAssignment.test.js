@@ -10,6 +10,7 @@ jest.mock("@auth0/auth0-react");
 
 jest.mock("main/services/TutorAssignment/TutorAssignmentService", () => ({
   buildCreateTutorAssignment: jest.fn(),
+  buildDeleteTutorAssignment: jest.fn(),
   buildUpdateTutorAssignment: jest.fn()
 }) );
 jest.mock("react-router-dom", () => ({

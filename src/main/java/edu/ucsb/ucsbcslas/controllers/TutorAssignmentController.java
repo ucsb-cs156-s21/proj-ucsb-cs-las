@@ -271,5 +271,19 @@ public class TutorAssignmentController {
       String body = mapper.writeValueAsString(newAssignment);
       return ResponseEntity.ok().body(body);
     }
-  
+    
+    @DeleteMapping (value = "/api/member/tutorAssignments/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteTutorAssignment(@RequestHeader("Authorization") String authorization,
+        @PathVariable("id") Long id) throws JsonProcessingException {
+
+      if (!authControllerAdvice.getIsAdmin(authorization))
+        return getUnauthorizedResponse("admin");
+      Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+      if (!tutorAssignment.isPresent()) {
+        return ResponseEntity.notFound().build();
+      }
+    
+      tutorAssignmentRepository.deleteById(id);
+      return ResponseEntity.noContent().build();
+    }
 }
