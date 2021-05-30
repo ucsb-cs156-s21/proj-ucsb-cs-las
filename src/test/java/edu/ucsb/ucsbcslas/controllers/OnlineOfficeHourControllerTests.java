@@ -101,6 +101,7 @@ public class OnlineOfficeHourControllerTests {
     @Test
     public void testGetMemberOfficeHours() throws Exception {
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
         AppUser user = new AppUser(1L, "cgaucho@ucsb.edu", "Chris", "Gaucho");
         when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
@@ -119,8 +120,13 @@ public class OnlineOfficeHourControllerTests {
         });
         assertEquals(actualOfficeHours, expectedOfficeHours);
     }
-
-
+    @Test
+    public void testGetMemberOfficeHours_nonMember() throws Exception {
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+        when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+        mockMvc.perform(get("/api/member/officeHours").contentType("application/json")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized());
+    }
     @Test
     public void testGetASingleOfficeHour() throws Exception {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
