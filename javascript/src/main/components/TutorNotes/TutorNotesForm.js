@@ -1,114 +1,91 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchWithToken } from "main/utils/fetch";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import {asHumanQuarter} from "main/utils/quarter.ts"
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { FormControl, Form, Button, Row, Col } from "react-bootstrap";
+import OfficeHoursSelector from "main/components/OfficeHours/OfficeHoursSelector";
 
 const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes }) => {
     const emptyTutorNotes = {
         id: null,
-        course: null,
-        tutor: null,
+        officeHours: null,
         message: "Write message here"
     }
 
-    const [existingSet, setExistingSet] = useState(false);
-    const [tutorNotes, setTutorNotes] = useState(emptyTutorNotes);
+    const initialTutorNotes = (updateTutorNotes && existingTutorNotes) ? existingTutorNotes : emptyTutorNotes;
 
-    if(existingTutorNotes && !existingSet){
-        setTutorNotes({course: existingTutorNotes.course, 
-            tutor: existingTutorNotes.tutor,
-            message: existingTutorNotes.message, 
-            id: existingTutorNotes.id});
-        setExistingSet(true);
-    }
+    const [tutorNotes, setTutorNotes] = useState(initialTutorNotes);
+    const [officeHours, setOfficeHours] = useState({})
 
     const { getAccessTokenSilently: getToken } = useAuth0();
 
-    const { data: courseList, error } = useSWR(
-        ["/api/member/courses/", getToken],
-        fetchWithToken
+    const { data: officeHoursList, error } = useSWR(
+        ["/api/member/officeHours/", getToken],
+        fetchWithToken,
+        {initialData:[]}
     );
 
-    const { data: tutorList, error2 } = useSWR(
-        ["/api/member/tutors/", getToken],
-        fetchWithToken
-    );
-
-
-    let sortedListc;
-    let sortedListt;
-    if (error || error2) {
-        return (
-            <>
-            <h1>You must be an instructor or an admin to create new Tutor Notes or we have found no Courses/Tutors.</h1>
-            </>
-        );
-    }
-    if (!courseList || !tutorList) {
-        return <Loading />;
-    }
-    else {
-        sortedListc = courseList.map((course, index) => <option key={index} value={index}>{course.name+" "+asHumanQuarter(course.quarter)}</option>);
-        if(tutorNotes.course === null){
-            setTutorNotes({...tutorNotes, course: courseList[0], index: 0});
-        }
-        sortedListt = tutorList.map((tutor, index) => <option key={index} value={index}>{tutor.firstName+" "+tutor.lastName}</option>);
-        if(tutorNotes.tutor === null){
-            setTutorNotes({...tutorNotes, tutor: tutorList[0]});
-        }
-    }
-
-    
-    if(existingTutorNotes && tutorNotes.index === null){
-        for (let i = 0; i < courseList.length; i++) {
-            if (courseList[i].id === existingTutorNotes.course.id) {
-                setTutorNotes({...tutorNotes, index: i});
-            }
-        }
-        for (let i = 0; i < tutorList.length; i++) {
-            if (tutorList[i].id === existingTutorNotes.tutor.id) {
-                setTutorNotes({...tutorNotes, index: i});
-            }
-        }
-    }
+    useEffect(() => {
+        setOfficeHours(officeHoursList.length > 0 ? officeHoursList[0] : {});
+      }, [officeHoursList]);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (createTutorNotes){
+            tutorNotes.officeHours = officeHours;
+            console.log("tutorNotes = ", tutorNotes);
+            console.log("officeHours = ", officeHours);
             createTutorNotes(tutorNotes);
         }
         else{
             updateTutorNotes(tutorNotes, tutorNotes.id);
         }
     }
+    
+    const onOfficeHoursChange = (i) => {
+        console.log("office hours change i= " , i);
+        console.log("office hours list = ", officeHoursList);
+        setOfficeHours(officeHoursList[i]);
+    }
+
+    const tutorName = (tutorNotes) => {
+        const firstName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.firstName;
+        const lastName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.lastName;
+        return firstName + " " + lastName;
+    };
+
+    const course = (tutorNotes) => {
+        return tutorNotes?.officeHours?.tutorAssignment?.course?.name;
+    };
+
+    const quarter = (tutorNotes) => {
+        const quarter = tutorNotes?.officeHours?.tutorAssignment?.course?.quarter;
+        return quarter ? asHumanQuarter(quarter) : "";
+    };
+
 
     return (
         <>
             {tutorNotes.index !== null ? 
             <Form onSubmit={handleOnSubmit}>
-                <Form.Group as={Row} controlId="courseName">
-                    <Form.Label column sm={2}>Course Name</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control as="select" value={tutorNotes.index} onChange={(e) => setTutorNotes({ 
-                            ...tutorNotes, course: courseList[e.target.value]})}>
-                            {sortedListc}
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} controlId="tutorEmail">
-                    <Form.Label column sm={2}>
-                        Tutor
-                    </Form.Label>
-                    <Col sm={10}>
-                        <Form.Control as="select" value={tutorNotes.index} onChange={(e) => setTutorNotes({ 
-                            ...tutorNotes, tutor: tutorList[e.target.value]})}>
-                            {sortedListt}
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
+                {
+                    createTutorNotes && <OfficeHoursSelector officeHours={officeHoursList} onChange={onOfficeHoursChange}/>
+                 }
+                 {
+                    updateTutorNotes && <Row>
+                        <Col>
+                            <FormControl readOnly type="text" value={tutorName(tutorNotes)}/>
+                        </Col>
+                        <Col>
+                            <FormControl readOnly type="text" value={course(tutorNotes)}/>
+                        </Col>
+                        <Col>
+                            <FormControl readOnly type="text" value={quarter(tutorNotes)}/>
+                        </Col>
+                    </Row>
+                 }
                 <Form.Group as={Row} controlId="message">
                     <Form.Label column sm={2}>Message</Form.Label>
                     <Col sm={10}>
