@@ -13,12 +13,12 @@ const Template = (args) => <OfficeHoursSelector {...args} />;
 export const oneOfficeHour = Template.bind({});
 oneOfficeHour.args = {
     officeHours: [ officeHoursFixtures.oneOfficeHour],
-    onChange: (e) => {console.log("e.target.value=",e.target.value)}
+    onChange: (i) => {console.log("i",i)}
 };
 
 export const threeOfficeHours = Template.bind({});
 threeOfficeHours.args = {
     officeHours:  officeHoursFixtures.threeOfficeHours,
-    onChange: (e) => {console.log("e.target.value=",e.target.value)}
+    onChange: (i) => {console.log("i",i)}
 };
 
