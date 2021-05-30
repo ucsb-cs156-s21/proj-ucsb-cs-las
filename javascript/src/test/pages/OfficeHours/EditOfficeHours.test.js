@@ -9,6 +9,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useToasts } from 'react-toast-notifications'
 import { quarterProvider, courseProvider, tutorAssignmentProvider } from "main/services/selectorSupport"
 import { buildUpdateOfficeHour } from "../../../main/services/OfficeHours/OfficeHourService";
+
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/services/OfficeHours/OfficeHourService");
@@ -24,15 +25,6 @@ jest.mock("main/utils/fetch", () => ({
 jest.mock('react-toast-notifications', () => ({
   useToasts: jest.fn()
 }));
-const selectTutor = async (getByPlaceholderText, getByText) => {
-  await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
-  userEvent.click(getByPlaceholderText("Select a tutor"));
-  userEvent.click(getByText("Winter 2020"));
-  await waitFor(() => expect(courseProvider).toHaveBeenCalledWith("20201"));
-  userEvent.click(getByText("CMPSC 156"));
-  await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(1));
-  userEvent.click(getByText("Chris McTutorface"));
-}
 describe("Edit OfficeHours page test", () => {
     const courses = [
       {
@@ -123,10 +115,9 @@ describe("Edit OfficeHours page test", () => {
       error: undefined,
       mutate: mutateSpy,
     });
-    const { getByPlaceholderText, getByText, getByLabelText } = render(
+    const { getByText, getByLabelText } = render(
        <EditOfficeHours />
     );
-    await selectTutor(getByPlaceholderText, getByText);
     await waitFor(() => (
       expect(getByText("Start Time")).toBeInTheDocument() &&
       expect(getByLabelText("Start Time").value).toEqual(officeHour.startTime)
