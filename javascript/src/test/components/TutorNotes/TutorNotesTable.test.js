@@ -48,6 +48,11 @@ describe("CourseForm tests", () => {
     render(<TutorNotesTable tutorNotes={tutorNotes} isInstructor={false}/>);
   });
 
+  test("renders with null tutorNotes", () => {
+
+    render(<TutorNotesTable tutorNotes={null} isInstructor={false}/>);
+  });
+
   test("renders delete and edit for admin/instructor", async () => {
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({

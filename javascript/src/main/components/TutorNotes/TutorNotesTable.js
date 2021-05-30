@@ -34,14 +34,14 @@ export default ({tutorNotes, isInstructor}) => {
         text: 'Course',
         sort: true,
         formatter: (_cell, row) => renderCourseNameYear(row),
-        sortValue: (_cell, row) => renderCourseNameYear(row)
+        //sortValue: (_cell, row) => renderCourseNameYear(row)
     }, {
         dataField: 'tutorName',
         //isDummyField: true,
         text: 'Tutor',
         sort: true,
         formatter: (_cell, row) => renderTutorName(row),
-        sortValue: (_cell, row) => renderTutorName(row)
+        //sortValue: (_cell, row) => renderTutorName(row)
     }, {
         dataField: 'message',
         text: 'message',

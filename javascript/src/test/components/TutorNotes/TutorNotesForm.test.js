@@ -158,6 +158,9 @@ describe("TutorNotesForm tests", () => {
     const tutorSelect = getByLabelText("Tutor");
     userEvent.selectOptions(tutorSelect, "0");
 
+    const messageInput = getByLabelText("Message");
+    userEvent.type(messageInput, sampleTutorNotes.message)
+
     const submitButton = getByText("Submit");
     userEvent.click(submitButton);
 
