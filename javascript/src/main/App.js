@@ -28,9 +28,6 @@ import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment"
 import QuarterFilter from "main/pages/Admin/QuarterFilter"
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import CourseShow from "main/pages/Courses/CourseShow";
-import TutorNotes from "main/pages/TutorNotes/TutorNotes";
-import NewTutorNotes from "main/pages/TutorNotes/NewTutorNotes";
-import EditTutorNotes from "main/pages/TutorNotes/EditTutorNotes";
 import EditOfficeHours from "main/pages/OfficeHours/EditOfficeHours";
 
 function App() {
@@ -75,9 +72,6 @@ function App() {
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/officeHours/edit/:officeHourId" exact component={EditOfficeHours} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignments" exact component={TutorAssignments} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorNotes" exact component={TutorNotes} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorNotes/new" exact component={NewTutorNotes} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/tutorNotes/edit/:tutorNotesId" exact component={EditTutorNotes} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
