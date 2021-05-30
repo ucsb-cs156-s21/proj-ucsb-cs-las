@@ -126,6 +126,9 @@ public class OnlineOfficeHoursController {
 
     @GetMapping(value = "/api/member/officeHours", produces = "application/json")
     public ResponseEntity<String> getMemberOfficeHours(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMember(authorization)){
+            return getUnauthorizedResponse("member");
+        }
         String email = authControllerAdvice.getUser(authorization).getEmail();
         List<OnlineOfficeHours> officeHourList = officeHoursRepository.findByTutorAssignmentTutorEmail(email);
         ObjectMapper mapper = new ObjectMapper();
