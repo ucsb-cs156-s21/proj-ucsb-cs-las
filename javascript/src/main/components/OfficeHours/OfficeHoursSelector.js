@@ -18,7 +18,7 @@ var OfficeHoursSelector = ({ officeHours, onChange }) => {
     const sortedListOfOptions = 
         officeHours.map((officeHour, index) => <option key={index} value={index}>{asLabelString(officeHour)}</option>);
     return (
-        <Form.Control as="select" value={index} onChange={ (e) => { setIndex(e.target.value); onChange(e.target.value)} } >
+        <Form.Control as="select" value={index}  onChange={ (e) => { setIndex(e.target.value); console.log("Hello"); onChange(e.target.value)} } >
             {sortedListOfOptions}
         </Form.Control>
     );
