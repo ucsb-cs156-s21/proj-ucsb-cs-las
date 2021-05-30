@@ -30,10 +30,19 @@ describe("OfficeHourForm tests", () => {
     await waitFor(() => expect(tutorAssignmentProvider).toHaveBeenCalledWith(1));
     userEvent.click(getByText("Chris McTutorface"));
   }
-  test("component renders without crashing", async () => {
-    render(<OfficeHourForm />);
+
+  test("When used to create office hours, should call quarter provider", async () => {
+    const createOfficeHourMock = jest.fn();
+    render(<OfficeHourForm createOfficeHour={createOfficeHourMock}/>);
     await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(1));
   });
+
+  test("When used to edit office hours, should NOT call quarter provider", async () => {
+    const updateOfficeHoursMock = jest.fn();
+    render(<OfficeHourForm updateOfficeHour={updateOfficeHoursMock} existingOfficeHour={sampleOfficeHour} />);
+    await waitFor(() => expect(quarterProvider).toHaveBeenCalledTimes(0));
+  });
+
   test("creating OfficeHours works", async () => {
     const createOfficeHourMock = jest.fn();
     const { getByPlaceholderText, getByLabelText, getByText } = render
