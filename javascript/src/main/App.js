@@ -26,11 +26,8 @@ import NewTutor from "main/pages/Tutor/NewTutor";
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
 import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment";
 import QuarterFilter from "main/pages/Admin/QuarterFilter"
-import RoomSlots from "main/pages/RoomSlots/RoomSlots";
-import NewRoomSlot from "main/pages/RoomSlots/NewRoomSlot";
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import CourseShow from "main/pages/Courses/CourseShow";
-import EditOfficeHours from "main/pages/OfficeHours/EditOfficeHours";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -42,7 +39,6 @@ function App() {
   return (
     <div className="App">
       <AppNavbar />
-      <div className="d-flex min-vh-100 flex-column justify-content-between">
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <Route path="/" exact component={Home} />
@@ -72,21 +68,18 @@ function App() {
             authorizedRoles={["admin", "member"]}
           />
           <AuthorizedRoute path="/courses/edit/:courseId" exact component={EditCourse} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/officeHours/edit/:officeHourId" exact component={EditOfficeHours} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/tutorAssignments" exact component={TutorAssignments} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/new" exact component={NewTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/tutorAssignments/edit/:tutorAssignmentId" exact component={EditTutorAssignment} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/roomslots" exact component={RoomSlots} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/roomslots/new" exact component={NewRoomSlot} authorizedRoles={["admin"]} />
+
           <Route path="/courses/show/:courseId" component={CourseShow} />
           <Route path="/about" component={About} />
         </Switch>
       </Container>
       <AppFooter />
-      </div>
     </div>
   );
 };

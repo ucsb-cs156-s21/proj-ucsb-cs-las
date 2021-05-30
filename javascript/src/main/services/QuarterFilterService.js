@@ -1,5 +1,5 @@
 import { fetchWithToken } from "main/utils/fetch";
-import { checkCourseQuarter } from "main/utils/FormHelpers";
+import { checkCourseQuarter } from "main/utils/CourseFormHelpers";
 
 
 const buildUpsertFilter = (getToken, onSuccess, onError) => {

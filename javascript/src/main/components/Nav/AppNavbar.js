@@ -45,11 +45,6 @@ function AppNavbar() {
             <Nav.Link>Office Hours</Nav.Link>
         </LinkContainer>
         {(isAdmin || isMember) && (
-          <LinkContainer to={"/roomslots"}>
-            <Nav.Link>Room Slots</Nav.Link>
-          </LinkContainer>
-        )}
-        {(isAdmin || isMember) && (
           <LinkContainer to={"/tutors"}>
             <Nav.Link>Tutors</Nav.Link>
           </LinkContainer>

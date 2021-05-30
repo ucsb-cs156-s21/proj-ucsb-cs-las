@@ -56,6 +56,16 @@ html {
 
 body {
   margin: 0 0 100px;
+  /* bottom = footer height */
+}
+
+footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: auto;
+  width: 100%;
+  overflow: hidden;
 }
 
 .navbar-custom {

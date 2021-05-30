@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import {checkEmail} from "main/utils/CourseFormHelpers";
-import { checkCourseQuarter,checkFilled } from "main/utils/FormHelpers";
+import { checkCourseQuarter, checkEmail, checkFilled } from "main/utils/CourseFormHelpers";
+
 const CourseForm = ({ createCourse, updateCourse, existingCourse }) => {
     //const [validated, setValidated] = useState(false);
     const courseNameRef = useRef(null);

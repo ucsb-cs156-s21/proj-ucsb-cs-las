@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { checkCourseQuarter } from "main/utils/FormHelpers";
+import { checkCourseQuarter } from "main/utils/CourseFormHelpers";
 
 const QuarterFilterForm = ({ upsertFilter }) => {
     const [filterVal, setFilterVal] = useState("");

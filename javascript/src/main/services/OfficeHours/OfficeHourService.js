@@ -18,24 +18,6 @@ const buildCreateOfficeHour = (getToken, onSuccess, onError) => {
   return func
 }
 
-const buildUpdateOfficeHour  = (getToken, onSuccess, onError) => {
-  const func = async (item, id) => {
-    try {
-      await fetchWithToken(`/api/admin/officeHours/${id}`, getToken, {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(item),
-      });
-      onSuccess();
-    } catch (err) {
-      onError(err);
-    }
-  };
-  return func
-}
-
 const buildDeleteOfficeHour = (getToken, onSuccess, onError) => {
   const func = async (id) => {
     try {
@@ -54,4 +36,4 @@ const buildDeleteOfficeHour = (getToken, onSuccess, onError) => {
   return func;
 }
 
-export { buildCreateOfficeHour, buildUpdateOfficeHour, buildDeleteOfficeHour };
+export { buildCreateOfficeHour, buildDeleteOfficeHour };
