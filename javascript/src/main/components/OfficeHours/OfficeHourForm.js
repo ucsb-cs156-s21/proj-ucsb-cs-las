@@ -2,8 +2,9 @@ import React, { useState, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkTime, checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
+import TutorAssignmentDisplay from "main/components/TutorAssignment/TutorAssignmentDisplay";
 
-const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOfficeHour*/ }) => {
+const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour}) => {
     const startTimeRef = useRef(null);
     const endTimeRef = useRef(null);
     const zoomRoomLinkRef = useRef(null);
@@ -20,13 +21,18 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
         notes: ""
     }
 
-    const [officeHour, setOfficeHour] = useState(emptyOfficeHour);
+    const [officeHour, setOfficeHour] = useState(existingOfficeHour||emptyOfficeHour);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
         var isValid = checkInputs(); 
         if (isValid) {
-            createOfficeHour(officeHour);
+            if (createOfficeHour) {
+                createOfficeHour(officeHour);
+            }
+            else {
+                updateOfficeHour(officeHour, officeHour.id);
+            }
         }
       
     }
@@ -75,10 +81,18 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                     Tutor
                 </Form.Label>
                 <Col sm={10}>
-                    <TutorAssignmentSelect
+
+                {
+                    createOfficeHour && <TutorAssignmentSelect
                       style={{ textAlign: "left", width: "100%" }}
                       onChange={tutorAssignmentId => setOfficeHour({...officeHour, tutorAssignment: { id: tutorAssignmentId }})}
                     />
+                 }
+                 {
+                    updateOfficeHour && <TutorAssignmentDisplay 
+                        style={{ textAlign: "left", width: "100%" }}
+                        tutorAssignment={ existingOfficeHour.tutorAssignment } />
+                 }
                 </Col>
             </Form.Group>
           <Form.Group as={Row} controlId="startTime">
@@ -117,7 +131,7 @@ const OfficeHourForm = ({ createOfficeHour, /*updateOfficeHour, /*existingOffice
                 <Col sm={10} style = {{textAlign: 'left'}}>
                     <Form.Control as="select" onChange={handleDayOfWeekOnChange} >
                         {daysOfTheWeek.map((day) => {
-                            return <option key={day} value={day}>{day}</option>;
+                            return <option selected={officeHour.dayOfWeek === day ? true : false } key={day} value={day}>{day}</option>;
                         })}
                     </Form.Control>
                     <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">

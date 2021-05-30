@@ -5,9 +5,9 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorAssignmentTable from "main/components/TutorAssignment/TutorAssignmentTable"
-
+import { buildDeleteTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 import {useHistory} from "react-router-dom";
-
+import { CSVLink } from "react-csv";
 
 const TutorAssignment = () => {
   const history = useHistory();
@@ -25,13 +25,40 @@ const TutorAssignment = () => {
   );
 
   const isInstructor = roleInfo && roleInfo.role && instructorCourseList && (instructorCourseList.length > 0 || roleInfo.role.toLowerCase() === "admin");
-
-  const { data: tutorAssignmentList, error } = useSWR(
+  
+  const { data: tutorAssignmentList, error, mutate: mutateCourses} = useSWR(
     ["/api/member/tutorAssignments", getToken],
     fetchWithToken
   );
+  
+  const deleteTutorAssignment = buildDeleteTutorAssignment(
+    getToken, mutateCourses
+  );
 
   const newTutorAssignmentButton = <Button className="mb-3" onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>;
+
+  const headers = [{
+    key: 'id',
+    label: 'Course Id'
+  }, {
+    key: 'course.name',
+    label: 'Course Name'
+  }, {
+    key: 'course.quarter',
+    label: 'Course Quarter'
+  }, {
+    key: 'tutor.firstName',
+    label: 'Tutor First Name'
+  }, {
+    key: 'tutor.lastName',
+    label: 'Tutor Last Name'
+  }, {
+    key: 'tutor.email',
+    label: 'Tutor Email'
+  }, {
+    key: 'assignmentType',
+    label: 'Assignment Type'
+  }];
 
   if (error) {
     return (
@@ -47,8 +74,11 @@ const TutorAssignment = () => {
 
   return (
     <>
-      {isInstructor && newTutorAssignmentButton}
-      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={isInstructor}/>
+      {isInstructor && newTutorAssignmentButton}   
+      <br></br>   
+      <Button><CSVLink style={{color: "white"}} headers={headers} data={tutorAssignmentList} filename = {"TutorAssignments.csv"}>Download CSV</CSVLink></Button>
+      <hr></hr>
+      <TutorAssignmentTable tutorAssignments={tutorAssignmentList} isInstructor={roleInfo ? isInstructor : false} deleteTutorAssignment={deleteTutorAssignment}/>
     </>
   );
 };
