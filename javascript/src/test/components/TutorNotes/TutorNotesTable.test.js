@@ -61,30 +61,4 @@ describe("CourseForm tests", () => {
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
-  test("ascending and descending buttons for course can be pressed", () => {
-
-    const { getByText } = render(<TutorNotesTable tutorNotes={tutorNotes} isInstructor={true} />);
-    const tutorNotesHeader = getByText(/Course/);
-
-    //cycle through both ascending and descending for test coverage
-    userEvent.click(tutorNotesHeader);
-    userEvent.click(tutorNotesHeader);
-    const descendingOFF = String.fromCharCode(0x25bd);
-    expect(getByText(descendingOFF)).toBeInTheDocument();
-
-  });
-
-  test("ascending and descending buttons for tutor can be pressed", () => {
-
-    const { getByText } = render(<TutorNotesTable tutorNotes={tutorNotes} isInstructor={true} />);
-    const tutorNotesHeader = getByText(/Tutor/);
-
-    //cycle through both ascending and descending for test coverage
-    userEvent.click(tutorNotesHeader);
-    userEvent.click(tutorNotesHeader);
-    const descendingOFF = String.fromCharCode(0x25bd);
-    expect(getByText(descendingOFF)).toBeInTheDocument();
-
-  });
-
 });
