@@ -66,20 +66,6 @@ describe("TutorNotesForm tests", () => {
                 lastName: "Chow"},
         message: "TA",
       };
-      
-      // const setupSWRMocks = (mockRole) => {
-      //   useSWR.mockImplementation( (firstParam, _fetchWithToken) => { 
-      //     const coursesResult = {
-      //       data: []
-      //     };
-      //     const roleResult = {
-      //       data: {
-      //         role: mockRole
-      //       }
-      //     };
-      //     return ( firstParam === "/api/public/courses/" ) ? coursesResult : roleResult;
-      //   });
-      // };
 
     const mutateSpy = jest.fn();
     const setupSWRMocks = () => {
