@@ -124,6 +124,16 @@ public class OnlineOfficeHoursController {
         return ResponseEntity.ok().body(body);
     }
 
+    @GetMapping(value = "/api/member/officeHours", produces = "application/json")
+    public ResponseEntity<String> getMemberOfficeHours(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
+        String email = authControllerAdvice.getUser(authorization).getEmail();
+        List<OnlineOfficeHours> officeHourList = officeHoursRepository.findByTutorAssignmentTutorEmail(email);
+        ObjectMapper mapper = new ObjectMapper();
+
+        String body = mapper.writeValueAsString(officeHourList);
+        return ResponseEntity.ok().body(body);
+    }
+
     @GetMapping(value = "/api/public/officeHours/{id}", produces = "application/json")
     public ResponseEntity<String> getOfficeHour(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<OnlineOfficeHours> officeHour = officeHoursRepository.findById(id);

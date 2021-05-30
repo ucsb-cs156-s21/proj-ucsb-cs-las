@@ -34,6 +34,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
+import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
@@ -97,6 +98,28 @@ public class OnlineOfficeHourControllerTests {
         });
         assertEquals(actualOfficeHours, expectedOfficeHours);
     }
+    @Test
+    public void testGetMemberOfficeHours() throws Exception {
+        when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+        AppUser user = new AppUser(1L, "cgaucho@ucsb.edu", "Chris", "Gaucho");
+        when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+        List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
+        
+        Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
+        Course c = new Course(1L, "CMPSC156", "20213", "Phil", "Conrad", "phtconrad@ucsb.edu");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
+        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes"));
+        when(mockOnlineOfficeHoursRepository.findByTutorAssignmentTutorEmail(anyString())).thenReturn(expectedOfficeHours);
+        MvcResult response = mockMvc.perform(get("/api/member/officeHours").contentType("application/json")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+        verify(mockOnlineOfficeHoursRepository, times(1)).findByTutorAssignmentTutorEmail("cgaucho@ucsb.edu");
+
+        String responseString = response.getResponse().getContentAsString();
+        List<OnlineOfficeHours> actualOfficeHours = objectMapper.readValue(responseString, new TypeReference<List<OnlineOfficeHours>>() {
+        });
+        assertEquals(actualOfficeHours, expectedOfficeHours);
+    }
+
 
     @Test
     public void testGetASingleOfficeHour() throws Exception {
