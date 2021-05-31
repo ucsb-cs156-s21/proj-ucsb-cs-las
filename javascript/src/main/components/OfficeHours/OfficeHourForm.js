@@ -3,6 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 import {checkTime} from "main/utils/FormHelpers";
+import TutorAssignmentDisplay from "main/components/TutorAssignment/TutorAssignmentDisplay";
 
 const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour}) => {
     const startTimeRef = useRef(null);
@@ -81,10 +82,18 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
                     Tutor
                 </Form.Label>
                 <Col sm={10}>
-                    <TutorAssignmentSelect
+
+                {
+                    createOfficeHour && <TutorAssignmentSelect
                       style={{ textAlign: "left", width: "100%" }}
                       onChange={tutorAssignmentId => setOfficeHour({...officeHour, tutorAssignment: { id: tutorAssignmentId }})}
                     />
+                 }
+                 {
+                    updateOfficeHour && <TutorAssignmentDisplay 
+                        style={{ textAlign: "left", width: "100%" }}
+                        tutorAssignment={ existingOfficeHour.tutorAssignment } />
+                 }
                 </Col>
             </Form.Group>
           <Form.Group as={Row} controlId="startTime">
