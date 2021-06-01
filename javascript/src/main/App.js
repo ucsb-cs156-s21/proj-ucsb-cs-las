@@ -26,6 +26,8 @@ import NewTutor from "main/pages/Tutor/NewTutor";
 import NewTutorAssignment from "main/pages/TutorAssignment/NewTutorAssignment";
 import EditTutorAssignment from "main/pages/TutorAssignment/EditTutorAssignment";
 import QuarterFilter from "main/pages/Admin/QuarterFilter"
+import RoomSlots from "main/pages/RoomSlots/RoomSlots";
+import NewRoomSlot from "main/pages/RoomSlots/NewRoomSlot";
 import ViewLogins from "main/pages/Admin/ViewLogins";
 import CourseShow from "main/pages/Courses/CourseShow";
 import TutorNotes from "main/pages/TutorNotes/TutorNotes";
@@ -83,7 +85,8 @@ function App() {
           <AuthorizedRoute path="/admin/setActiveQuarter" exact component={QuarterFilter} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/officehours" exact component={OfficeHours} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/officehours/new" exact component={NewOfficeHours} authorizedRoles={["admin", "member"]} />
-
+          <AuthorizedRoute path="/roomslots" exact component={RoomSlots} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/roomslots/new" exact component={NewRoomSlot} authorizedRoles={["admin"]} />
           <Route path="/courses/show/:courseId" component={CourseShow} />
           <Route path="/about" component={About} />
         </Switch>
