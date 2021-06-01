@@ -72,13 +72,13 @@ public class TutorNotesController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    private ResponseEntity<String> getIncorrectInputResponse() throws JsonProcessingException {
-        Map<String, String> response = new HashMap<String, String>();
-        response.put("error", String
-                .format("Misformatted Input; Check that the tutor email that was input is assigned to a valid tutor"));
-        String body = mapper.writeValueAsString(response);
-        return new ResponseEntity<String>(body, HttpStatus.BAD_REQUEST);
-    }
+    // private ResponseEntity<String> getIncorrectInputResponse() throws JsonProcessingException {
+    //     Map<String, String> response = new HashMap<String, String>();
+    //     response.put("error", String
+    //             .format("Misformatted Input; Check that the tutor email that was input is assigned to a valid tutor"));
+    //     String body = mapper.writeValueAsString(response);
+    //     return new ResponseEntity<String>(body, HttpStatus.BAD_REQUEST);
+    // }
 
     @PostMapping(value = "/api/member/tutorNotes", produces = "application/json")
     public ResponseEntity<String> createTutorNotes(@RequestHeader("Authorization") String authorization,
@@ -114,203 +114,42 @@ public class TutorNotesController {
         return ResponseEntity.ok().body(body);
     }
 
-    // @GetMapping(value = "/api/member/tutorNotes", produces = "application/json")
-    // public ResponseEntity<String> getTutorNotes(@RequestHeader("Authorization")
-    // String authorization)
-    // throws JsonProcessingException {
-    // List<TutorNotes> tutorNotesList = new ArrayList();
-    // if (!authControllerAdvice.getIsMember(authorization)) {
-    // return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
-    // }
-    // if (authControllerAdvice.getIsAdmin(authorization)) {
-    // tutorNotesList = tutorNotesRepository.findAll();
-    // if (tutorNotesList.isEmpty()) {
-    // return ResponseEntity.notFound().build();
-    // }
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotesList);
-    // return ResponseEntity.ok().body(body);
-    // }
-    // else {
-    // List<Course> courseList = courseRepository
-    // .findAllByInstructorEmail(authControllerAdvice.getUser(authorization).getEmail());
-    // if (!(courseList.isEmpty())) {
-    // for (Course temp : courseList) {
-    // Optional<Course> course = courseRepository.findById(temp.getId());
-    // List<TutorNotes> tutorNotes =
-    // tutorNotesRepository.findAllByCourse(course.get());
-    // tutorNotesList.addAll(tutorNotes);
-    // }
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotesList);
-    // return ResponseEntity.ok().body(body);
-    // }
-    // }
-    // Optional<Tutor> tutor =
-    // tutorRepository.findByEmail(authControllerAdvice.getUser(authorization).getEmail());
-    // if (tutor.isPresent()) {
-    // List<TutorNotes> tutorNotes =
-    // tutorNotesRepository.findAllByTutor(tutor.get());
-    // tutorNotesList.addAll(tutorNotes);
-    // }
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotesList);
-    // return ResponseEntity.ok().body(body);
-    // }
+    @GetMapping(value = "/api/member/tutorNotes", produces = "application/json")
+    public ResponseEntity<String> getTutorNotes(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        List<TutorNotes> tutorNotesList = null;
+        if (!authControllerAdvice.getIsMember(authorization)) {
+            return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
+        }
+        String thisUsersEmail = authControllerAdvice.getUser(authorization).getEmail();
+        if (authControllerAdvice.getIsAdmin(authorization)) {
+            tutorNotesList = tutorNotesRepository.findAll();
 
-    // @GetMapping(value = "/api/member/tutorNotes/byCourseId/{course_id}", produces
-    // = "application/json")
-    // public ResponseEntity<String>
-    // getTutorNotesByCourseID(@PathVariable("course_id") Long course_id,
-    // @RequestHeader("Authorization") String authorization) throws
-    // JsonProcessingException {
-    // if (!authControllerAdvice.getIsMember(authorization)) {
-    // return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
-    // }
-    // List<TutorNotes> tutorNotes = tutorNotesRepository.findAllById(course_id);
-    // // if (tutorNotes.isEmpty()) {
-    // // return ResponseEntity.notFound().build();
-    // // }
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotes);
-    // return ResponseEntity.ok().body(body);
-    // }
+        } else {
+            tutorNotesList = tutorNotesRepository
+                    .findAllByOnlineOfficeHoursTutorAssignmentCourseInstructorEmail(thisUsersEmail);
+        }
 
-    // /**
-    // * return a list of all course numbers that appear in the tutor Notes table
-    // *
-    // * @return response containing a list of all course numbers
-    // * @throws JsonProcessingException
-    // */
-    // @GetMapping(value = "/api/member/tutorNotes/course_numbers", produces =
-    // "application/json")
-    // public ResponseEntity<String>
-    // getCourseNumbers(@RequestHeader("Authorization") String authorization)
-    // throws JsonProcessingException {
-    // if (!authControllerAdvice.getIsMember(authorization)) {
-    // return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
-    // }
-    // List<TutorNotes> tutorNotes = tutorNotesRepository.findAll();
-    // Set<String> courseNumbers = new HashSet<String>();
-    // for (TutorNotes ta : tutorNotes) {
-    // courseNumbers.add(ta.getCourse().getName());
+        List<TutorNotes> tutorNotes = tutorNotesRepository
+                .findAllByOnlineOfficeHoursTutorAssignmentTutorEmail(thisUsersEmail);
+        tutorNotesList.addAll(tutorNotes);
 
-    // }
+        ObjectMapper mapper = new ObjectMapper();
+        String body = mapper.writeValueAsString(tutorNotesList);
+        return ResponseEntity.ok().body(body);
+    }
 
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(courseNumbers);
-    // return ResponseEntity.ok().body(body);
-    // }
-
-    // @GetMapping(value = "/api/member/tutorNotes/byCourseNumber/{courseNumber}",
-    // produces = "application/json")
-    // public ResponseEntity<String>
-    // getTutorNotesByCourseID(@PathVariable("courseNumber") String courseNumber,
-    // @RequestHeader("Authorization") String authorization)
-    // throws JsonProcessingException {
-
-    // if (!authControllerAdvice.getIsMember(authorization)) {
-    // return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
-    // }
-    // List<TutorNotes> tutorNotes = tutorNotesRepository.findAll();
-    // List<TutorNotes> tutorNotesMatchingCourse = new ArrayList<TutorNotes>();
-    // for (TutorNotes ta : tutorNotes) {
-    // if (ta.getCourse().getName().equals(courseNumber)) {
-    // tutorNotesMatchingCourse.add(ta);
-    // }
-
-    // }
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotesMatchingCourse);
-    // return ResponseEntity.ok().body(body);
-    // }
-
-    // @GetMapping(value = "/api/member/tutorNotes/byTutor/{tutor}", produces =
-    // "application/json")
-    // public ResponseEntity<String> getTutorNotesByTutor(@PathVariable("tutor")
-    // String tutorEmail)
-    // throws JsonProcessingException {
-
-    // Optional<Tutor> tutor = tutorRepository.findByEmail(tutorEmail);
-    // List<TutorNotes> tutorNotes = new ArrayList<TutorNotes>();
-    // tutorNotes = tutorNotesRepository.findAllByTutor(tutor.get());
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotes);
-    // return ResponseEntity.ok().body(body);
-
-    // }
-
-    // @GetMapping(value = "/api/member/tutorNotes/{id}", produces =
-    // "application/json")
-    // public ResponseEntity<String> getTutorNotes(@PathVariable("id") Long id)
-    // throws JsonProcessingException {
-    // Optional<TutorNotes> tutorNotes = tutorNotesRepository.findById(id);
-    // if (tutorNotes.isEmpty()) {
-    // return ResponseEntity.notFound().build();
-    // }
-
-    // ObjectMapper mapper = new ObjectMapper();
-    // String body = mapper.writeValueAsString(tutorNotes.get());
-    // return ResponseEntity.ok().body(body);
-    // }
-
-    // @PutMapping(value = "/api/member/tutorNotes/{id}", produces =
-    // "application/json")
-    // public ResponseEntity<String>
-    // updateTutorNotes(@RequestHeader("Authorization") String authorization,
-    // @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorNotes)
-    // throws JsonProcessingException {
-    // if (!authControllerAdvice.getIsMember(authorization)) {
-    // return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
-    // }
-    // if (!authControllerAdvice.getIsAdmin(authorization)) {
-    // return getUnauthorizedResponse("admin");
-    // }
-    // Optional<TutorNotes> tutorNotes = tutorNotesRepository.findById(id);
-    // if (!tutorNotes.isPresent()) {
-    // return ResponseEntity.notFound().build();
-    // }
-    // logger.info(incomingTutorNotes);
-    // JSONObject ta = new JSONObject(incomingTutorNotes);
-    // TutorNotes newNotes = new TutorNotes();
-    // logger.info("ta: ", ta.toString());
-    // JSONObject cInfo = new JSONObject(ta.get("course").toString());
-    // logger.info("cInfo: ", cInfo.toString());
-    // Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"),
-    // cInfo.getString("quarter"),
-    // cInfo.getString("instructorFirstName"),
-    // cInfo.getString("instructorLastName"),
-    // cInfo.getString("instructorEmail"));
-    // newNotes.setCourse(c);
-
-    // logger.info("tutorNotes: ", tutorNotes.get().getTutor().getEmail());
-    // logger.info("ta: ", ta.getString("tutorEmail"));
-    // if
-    // (!(ta.getString("tutorEmail").equals(tutorNotes.get().getTutor().getEmail())))
-    // {
-    // Optional<Tutor> tutor =
-    // tutorRepository.findByEmail(ta.getString("tutorEmail"));
-    // logger.info("tutor: ", tutor);
-    // if (tutor.isPresent()) {
-    // newNotes.setTutor(tutor.get());
-    // } else {
-    // return getIncorrectInputResponse();
-    // }
-    // } else {
-
-    // JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
-    // Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"),
-    // tInfo.getString("lastName"),
-    // tInfo.getString("email"));
-    // newNotes.setTutor(t);
-
-    // }
-    // newNotes.setMessage(ta.getString("NotesType"));
-
-    // newNotes.setId(id);
-    // tutorNotesRepository.save(newNotes);
-    // String body = mapper.writeValueAsString(newNotes);
-    // return ResponseEntity.ok().body(body);
-    // }
+    @DeleteMapping(value = "/api/admin/tutorNotes/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteCourse(@RequestHeader("Authorization") String authorization,
+            @PathVariable("id") Long id) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Optional<TutorNotes> tutorNote = tutorNotesRepository.findById(id);
+        if (!tutorNote.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        tutorNotesRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface TutorNotesRepository extends CrudRepository<TutorNotes, Long> {
     List<TutorNotes> findAll();
     List<TutorNotes> findAllByOnlineOfficeHoursId(Long id);
-    // List<TutorNotes> findAllByCourse(Course course);
-    // List<TutorNotes> findAllByTutor(Tutor tutor);
-    // List<TutorNotes> findAllById(Long courseId);
+    List<TutorNotes> findAllByOnlineOfficeHoursTutorAssignmentCourseInstructorEmail(String email);
+    List<TutorNotes> findAllByOnlineOfficeHoursTutorAssignmentTutorEmail(String email);
+    
 
 }
