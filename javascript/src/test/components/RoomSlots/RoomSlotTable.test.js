@@ -4,6 +4,10 @@ import { useHistory } from "react-router-dom";
 import { waitFor, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+jest.mock("react-router-dom", () => ({
+  useHistory: jest.fn(),
+}));
+
 describe("RoomSlotTable tests", () => {
     const slots = [
         {
