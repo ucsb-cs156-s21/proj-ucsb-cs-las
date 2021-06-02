@@ -37,7 +37,7 @@ const TutorAssignment = () => {
   const {
     data: tutorAssignmentList,
     error,
-    mutate: mutateTutorAssignments, mutateCourses,
+    mutate: mutateTutorAssignments,
   } = useSWR(["/api/member/tutorAssignments", getToken], fetchWithToken);
 
   const newTutorAssignmentButton = (
@@ -80,8 +80,7 @@ const TutorAssignment = () => {
       >
         Required Columns: Course Name, Quarter(In numeric format), Instructor First Name,
         Instructor Last Name, Instructor Email, Tutor First Name, Tutor Name,
-        Tutor Email, Assignment Type.Ex: CMPSC 48, 20201, Joe, Gaucho, joegaucho
-        @ucsb.edu, Joe, Gaucho, joegaucho @ucsb.edu, LA
+        Tutor Email, Assignment Type. Ex: CMPSC 48, 20201, Joe, Gaucho, joegaucho@ucsb.edu, Joe, Gaucho, joegaucho@ucsb.edu, LA
       </pre>
       <br></br>
     </>
@@ -92,7 +91,7 @@ const TutorAssignment = () => {
   }
 
   const deleteTutorAssignment = buildDeleteTutorAssignment(
-    getToken, mutateCourses, onDeleteTutorError
+    getToken, mutateTutorAssignments, onDeleteTutorError
   );
 
   const headers = [
