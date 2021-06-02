@@ -6,6 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import OfficeHourTable from "main/components/OfficeHours/OfficeHourTable"
 import { buildDeleteOfficeHour } from "main/services/OfficeHours/OfficeHourService";
+import uploadOfficeHoursCSV from "main/services/OfficeHours/UploadCSV";
+import OfficeHourCSVButton from "main/components/OfficeHours/OfficeHourCSVButton.js";
 import {useHistory} from "react-router-dom";
 import { CSVLink } from "react-csv";
 
@@ -28,7 +30,6 @@ const OfficeHours = () => {
     return <Loading />;
   }
   const deleteOfficeHour = buildDeleteOfficeHour(getToken, mutateOfficeHours);
-
   const headers = [{
     key: 'id',
     label: 'id'
@@ -51,10 +52,19 @@ const OfficeHours = () => {
     key: 'tutorAssignment.id',
     label: 'Tutor Assignment'
   }];
+  
+  
+  const uploadedOfficeHours = uploadOfficeHoursCSV(
+    getToken, mutateOfficeHours
+  );
 
   return (
     <>
       <Button style={{marginBottom: "1em"}} onClick={()=>history.push("/officehours/new")} >New Office Hour</Button>
+      <OfficeHourCSVButton admin = {true} addTask = {uploadedOfficeHours} />
+      <pre style={{ whiteSpace: 'pre', textAlign: 'left', width: 'auto', marginLeft: 'auto', marginRight: 'auto', padding: '0em' }} muted>
+      format: Course, quarter, Instructor's first name, Instructor's last name, instructor's email, Tutor's First name, <br/>Tutor's last name, Tutor's email, Tutor's position, Day of the week, Start time, End time, zoom link, note
+      </pre>
       <OfficeHourTable officeHours={officeHourList} admin={true} deleteOfficeHour={deleteOfficeHour}  />
       <Button><CSVLink style={{color: "white"}} headers={headers} data={officeHourList} filename = {"OfficeHours.csv"}>Download CSV</CSVLink></Button>
     </>

@@ -21,6 +21,8 @@ jest.mock("main/services/TutorAssignment/TutorAssignmentService", () => ({
   buildCreateTutorAssignment: jest.fn(),
   buildUpdateTutorAssignment: jest.fn(),
   uploadTutorAssignmentCSV: jest.fn(),
+  buildDeleteTutorAssignment: jest.fn(),
+
 }));
 
 jest.mock("react-router-dom", () => ({

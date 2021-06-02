@@ -15,10 +15,10 @@ const buildCreateTutorAssignment = (getToken, onSuccess, onError) => {
       onError(err);
     }
   };
-  return func;
-};
+  return func
+}
 
-const buildUpdateTutorAssignment = (getToken, onSuccess, onError) => {
+const buildUpdateTutorAssignment  = (getToken, onSuccess, onError) => {
   const func = async (item, id) => {
     try {
       await fetchWithToken(`/api/member/tutorAssignments/${id}`, getToken, {
@@ -33,8 +33,26 @@ const buildUpdateTutorAssignment = (getToken, onSuccess, onError) => {
       onError(err);
     }
   };
-  return func;
-};
+  return func
+}
+
+const buildDeleteTutorAssignment  = (getToken, onSuccess, onError) => {
+  const func = async (id) => {
+    try {
+      await fetchWithToken(`/api/member/tutorAssignments/${id}`, getToken, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+        noJSON: true,
+      });
+      onSuccess();
+    } catch (err) {
+      onError(err);
+    }
+  };
+  return func
+}
 
 const uploadTutorAssignmentCSV = (getToken, onSuccess, onError) => {
   const func = async (file) => {
@@ -53,8 +71,4 @@ const uploadTutorAssignmentCSV = (getToken, onSuccess, onError) => {
   return func;
 };
 
-export {
-  buildCreateTutorAssignment,
-  buildUpdateTutorAssignment,
-  uploadTutorAssignmentCSV,
-};
+export { buildCreateTutorAssignment, buildUpdateTutorAssignment, buildDeleteTutorAssignment, uploadTutorAssignmentCSV };

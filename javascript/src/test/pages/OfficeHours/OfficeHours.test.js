@@ -1,5 +1,5 @@
 import React from "react";
-import { waitFor, render } from "@testing-library/react";
+import { waitFor, render} from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import OfficeHours from "main/pages/OfficeHours/OfficeHours";
@@ -108,7 +108,5 @@ describe("OfficeHours page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
-
-
 
 });

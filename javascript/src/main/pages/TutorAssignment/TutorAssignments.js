@@ -9,6 +9,7 @@ import { TutorAssignmentCSVButton } from "main/components/TutorAssignment/TutorA
 import { useToasts } from "react-toast-notifications";
 
 import { uploadTutorAssignmentCSV } from "main/services/TutorAssignment/TutorAssignmentService";
+import { buildDeleteTutorAssignment } from "main/services/TutorAssignment/TutorAssignmentService";
 
 import { useHistory } from "react-router-dom";
 import { CSVLink } from "react-csv";
@@ -36,7 +37,7 @@ const TutorAssignment = () => {
   const {
     data: tutorAssignmentList,
     error,
-    mutate: mutateTutorAssignments,
+    mutate: mutateTutorAssignments, mutateCourses,
   } = useSWR(["/api/member/tutorAssignments", getToken], fetchWithToken);
 
   const newTutorAssignmentButton = (
@@ -84,6 +85,11 @@ const TutorAssignment = () => {
       </pre>
       <br></br>
     </>
+  );
+  
+  const deleteTutorAssignment = buildDeleteTutorAssignment(
+    getToken, mutateCourses
+
   );
 
   const headers = [
@@ -147,6 +153,7 @@ const TutorAssignment = () => {
       <TutorAssignmentTable
         tutorAssignments={tutorAssignmentList}
         isInstructor={isInstructor}
+        deleteTutorAssignment={deleteTutorAssignment}
       />
       <Button>
         <CSVLink
