@@ -4,8 +4,8 @@ import {asHumanQuarter} from "main/utils/quarter.ts"
 
 
 const asLabelString = (oh) => {
-    return oh.tutorAssignment.course.name + " " 
-    + asHumanQuarter(oh.tutorAssignment.course.quarter) + " "
+    return oh?.tutorAssignment?.course?.name + " " 
+    + asHumanQuarter(oh?.tutorAssignment?.course?.quarter) + " "
     + oh.tutorAssignment.tutor.firstName + " " + oh.tutorAssignment.tutor.lastName + " "
     + oh.dayOfWeek + " " + oh.startTime + "-" + oh.endTime;
 }
@@ -13,10 +13,11 @@ const asLabelString = (oh) => {
 var OfficeHoursSelector = ({ officeHours, onChange }) => {
 
     const [index, setIndex] = useState(0);
- 
+
+    console.log("officeHours: ", officeHours)
 
     const sortedListOfOptions = 
-        officeHours.map((officeHour, index) => <option key={index} value={index}>{asLabelString(officeHour)}</option>);
+        officeHours ? officeHours.map((officeHour, index) => <option key={index} value={index}>{asLabelString(officeHour)}</option>) : [];
     return (
         <Form.Group as={Row} controlId="Office Hours">
             <Form.Label column sm={2}>Office Hours</Form.Label>

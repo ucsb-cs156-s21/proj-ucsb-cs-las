@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { fetchWithToken } from "main/utils/fetch";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
-import Loading from "main/components/Loading/Loading";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import { FormControl, Form, Button, Row, Col } from "react-bootstrap";
 import OfficeHoursSelector from "main/components/OfficeHours/OfficeHoursSelector";
@@ -28,7 +27,9 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
     );
 
     useEffect(() => {
-        setOfficeHours(officeHoursList.length > 0 ? officeHoursList[0] : {});
+        if (officeHoursList && officeHoursList.length){
+            setOfficeHours(officeHoursList.length > 0 ? officeHoursList[0] : {});
+        }
       }, [officeHoursList]);
 
     const handleOnSubmit = (e) => {
@@ -68,7 +69,6 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
 
     return (
         <>
-            {tutorNotes.index !== null ? 
             <Form onSubmit={handleOnSubmit}>
                 {
                     createTutorNotes && <OfficeHoursSelector officeHours={officeHoursList} onChange={onOfficeHoursChange}/>
@@ -99,8 +99,6 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
                     </Col>
                 </Form.Group>
             </Form>
-            :
-            <Loading />}
         </>
     );
 };

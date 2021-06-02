@@ -4,51 +4,66 @@ import { render } from "@testing-library/react";
 import useSWR from "swr";
 import TutorNotesForm from "main/components/TutorNotes/TutorNotesForm";
 import userEvent from "@testing-library/user-event";
+import officeHoursFixtures from '../../../fixtures/officeHoursFixtures';
 jest.mock("swr");
 
 describe("TutorNotesForm tests", () => {
   const sampleOfficeHour = {
-    "id": "",
-    "startTime": "2:00PM",
-    "endTime": "3:00PM",
-    "dayOfWeek": "Wednesday",
-    "zoomRoomLink": "https://ucsb.zoom.us.test",
-    "notes": "noted",
+    "id": 122,
     "tutorAssignment": {
-      "id": 2,
+      "id": 121,
+      "course": {
+        "id": 109,
+        "name": "CMPSC 156",
+        "quarter": "20212",
+        "instructorFirstName": "Phill",
+        "instructorLastName": "Conrad",
+        "instructorEmail": "phtcon@ucsb.edu"
+      },
+      "tutor": {
+        "id": 120,
+        "firstName": "Phill",
+        "lastName": "Conrad",
+        "email": "phtcon@ucsb.edu"
+      },
+      "assignmentType": "TA"
     },
+    "dayOfWeek": "Saturday",
+    "startTime": "3:00PM",
+    "endTime": "4:00PM",
+    "zoomRoomLink": "",
+    "notes": ""
   };
 
     const sampleTutorNotes = {
-          id: 1,
-          course:  {name: "CMPSC 156",
-                    id: 1,
-                    quarter: "20202",
-                    instructorFirstName: "Phill",
-                    instructorLastName: "Conrad",
-                    instructorEmail: "phtcon@ucsb.edu",
-                    },
-          tutor:    {email: "scottpchow@ucsb.edu",
-                    firstName: "Scott",
-                    id: 1,
-                    lastName: "Chow"},
-          message: "Write message here"
-        };
-
-    const _sampleTutorNotes2 = {
-      id: 1,
-      course:  {name: "CMPSC 148",
-                id: 2,
-                quarter: "20203",
-                instructorFirstName: "Chandra",
-                instructorLastName: "Krintz",
-                instructorEmail: "krintz@example.org",
-                },
-        tutor:  {email: "scottpchow@ucsb.edu",
-                firstName: "Scott",
-                id: 1,
-                lastName: "Chow"},
-        message: "TA",
+      "id": 123,
+      "onlineOfficeHours": {
+        "id": 122,
+        "tutorAssignment": {
+          "id": 121,
+          "course": {
+            "id": 109,
+            "name": "CMPSC 156",
+            "quarter": "20212",
+            "instructorFirstName": "Phill",
+            "instructorLastName": "Conrad",
+            "instructorEmail": "phtcon@ucsb.edu"
+          },
+          "tutor": {
+            "id": 120,
+            "firstName": "Phill",
+            "lastName": "Conrad",
+            "email": "phtcon@ucsb.edu"
+          },
+          "assignmentType": "TA"
+        },
+        "dayOfWeek": "Saturday",
+        "startTime": "3:00PM",
+        "endTime": "4:00PM",
+        "zoomRoomLink": "",
+        "notes": ""
+      },
+      "message": "Hello World"
       };
     const mutateSpy = jest.fn();
 
@@ -70,32 +85,10 @@ describe("TutorNotesForm tests", () => {
     render(<TutorNotesForm existingTutorNotes={sampleTutorNotes}/>);
   });
 
-  test("error mesage appears if you are a member but not an admin or instructor", () => {
-    useSWR.mockReturnValue({
-        data: undefined,
-        error: true,
-        mutate: mutateSpy,
-    });
-    const { getByText } = render(<TutorNotesForm />);
-    const errorMessage = getByText("You must be an instructor or an admin to create new Tutor Notes or we have found no Courses/Tutors.");
-    expect(errorMessage).toBeInTheDocument();
-  });
-
-  test("loading appears if course list is not returned yet", () => {
-    useSWR.mockReturnValue({
-        data: undefined,
-        error: undefined,
-        mutate: mutateSpy,
-    });
-    const { getByAltText } = render(<TutorNotesForm />);
-    const loading = getByAltText("Loading");
-    expect(loading).toBeInTheDocument();
-  });
-
   test("creating TutorNotes works", async () => {
 
     useSWR.mockReturnValue({
-      data: sampleOfficeHour,
+      data: [sampleOfficeHour],
       error: undefined,
       mutate: mutateSpy,
   });
