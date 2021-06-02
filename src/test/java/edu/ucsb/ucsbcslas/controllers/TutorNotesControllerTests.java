@@ -298,7 +298,6 @@ public class TutorNotesControllerTests {
                 when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
                 when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
                 when(mockTutorNotesRepository.save(eq(expectedTutorNotes))).thenReturn(expectedTutorNotes);
-                // when(mockOnlineOfficeHoursRepository.findByTutorAssignmentTutorEmail(eq("cgaucho@ucsb.edu"))).thenReturn(onlineOfficeHoursList);
                 when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.of(onlineOfficeHours));
 
                 mockMvc.perform(post("/api/member/tutorNotes/").with(csrf()).contentType(MediaType.APPLICATION_JSON)
