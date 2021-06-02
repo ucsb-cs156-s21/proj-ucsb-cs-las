@@ -26,13 +26,31 @@ describe("New Tutor Notes page test", () => {
     name: "test user",
   };
   const getAccessTokenSilentlySpy = jest.fn();
-  const course = {
-    name: "CMPSC 156",
-    id: 1,
-    quarter: "20203",
-    instructorFirstName: "Phill",
-    instructorLastName: "Conrad",
-    instructorEmail: "phtcon@ucsb.edu",
+  const sampleOfficeHour = {
+    "id": 122,
+    "tutorAssignment": {
+      "id": 121,
+      "course": {
+        "id": 109,
+        "name": "CMPSC 156",
+        "quarter": "20212",
+        "instructorFirstName": "Phill",
+        "instructorLastName": "Conrad",
+        "instructorEmail": "phtcon@ucsb.edu"
+      },
+      "tutor": {
+        "id": 120,
+        "firstName": "Phill",
+        "lastName": "Conrad",
+        "email": "phtcon@ucsb.edu"
+      },
+      "assignmentType": "TA"
+    },
+    "dayOfWeek": "Saturday",
+    "startTime": "3:00PM",
+    "endTime": "4:00PM",
+    "zoomRoomLink": "",
+    "notes": ""
   };
 
   const addToast = jest.fn();
@@ -45,7 +63,7 @@ describe("New Tutor Notes page test", () => {
     useToasts.mockReturnValue({
       addToast: addToast
     })
-    useSWR.mockReturnValue({data: [course]});
+    useSWR.mockReturnValue({data: [sampleOfficeHour]});
   });
 
   afterEach(() => {
@@ -95,7 +113,7 @@ describe("New Tutor Notes page test", () => {
     userEvent.click(submitButton);
 
     expect(addToast).toHaveBeenCalledTimes(1);
-    expect(addToast).toHaveBeenCalledWith("Error saving Tutor Notes. Make sure tutor email is correct", { appearance: 'error' });
+    expect(addToast).toHaveBeenCalledWith("Error saving Tutor Notes", { appearance: 'error' });
   });
 
 });

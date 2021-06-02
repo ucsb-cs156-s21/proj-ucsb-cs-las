@@ -109,7 +109,7 @@ describe("TutorNotesForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createTutorNotesMock).toHaveBeenCalledTimes(1);
-    expect(createTutorNotesMock).toHaveBeenCalledWith({ ...sampleTutorNotes, id: null, index: 0});
+    expect(createTutorNotesMock).toHaveBeenCalledWith({ ...sampleTutorNotes, id: null});
   });
 
 

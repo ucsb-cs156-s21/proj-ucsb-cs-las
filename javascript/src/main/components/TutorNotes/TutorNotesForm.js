@@ -6,14 +6,14 @@ import {asHumanQuarter} from "main/utils/quarter.ts"
 import { FormControl, Form, Button, Row, Col } from "react-bootstrap";
 import OfficeHoursSelector from "main/components/OfficeHours/OfficeHoursSelector";
 
-const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes }) => {
+const TutorNotesForm = ({ createTutorNotes/*, updateTutorNotes, existingTutorNotes*/ }) => {
     const emptyTutorNotes = {
         id: null,
-        officeHours: null,
+        onlineOfficeHours: null,
         message: "Write message here"
     }
 
-    const initialTutorNotes = (updateTutorNotes && existingTutorNotes) ? existingTutorNotes : emptyTutorNotes;
+    const initialTutorNotes = emptyTutorNotes;
 
     const [tutorNotes, setTutorNotes] = useState(initialTutorNotes);
     const [officeHours, setOfficeHours] = useState({})
@@ -35,13 +35,10 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (createTutorNotes){
-            tutorNotes.officeHours = officeHours;
+            tutorNotes.onlineOfficeHours = officeHours;
             console.log("tutorNotes = ", tutorNotes);
             console.log("officeHours = ", officeHours);
             createTutorNotes(tutorNotes);
-        }
-        else{
-            updateTutorNotes(tutorNotes, tutorNotes.id);
         }
     }
     
@@ -51,20 +48,20 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
         setOfficeHours(officeHoursList[i]);
     }
 
-    const tutorName = (tutorNotes) => {
-        const firstName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.firstName;
-        const lastName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.lastName;
-        return firstName + " " + lastName;
-    };
+    // const tutorName = (tutorNotes) => {
+    //     const firstName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.firstName;
+    //     const lastName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.lastName;
+    //     return firstName + " " + lastName;
+    // };
 
-    const course = (tutorNotes) => {
-        return tutorNotes?.officeHours?.tutorAssignment?.course?.name;
-    };
+    // const course = (tutorNotes) => {
+    //     return tutorNotes?.officeHours?.tutorAssignment?.course?.name;
+    // };
 
-    const quarter = (tutorNotes) => {
-        const quarter = tutorNotes?.officeHours?.tutorAssignment?.course?.quarter;
-        return quarter ? asHumanQuarter(quarter) : "";
-    };
+    // const quarter = (tutorNotes) => {
+    //     const quarter = tutorNotes?.officeHours?.tutorAssignment?.course?.quarter;
+    //     return quarter ? asHumanQuarter(quarter) : "";
+    // };
 
 
     return (
@@ -72,20 +69,7 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
             <Form onSubmit={handleOnSubmit}>
                 {
                     createTutorNotes && <OfficeHoursSelector officeHours={officeHoursList} onChange={onOfficeHoursChange}/>
-                 }
-                 {
-                    updateTutorNotes && <Row>
-                        <Col>
-                            <FormControl readOnly type="text" value={tutorName(tutorNotes)}/>
-                        </Col>
-                        <Col>
-                            <FormControl readOnly type="text" value={course(tutorNotes)}/>
-                        </Col>
-                        <Col>
-                            <FormControl readOnly type="text" value={quarter(tutorNotes)}/>
-                        </Col>
-                    </Row>
-                 }
+                }
                 <Form.Group as={Row} controlId="message">
                     <Form.Label column sm={2}>Message</Form.Label>
                     <Col sm={10}>

@@ -35,10 +35,12 @@ const TutorNotes = () => {
 
   const newTutorNotesButton = <Button className="mb-3" onClick={()=>history.push("/tutorNotes/new")}>New Tutor Notes</Button>;
 
+  console.log("tutorNotesList in TutorNotes.js: ", tutorNotesList);
+
   if (error) {
     return (
       <>
-        {(isInstructor || isAdmin) && newTutorNotesButton}
+        {newTutorNotesButton}
         <h1>You have no current Tutor Notes or we encountered an error; please reload the page and try again.</h1>
       </>
     );
@@ -49,7 +51,7 @@ const TutorNotes = () => {
 
   return (
     <>
-      {(isInstructor || isAdmin) && (newTutorNotesButton)}
+      {(newTutorNotesButton)}
       <TutorNotesTable tutorNotes={tutorNotesList} isInstructor={isInstructor || isAdmin}/>
     </>
   );

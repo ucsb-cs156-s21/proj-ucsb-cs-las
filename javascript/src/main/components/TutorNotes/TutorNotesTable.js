@@ -3,15 +3,11 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import {asHumanQuarter} from "main/utils/quarter.ts"
 import { useHistory } from "react-router-dom";
+import { Null } from "../../../stories/components/TutorNotes/TutorNotesTable.stories";
 
 export default ({tutorNotes, isInstructor}) => {
     const history = useHistory();
-
-    const renderEditButton = (id) => {
-        return (
-            <Button data-testid={"edit-button-"+id} onClick={() => {history.push(`/tutorNotes/edit/${id}`) }}>Edit</Button>
-        )
-    }
+    console.log("tutorNotes",tutorNotes);
 
     const renderDeleteButton = (_id) => {
         return (
@@ -19,10 +15,14 @@ export default ({tutorNotes, isInstructor}) => {
         )
     }
 
-    const renderTutorName = (row) => row.tutor.firstName + " " +row.tutor.lastName;
+    const renderTutorName = (row) => row?.onlineOfficeHours?.tutor?.firstName + " " +row.onlineOfficeHours?.tutor?.lastName;
     const renderCourseNameYear = (row) => {
-        const quarter = row.course.quarter;
-        return row.course.name + " " + asHumanQuarter(quarter);
+        const quarter = row?.onlineOfficeHours?.course?.quarter;
+        console.log("courseTable quarter: ", quarter)
+        if (quarter){
+            return row?.onlineOfficeHours?.course?.name + " " + asHumanQuarter(quarter);
+        }
+        return null;
     }
 
     const columns = [{
@@ -49,12 +49,6 @@ export default ({tutorNotes, isInstructor}) => {
     }];
 
     if (isInstructor) {
-        columns.push({
-            text: "Edit",
-            isDummyField: true,
-            dataField: "edit",
-            formatter: (_cell, row) => renderEditButton(row.id)
-        });
         columns.push({
             text: "Delete",
             isDummyField: true,
