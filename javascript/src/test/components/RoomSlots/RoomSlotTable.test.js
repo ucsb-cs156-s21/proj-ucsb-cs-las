@@ -40,16 +40,10 @@ describe("RoomSlotTable tests", () => {
     });
   
     test("renders with delete buttons when admin true", async () => {
-    const pushSpy = jest.fn();
-    useHistory.mockReturnValue({
-      push: pushSpy
-    });
     const { getByTestId } = render(<RoomSlotTable roomSlots={slots} admin={true} deleteRoomSlot={deleteRoomSlot}/>);
     const deleteButton = getByTestId('delete-button-2');
     expect(deleteButton).toBeInTheDocument();
     userEvent.click(deleteButton);
-    await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
-
   });
 
 });
