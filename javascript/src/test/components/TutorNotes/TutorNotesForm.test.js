@@ -4,7 +4,6 @@ import { render } from "@testing-library/react";
 import useSWR from "swr";
 import TutorNotesForm from "main/components/TutorNotes/TutorNotesForm";
 import userEvent from "@testing-library/user-event";
-import officeHoursFixtures from '../../../fixtures/officeHoursFixtures';
 jest.mock("swr");
 
 describe("TutorNotesForm tests", () => {

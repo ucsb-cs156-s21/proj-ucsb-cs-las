@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchWithToken } from "main/utils/fetch";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
-import {asHumanQuarter} from "main/utils/quarter.ts"
-import { FormControl, Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import OfficeHoursSelector from "main/components/OfficeHours/OfficeHoursSelector";
 
 const TutorNotesForm = ({ createTutorNotes/*, updateTutorNotes, existingTutorNotes*/ }) => {
@@ -47,22 +46,6 @@ const TutorNotesForm = ({ createTutorNotes/*, updateTutorNotes, existingTutorNot
         console.log("office hours list = ", officeHoursList);
         setOfficeHours(officeHoursList[i]);
     }
-
-    // const tutorName = (tutorNotes) => {
-    //     const firstName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.firstName;
-    //     const lastName = tutorNotes?.officeHours?.tutorAssignment?.tutor?.lastName;
-    //     return firstName + " " + lastName;
-    // };
-
-    // const course = (tutorNotes) => {
-    //     return tutorNotes?.officeHours?.tutorAssignment?.course?.name;
-    // };
-
-    // const quarter = (tutorNotes) => {
-    //     const quarter = tutorNotes?.officeHours?.tutorAssignment?.course?.quarter;
-    //     return quarter ? asHumanQuarter(quarter) : "";
-    // };
-
 
     return (
         <>

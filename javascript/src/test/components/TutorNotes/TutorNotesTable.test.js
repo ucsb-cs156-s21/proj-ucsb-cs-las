@@ -1,6 +1,5 @@
 import React from "react";
-import { waitFor, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from "@testing-library/react";
 import TutorNotesTable from "main/components/TutorNotes/TutorNotesTable";
 import { useHistory } from "react-router-dom";
 jest.mock("swr");

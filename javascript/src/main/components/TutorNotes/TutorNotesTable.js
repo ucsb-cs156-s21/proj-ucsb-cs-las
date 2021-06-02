@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { Null } from "../../../stories/components/TutorNotes/TutorNotesTable.stories";
 
 export default ({tutorNotes, isInstructor}) => {
-    const history = useHistory();
     console.log("tutorNotes",tutorNotes);
 
     const renderDeleteButton = (_id) => {
@@ -15,14 +14,14 @@ export default ({tutorNotes, isInstructor}) => {
         )
     }
 
-    const renderTutorName = (row) => row?.onlineOfficeHours?.tutor?.firstName + " " +row.onlineOfficeHours?.tutor?.lastName;
+    const renderTutorName = (row) => row?.onlineOfficeHours?.tutorAssignment?.tutor?.firstName + " " +row.onlineOfficeHours?.tutorAssignment?.tutor?.lastName;
     const renderCourseNameYear = (row) => {
-        const quarter = row?.onlineOfficeHours?.course?.quarter;
+        const quarter = row?.onlineOfficeHours?.tutorAssignment?.course?.quarter;
         console.log("courseTable quarter: ", quarter)
         if (quarter){
-            return row?.onlineOfficeHours?.course?.name + " " + asHumanQuarter(quarter);
+            return row?.onlineOfficeHours?.tutorAssignment?.course?.name + " " + asHumanQuarter(quarter);
         }
-        return null;
+        return Null;
     }
 
     const columns = [{
@@ -34,14 +33,11 @@ export default ({tutorNotes, isInstructor}) => {
         text: 'Course',
         sort: true,
         formatter: (_cell, row) => renderCourseNameYear(row),
-        //sortValue: (_cell, row) => renderCourseNameYear(row)
     }, {
         dataField: 'tutorName',
-        //isDummyField: true,
         text: 'Tutor',
         sort: true,
         formatter: (_cell, row) => renderTutorName(row),
-        //sortValue: (_cell, row) => renderTutorName(row)
     }, {
         dataField: 'message',
         text: 'message',
