@@ -87,9 +87,12 @@ const TutorAssignment = () => {
     </>
   );
   
-  const deleteTutorAssignment = buildDeleteTutorAssignment(
-    getToken, mutateCourses
+  const onDeleteTutorError = (err) => {
+    console.log("error deleting tutor assignment",err);
+  }
 
+  const deleteTutorAssignment = buildDeleteTutorAssignment(
+    getToken, mutateCourses, onDeleteTutorError
   );
 
   const headers = [
