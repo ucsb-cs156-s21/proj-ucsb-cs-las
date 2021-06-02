@@ -1,7 +1,7 @@
 import React from "react";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable"
-import { useHistory } from "react-router-dom";
-import { waitFor, render } from "@testing-library/react";
+//import { useHistory } from "react-router-dom";
+import { /*waitFor,*/ render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("react-router-dom", () => ({
