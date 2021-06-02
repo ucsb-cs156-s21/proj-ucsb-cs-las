@@ -1,4 +1,3 @@
-
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import fromFormat from "main/utils/FromFormat";
@@ -7,7 +6,14 @@ import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
 /**
  * Displays the list of room slots. Code adapted from TutorTable.
  */
-const RoomSlotTable = ({ roomSlots }) => {
+const RoomSlotTable = ({ roomSlots, admin, deleteRoomSlot }) => {
+    
+    const renderDeleteButton = (id) => {
+        return (
+            <Button variant="danger" data-testid="delete-button" onClick={() => deleteRoomSlot(id)}>Delete</Button>
+        )
+    }
+
     const columns = [
         {
             dataField: "location",
@@ -42,6 +48,15 @@ const RoomSlotTable = ({ roomSlots }) => {
         }
     ];
 
+    if (admin) {
+        columns.push({
+            text: "Delete",
+            isDummyField: true,
+            dataField: "delete",
+            formatter: (_cell, row) => renderDeleteButton(row.id)
+        });
+    }
+
     return <BootstrapTable
         bootstrap4={true}
         keyField="id"
@@ -50,4 +65,4 @@ const RoomSlotTable = ({ roomSlots }) => {
     />;
 }
 
-export default RoomSlotTable;
+export default { RoomSlotTable, deleteRoomSlot };
