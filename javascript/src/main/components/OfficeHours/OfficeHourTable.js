@@ -15,13 +15,11 @@ export default ({ officeHours, admin, deleteOfficeHour }) => {
     );
   };
 
-  // The test breaks if the text is changed into something else rather than having the whole link showing up
-
   function zoomRoomLinkFormatter(cell) {
     return (
       <div>
         <a target="_blank" rel="noopener noreferrer" href={cell}>
-        {cell}
+        Link
         </a>
       </div>
     );
