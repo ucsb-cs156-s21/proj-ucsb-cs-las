@@ -2,6 +2,7 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import fromFormat from "main/utils/FromFormat";
 import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
+import { Button } from "react-bootstrap";
 
 /**
  * Displays the list of room slots. Code adapted from TutorTable.
