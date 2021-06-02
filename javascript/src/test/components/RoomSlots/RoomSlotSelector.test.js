@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { prettyDOM, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RoomSlotSelector from "main/components/RoomSlots/RoomSlotSelector";
 import roomSlotFixtures from "fixtures/roomSlotFixtures";
@@ -12,7 +12,6 @@ jest.mock("main/utils/RoomSlotTableHelpers");
 
 describe("RoomSlotSelector tests", () => {
     beforeEach(() => {
-        jest.clearAllMocks();
         asHumanQuarter.mockImplementation((quarter) => {
             return quarter;
         });
@@ -21,20 +20,23 @@ describe("RoomSlotSelector tests", () => {
         })
     });
 
-    test("renders usable selector", async () => {
+    test("renders usable selector with proper option text", async () => {
         const onChange = jest.fn();
 
-        const { debug, getByText } = render(
+        const { debug, getByTestId, getByText } = render(
             <RoomSlotSelector
+                data-testid="room-slot-selector"
                 roomSlots={roomSlotFixtures.multipleRoomSlots}
                 onChange={onChange}
             />
         );
 
-        userEvent.click(getByText("20212 Library Monday 08:00:00-15:00:00"));
-        expect(onChange).toHaveBeenCalledWith(1);
+        let selector = getByTestId("room-slot-selector");
 
-        userEvent.click(getByText("20212 HSSB Tuesday 08:00:00-15:00:00"));
-        expect(onChange).toHaveBeenCalledWith(2);
+        userEvent.selectOptions(selector, getByText("20212 Library Monday 08:00:00-15:00:00"))
+        expect(onChange).toHaveBeenCalledWith("1");
+
+        userEvent.selectOptions(selector, getByText("20212 HSSB Tuesday 08:00:00-15:00:00"));
+        expect(onChange).toHaveBeenCalledWith("2");
     });
 });

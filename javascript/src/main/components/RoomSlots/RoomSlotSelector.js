@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import { asHumanQuarter } from "main/utils/quarter";
 import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
 
-export default function RoomSlotSelector({ roomSlots, onChange }) {
+export default function RoomSlotSelector({ roomSlots, onChange, ...otherProps }) {
     const [id, setId] = useState(0);
 
     // Day of the week is serialized as an all-caps value by backend, so give it proper capitalization
@@ -30,7 +30,7 @@ export default function RoomSlotSelector({ roomSlots, onChange }) {
     });
     
     return (
-        <Form.Control as="select" value={id} onChange={handleChange}>
+        <Form.Control as="select" value={id} onChange={handleChange} {...otherProps}>
             {options}
         </Form.Control>
     );
