@@ -38,11 +38,8 @@ const RoomSlots = () => {
       {isAdmin && (
         <Button className="mb-3" onClick={()=>history.push("/roomslots/new")} >New Room Slot</Button>
       )}
-      {isAdmin && (
-        <RoomSlotTable roomSlots={roomSlotList} deleteRoomSlot={deleteRoomSlot} />
-      )}
       {(roomSlotList) && (
-        <RoomSlotTable roomSlots={roomSlotList} />
+        <RoomSlotTable roomSlots={roomSlotList} admin={true} deleteRoomSlot={deleteRoomSlot}/>
       )}
     </>
   );
