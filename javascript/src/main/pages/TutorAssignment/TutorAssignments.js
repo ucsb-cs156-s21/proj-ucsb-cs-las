@@ -77,7 +77,7 @@ const TutorAssignment = () => {
         }}
         muted
       >
-        Required Columns: Course Name, Quarter, Instructor First Name,
+        Required Columns: Course Name, Quarter(In numeric format), Instructor First Name,
         Instructor Last Name, Instructor Email, Tutor First Name, Tutor Name,
         Tutor Email, Assignment Type.Ex: CMPSC 48, 20201, Joe, Gaucho, joegaucho
         @ucsb.edu, Joe, Gaucho, joegaucho @ucsb.edu, LA

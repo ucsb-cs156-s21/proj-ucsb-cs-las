@@ -34,15 +34,15 @@ public class TutorAssignmentModel {
     public TutorAssignmentModel(String courseName, String quarter, String instructorFirstName,
             String instructorLastName, String instructorEmail, String tutorFirstName, String tutorLastName,
             String tutorEmail, String assignmentType) {
-        this.courseName = courseName;
-        this.quarter = quarter;
-        this.instructorFirstName = instructorFirstName;
-        this.instructorLastName = instructorLastName;
-        this.instructorEmail = instructorEmail;
-        this.tutorEmail = tutorEmail;
-        this.tutorLastName = tutorLastName;
-        this.tutorFirstName = tutorFirstName;
-        this.assignmentType = assignmentType;
+        this.courseName = courseName.trim();
+        this.quarter = quarter.trim();
+        this.instructorFirstName = instructorFirstName.trim();
+        this.instructorLastName = instructorLastName.trim();
+        this.instructorEmail = instructorEmail.trim();
+        this.tutorEmail = tutorEmail.trim();
+        this.tutorLastName = tutorLastName.trim();
+        this.tutorFirstName = tutorFirstName.trim();
+        this.assignmentType = assignmentType.trim();
 
     }
 
@@ -67,7 +67,7 @@ public class TutorAssignmentModel {
     }
 
     public void setCourseName(String courseName) {
-        this.courseName = courseName;
+        this.courseName = courseName.trim();
     }
 
     public String getQuarter() {
@@ -75,7 +75,7 @@ public class TutorAssignmentModel {
     }
 
     public void setQuarter(String quarter) {
-        this.quarter = quarter;
+        this.quarter = quarter.trim();
     }
 
     public String getTutorFirstName() {
@@ -83,7 +83,7 @@ public class TutorAssignmentModel {
     }
 
     public void setTutorFirstName(String tutorFirstName) {
-        this.tutorFirstName = tutorFirstName;
+        this.tutorFirstName = tutorFirstName.trim();
     }
 
     public String getTutorLastName() {
@@ -91,7 +91,7 @@ public class TutorAssignmentModel {
     }
 
     public void setTutorLastName(String tutorLastName) {
-        this.tutorLastName = tutorLastName;
+        this.tutorLastName = tutorLastName.trim();
     }
 
     public String getTutorEmail() {
@@ -99,7 +99,7 @@ public class TutorAssignmentModel {
     }
 
     public void setTutorEmail(String tutorEmail) {
-        this.tutorEmail = tutorEmail;
+        this.tutorEmail = tutorEmail.trim();
     }
 
     public String getAssignmentType() {
@@ -107,11 +107,11 @@ public class TutorAssignmentModel {
     }
 
     public void setAssignmentType(String assignmentType) {
-        this.assignmentType = assignmentType;
+        this.assignmentType = assignmentType.trim();
     }
 
     public void setIntructorFirstName(String instructorFirstName) {
-        this.instructorFirstName = instructorFirstName;
+        this.instructorFirstName = instructorFirstName.trim();
     }
 
     public String getInstructorFirstName() {
@@ -119,7 +119,7 @@ public class TutorAssignmentModel {
     }
 
     public void setIntructorLastName(String instructorLastName) {
-        this.instructorLastName = instructorLastName;
+        this.instructorLastName = instructorLastName.trim();
     }
 
     public String getInstructorLastName() {
@@ -127,7 +127,7 @@ public class TutorAssignmentModel {
     }
 
     public void setIntructorEmail(String instructorEmail) {
-        this.instructorEmail = instructorEmail;
+        this.instructorEmail = instructorEmail.trim();
     }
 
     public String getInstructorEmail() {
