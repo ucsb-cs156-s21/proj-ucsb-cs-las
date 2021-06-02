@@ -6,7 +6,7 @@ import {asHumanQuarter} from "main/utils/quarter.ts"
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
-const UpcomingOfficeHour = () => {
+export default ({upcomingOfficeHours}) => {
     const { user, getAccessTokenSilently: getToken } = useAuth0();
     const { email } = user;
 
@@ -76,11 +76,9 @@ const UpcomingOfficeHour = () => {
         <BootstrapTable 
             bootstrap4={true}
             keyField='id' 
-            data={officeHours} 
+            data={upcomingOfficeHours} 
             columns={columns} 
             striped 
         />
     );
-};
-
-export default UpcomingOfficeHour;
+}
