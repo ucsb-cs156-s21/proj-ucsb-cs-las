@@ -37,4 +37,4 @@ const buildDeleteRoomSlot = (getToken, onSuccess, onError) => {
 }
 
 
-export { buildCreateRoomSlot, buildDeleteRoomSlot/*, buildUpdateRoomSlot*/ };
+export { buildCreateRoomSlot, buildDeleteRoomSlot};
