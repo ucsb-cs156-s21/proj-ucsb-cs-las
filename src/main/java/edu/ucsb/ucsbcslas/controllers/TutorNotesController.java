@@ -72,14 +72,7 @@ public class TutorNotesController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    // private ResponseEntity<String> getIncorrectInputResponse() throws JsonProcessingException {
-    //     Map<String, String> response = new HashMap<String, String>();
-    //     response.put("error", String
-    //             .format("Misformatted Input; Check that the tutor email that was input is assigned to a valid tutor"));
-    //     String body = mapper.writeValueAsString(response);
-    //     return new ResponseEntity<String>(body, HttpStatus.BAD_REQUEST);
-    // }
-
+  
     @PostMapping(value = "/api/member/tutorNotes", produces = "application/json")
     public ResponseEntity<String> createTutorNotes(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid String tutorNotes) throws JsonProcessingException {
@@ -93,22 +86,23 @@ public class TutorNotesController {
                 .findByTutorAssignmentTutorEmail(currentUserEmail);
 
         JSONObject tutorNotesAsJson = new JSONObject(tutorNotes);
-        logger.info("tutorNotesAsJson= {}",tutorNotesAsJson);
+        logger.info("tutorNotesAsJson= {}", tutorNotesAsJson);
         JSONObject officeHoursAsJson = new JSONObject(tutorNotesAsJson.get("onlineOfficeHours").toString());
-        logger.info("officeHoursAsJson= {}",officeHoursAsJson);
+        logger.info("officeHoursAsJson= {}", officeHoursAsJson);
         Long officeHoursId = officeHoursAsJson.getLong("id");
-        logger.info("officeHoursId= {}",officeHoursId);
-        Stream<OnlineOfficeHours> filtered = onlineOfficeHours.stream().filter(ooh -> ooh.getId() == officeHoursId);
-        logger.info("filtered= {}",filtered);
+        logger.info("officeHoursId= {}", officeHoursId);
 
-        if (filtered.count() == 0) {
+        Optional<OnlineOfficeHours> ooh = onlineOfficeHoursRepository.findById(officeHoursId);
+
+       
+
+        if (!ooh.get().getTutorAssignment().getTutor().getEmail().equals(currentUserEmail)) {
             return new ResponseEntity<>(
                     "Unauthorized Request: Email of current user does not match email of office hours selected",
                     HttpStatus.UNAUTHORIZED);
         }
 
-        Optional<OnlineOfficeHours> ooh = onlineOfficeHoursRepository.findById(officeHoursId);
-        logger.info("ooh= {}",ooh);
+        logger.info("ooh= {}", ooh);
         TutorNotes newNotes = new TutorNotes();
         newNotes.setOnlineOfficeHours(ooh.get());
         newNotes.setMessage(tutorNotesAsJson.getString("message"));
