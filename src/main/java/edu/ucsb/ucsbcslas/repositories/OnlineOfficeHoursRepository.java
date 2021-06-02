@@ -15,5 +15,4 @@ public interface OnlineOfficeHoursRepository extends CrudRepository<OnlineOffice
   List<OnlineOfficeHours> findAllByTutorAssignment(TutorAssignment tutorAssignment);
   List<OnlineOfficeHours> findByTutorAssignmentId(int id);
   List<OnlineOfficeHours> findByTutorAssignmentTutorEmail(String email);
-
 }
