@@ -16,11 +16,7 @@ export default ({tutorNotes, isInstructor}) => {
     const renderTutorName = (row) => row?.onlineOfficeHours?.tutorAssignment?.tutor?.firstName + " " +row.onlineOfficeHours?.tutorAssignment?.tutor?.lastName;
     const renderCourseNameYear = (row) => {
         const quarter = row?.onlineOfficeHours?.tutorAssignment?.course?.quarter;
-        console.log("courseTable quarter: ", quarter)
-        if (quarter){
-            return row?.onlineOfficeHours?.tutorAssignment?.course?.name + " " + asHumanQuarter(quarter);
-        }
-        return Null;
+        return row?.onlineOfficeHours?.tutorAssignment?.course?.name + " " + asHumanQuarter(quarter);
     }
 
     const columns = [{
