@@ -18,5 +18,23 @@ const buildCreateRoomSlot = (getToken, onSuccess, onError) => {
   return func
 }
 
+const buildDeleteRoomSlot = (getToken, onSuccess, onError) => {
+  const func = async (id) => {
+    try {
+      await fetchWithToken(`/api/admin/roomslot/${id}`, getToken, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+        noJSON: true,
+      });
+      onSuccess();
+    } catch (err) {
+      onError(err);
+    }
+  }
+  return func;
+}
 
-export { buildCreateRoomSlot/*, buildUpdateRoomSlot*/ };
+
+export { buildCreateRoomSlot, buildDeleteRoomSlot};
