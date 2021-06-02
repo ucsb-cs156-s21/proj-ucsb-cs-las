@@ -9,11 +9,11 @@ import { Button } from "react-bootstrap";
  */
 const RoomSlotTable = ({ roomSlots, admin, deleteRoomSlot }) => {
     
-    const renderDeleteButton = (id) => {
+    /*const renderDeleteButton = (id) => {
         return (
             <Button variant="danger" data-testid="delete-button" onClick={() => deleteRoomSlot(id)}>Delete</Button>
         )
-    }
+    }*/
 
     const columns = [
         {
@@ -49,14 +49,14 @@ const RoomSlotTable = ({ roomSlots, admin, deleteRoomSlot }) => {
         }
     ];
 
-    if (admin) {
+    /*if (admin) {
         columns.push({
             text: "Delete",
             isDummyField: true,
             dataField: "delete",
             formatter: (_cell, row) => renderDeleteButton(row.id)
         });
-    }
+    } */
 
     return <BootstrapTable
         bootstrap4={true}
@@ -66,4 +66,4 @@ const RoomSlotTable = ({ roomSlots, admin, deleteRoomSlot }) => {
     />;
 }
 
-export default { RoomSlotTable, deleteRoomSlot };
+export default { RoomSlotTable, /*deleteRoomSlot*/ };
