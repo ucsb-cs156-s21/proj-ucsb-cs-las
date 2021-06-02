@@ -19,7 +19,7 @@ const TutorNotesForm = ({ createTutorNotes/*, updateTutorNotes, existingTutorNot
 
     const { getAccessTokenSilently: getToken } = useAuth0();
 
-    const { data: officeHoursList, error, isValidating } = useSWR(
+    const { data: officeHoursList, _error, isValidating } = useSWR(
         ["/api/member/officeHours/", getToken],
         fetchWithToken,
         {initialData:[], revalidateOnMount : true}
