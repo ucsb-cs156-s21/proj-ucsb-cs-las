@@ -24,19 +24,18 @@ public interface CSVToObjectService<T> {
             return result;
         } catch (IOException e) {
             getLogger().error("CSV could not be parsed", e);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             getLogger().error("CSV could not be parsed", e);
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException ex) {
-                    getLogger().error("IOException: {}",ex);
+                    getLogger().error("IOException: {}", ex);
                 }
             }
         }
         return null;
     }
 
-} 
-
+}

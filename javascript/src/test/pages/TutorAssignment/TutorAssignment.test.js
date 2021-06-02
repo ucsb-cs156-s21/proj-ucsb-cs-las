@@ -1,18 +1,30 @@
 import React from "react";
-import { waitFor, render } from "@testing-library/react";
+import { waitFor, render, fireEvent } from "@testing-library/react";
 import useSWR from "swr";
+import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import TutorAssignment from "main/pages/TutorAssignment/TutorAssignments";
 import userEvent from "@testing-library/user-event";
 import { useHistory } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
+
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
+const getAccessTokenSilentlySpy = jest.fn();
+const mutateSpy = jest.fn();
+
+jest.mock("react-toast-notifications", () => ({
+  useToasts: jest.fn(),
+}));
 
 jest.mock("main/services/TutorAssignment/TutorAssignmentService", () => ({
   buildCreateTutorAssignment: jest.fn(),
+  buildUpdateTutorAssignment: jest.fn(),
+  uploadTutorAssignmentCSV: jest.fn(),
   buildDeleteTutorAssignment: jest.fn(),
-  buildUpdateTutorAssignment: jest.fn()
-}) );
+
+}));
+
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));
@@ -21,51 +33,62 @@ describe("TutorAssignment page test", () => {
   const tutorAssignments = [
     {
       id: 1,
-      course:  {name: "CMPSC 156",
-                id: 1,
-                quarter: "20202",
-                instructorFirstName: "Phill",
-                instructorLastName: "Conrad",
-                instructorEmail: "phtcon@ucsb.edu",
-                },
-      tutor:   {email: "scottpchow@ucsb.edu",
-                firstName: "Scott",
-                id: 1,
-                lastName: "Chow"},
+      course: {
+        name: "CMPSC 156",
+        id: 1,
+        quarter: "20202",
+        instructorFirstName: "Phill",
+        instructorLastName: "Conrad",
+        instructorEmail: "phtcon@ucsb.edu",
+      },
+      tutor: {
+        email: "scottpchow@ucsb.edu",
+        firstName: "Scott",
+        id: 1,
+        lastName: "Chow",
+      },
       assignmentType: "TA",
     },
     {
+      id: 2,
+      course: {
+        name: "CMPSC 148",
         id: 2,
-        course:{name: "CMPSC 148",
-                id: 2,
-                quarter: "20204",
-                instructorFirstName: "Jack",
-                instructorLastName: "Smith",
-                instructorEmail: "js@ucsb.edu",
-                },
-        tutor: {email: "alu@ucsb.edu",
-                firstName: "Andrew",
-                id: 2,
-                lastName: "LU"},
-        assignmentType: "LA",
+        quarter: "20204",
+        instructorFirstName: "Jack",
+        instructorLastName: "Smith",
+        instructorEmail: "js@ucsb.edu",
+      },
+      tutor: {
+        email: "alu@ucsb.edu",
+        firstName: "Andrew",
+        id: 2,
+        lastName: "LU",
+      },
+      assignmentType: "LA",
     },
   ];
   const user = {
     name: "test user",
   };
-  const getAccessTokenSilentlySpy = jest.fn();
-  const mutateSpy = jest.fn();
+
+
+  const addToast = jest.fn();
+
 
   beforeEach(() => {
     useAuth0.mockReturnValue({
       admin: undefined,
       getAccessTokenSilently: getAccessTokenSilentlySpy,
-      user: user
+      user: user,
     });
     useSWR.mockReturnValueOnce({
-      data: {role: "admin"},
+      data: { role: "admin" },
       error: undefined,
       mutate: mutateSpy,
+    });
+    useToasts.mockReturnValue({
+      addToast: addToast,
     });
   });
 
@@ -75,9 +98,9 @@ describe("TutorAssignment page test", () => {
 
   test("renders without crashing", () => {
     useSWR.mockReturnValue({
-        data: tutorAssignments,
-        error: undefined,
-        mutate: mutateSpy,
+      data: tutorAssignments,
+      error: undefined,
+      mutate: mutateSpy,
     });
     render(<TutorAssignment />);
   });
@@ -95,7 +118,7 @@ describe("TutorAssignment page test", () => {
 
   test("renders an error message when there is an error", async () => {
     useSWR.mockReturnValueOnce({
-      data: {role: "admin"},
+      data: { role: "admin" },
       error: undefined,
       mutate: mutateSpy,
     });
@@ -107,7 +130,7 @@ describe("TutorAssignment page test", () => {
 
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
-      push: pushSpy
+      push: pushSpy,
     });
 
     const { getByText } = render(<TutorAssignment />);
@@ -120,23 +143,21 @@ describe("TutorAssignment page test", () => {
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
   });
 
-
-
   test("can click to add a tutor assignment if admin", async () => {
     useSWR.mockReturnValueOnce({
-        data: {role: "admin"},
-        error: undefined,
-        mutate: mutateSpy,
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy,
     });
     useSWR.mockReturnValueOnce({
-        data: tutorAssignments,
-        error: undefined,
-        mutate: mutateSpy,
+      data: tutorAssignments,
+      error: undefined,
+      mutate: mutateSpy,
     });
 
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
-      push: pushSpy
+      push: pushSpy,
     });
 
     const { getByText } = render(<TutorAssignment />);
@@ -148,19 +169,19 @@ describe("TutorAssignment page test", () => {
 
   test("can click to add a tutor assignment if instructor", async () => {
     useSWR.mockReturnValueOnce({
-        data: [{},{}],
-        error: undefined,
-        mutate: mutateSpy,
+      data: [{}, {}],
+      error: undefined,
+      mutate: mutateSpy,
     });
     useSWR.mockReturnValueOnce({
-        data: tutorAssignments,
-        error: undefined,
-        mutate: mutateSpy,
+      data: tutorAssignments,
+      error: undefined,
+      mutate: mutateSpy,
     });
 
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
-      push: pushSpy
+      push: pushSpy,
     });
 
     const { getByText } = render(<TutorAssignment />);
@@ -171,4 +192,54 @@ describe("TutorAssignment page test", () => {
   });
 
 
+  test("check if the file is uploaded successfully", async () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    useSWR.mockReturnValue({
+      data: tutorAssignments,
+      error: undefined,
+      mutate: mutateSpy,
+    });
+
+    const csvFile = new File(["foo"], "sample.csv", { type: "file/csv" });
+
+    const { getByTestId } = render(<TutorAssignment />);
+    const csvHolder = getByTestId("csv-input");
+    await waitFor(() =>
+      fireEvent.change(csvHolder, {
+        target: { files: [csvFile] },
+      })
+    );
+    const csvF = document.getElementById("custom-file-input");
+    expect(csvF.files[0].name).toBe("sample.csv");
+    expect(csvF.files.length).toBe(1);
+  });
+
+  test.skip("clicking upload button adds a toast on error", async () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    useSWR.mockReturnValue({
+      data: tutorAssignments,
+      error: undefined,
+      mutate: mutateSpy,
+    });
+    fetchWithToken.mockImplementation(() => {
+      return {};
+    });
+    const { getByText } = render(<TutorAssignment />);
+    const csvButton = getByText("Upload");
+    userEvent.click(csvButton);
+
+    await waitFor(() => expect(addToast).toHaveBeenCalledTimes(1));
+    expect(addToast).toHaveBeenCalledWith("Error Uploading CSV", {
+      appearance: 'error',
+      
+    });
+  });
 });
