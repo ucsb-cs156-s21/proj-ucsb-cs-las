@@ -21,7 +21,7 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
 
     function zoomRoomLinkFormatter(cell) {
         return (
-            <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
+            <div><a target="_blank" rel = "noopener noreferrer" href={cell}> Link </a></div>
         );
     }
 
