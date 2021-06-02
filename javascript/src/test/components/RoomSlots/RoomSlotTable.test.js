@@ -1,6 +1,11 @@
 import React from "react";
-import { render } from "@testing-library/react";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable"
+import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+jest.mock("react-router-dom", () => ({
+  useHistory: jest.fn(),
+}));
 
 describe("RoomSlotTable tests", () => {
     const slots = [
@@ -31,6 +36,13 @@ describe("RoomSlotTable tests", () => {
 
     test("renders without crashing not admin", () => {
     render(<RoomSlotTable roomSlots={slots} admin={false} deleteRoomSlot={deleteRoomSlot} />);
+    });
+  
+    test("renders with delete buttons when admin true", async () => {
+    const { getByTestId } = render(<RoomSlotTable roomSlots={slots} admin={true} deleteRoomSlot={deleteRoomSlot}/>);
+    const deleteButton = getByTestId('delete-button-2');
+    expect(deleteButton).toBeInTheDocument();
+    userEvent.click(deleteButton);
   });
 
 });

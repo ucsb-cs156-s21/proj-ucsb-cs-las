@@ -4,6 +4,8 @@ import useSWR from "swr";
 import { Button } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 
+import { buildDeleteRoomSlot } from "main/services/RoomSlots/RoomSlotService"
+
 import { fetchWithToken } from "main/utils/fetch";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable";
 import Loading from "../../components/Loading/Loading";
@@ -13,12 +15,13 @@ const RoomSlots = () => {
   const { data: roleInfo } = useSWR(["/api/myRole", getToken], fetchWithToken);
   const history = useHistory();
 
-  const { data: roomSlotList, error} = useSWR(
+  const { data: roomSlotList, error, mutate:mutateRoomSlots} = useSWR(
     ["/api/public/roomslot", getToken],
     fetchWithToken
   );
 
   const isAdmin = roleInfo?.role?.toLowerCase() === "admin";
+  const deleteRoomSlot = buildDeleteRoomSlot(getToken, mutateRoomSlots);
 
   if (error) {
     return (
@@ -35,8 +38,8 @@ const RoomSlots = () => {
       {isAdmin && (
         <Button className="mb-3" onClick={()=>history.push("/roomslots/new")} >New Room Slot</Button>
       )}
-      {(roomSlotList) && (
-        <RoomSlotTable roomSlots={roomSlotList} />
+      {isAdmin && (roomSlotList) && (
+        <RoomSlotTable roomSlots={roomSlotList} admin={true} deleteRoomSlot={deleteRoomSlot}/>
       )}
     </>
   );
