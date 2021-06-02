@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import java.io.Reader;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -33,6 +35,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.ucsbcslas.advice.AuthControllerAdvice;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.entities.TutorAssignment;
@@ -129,7 +132,6 @@ public class OnlineOfficeHoursController {
         }
         String email = authControllerAdvice.getUser(authorization).getEmail();
         List<OnlineOfficeHours> officeHourList = officeHoursRepository.findByTutorAssignmentTutorEmail(email);
-        ObjectMapper mapper = new ObjectMapper();
 
         String body = mapper.writeValueAsString(officeHourList);
         return ResponseEntity.ok().body(body);
@@ -221,13 +223,15 @@ public class OnlineOfficeHoursController {
                 OnlineOfficeHours OH = null;
                 List<OnlineOfficeHours> existingOfficeHours = officeHoursRepository.findAllByTutorAssignment(TA);
                 for(OnlineOfficeHours existingOfficeHour : existingOfficeHours){
-                    if (existingOfficeHour.getRoomSlot().getDayOfWeek().equals(dayOfWeek)  && existingOfficeHour.getRoomSlot().getStartTime().equals(startTime) &&existingOfficeHour.getRoomSlot().getEndTime().equals(endTime) ){
+                    if (existingOfficeHour.getRoomSlot().getDayOfWeek().toString().equals(dayOfWeek)  && existingOfficeHour.getRoomSlot().getStartTime().equals(LocalTime.parse(startTime)) &&existingOfficeHour.getRoomSlot().getEndTime().equals(LocalTime.parse(endTime)) ){
                         OH = existingOfficeHour;
                         
                     }
                 }
                 if(OH ==null){
-                    OH = new OnlineOfficeHours(TA, dayOfWeek, startTime, endTime, zoomRoomLink, notes);
+                    RoomSlot newRoomSlotData = new RoomSlot(zoomRoomLink, quarter, DayOfWeek.valueOf(dayOfWeek),
+                        LocalTime.parse(startTime), LocalTime.parse(endTime));
+                    OH = new OnlineOfficeHours(TA, newRoomSlotData, zoomRoomLink, notes);
                     savedOfficeHour.add(officeHoursRepository.save(OH));
                 }
             }

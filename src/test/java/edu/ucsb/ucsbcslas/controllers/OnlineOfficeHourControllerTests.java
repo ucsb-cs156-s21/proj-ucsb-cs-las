@@ -130,7 +130,8 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
         Course c = new Course(1L, "CMPSC156", "20213", "Phil", "Conrad", "phtconrad@ucsb.edu");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes"));
+        RoomSlot roomSlot = new RoomSlot("Library", "20213", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes"));
         when(mockOnlineOfficeHoursRepository.findByTutorAssignmentTutorEmail(anyString())).thenReturn(expectedOfficeHours);
         MvcResult response = mockMvc.perform(get("/api/member/officeHours").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();

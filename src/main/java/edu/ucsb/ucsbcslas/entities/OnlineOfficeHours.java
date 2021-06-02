@@ -60,14 +60,6 @@ public class OnlineOfficeHours {
     this.notes = notes;
   }
 
-  public OnlineOfficeHours(TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
-      String zoomRoomLink, String notes) {
-    this.tutorAssignment = tutorAssignment;
-    this.roomSlot = roomSlot;
-    this.zoomRoomLink = zoomRoomLink;
-    this.notes = notes;
-  }
-
   public Long getId() {
     return this.id;
   }

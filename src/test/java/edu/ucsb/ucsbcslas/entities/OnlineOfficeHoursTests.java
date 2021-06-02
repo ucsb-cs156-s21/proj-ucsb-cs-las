@@ -131,21 +131,24 @@ public class OnlineOfficeHoursTests {
 
   @Test
   public void testWithoutID_equalsAnother() throws Exception {
-    OnlineOfficeHours ooh1 =   new OnlineOfficeHours(new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
-    OnlineOfficeHours ooh2 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    RoomSlot rs = new RoomSlot("Library", "20202", DayOfWeek.MONDAY, LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0));
+    OnlineOfficeHours ooh1 =   new OnlineOfficeHours(new TutorAssignment(), rs, "https://zoom.example.org/12345","notes");
+    OnlineOfficeHours ooh2 =   new OnlineOfficeHours(new TutorAssignment(), rs, "https://zoom.example.org/12345","notes");
     assertEquals(ooh1, ooh2);
   }
 
   @Test
   public void testWithoutID_hashCode() throws Exception {
-    OnlineOfficeHours ooh1 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
-    OnlineOfficeHours ooh2 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    RoomSlot rs = new RoomSlot("Library", "20202", DayOfWeek.MONDAY, LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0));
+    OnlineOfficeHours ooh1 =   new OnlineOfficeHours( new TutorAssignment(), rs, "https://zoom.example.org/12345","notes");
+    OnlineOfficeHours ooh2 =   new OnlineOfficeHours( new TutorAssignment(), rs, "https://zoom.example.org/12345","notes");
     assertEquals(ooh1.hashCode(), ooh2.hashCode());
   }
 
   @Test
   public void testWithoutID_toString() throws Exception {
-    OnlineOfficeHours ooh1 =   new OnlineOfficeHours( new TutorAssignment(), "Monday", "12:00", "13:00", "https://zoom.example.org/12345","notes");
+    RoomSlot rs = new RoomSlot("Library", "20202", DayOfWeek.MONDAY, LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0));
+    OnlineOfficeHours ooh1 =   new OnlineOfficeHours( new TutorAssignment(), rs, "https://zoom.example.org/12345","notes");
     String expected = "{ id='null', tutorAssignment='{ id='null', course='null', tutor='null', assignmentType='null'}', dayOfWeek='Monday', startTime='12:00', endTime='13:00', zoomRoomLink='https://zoom.example.org/12345', notes='notes'}";
     assertEquals(expected, ooh1.toString());
   }
