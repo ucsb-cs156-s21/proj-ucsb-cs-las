@@ -21,21 +21,20 @@ describe("RoomSlotSelector tests", () => {
         })
     });
 
-    test("renders usable selector", () => {
+    test("renders usable selector", async () => {
         const onChange = jest.fn();
 
-        const { getByPlaceholderText, getByText } = render(
+        const { debug, getByText } = render(
             <RoomSlotSelector
-                roomSlots={slots}
+                roomSlots={roomSlotFixtures.multipleRoomSlots}
                 onChange={onChange}
             />
         );
 
-        userEvent.click(getByPlaceholderText("Select a room slot"));
-        userEvent.click(getByText("S21 Library Monday 08:00:00-15:00:00"));
+        userEvent.click(getByText("20212 Library Monday 08:00:00-15:00:00"));
         expect(onChange).toHaveBeenCalledWith(1);
 
-        userEvent.click(getByText("S21 HSSB Tuesday 08:00:00-15:00:00"));
+        userEvent.click(getByText("20212 HSSB Tuesday 08:00:00-15:00:00"));
         expect(onChange).toHaveBeenCalledWith(2);
     });
 });

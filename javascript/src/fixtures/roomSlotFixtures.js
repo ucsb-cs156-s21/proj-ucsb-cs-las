@@ -29,7 +29,7 @@ const roomSlotFixtures = {
         {
             id: 1,
             location: "Library",
-            quarter: "S21",
+            quarter: "20212",
             dayOfWeek: "MONDAY",
             startTime: "08:00:00",
             endTime: "15:00:00",
