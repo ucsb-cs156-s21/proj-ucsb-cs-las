@@ -1,7 +1,8 @@
 import React from "react";
 import RoomSlotTable from "main/components/RoomSlots/RoomSlotTable"
 import { useHistory } from "react-router-dom";
-import { waitFor, render, userEvent } from "@testing-library/react";
+import { waitFor, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 describe("RoomSlotTable tests", () => {
     const slots = [
