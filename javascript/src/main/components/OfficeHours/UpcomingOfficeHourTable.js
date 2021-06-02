@@ -19,10 +19,7 @@ export default ({upcomingOfficeHours}) => {
     }
 
     const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
-    const renderCourseNameYear = (row) => {
-        const quarter = row.tutorAssignment.course.quarter;
-        return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
-    }
+    const renderCourseNameYear = (row) => row.tutorAssignment.coursenameYear;
     const renderEmail = (row) => row.tutorAssignment.tutor.email;
   
     const { data: roleInfo } = useSWR(
