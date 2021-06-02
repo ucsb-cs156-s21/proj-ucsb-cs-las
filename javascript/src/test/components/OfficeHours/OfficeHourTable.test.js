@@ -48,7 +48,7 @@ describe("OfficeHour table tests", () => {
   test("test Zoom Link Clickable", () => {
     const expectedLink = "test.zoom.com";
     const { getByText } = render(<OfficeHourTable officeHours = { testZoomLinkOfficeHour }/>);
-    const actual = getByText("test.zoom.com").closest('a').getAttribute("href");
+    const actual = getByText("Link").closest('a').getAttribute("href");
     expect(actual).toEqual(expectedLink);
   });
 
