@@ -28,10 +28,6 @@ const TutorNotesForm = ({ createTutorNotes/*, updateTutorNotes, existingTutorNot
     console.log("officeHoursList = ", officeHoursList);
     console.log("isValidating = ", isValidating);
 
-    if (error){
-        console.log("error fetching data from /api/member/officeHours", error);
-    }
-
     useEffect(() => {
         if (officeHoursList && officeHoursList.length){
             setOfficeHours(officeHoursList.length > 0 ? officeHoursList[0] : {});
