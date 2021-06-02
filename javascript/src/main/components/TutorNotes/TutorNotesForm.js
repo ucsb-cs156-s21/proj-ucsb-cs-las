@@ -19,11 +19,18 @@ const TutorNotesForm = ({ createTutorNotes/*, updateTutorNotes, existingTutorNot
 
     const { getAccessTokenSilently: getToken } = useAuth0();
 
-    const { data: officeHoursList, _error } = useSWR(
+    const { data: officeHoursList, error, isValidating } = useSWR(
         ["/api/member/officeHours/", getToken],
         fetchWithToken,
-        {initialData:[]}
+        {initialData:[], revalidateOnMount : true}
     );
+
+    console.log("officeHoursList = ", officeHoursList);
+    console.log("isValidating = ", isValidating);
+
+    if (error){
+        console.log("error fetching data from /api/member/officeHours", error);
+    }
 
     useEffect(() => {
         if (officeHoursList && officeHoursList.length){
