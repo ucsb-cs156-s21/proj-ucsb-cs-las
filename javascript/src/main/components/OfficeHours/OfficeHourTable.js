@@ -1,9 +1,18 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
-
+import { useHistory } from "react-router-dom";
+import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
 
 export default ({officeHours,admin,deleteOfficeHour}) => {
+    let history = useHistory();
+
+    const renderEditButton = (id) => {
+        return (
+            <Button data-testid={"edit-button-"+id} onClick={() => {history.push(`/officeHours/edit/${id}`) }}>Edit</Button>
+        )
+    }
+
     const renderDeleteButton = (id) => {
         return (
             <Button variant="danger" data-testid="delete-button" onClick={() => deleteOfficeHour(id)}>Delete</Button>
@@ -15,23 +24,47 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
             <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
         );
     }
-   
+
+    const renderTutorName = (row) => row.tutorAssignment == null ? "" : row.tutorAssignment.tutor.firstName + " " +row.tutorAssignment.tutor.lastName;
+
     const columns = [{
         dataField: 'id',
         text: 'id',
         sort: true
     }, {
-        dataField: 'startTime',
+        dataField: 'tutorAssignment.id',
+        text: 'Tutor Assignment',
+        sort: true
+    }, {
+        dataField: 'tutorName',
+        text: 'Tutor Name',
+        sort: true,
+        formatter: (_cell, row) => renderTutorName(row)
+    }, {
+        dataField: 'tutorAssignment.course.name',
+        text: 'Course Name',
+        sort: true
+    }, {
+        dataField: 'tutorAssignment.course.quarter',
+        text: 'Quarter',
+        sort: true
+    }, {
+        dataField: 'roomSlot.startTime',
         text: 'Start Time',
-        sort: true
+        sort: true,
+        formatter: toAMPMFormat
     }, {
-        dataField: 'endTime',
+        dataField: 'roomSlot.endTime',
         text: 'End Time',
-        sort: true
+        sort: true,
+        formatter: toAMPMFormat
     }, {
-        dataField: 'dayOfWeek',
+        dataField: 'roomSlot.dayOfWeek',
         text: 'Day',
-        sort: true
+        sort: true,
+        formatter: (day) => {
+            return day.substring(0, 1) + day.substring(1).toLowerCase();
+        }
     }, {
         dataField: 'zoomRoomLink',
         text: 'Zoom Room',
@@ -41,14 +74,16 @@ export default ({officeHours,admin,deleteOfficeHour}) => {
         dataField: 'notes',
         text: 'Notes',
         sort: true
-    }, {
-        dataField: 'tutorAssignment.id',
-        text: 'Tutor Assignment',
-        sort: true
     }
     ];
 
     if (admin) {
+        columns.push({
+            text: "Edit",
+            isDummyField: true,
+            dataField: "edit",
+            formatter: (_cell, row) => renderEditButton(row.id)
+        });
         columns.push({
             text: "Delete",
             isDummyField: true,
