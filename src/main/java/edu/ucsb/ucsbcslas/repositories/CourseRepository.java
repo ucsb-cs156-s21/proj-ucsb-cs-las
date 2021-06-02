@@ -17,6 +17,7 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
   Optional<Course> findByName(String name);
   Optional<Course> findById(Long id);
   List<Course> findByQuarter(String quarter);
+  List<Course> findByNameAndQuarterAndInstructorEmail(String name, String quarter, String email);
 
   @Query("SELECT DISTINCT quarter FROM Course")
   List<String> selectDistinctQuarter();

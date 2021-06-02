@@ -10,6 +10,18 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
+import org.mockito.Mock;
+
+
+import java.io.Reader;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentModel;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -40,7 +50,6 @@ import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
-import jdk.jfr.Timestamp;
 import edu.ucsb.ucsbcslas.models.Course;
 import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 
@@ -53,6 +62,10 @@ public class TutorAssignmentControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+
     @MockBean
     TutorAssignmentRepository mockTutorAssignmentRepository;
 
@@ -64,6 +77,10 @@ public class TutorAssignmentControllerTests {
 
     @MockBean
     AuthControllerAdvice mockAuthControllerAdvice;
+    
+    @MockBean
+    CSVToObjectService mockCSVToObjectService;
+    
 
     private String userToken() {
         return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.MkiS50WhvOFwrwxQzd5Kp3VzkQUZhvex3kQv-CLeS3M";
@@ -616,5 +633,140 @@ public class TutorAssignmentControllerTests {
         Set<String> actualCourseNumber = objectMapper.readValue(responseString, new TypeReference<Set<String>>() {
         });
         assertEquals(actualCourseNumber, expectedCourseNumbers);
+    }
+
+
+    @Test
+    public void testUploadFileThrowsRuntime_unauthorizedUser() throws Exception {
+            when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+
+            MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                            "".getBytes());
+            MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult response = mockMvc
+                            .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                            .andExpect(status().isUnauthorized()).andReturn();
+
+            verify(mockTutorAssignmentRepository, never()).saveAll(any());
+    }
+
+    @Test
+    public void testUploadFileThrowsRuntime_isEmptyFile() throws Exception {
+            when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+            MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                            "".getBytes());
+            MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult response = mockMvc
+                            .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                            .andExpect(status().isBadRequest()).andReturn();
+
+            verify(mockTutorAssignmentRepository, never()).saveAll(any());
+    }
+
+    @Test
+    public void testUploadFileIfNothingExists() throws Exception {
+            when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+            List<TutorAssignmentModel> expectedTutorAssignmentModel = new ArrayList<TutorAssignmentModel>();
+            expectedTutorAssignmentModel.add(new TutorAssignmentModel("CMPSC 48", "20201", "Joe", "Gaucho",
+                            "joegaucho@ucsb.edu", "Joe", "Gaucho", "joegaucho@ucsb.edu", "LA"));
+            Course testCour = new Course("CMPSC 48", "20201", "Joe", "Gaucho", "joegaucho@ucsb.edu");
+            Tutor testTut = new Tutor("Joe", "Gaucho", "joegaucho@ucsb.edu");
+            TutorAssignment testTutorAssignment = new TutorAssignment(testCour, testTut, "LA");
+            when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
+                            .thenReturn(expectedTutorAssignmentModel);
+            MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                            "value,done\ntodo,false".getBytes());
+            MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult response = mockMvc
+                            .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer" + userToken()))
+                            .andExpect(status().isOk()).andReturn();
+            verify(mockTutorAssignmentRepository, times(1)).save(testTutorAssignment);
+            verify(mockTutorRepository, times(1)).save(testTut);
+            verify(mockCourseRepository, times(1)).save(testCour);
+
+    }
+
+    @Test
+    public void testUploadFile_IfCourseExists() throws Exception {
+            when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+            List<TutorAssignmentModel> expectedTutorAssignmentModel = new ArrayList<TutorAssignmentModel>();
+            expectedTutorAssignmentModel.add(new TutorAssignmentModel("CMPSC 48", "20201", "Joe", "Gaucho",
+                            "joegaucho@ucsb.edu", "Joe", "Gaucho", "joegaucho@ucsb.edu", "LA"));
+            Course testCour = new Course("CMPSC 48", "20201", "Joe", "Gaucho", "joegaucho@ucsb.edu");
+            List<Course> courses = new ArrayList<Course>();
+            courses.add(testCour);
+            Tutor testTut = new Tutor("Joe", "Gaucho", "joegaucho@ucsb.edu");
+            TutorAssignment testTutorAssignment = new TutorAssignment(testCour, testTut, "LA");
+            when(mockCourseRepository.findByNameAndQuarterAndInstructorEmail(anyString(), anyString(), anyString()))
+                            .thenReturn(courses);
+            when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
+                            .thenReturn(expectedTutorAssignmentModel);
+            MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                            "value,done\ntodo,false".getBytes());
+            MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult response = mockMvc
+                            .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer" + userToken()))
+                            .andExpect(status().isOk()).andReturn();
+            verify(mockCourseRepository, times(0)).save(testCour);
+    }
+
+    @Test
+    public void testUploadFile_IfTutorExists() throws Exception {
+            when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+            List<TutorAssignmentModel> expectedTutorAssignmentModel = new ArrayList<TutorAssignmentModel>();
+            expectedTutorAssignmentModel.add(new TutorAssignmentModel("CMPSC 48", "20201", "Joe", "Gaucho",
+                            "joegaucho@ucsb.edu", "Joe", "Gaucho", "joegaucho@ucsb.edu", "LA"));
+            Course testCour = new Course("CMPSC 48", "20201", "Joe", "Gaucho", "joegaucho@ucsb.edu");
+            Tutor testTut = new Tutor("Joe", "Gaucho", "joegaucho@ucsb.edu");
+            Optional<Tutor> tutors = Optional.of(testTut);
+
+            TutorAssignment testTutorAssignment = new TutorAssignment(testCour, testTut, "LA");
+            when(mockTutorRepository.findByEmail(anyString())).thenReturn(tutors);
+
+            when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
+                            .thenReturn(expectedTutorAssignmentModel);
+            MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                            "value,done\ntodo,false".getBytes());
+            MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult response = mockMvc
+                            .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer" + userToken()))
+                            .andExpect(status().isOk()).andReturn();
+            verify(mockTutorRepository, times(0)).save(testTut);
+    }
+
+    @Test
+    public void testUploadFile_IfTutorAssignmentExists() throws Exception {
+            when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+
+            List<TutorAssignmentModel> expectedTutorAssignmentModel = new ArrayList<TutorAssignmentModel>();
+            expectedTutorAssignmentModel.add(new TutorAssignmentModel("CMPSC 48", "20201", "Joe", "Gaucho",
+                            "joegaucho@ucsb.edu", "Joe", "Gaucho", "joegaucho@ucsb.edu", "LA"));
+            Course testCour = new Course("CMPSC 48", "20201", "Joe", "Gaucho", "joegaucho@ucsb.edu");
+            Tutor testTut = new Tutor("Joe", "Gaucho", "joegaucho@ucsb.edu");
+            TutorAssignment testTutorAssignment = new TutorAssignment(testCour, testTut, "LA");
+            List<TutorAssignment> tutorAssignments = new ArrayList<TutorAssignment>();
+            tutorAssignments.add(testTutorAssignment);
+
+            when(mockTutorAssignmentRepository.findAllByTutor(testTut)).thenReturn(tutorAssignments);
+
+            when(mockCSVToObjectService.parse(any(Reader.class), eq(TutorAssignmentModel.class)))
+                            .thenReturn(expectedTutorAssignmentModel);
+            MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
+                            "value,done\ntodo,false".getBytes());
+            MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult response = mockMvc
+                            .perform(multipart("/api/member/tutorAssignments/upload").file(mockFile)
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer" + userToken()))
+                            .andExpect(status().isOk()).andReturn();
+            verify(mockTutorAssignmentRepository, times(0)).save(testTutorAssignment);
     }
 }
