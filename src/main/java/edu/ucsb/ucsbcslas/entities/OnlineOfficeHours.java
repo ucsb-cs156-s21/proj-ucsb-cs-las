@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -55,6 +54,14 @@ public class OnlineOfficeHours {
   public OnlineOfficeHours(Long id, TutorAssignment tutorAssignment,
                            RoomSlot roomSlot, String zoomRoomLink, String notes) {
     this.id = id;
+    this.tutorAssignment = tutorAssignment;
+    this.roomSlot = roomSlot;
+    this.zoomRoomLink = zoomRoomLink;
+    this.notes = notes;
+  }
+
+  public OnlineOfficeHours(TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
+      String zoomRoomLink, String notes) {
     this.tutorAssignment = tutorAssignment;
     this.roomSlot = roomSlot;
     this.zoomRoomLink = zoomRoomLink;
