@@ -25,7 +25,7 @@ describe("UpcomingOfficeHour table tests", () => {
 
   test("test Zoom Link Clickable when logged in", () => {
     const expectedLink = "test.zoom.com";
-    const { getByText } = render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHour}/>);
+    const { getByText } = render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHour} isMember = {true}/>);
     const actual = getByText("test.zoom.com").closest('a').getAttribute("href");
     expect(actual).toEqual(expectedLink);
   });
