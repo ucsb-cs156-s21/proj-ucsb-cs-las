@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -70,7 +71,7 @@ public class TutorNotesControllerTests {
         AuthControllerAdvice mockAuthControllerAdvice;
 
         @MockBean
-        OnlineOfficeHoursRepository onlineOfficeHoursRepository;
+        OnlineOfficeHoursRepository mockOnlineOfficeHoursRepository;
 
         @MockBean
         TutorAssignmentRepository mockTutorAssignmentRepository;
@@ -205,6 +206,78 @@ public class TutorNotesControllerTests {
                                 });
 
                 assertEquals(expectedTutorNotesList, actualTutorNotesList);
+
+        }
+
+        @Test
+        public void testGetTutorNotes_unauthorizedIfNotMember() throws Exception {
+                mockMvc.perform(get("/api/member/tutorNotes/").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                                .andExpect(status().isUnauthorized());
+        }
+
+        @Test
+        public void testCreateTutorNotes_unauthorizedIfNotMember() throws Exception {
+                AppUser user = new AppUser(1L, "pconrad@ucsb.edu", "Phil", "Conrad");
+                Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
+                Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
+                TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
+                                "10:00", "link", "notes");
+
+                TutorNotes expectedTutorNotes = new TutorNotes();
+                expectedTutorNotes.setId(1L);
+                expectedTutorNotes.setOnlineOfficeHours(onlineOfficeHours);
+                expectedTutorNotes.setMessage("Notes example");
+
+                String requestBody = objectMapper.writeValueAsString(expectedTutorNotes);
+
+                mockMvc.perform(post("/api/member/tutorNotes/").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8").content(requestBody)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+                                .andExpect(status().isUnauthorized());
+        }
+
+        @Test
+        public void testCreateTutorNotes_authorized() throws Exception {
+                AppUser user = new AppUser(1L, "cgaucho@ucsb.edu", "Chris", "Gaucho");
+                Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
+                Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
+                TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
+                                "10:00", "link", "notes");
+
+                TutorNotes expectedTutorNotes = new TutorNotes();
+                expectedTutorNotes.setId(1L);
+                expectedTutorNotes.setOnlineOfficeHours(onlineOfficeHours);
+                expectedTutorNotes.setMessage("Notes example");
+
+                // List<TutorNotes> expectedTutorNotesList = new ArrayList<>();
+                // expectedTutorNotesList.add(expectedTutorNotes);
+
+                String requestBody = objectMapper.writeValueAsString(expectedTutorNotes);
+                List<OnlineOfficeHours> onlineOfficeHoursList= new ArrayList<>();
+                onlineOfficeHoursList.add(onlineOfficeHours);
+                
+
+                
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+                when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(user);
+                when(mockTutorNotesRepository.save(eq(expectedTutorNotes))).thenReturn(expectedTutorNotes);
+                when(mockOnlineOfficeHoursRepository.findByTutorAssignmentTutorEmail(eq("cgaucho@ucsb.edu"))).thenReturn(onlineOfficeHoursList);
+                when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.of(onlineOfficeHours));
+
+                MvcResult response = mockMvc.perform(post("/api/member/tutorNotes/").with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").content(requestBody)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk())
+                                .andReturn();
+
+                // verify(mockTutorNotesRepository, times(1)).save(expectedTutorNotes);
+
+                // String responseString = response.getResponse().getContentAsString();
+                // TutorNotes actualTutorNotes = objectMapper.readValue(responseString, TutorNotes.class);
+                // assertEquals(expectedTutorNotes, actualTutorNotes);
 
         }
 

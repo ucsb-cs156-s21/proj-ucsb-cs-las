@@ -93,9 +93,13 @@ public class TutorNotesController {
                 .findByTutorAssignmentTutorEmail(currentUserEmail);
 
         JSONObject tutorNotesAsJson = new JSONObject(tutorNotes);
-        JSONObject officeHoursAsJson = new JSONObject(tutorNotesAsJson.get("officeHours").toString());
+        logger.info("tutorNotesAsJson= {}",tutorNotesAsJson);
+        JSONObject officeHoursAsJson = new JSONObject(tutorNotesAsJson.get("onlineOfficeHours").toString());
+        logger.info("officeHoursAsJson= {}",officeHoursAsJson);
         Long officeHoursId = officeHoursAsJson.getLong("id");
+        logger.info("officeHoursId= {}",officeHoursId);
         Stream<OnlineOfficeHours> filtered = onlineOfficeHours.stream().filter(ooh -> ooh.getId() == officeHoursId);
+        logger.info("filtered= {}",filtered);
 
         if (filtered.count() == 0) {
             return new ResponseEntity<>(
@@ -104,6 +108,7 @@ public class TutorNotesController {
         }
 
         Optional<OnlineOfficeHours> ooh = onlineOfficeHoursRepository.findById(officeHoursId);
+        logger.info("ooh= {}",ooh);
         TutorNotes newNotes = new TutorNotes();
         newNotes.setOnlineOfficeHours(ooh.get());
         newNotes.setMessage(tutorNotesAsJson.getString("message"));
