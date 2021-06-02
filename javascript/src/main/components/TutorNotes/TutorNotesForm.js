@@ -21,7 +21,7 @@ const TutorNotesForm = ({ createTutorNotes, updateTutorNotes, existingTutorNotes
 
     const { getAccessTokenSilently: getToken } = useAuth0();
 
-    const { data: officeHoursList, error } = useSWR(
+    const { data: officeHoursList, _error } = useSWR(
         ["/api/member/officeHours/", getToken],
         fetchWithToken,
         {initialData:[]}

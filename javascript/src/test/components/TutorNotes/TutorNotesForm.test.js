@@ -7,33 +7,17 @@ import userEvent from "@testing-library/user-event";
 jest.mock("swr");
 
 describe("TutorNotesForm tests", () => {
-    const courses = [
-        {
-        name: "CMPSC 156",
-        id: 1,
-        quarter: "20202",
-        instructorFirstName: "Phill",
-        instructorLastName: "Conrad",
-        instructorEmail: "phtcon@ucsb.edu",
-        },
-        {
-        name: "CMPSC 148",
-        id: 2,
-        quarter: "20203",
-        instructorFirstName: "Chandra",
-        instructorLastName: "Krintz",
-        instructorEmail: "krintz@example.org",
-        },
-    ];
-
-    const tutors = [
-      {
-        email: "scottpchow@ucsb.edu",
-        firstName: "Scott",
-        id: 1,
-        lastName: "Chow" 
-      }
-    ];
+  const sampleOfficeHour = {
+    "id": "",
+    "startTime": "2:00PM",
+    "endTime": "3:00PM",
+    "dayOfWeek": "Wednesday",
+    "zoomRoomLink": "https://ucsb.zoom.us.test",
+    "notes": "noted",
+    "tutorAssignment": {
+      "id": 2,
+    },
+  };
 
     const sampleTutorNotes = {
           id: 1,
@@ -66,27 +50,7 @@ describe("TutorNotesForm tests", () => {
                 lastName: "Chow"},
         message: "TA",
       };
-
     const mutateSpy = jest.fn();
-    const setupSWRMocks = () => {
-      useSWR.mockImplementation(([endpoint, _getToken], _fetch) => { 
-            const coursesResult = {
-              data: courses,
-              error: undefined,
-              mutate: mutateSpy,
-            };
-            const tutorResult = {
-              data: tutors,
-              error: undefined,
-              mutate: mutateSpy,
-            };
-            if ( endpoint === "/api/member/courses/" ){
-              return coursesResult;
-            } else {
-              return tutorResult;
-            }
-          });
-    };
 
   test("empty component renders without crashing", () => {
     useSWR.mockReturnValue({
@@ -130,7 +94,11 @@ describe("TutorNotesForm tests", () => {
 
   test("creating TutorNotes works", async () => {
 
-    setupSWRMocks();
+    useSWR.mockReturnValue({
+      data: sampleOfficeHour,
+      error: undefined,
+      mutate: mutateSpy,
+  });
 
     const createTutorNotesMock = jest.fn();
 
@@ -138,11 +106,8 @@ describe("TutorNotesForm tests", () => {
       (<TutorNotesForm createTutorNotes={createTutorNotesMock} />)
     ;
 
-    const courseSelect = getByLabelText("Course Name");
-    userEvent.selectOptions(courseSelect, "0");
-
-    const tutorSelect = getByLabelText("Tutor");
-    userEvent.selectOptions(tutorSelect, "0");
+    const officeHoursSelect = getByLabelText("Office Hours");
+    userEvent.selectOptions(officeHoursSelect, "0");
 
     const messageInput = getByLabelText("Message");
     userEvent.type(messageInput, sampleTutorNotes.message)
