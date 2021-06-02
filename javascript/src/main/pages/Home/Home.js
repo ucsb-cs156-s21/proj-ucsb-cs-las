@@ -28,7 +28,7 @@ const Home = () => {
         return <h5>All quarters are being viewed</h5>
     };
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: officeHourList, error, mutate: mutateOfficeHours } = useSWR(
+    const { data: officeHourList, error } = useSWR(
         ["/api/public/officeHours", getToken],
         fetchWithToken
     );
