@@ -8,7 +8,7 @@ export default ({ roomSlots, admin, deleteRoomSlot }) => {
     
     const renderDeleteButton = (id) => {
         return (
-            <Button variant="danger" data-testid="delete-button" onClick={() => deleteRoomSlot(id)}>Delete</Button>
+            <Button variant="danger" data-testid={"delete-button-"+id} onClick={() => deleteRoomSlot(id)}>Delete</Button>
         )
     }
 
