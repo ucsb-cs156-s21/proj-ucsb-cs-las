@@ -4,16 +4,7 @@ import UpcomingOfficeHourTable from "main/components/OfficeHours/UpcomingOfficeH
 
 describe("UpcomingOfficeHour table tests", () => {
 
-  const sampleUpcomingOfficeHourOne = [{
-    "id": 1,
-    "dayOfWeek": "Monday",
-    "startTime": "12pm",
-    "endTime": "1pm",
-    "tutorName": "Phill Conrad",
-    "courseNameYear": "CMPSC 156 Winter 2020",
-  }]
-
-  const sampleUpcomingOfficeHourTwo = [{
+  const sampleUpcomingOfficeHour = [{
     "id": 1,
     "dayOfWeek": "Monday",
     "startTime": "12pm",
@@ -25,16 +16,16 @@ describe("UpcomingOfficeHour table tests", () => {
   }]
 
   test("renders without crashing", () => {
-    render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHourOne} isMember = {false}/>);
+    render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHour} isMember = {false}/>);
   });
 
   test("renders when logged in without crashing", async () =>{
-    render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHourTwo} isMember = {true}/>);
+    render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHour} isMember = {true}/>);
   });
 
   test("test Zoom Link Clickable when logged in", () => {
     const expectedLink = "test.zoom.com";
-    const { getByText } = render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHourTwo} isMember = {true}/>);
+    const { getByText } = render(<UpcomingOfficeHourTable upcomingOfficeHours = {sampleUpcomingOfficeHour} isMember = {true}/>);
     const actual = getByText("test.zoom.com").closest('a').getAttribute("href");
     expect(actual).toEqual(expectedLink);
   });

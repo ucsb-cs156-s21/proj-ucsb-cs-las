@@ -8,7 +8,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 
 export default ({upcomingOfficeHours}) => {
     const { user, getAccessTokenSilently: getToken } = useAuth0();
-    const { email } = user;
+    const { email } = (user === null) ? "default@example.com" : user;
 
     function zoomRoomLinkFormatter(cell) {
         return (
