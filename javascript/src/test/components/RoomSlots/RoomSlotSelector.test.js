@@ -1,13 +1,12 @@
 import React from "react";
-import { prettyDOM, render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RoomSlotSelector from "main/components/RoomSlots/RoomSlotSelector";
 import roomSlotFixtures from "fixtures/roomSlotFixtures";
 
 import { asHumanQuarter } from "main/utils/quarter";
-jest.mock("main/utils/quarter");
-
 import { toAMPMFormat } from "main/utils/RoomSlotTableHelpers";
+jest.mock("main/utils/quarter");
 jest.mock("main/utils/RoomSlotTableHelpers");
 
 describe("RoomSlotSelector tests", () => {
@@ -23,7 +22,7 @@ describe("RoomSlotSelector tests", () => {
     test("renders usable selector with proper option text", async () => {
         const onChange = jest.fn();
 
-        const { debug, getByTestId, getByText } = render(
+        const { getByTestId, getByText } = render(
             <RoomSlotSelector
                 data-testid="room-slot-selector"
                 roomSlots={roomSlotFixtures.multipleRoomSlots}
