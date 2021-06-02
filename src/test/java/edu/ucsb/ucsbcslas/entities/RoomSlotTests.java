@@ -3,7 +3,6 @@ package edu.ucsb.ucsbcslas.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalTime;
 import java.time.DayOfWeek;
@@ -13,7 +12,7 @@ public class RoomSlotTests {
   public static RoomSlot testRoomSlot;
   public static Long testId = 1L; // testId for the ActiveQuarter
   public static String testLocation = "Campus Point";
-  public static ActiveQuarter testQuarter = new ActiveQuarter(testId, "Campus Point");
+  public static String testQuarter = "20212";
   public static DayOfWeek testDayOfWeek = DayOfWeek.SATURDAY;
   public static LocalTime testStartTime = LocalTime.NOON;
   public static LocalTime testEndTime = LocalTime.MIDNIGHT;
