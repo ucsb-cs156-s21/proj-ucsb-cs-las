@@ -3,53 +3,59 @@ package edu.ucsb.ucsbcslas.entities;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class OnlineOfficeHours {
+  // online office hours id: generated value, data belongs to this entity
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO) //@GeneratedValue(strategy = GenerationType.AUTO) was the original line, change back if broken
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  // tutor assignment: data belongs to tutor assignment entity
   @ManyToOne
-  @JoinColumn(name = "tutor_assignment_id")
+  @JoinColumn(nullable = false, name = "tutor_assignment_id")
   private TutorAssignment tutorAssignment;
-  @Column(nullable = false)
-  private String dayOfWeek;
-  @Column(nullable = false)
-  private String startTime;
-  @Column(nullable = false)
-  private String endTime;
+
+  // room slot: data belongs to room slot entity
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "room_slot_id")
+  private RoomSlot roomSlot;
+
+  // office hour zoom room link: data belongs to this entity
   @Column(nullable = false)
   private String zoomRoomLink;
+
+  // office hour notes: data belongs to this entity
   @Column(nullable = false)
   private String notes;
 
-  public OnlineOfficeHours() {
-  }
+  public OnlineOfficeHours() { }
 
-  public OnlineOfficeHours(Long id, TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
-      String zoomRoomLink, String notes) {
-    this.id = id;
+  // constructor using auto-generated ID
+  public OnlineOfficeHours(TutorAssignment tutorAssignment,
+                           RoomSlot roomSlot, String zoomRoomLink, String notes) {
     this.tutorAssignment = tutorAssignment;
-    this.dayOfWeek = dayOfWeek;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    this.roomSlot = roomSlot;
     this.zoomRoomLink = zoomRoomLink;
     this.notes = notes;
   }
 
-  public OnlineOfficeHours(TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime,
-      String zoomRoomLink, String notes) {
+  // constructor with a given id
+  // (tests use this, since I think it simplifies things
+  // having consistent known ID, vs generated?)
+  public OnlineOfficeHours(Long id, TutorAssignment tutorAssignment,
+                           RoomSlot roomSlot, String zoomRoomLink, String notes) {
+    this.id = id;
     this.tutorAssignment = tutorAssignment;
-    this.dayOfWeek = dayOfWeek;
-    this.startTime = startTime;
-    this.endTime = endTime;
+    this.roomSlot = roomSlot;
     this.zoomRoomLink = zoomRoomLink;
     this.notes = notes;
   }
@@ -70,28 +76,12 @@ public class OnlineOfficeHours {
     this.tutorAssignment = tutorAssignment;
   }
 
-  public String getDayOfWeek() {
-    return this.dayOfWeek;
+  public RoomSlot getRoomSlot() {
+    return this.roomSlot;
   }
 
-  public void setDayOfWeek(String dayOfWeek) {
-    this.dayOfWeek = dayOfWeek;
-  }
-
-  public String getStartTime() {
-    return this.startTime;
-  }
-
-  public void setStartTime(String startTime) {
-    this.startTime = startTime;
-  }
-
-  public String getEndTime() {
-    return this.endTime;
-  }
-
-  public void setEndTime(String endTime) {
-    this.endTime = endTime;
+  public void setRoomSlot(RoomSlot roomSlot) {
+    this.roomSlot = roomSlot;
   }
 
   public String getZoomRoomLink() {
@@ -121,8 +111,7 @@ public class OnlineOfficeHours {
 
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, onlineOfficeHours.getId()).append(tutorAssignment, onlineOfficeHours.getTutorAssignment())
-        .append(dayOfWeek, onlineOfficeHours.getDayOfWeek()).append(startTime, onlineOfficeHours.getStartTime())
-        .append(endTime, onlineOfficeHours.getEndTime()).append(zoomRoomLink, onlineOfficeHours.getZoomRoomLink())
+        .append(roomSlot, onlineOfficeHours.getRoomSlot()).append(zoomRoomLink, onlineOfficeHours.getZoomRoomLink())
         .append(notes, onlineOfficeHours.getNotes());
 
     return builder.build();
@@ -130,14 +119,13 @@ public class OnlineOfficeHours {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tutorAssignment, dayOfWeek, startTime, endTime, zoomRoomLink, notes);
+    return Objects.hash(id, tutorAssignment, roomSlot, zoomRoomLink, notes);
   }
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId() + "'" + ", tutorAssignment='" + getTutorAssignment() + "'" + ", dayOfWeek='"
-        + getDayOfWeek() + "'" + ", startTime='" + getStartTime() + "'" + ", endTime='" + getEndTime() + "'"
-        + ", zoomRoomLink='" + getZoomRoomLink() + "'" + ", notes='" + getNotes() + "'" + "}";
+    return String.format("{ id='%d', tutorAssignment='{ %s }', roomSlot='{ %s }', zoomRoomLink='%s', notes='%s' }",
+            id, getTutorAssignment(), getRoomSlot(), getZoomRoomLink(), getNotes());
   }
 
 }

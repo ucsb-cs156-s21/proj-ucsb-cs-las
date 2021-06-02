@@ -1,45 +1,63 @@
 package edu.ucsb.ucsbcslas.entities;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class RoomSlot {
+    // room slot id: generated value, data belongs to this entity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
+    // location: data belongs to this entity
     @Column(nullable = false)
     private String location;
 
+    // active quarter data: data belongs to this entity
     @Column(nullable = false)
     public String quarter;
 
+    // day of week: data belongs to this entity
     @Column(nullable = false)
     private DayOfWeek dayOfWeek;
 
+    // start time: data belongs to this entity
     @Column(nullable = false)
     private LocalTime startTime;
 
+    // end time: data belongs to this entity
     @Column(nullable = false)
     private LocalTime endTime;
 
     public RoomSlot() { }
 
-    public RoomSlot(Long id) {
-        this.id = id;
+    // constructor with auto-generated id
+    public RoomSlot(String location,
+                    String quarter, DayOfWeek dayOfWeek,
+                    LocalTime startTime, LocalTime endTime) {
+        this.location = location;
+        this.quarter = quarter;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
+    // constructor with given room slot id
     public RoomSlot(Long id, String location,
         String quarter, DayOfWeek dayOfWeek,
         LocalTime startTime, LocalTime endTime) 
@@ -122,11 +140,13 @@ public class RoomSlot {
 
     @Override
     public String toString() {
-        return "{" + " id='" + getId() + "'" 
-        + ", location='" + getLocation() + "'" 
-        + ", quarter='" + getQuarter() + "'"
-        + ", start time='" + getStartTime() + "'" 
-        + ", end time='" + getEndTime() + "'" 
-        + "}";
+        DateTimeFormatter HHMM_A = DateTimeFormatter.ofPattern("HH:mm");
+        return String.format("{ id='%d', location='%s', quarter='%s', start time='%s', end time='%s' }",
+                getId(),
+                getLocation(),
+                getQuarter(),
+                getStartTime().format(HHMM_A),
+                getEndTime().format(HHMM_A)
+        );
     }
 }

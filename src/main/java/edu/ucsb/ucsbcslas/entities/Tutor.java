@@ -12,21 +12,27 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
 public class Tutor {
+  // tutor id: generated value, data belongs to this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  // first name: data belongs to this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 0)
   private String firstName;
+
+  // last name: data belongs to this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 1)
   private String lastName;
+
+  // email: data belongs to this entity
   @Column(nullable = false)
   @CsvBindByPosition(position = 2)
   private String email;
 
-  public Tutor() {
-  }
+  public Tutor() { }
 
   public Tutor(Long id, String firstName, String lastName, String email) {
     this.id = id;
@@ -94,8 +100,8 @@ public class Tutor {
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId() + "'" + ", firstName='" + getFirstName() + "'" + ", lastName='" + getLastName() + "'"
-        + ", email='" + getEmail() + "'" + "}";
+    return String.format("{ id='%d', firstName='%s', lastName='%s', email='%s' }",
+            id, getFirstName(), getLastName(), getEmail());
   }
 
 }

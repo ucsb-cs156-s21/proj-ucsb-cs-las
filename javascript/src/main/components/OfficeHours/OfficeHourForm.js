@@ -3,6 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { checkZoomRoomLink } from "main/utils/OfficeHourFormHelpers";
 import TutorAssignmentSelect from "main/components/TutorAssignment/TutorAssignmentSelect";
 import {checkTime} from "main/utils/FormHelpers";
+import RoomSlotSelect from "main/components/RoomSlots/RoomSlotSelect"
 import TutorAssignmentDisplay from "main/components/TutorAssignment/TutorAssignmentDisplay";
 
 const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour}) => {
@@ -15,9 +16,9 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
         tutorAssignment: {
             id: ""
         },
-        startTime: "",
-        endTime: "",
-        dayOfWeek: "Monday",
+        roomSlot: {
+            id: "",
+        },
         zoomRoomLink: "",
         notes: ""
     }
@@ -28,6 +29,7 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
         e.preventDefault();
         var isValid = checkInputs(); 
         if (isValid) {
+            console.log(officeHour);
             if (createOfficeHour) {
                 createOfficeHour(officeHour);
             }
@@ -42,16 +44,6 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
    
     function checkInputs() {
         const validList = [];
-
-        // check start time 
-        const startTimeValid = checkTime(officeHour.startTime);
-        addFormEffects(startTimeRef, startTimeValid);
-        validList.push(startTimeValid); 
-
-        // check end time
-        const endTimeValid = checkTime(officeHour.endTime);
-        addFormEffects(endTimeRef, endTimeValid);
-        validList.push(endTimeValid); 
 
         // check zoom room link
         const zoomRoomLinkValid = checkZoomRoomLink(officeHour.zoomRoomLink);
@@ -71,74 +63,29 @@ const OfficeHourForm = ({ createOfficeHour, updateOfficeHour, existingOfficeHour
             ref.current.classList.add('is-invalid');
         }
     }
-    const handleDayOfWeekOnChange = (e) => setOfficeHour({
-        ...officeHour,
-        dayOfWeek: e.target.value
-    });
+
     return (
         <Form onSubmit={handleOnSubmit}>
+            <Form.Group as={Row} controlId="roomSlot">
+                <Form.Label column sm={2}>
+                    Room Slot
+                </Form.Label>
+                <Col sm={10}>
+                    <RoomSlotSelect
+                      style={{ textAlign: "left", width: "100%" }}
+                      onChange={roomSlotId => setOfficeHour({...officeHour, roomSlot: { id: roomSlotId }})}
+                    />
+                </Col>
+            </Form.Group>
             <Form.Group as={Row} controlId="tutorAssignmentId">
                 <Form.Label column sm={2}>
                     Tutor
                 </Form.Label>
                 <Col sm={10}>
-
-                {
-                    createOfficeHour && <TutorAssignmentSelect
+                    <TutorAssignmentSelect
                       style={{ textAlign: "left", width: "100%" }}
                       onChange={tutorAssignmentId => setOfficeHour({...officeHour, tutorAssignment: { id: tutorAssignmentId }})}
                     />
-                 }
-                 {
-                    updateOfficeHour && <TutorAssignmentDisplay 
-                        style={{ textAlign: "left", width: "100%" }}
-                        tutorAssignment={ existingOfficeHour.tutorAssignment } />
-                 }
-                </Col>
-            </Form.Group>
-          <Form.Group as={Row} controlId="startTime">
-                <Form.Label column sm={2}>
-                    Start Time
-                </Form.Label>
-                <Col sm={10}>
-                    <Form.Control ref={startTimeRef} type="text" placeholder="Ex: 12:00PM" value={officeHour.startTime} onChange={(e) => setOfficeHour({
-                        ...officeHour,
-                        startTime: e.target.value
-                    })} />
-                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
-                        Please provide a valid start time in the correct format.
-                    </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the start time in standard format. Ex (XX:XXAM/PM): 1:00PM, 4:00AM, 10:00PM</Form.Text>
-                </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} controlId="endTime">
-                <Form.Label column sm={2}>
-                    End Time
-                </Form.Label>
-                <Col sm={10}>
-                    <Form.Control ref={endTimeRef} type="text" placeholder="Ex: 1:00PM" value={officeHour.endTime} onChange={(e) => setOfficeHour({
-                        ...officeHour,
-                        endTime: e.target.value
-                    })} />
-                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
-                        Please provide a valid end time in the correct format.
-                    </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Enter the end time in standard format. Ex (XX:XXAM/PM): 1:00PM, 4:00AM, 10:00PM</Form.Text>
-                </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="dayOfWeek">
-                <Form.Label column sm={2}>Day of Week</Form.Label>
-                <Col sm={10} style = {{textAlign: 'left'}}>
-                    <Form.Control as="select" onChange={handleDayOfWeekOnChange} >
-                        {daysOfTheWeek.map((day) => {
-                            return <option selected={officeHour.dayOfWeek === day ? true : false } key={day} value={day}>{day}</option>;
-                        })}
-                    </Form.Control>
-                    <Form.Control.Feedback style={{ textAlign: "left" }} type="invalid">
-                        Please enter a valid day of week.
-                    </Form.Control.Feedback>
-                    <Form.Text style={{ textAlign: "left" }} muted>Please select a day of the week from the dropdown menu</Form.Text>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="zoomRoomLink">

@@ -64,7 +64,8 @@ public class CourseController {
   @Autowired
   private OnlineOfficeHoursRepository onlineOfficeHoursRepository;
 
-  private ObjectMapper mapper = new ObjectMapper();
+  @Autowired
+  private ObjectMapper mapper;
 
   private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
     Map<String, String> response = new HashMap<String, String>();
@@ -126,11 +127,7 @@ public class CourseController {
 
   @GetMapping(value = "/api/public/courses", produces = "application/json")
   public ResponseEntity<String> getCourses() throws JsonProcessingException {
-
-   
     List <Course> courseList = courseRepository.findAll();
-    ObjectMapper mapper = new ObjectMapper();
-
     String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
   }
@@ -142,7 +139,6 @@ public class CourseController {
       return ResponseEntity.notFound().build();
     }
 
-    ObjectMapper mapper = new ObjectMapper();
     String body = mapper.writeValueAsString(course.get());
     return ResponseEntity.ok().body(body);
   }
@@ -153,7 +149,6 @@ public class CourseController {
       if(courseList.isEmpty()){
         return ResponseEntity.notFound().build();
       }
-      ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(courseList);
       return ResponseEntity.ok().body(body);
     } 
@@ -162,7 +157,6 @@ public class CourseController {
       if(courseList.isEmpty()){
         return getUnauthorizedResponse("instructor");
       }
-      ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(courseList);
       return ResponseEntity.ok().body(body);
     }  
@@ -174,7 +168,6 @@ public class CourseController {
       return getUnauthorizedResponse("member");
     }
     List<Course> courseList = courseRepository.findAllByInstructorEmail(email);
-    ObjectMapper mapper = new ObjectMapper();
     String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
   }
@@ -196,12 +189,11 @@ public class CourseController {
           List<OnlineOfficeHours> tempList = new ArrayList<OnlineOfficeHours>();
           tempList.add(onlineOfficeHour);
           TutorAssignmentOfficeHourView tutorAssignmentOfficeHourView = new TutorAssignmentOfficeHourView(temp, tempList);
-          tutorAssignmentOfficeHourView.setDay(onlineOfficeHour.getDayOfWeek());
+          tutorAssignmentOfficeHourView.setDay(onlineOfficeHour.getRoomSlot().getDayOfWeek().toString());
           viewList.add(tutorAssignmentOfficeHourView);
         }
       }
       sortViewList(viewList);
-      ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
     }   
@@ -226,7 +218,6 @@ public class CourseController {
         viewList.add(tutorAssignmentOfficeHourView);
       }
       
-      ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
     }   
@@ -255,7 +246,6 @@ public class CourseController {
           tempo.setZoomRoomLink(null);
         }
       }
-      ObjectMapper mapper = new ObjectMapper();
       String body = mapper.writeValueAsString(viewList);
       return ResponseEntity.ok().body(body); 
     }   
@@ -312,20 +302,14 @@ public class CourseController {
 
   @GetMapping(value = "/api/public/quarters", produces = "application/json")
   public ResponseEntity<String> getQuarters() throws JsonProcessingException {
-
     List <String> quartersList = courseRepository.selectDistinctQuarter();
-    ObjectMapper mapper = new ObjectMapper();
-
     String body = mapper.writeValueAsString(quartersList);
     return ResponseEntity.ok().body(body);
   }
 
   @GetMapping(value = "/api/public/courses/forQuarter/{qtr}", produces = "application/json")
   public ResponseEntity<String> getCoursesForQuarter(@PathVariable("qtr") String qtr) throws JsonProcessingException {
-
     List <Course> courseList = courseRepository.findByQuarter(qtr);
-    ObjectMapper mapper = new ObjectMapper();
-
     String body = mapper.writeValueAsString(courseList);
     return ResponseEntity.ok().body(body);
   }

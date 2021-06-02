@@ -11,7 +11,50 @@ import net.codebox.javabeantester.JavaBeanTester;
 public class TutorAssignmentTests {
 
   @Test
-  public void testGettersAndSetters() throws Exception {
+  public void test_defaultConstructor() throws Exception {
+    TutorAssignment ta = new TutorAssignment();
+    assertEquals(null, ta.getId());
+    assertEquals(null, ta.getAssignmentType());
+    assertEquals(null, ta.getTutor());
+    assertEquals(null, ta.getCourse());
+  }
+
+  @Test
+  public void test_overloadedConstructorWithId() throws Exception {
+    Course course = new Course(1L,
+            "course name",
+            "20201",
+            "instr first",
+            "instr last",
+            "instr@ucsb.edu");
+    Tutor tutor = new Tutor(1L, "tutor first", "tutor last", "tutor@ucsb.edu");
+    TutorAssignment tutorAssignment = new TutorAssignment(1L, course, tutor, "TA");
+
+    assertNotEquals(null, tutorAssignment.getId());
+    assertEquals(course, tutorAssignment.getCourse());
+    assertEquals(tutor, tutorAssignment.getTutor());
+    assertEquals("TA", tutorAssignment.getAssignmentType());
+  }
+
+  @Test
+  public void test_overloadedConstructorWithoutId() throws Exception {
+    Course course = new Course(1L,
+            "course name",
+            "20201",
+            "instr first",
+            "instr last",
+            "instr@ucsb.edu");
+    Tutor tutor = new Tutor(1L, "tutor first", "tutor last", "tutor@ucsb.edu");
+    TutorAssignment tutorAssignment = new TutorAssignment(1L, course, tutor, "TA");
+
+    assertNotEquals(null, tutorAssignment.getId());
+    assertEquals(course, tutorAssignment.getCourse());
+    assertEquals(tutor, tutorAssignment.getTutor());
+    assertEquals("TA", tutorAssignment.getAssignmentType());
+  }
+
+  @Test
+  public void test_gettersAndSetters() throws Exception {
     // See: https://github.com/codebox/javabean-tester
     JavaBeanTester.test(TutorAssignment.class);
   }
@@ -51,7 +94,7 @@ public class TutorAssignmentTests {
   @Test
   public void test_toString() throws Exception {
     TutorAssignment ta1 = new TutorAssignment(1L, new Course(), new Tutor(), "190J");
-    String expected = "{ id='1', course='Course[ id=null, name=null, quarter=null, instructorFirstName=null, instructorLastName=null, instructorEmail=null ]', tutor='{ id='null', firstName='null', lastName='null', email='null'}', assignmentType='190J'}";
+    String expected = "{ id='1', course='Course[ id=null, name=null, quarter=null, instructorFirstName=null, instructorLastName=null, instructorEmail=null ]', tutor='{ id='null', firstName='null', lastName='null', email='null' }', assignmentType='190J' }";
     assertEquals(expected, ta1.toString());
   }
 

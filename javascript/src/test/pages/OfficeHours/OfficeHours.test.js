@@ -12,10 +12,6 @@ jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
 
 
-
-
-
-
 jest.mock("main/services/OfficeHours/OfficeHourService", () => ({
   buildDeleteOfficeHour: jest.fn(),
 }) );
@@ -30,7 +26,7 @@ describe("OfficeHours page test", () => {
       startTime: "12:30",
       endTime: "2:30",
       dayOfWeek: "Monday",
-      zoomRoomLink: "link.com",
+      zoomRoomLink: "zoom.com",
       notes: "testNotes"
     },
   ];

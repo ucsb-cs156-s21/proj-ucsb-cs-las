@@ -2,6 +2,7 @@ package edu.ucsb.ucsbcslas.controllers;
 
 import edu.ucsb.ucsbcslas.entities.AppUser;
 import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,8 +88,9 @@ public class TutorNotesControllerTests {
                 Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
                 Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
                 TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
-                                "10:00", "link", "notes");
+                RoomSlot roomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY,
+                                LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
 
                 TutorNotes expectedTutorNotes = new TutorNotes();
                 expectedTutorNotes.setId(1L);
@@ -135,8 +139,9 @@ public class TutorNotesControllerTests {
                 Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
                 Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
                 TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
-                                "10:00", "link", "notes");
+                RoomSlot roomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY,
+                                LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
 
                 TutorNotes expectedTutorNotes = new TutorNotes();
                 expectedTutorNotes.setId(1L);
@@ -174,8 +179,9 @@ public class TutorNotesControllerTests {
                 Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
                 Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
                 TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
-                                "10:00", "link", "notes");
+                RoomSlot roomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY,
+                        LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
 
                 TutorNotes expectedTutorNotes = new TutorNotes();
                 expectedTutorNotes.setId(1L);
@@ -222,9 +228,10 @@ public class TutorNotesControllerTests {
                 Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
                 Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
                 TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
-                                "10:00", "link", "notes");
-
+                RoomSlot roomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY,
+                        LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
+                
                 TutorNotes expectedTutorNotes = new TutorNotes();
                 expectedTutorNotes.setId(1L);
                 expectedTutorNotes.setOnlineOfficeHours(onlineOfficeHours);
@@ -244,8 +251,9 @@ public class TutorNotesControllerTests {
                 Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
                 Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
                 TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
-                                "10:00", "link", "notes");
+                RoomSlot roomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY,
+                        LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
 
                 TutorNotes expectedTutorNotes = new TutorNotes();
 
@@ -282,8 +290,9 @@ public class TutorNotesControllerTests {
                 Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
                 Course c = new Course(1L, "CS156", "20212", "Phil", "Conrad", "pconrad@ucsb.edu");
                 TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, "Wednesday", "8:00",
-                                "10:00", "link", "notes");
+                RoomSlot roomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY,
+                        LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+                OnlineOfficeHours onlineOfficeHours = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
 
                 TutorNotes expectedTutorNotes = new TutorNotes();
 

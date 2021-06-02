@@ -3,12 +3,13 @@ package edu.ucsb.ucsbcslas.entities;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -16,20 +17,30 @@ import edu.ucsb.ucsbcslas.models.Course;
 
 @Entity
 public class TutorAssignment {
+  // tutor assignment id: generated value, data belongs to this entity
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "course_id")
-  private Course course;
-
-  @ManyToOne
-  @JoinColumn(name = "tutor_id")
-  private Tutor tutor;
-
+  // assignment type: data belongs to this entity
   @Column(nullable = false)
   private String assignmentType;
+
+  // course: data belongs to course entity
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "course_id")
+  private Course course;
+
+  // tutor: data belongs to tutor entity
+  @ManyToOne
+  @JoinColumn(nullable = false, name = "tutor_id")
+  private Tutor tutor;
+
+  public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
+    this.course = course;
+    this.tutor = tutor;
+    this.assignmentType = assignmentType;
+  }
 
   public TutorAssignment(Long id, Course course, Tutor tutor, String assignmentType) {
     this.id = id;
@@ -37,14 +48,8 @@ public class TutorAssignment {
     this.tutor = tutor;
     this.assignmentType = assignmentType;
   }
-  public TutorAssignment(Course course, Tutor tutor, String assignmentType) {
-    this.course = course;
-    this.tutor = tutor;
-    this.assignmentType = assignmentType;
-  }
 
-  public TutorAssignment() {
-  }
+  public TutorAssignment() { }
 
   public Long getId() {
     return this.id;
@@ -99,8 +104,7 @@ public class TutorAssignment {
 
   @Override
   public String toString() {
-    return "{" + " id='" + getId() + "'" + ", course='" + getCourse() + "'" + ", tutor='" + getTutor() + "'"
-        + ", assignmentType='" + getAssignmentType() + "'" + "}";
+    return String.format("{ id='%d', course='%s', tutor='%s', assignmentType='%s' }",
+            id, getCourse(), getTutor(), getAssignmentType());
   }
-
 }

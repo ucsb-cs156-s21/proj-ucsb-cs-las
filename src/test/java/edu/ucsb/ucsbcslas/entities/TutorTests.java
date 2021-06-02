@@ -50,7 +50,7 @@ public class TutorTests {
   @Test
   public void test_toString() throws Exception {
     Tutor t1 = new Tutor(1L, "Chris", "Gaucho", "cgaucho@example.org");
-    String expected = "{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@example.org'}";
+    String expected = "{ id='1', firstName='Chris', lastName='Gaucho', email='cgaucho@example.org' }";
     assertEquals(expected, t1.toString());
   }
 

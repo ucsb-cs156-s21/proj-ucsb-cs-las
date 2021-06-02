@@ -7,11 +7,24 @@ import org.junit.jupiter.api.Test;
 public class ActiveQuarterTests {
   @Test
   public void testQuarter_toString() {
-    ActiveQuarter q = new ActiveQuarter(1L, "f20");
-    assertEquals("{ id='1', activeQuarter='f20'}", q.toString());
+    ActiveQuarter q = new ActiveQuarter(1L, "F20");
+    assertEquals("{ id='1', activeQuarter='F20' }", q.toString());
 
     Admin admin2 = new Admin("admin@test.org");
     assertEquals("Admin[ id=0, email=admin@test.org, isPermanentAdmin=false ]", admin2.toString());
+  }
+
+  // test active quarter
+  @Test
+  public void testActiveQuarter_Constructors() {
+    ActiveQuarter q = new ActiveQuarter();
+    q.setId(4L);
+    assertEquals(4L, q.getId());
+
+    q = new ActiveQuarter("20201");
+    q.setId(4L);
+    assertEquals(4L, q.getId());
+    assertEquals("20201", q.getActiveQuarter());
   }
 
   @Test

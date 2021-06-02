@@ -2,6 +2,8 @@ package edu.ucsb.ucsbcslas.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import net.codebox.javabeantester.JavaBeanTester;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -19,45 +21,9 @@ public class RoomSlotTests {
 
   // test getter and setters
   @Test
-  public void test_RoomSlot_GetAndSetId() {
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setId(testId);
-    assertEquals(testId, testRoomSlot.getId());
-  }
-
-  @Test
-  public void test_RoomSlot_GetAndSetLocation() {
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setLocation(testLocation);
-    assertEquals(testLocation, testRoomSlot.getLocation());
-  }
-
-  @Test
-  public void test_RoomSlot_GetAndSetQuarter() {
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setQuarter(testQuarter);
-    assertEquals(testQuarter, testRoomSlot.getQuarter());
-  }
-
-  @Test
-  public void test_RoomSlot_GetAndSetDayOfWeek() {
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setDayOfWeek(testDayOfWeek);
-    assertEquals(testDayOfWeek, testRoomSlot.getDayOfWeek());
-  }
-
-  @Test
-  public void test_RoomSlot_GetAndSetStartTime() {
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setStartTime(testStartTime);
-    assertEquals(testStartTime, testRoomSlot.getStartTime());
-  }
-
-  @Test
-  public void test_RoomSlot_GetAndSetEndTime() {
-    testRoomSlot = new RoomSlot();
-    testRoomSlot.setEndTime(testEndTime);
-    assertEquals(testEndTime, testRoomSlot.getEndTime());
+  public void testGettersAndSetters() throws Exception {
+    // See: https://github.com/codebox/javabean-tester
+    JavaBeanTester.test(TutorAssignment.class);
   }
 
   // test equality
@@ -82,7 +48,7 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_EqualsCopy() {
     testRoomSlot = new RoomSlot();
-    RoomSlot copy = new RoomSlot();
+    RoomSlot copy = testRoomSlot;
     assertEquals(testRoomSlot, copy);
   }
 
@@ -90,7 +56,8 @@ public class RoomSlotTests {
   @Test
   public void test_RoomSlot_DefaultConstructor() {
     testRoomSlot = new RoomSlot();
-    assertEquals(null, testRoomSlot.getId());
+    testRoomSlot.setId(testId);
+    assertEquals(testId, testRoomSlot.getId());
     assertEquals(null, testRoomSlot.getLocation());
     assertEquals(null, testRoomSlot.getQuarter());
     assertEquals(null, testRoomSlot.getDayOfWeek());
@@ -99,19 +66,13 @@ public class RoomSlotTests {
   }
 
   @Test
-  public void test_RoomSlot_OverloadedIDConstructor() {
-    testRoomSlot = new RoomSlot(testId);
-    assertEquals(testId, testRoomSlot.getId());
-  }
-
-  @Test
-  public void test_RoomSlot_OverloadedAllConstructor() {
-    testRoomSlot = new RoomSlot(testId,
-            testLocation,
+  public void test_RoomSlot_FullyOverloadedConstructor() {
+    testRoomSlot = new RoomSlot(testLocation,
             testQuarter,
             testDayOfWeek,
             testStartTime,
             testEndTime);
+    testRoomSlot.setId(testId);
 
     assertEquals(testId, testRoomSlot.getId());
     assertEquals(testLocation, testRoomSlot.getLocation());
@@ -121,39 +82,25 @@ public class RoomSlotTests {
     assertEquals(testEndTime, testRoomSlot.getEndTime());
   }
 
-  // to-string
+  // test to-string
   @Test
   public void test_RoomSlot_ToString() {
-    testRoomSlot = new RoomSlot();
-    String expected = "{" + " id='null'"
-            + ", location='null'"
-            + ", quarter='null'"
-            + ", start time='null'"
-            + ", end time='null'"
-            + "}";
-    assertEquals(expected, testRoomSlot.toString());
-
-    testRoomSlot = new RoomSlot(testId);
-    expected = "{" + " id='" + testId + "'"
-            + ", location='null'"
-            + ", quarter='null'"
-            + ", start time='null'"
-            + ", end time='null'"
-            + "}";
-    assertEquals(expected, testRoomSlot.toString());
-
-    testRoomSlot = new RoomSlot(testId,
+    // test with fully overloaded constructor
+    testRoomSlot = new RoomSlot(
+            testId,
             testLocation,
             testQuarter,
             testDayOfWeek,
             testStartTime,
             testEndTime);
-    expected = "{" + " id='" + testId + "'"
-            + ", location='" + testLocation + "'"
-            + ", quarter='" + testQuarter + "'"
-            + ", start time='" + testStartTime + "'"
-            + ", end time='" + testEndTime + "'"
-            + "}";
+    String expected =
+            "{" +
+            " id='" + testId + "'" +
+            ", location='" + testLocation + "'" +
+            ", quarter='" + testQuarter + "'" +
+            ", start time='" + testStartTime + "'" +
+            ", end time='" + testEndTime + "'" +
+            " }";
     assertEquals(expected, testRoomSlot.toString());
   }
 

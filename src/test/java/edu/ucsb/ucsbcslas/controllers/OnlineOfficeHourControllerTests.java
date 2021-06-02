@@ -24,6 +24,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +42,11 @@ import edu.ucsb.ucsbcslas.repositories.CourseRepository;
 import edu.ucsb.ucsbcslas.repositories.OnlineOfficeHoursRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorRepository;
 import edu.ucsb.ucsbcslas.repositories.TutorAssignmentRepository;
+import edu.ucsb.ucsbcslas.entities.OnlineOfficeHours;
 import edu.ucsb.ucsbcslas.entities.Tutor;
 import edu.ucsb.ucsbcslas.entities.TutorAssignment;
+import edu.ucsb.ucsbcslas.entities.RoomSlot;
+import edu.ucsb.ucsbcslas.entities.ActiveQuarter;
 import edu.ucsb.ucsbcslas.models.Course;
 
 @WebMvcTest(value = OnlineOfficeHoursController.class)
@@ -80,13 +85,29 @@ public class OnlineOfficeHourControllerTests {
     @Test
     public void testGetOfficeHours() throws Exception {
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
-        // 1L = office hour id ?
-        // does tutor assignment id = "tutor_assignment_id"
-        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
-        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes"));
-        // (Long id, TutorAssignment tutorAssignment, String dayOfWeek, String startTime, String endTime, String zoomRoomLink, String notes)
+
+        Tutor tutor = new Tutor(1L,
+                "String firstName",
+                "String lastName",
+                "String email");
+        Course course = new Course(1L,
+                "String name",
+                "String quarter",
+                "String instructorFirstName",
+                "String instructorLastName",
+                "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L,
+                course,
+                tutor,
+                "String assignmentType");
+        RoomSlot rs = new RoomSlot(1L,
+                "String location",
+                "String quarter",
+                DayOfWeek.WEDNESDAY,
+                LocalTime.of(20, 0),
+                LocalTime.of(22,0));
+        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment, rs, "link", "notes"));
+
         when(mockOnlineOfficeHoursRepository.findAll()).thenReturn(expectedOfficeHours);
         MvcResult response = mockMvc.perform(get("/api/public/officeHours").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -109,7 +130,8 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu");
         Course c = new Course(1L, "CMPSC156", "20213", "Phil", "Conrad", "phtconrad@ucsb.edu");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "TA");
-        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes"));
+        RoomSlot roomSlot = new RoomSlot("Library", "20213", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(10, 0, 0));
+        expectedOfficeHours.add(new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes"));
         when(mockOnlineOfficeHoursRepository.findByTutorAssignmentTutorEmail(anyString())).thenReturn(expectedOfficeHours);
         MvcResult response = mockMvc.perform(get("/api/member/officeHours").contentType("application/json")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -129,10 +151,32 @@ public class OnlineOfficeHourControllerTests {
     }
     @Test
     public void testGetASingleOfficeHour() throws Exception {
-        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
-        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
+        Tutor tutor = new Tutor(1L,
+                "String firstName",
+                "String lastName",
+                "String email");
+        Course course = new Course(1L,
+                "String name",
+                "String quarter",
+                "String instructorFirstName",
+                "String instructorLastName",
+                "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L,
+                course,
+                tutor,
+                "String assignmentType");
+        RoomSlot roomSlot = new RoomSlot(1L,
+                "String location",
+                "String Quarter",
+                DayOfWeek.WEDNESDAY,
+                LocalTime.of(20, 0),
+                LocalTime.of(22,0));
+        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L,
+                tutorAssignment,
+                roomSlot,
+                "link",
+                "notes");
+
         when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.of(expectedOfficeHour));
         MvcResult response = mockMvc.perform(get("/api/public/officeHours/1").contentType("application/json").header(HttpHeaders.AUTHORIZATION, 
         "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
@@ -153,12 +197,33 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void testSaveOfficeHour() throws Exception {
-        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
-        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(expectedOfficeHour);
+        Tutor tutor = new Tutor(1L,
+                "String firstName",
+                "String lastName",
+                "String email");
+        Course course = new Course(1L,
+                "String name",
+                "String quarter",
+                "String instructorFirstName",
+                "String instructorLastName",
+                "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L,
+                course,
+                tutor,
+                "String assignmentType");
+        RoomSlot roomSlot = new RoomSlot(1L,
+                "String location",
+                "String quarter",
+                DayOfWeek.WEDNESDAY,
+                LocalTime.of(20, 0),
+                LocalTime.of(22,0));
+        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L,
+                tutorAssignment,
+                roomSlot,
+                "link",
+                "notes");
+
+        String requestBody = objectMapper.writeValueAsString(expectedOfficeHour);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockOnlineOfficeHoursRepository.save(any())).thenReturn(expectedOfficeHour);
         MvcResult response = mockMvc
@@ -175,12 +240,28 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void test_saveOfficeHour_unauthorizedIfNotAdmin() throws Exception {
-        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
-        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(expectedOfficeHour);
+        Tutor tutor = new Tutor(1L,
+                "String firstName",
+                "String lastName",
+                "String email");
+        Course course = new Course(1L,
+                "String name",
+                "String quarter",
+                "String instructorFirstName",
+                "String instructorLastName",
+                "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L,
+                course, tutor,
+                "String assignmentType");
+        RoomSlot roomSlot = new RoomSlot(1L,
+                "String location",
+                "String quarter",
+                DayOfWeek.WEDNESDAY,
+                LocalTime.of(20, 0),
+                LocalTime.of(22,0));
+
+        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, roomSlot, "link", "notes");
+        String requestBody = objectMapper.writeValueAsString(expectedOfficeHour);
         mockMvc.perform(post("/api/admin/officeHours").with(csrf()).contentType(MediaType.APPLICATION_JSON)
         .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isUnauthorized());
@@ -191,8 +272,9 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockOnlineOfficeHoursRepository.findById(any(Long.class))).thenReturn(Optional.of(savedOfficeHour));
@@ -211,7 +293,8 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         mockMvc
         .perform(put("/api/admin/officeHours/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -223,7 +306,8 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.empty());
@@ -239,8 +323,9 @@ public class OnlineOfficeHourControllerTests {
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
         Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
         TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
-        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(2L, tutorAssignment,"Wednesday", "9:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot("Library", "20212", DayOfWeek.WEDNESDAY, LocalTime.of(8, 0, 0), LocalTime.of(11, 0, 0));
+        OnlineOfficeHours inputOfficeHour = new OnlineOfficeHours(1L, tutorAssignment, testRoomSlot, "link", "notes");
+        OnlineOfficeHours savedOfficeHour = new OnlineOfficeHours(2L, tutorAssignment, testRoomSlot, "link", "notes");
         String body = objectMapper.writeValueAsString(inputOfficeHour);
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         when(mockOnlineOfficeHoursRepository.findById(any(Long.class))).thenReturn(Optional.of(savedOfficeHour));
@@ -254,10 +339,32 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void testDeleteOfficeHour_officeHourExists() throws Exception {
-        Tutor t = new Tutor(1L, "String firstName", "String lastName", "String email");
-        Course c = new Course(1L, "String name", "String quarter", "String instructorFirstName", "String instructorLastName", "String instructorEmail");
-        TutorAssignment tutorAssignment = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L, tutorAssignment,"Wednesday", "8:00", "10:00", "link", "notes");
+        Tutor tutor = new Tutor(1L,
+                "String firstName",
+                "String lastName",
+                "String email");
+        Course course = new Course(1L,
+                "String name",
+                "String quarter",
+                "String instructorFirstName",
+                "String instructorLastName",
+                "String instructorEmail");
+        TutorAssignment tutorAssignment = new TutorAssignment(1L,
+                course,
+                tutor,
+                "String assignmentType");
+        RoomSlot roomSlot = new RoomSlot(1L,
+                "String location",
+                "String quarter",
+                DayOfWeek.WEDNESDAY,
+                LocalTime.of(20, 0),
+                LocalTime.of(22,0));
+        OnlineOfficeHours expectedOfficeHour = new OnlineOfficeHours(1L,
+                tutorAssignment,
+                roomSlot,
+                "link",
+                "notes");
+
         when(mockOnlineOfficeHoursRepository.findById(1L)).thenReturn(Optional.of(expectedOfficeHour));
         when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
         MvcResult response = mockMvc
@@ -293,8 +400,17 @@ public class OnlineOfficeHourControllerTests {
         verify(mockOnlineOfficeHoursRepository, times(0)).deleteById(id);
     }
 
+    // dummy room slot data
+    Long testRoomSlotId = 1L;
+    String testRoomSlotLocation = "The Library";
+    String testRoomSlotQuarter = "F21";
+    DayOfWeek testRoomSlotDayOfWeek = DayOfWeek.MONDAY;
+    LocalTime testRoomSlotStartTime = LocalTime.of(13, 0);
+    LocalTime testRoomSlotEndTime = LocalTime.of(16, 0);
+
     @Test
     public void testUploadFile() throws Exception{
+
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
         List<OnlineOfficeHours> emptyOHL = new ArrayList<>();
         List<TutorAssignment> TAL = new ArrayList<> ();
@@ -302,7 +418,13 @@ public class OnlineOfficeHourControllerTests {
         Course c = new Course(1L, "String name", "F20", "String instructorFirstName", "String instructorLastName", "insEmail@ucsb.edu");
         Optional<Tutor> e = Optional.empty();
         TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
-        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                testRoomSlotDayOfWeek,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss, testRoomSlot, "link", "notes");
         expectedOfficeHours.add(oh);
         
         String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
@@ -334,6 +456,7 @@ public class OnlineOfficeHourControllerTests {
 
     @Test
     public void testUploadFile_prexist() throws Exception{
+
         List<OnlineOfficeHours> expectedOfficeHours = new ArrayList<OnlineOfficeHours>();
         List<TutorAssignment> TAL = new ArrayList<> ();
         Tutor t = new Tutor(1L, "String firstName", "String lastName", "email@ucsb.edu");
@@ -341,7 +464,13 @@ public class OnlineOfficeHourControllerTests {
         Optional<Tutor> OptTutor = Optional.of(t);
         TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
         TAL.add(tutorAss);
-        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
+        RoomSlot testRoomSlot = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                testRoomSlotDayOfWeek,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,testRoomSlot, "link", "notes");
         expectedOfficeHours.add(oh);
         
         String fcontent = "\"String name\",\"F20\",\"String instructorFirstName\",\"String instructorLastName\",\"insEmail@ucsb.edu\",\"String firstName\",\"String lastName\",\"String email\",\"String assignmentType\",\"Wednesday\",\"8:00\",\"10:00\",\"link\",\"notes\"";
@@ -376,10 +505,34 @@ public class OnlineOfficeHourControllerTests {
         Optional<Tutor> OptTutor = Optional.of(t);
         TutorAssignment tutorAss = new TutorAssignment(1L, c, t, "String assignmentType");
         TAL.add(tutorAss);
-        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss,"Wednesday", "8:00", "10:00", "link", "notes");
-        OnlineOfficeHours oh1 = new OnlineOfficeHours(2L, tutorAss,"Tuesday", "8:00", "10:00", "link", "notes");
-        OnlineOfficeHours oh2 = new OnlineOfficeHours(3L, tutorAss,"Wednesday", "9:00", "10:00", "link", "notes");
-        OnlineOfficeHours oh3 = new OnlineOfficeHours(4L, tutorAss,"Wednesday", "8:00", "11:00", "link", "notes");
+        RoomSlot testRoomSlot_1 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.MONDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        RoomSlot testRoomSlot_2 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.TUESDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        RoomSlot testRoomSlot_3 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.TUESDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        RoomSlot testRoomSlot_4 = new RoomSlot(testRoomSlotId,
+                testRoomSlotLocation,
+                testRoomSlotQuarter,
+                DayOfWeek.TUESDAY,
+                testRoomSlotStartTime,
+                testRoomSlotEndTime);
+        OnlineOfficeHours oh = new OnlineOfficeHours(1L, tutorAss, testRoomSlot_1, "link", "notes");
+        OnlineOfficeHours oh1 = new OnlineOfficeHours(2L, tutorAss,testRoomSlot_2, "link", "notes");
+        OnlineOfficeHours oh2 = new OnlineOfficeHours(3L, tutorAss,testRoomSlot_3, "link", "notes");
+        OnlineOfficeHours oh3 = new OnlineOfficeHours(4L, tutorAss,testRoomSlot_4, "link", "notes");
         
         expectedOfficeHours.add(oh1);
         expectedOfficeHours.add(oh2);
