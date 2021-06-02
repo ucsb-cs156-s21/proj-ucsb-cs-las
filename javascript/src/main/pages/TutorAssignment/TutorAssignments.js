@@ -31,8 +31,12 @@ const TutorAssignment = () => {
     fetchWithToken
   );
   
+  const onDeleteTutorError = (err) => {
+    console.log("error deleting tutor assignment",err);
+  }
+
   const deleteTutorAssignment = buildDeleteTutorAssignment(
-    getToken, mutateCourses
+    getToken, mutateCourses, onDeleteTutorError
   );
 
   const newTutorAssignmentButton = <Button className="mb-3" onClick={()=>history.push("/tutorAssignments/new")}>New Tutor Assignment</Button>;
