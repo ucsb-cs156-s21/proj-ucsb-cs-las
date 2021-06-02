@@ -1,11 +1,7 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
-import { useAuth0 } from "@auth0/auth0-react";
-import CourseList from "main/components/Courses/CourseList";
-import { fetchWithToken } from "main/utils/fetch";
-import UpcomingOfficeHourTable from "main/components/OfficeHours/UpcomingOfficeHourTable";
+import CourseList from "main/components/Courses/CourseList"
 import useSWR from "swr";
-import Loading from "main/components/Loading/Loading";
 import { fetchWithoutToken } from "main/utils/fetch";
 import fromFormat from "main/utils/FromFormat";
 
@@ -27,19 +23,6 @@ const Home = () => {
         }
         return <h5>All quarters are being viewed</h5>
     };
-    const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: officeHourList, error } = useSWR(
-        ["/api/public/officeHours", getToken],
-        fetchWithToken
-    );
-    if (error) {
-        return (
-        <h1>We encountered an error; please reload the page and try again.</h1>
-        );
-    }
-    if (!officeHourList) {
-        return <Loading />;
-    }
 
     return (
         <Jumbotron>
@@ -49,8 +32,7 @@ const Home = () => {
                 {filterLabel(currentFilter)}
                 <CourseList courses={courses || []} />
             </div>
-        </Jumbotron>,
-        <UpcomingOfficeHourTable officeHours={officeHourList}/>
+        </Jumbotron>
     );
 };
 
