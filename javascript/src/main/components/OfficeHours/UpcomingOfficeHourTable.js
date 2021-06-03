@@ -23,7 +23,6 @@ export default ({upcomingOfficeHours}) => {
         const quarter = row.course.quarter;
         return row.course.name + " " + asHumanQuarter(quarter);
     }
-    const renderEmail = (row) => row.tutor.email;
   
     const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
@@ -59,14 +58,12 @@ export default ({upcomingOfficeHours}) => {
         sortValue: (_cell, row) => renderCourseNameYear(row)
     }, {
         dataField: 'email',
-        text: 'email',
-        hidden: isMember,
-        formatter: (_cell, row) => renderEmail(row),
-        sortValue: (_cell, row) => renderEmail(row)
+        text: 'Email',
+        hidden: !isMember
     }, {
         dataField: 'zoomRoomLink',
         text: 'Zoom Room',
-        hidden: isMember,
+        hidden: !isMember,
         formatter: zoomRoomLinkFormatter
     },
     ];
