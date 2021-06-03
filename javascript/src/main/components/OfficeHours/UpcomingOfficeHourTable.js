@@ -18,12 +18,12 @@ export default ({upcomingOfficeHours}) => {
         );
     }
 
-    const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
+    const renderTutorName = (row) => row.tutor.firstName + " " + row.tutor.lastName;
     const renderCourseNameYear = (row) => {
-        const quarter = row.tutorAssignment.course.quarter;
-        return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
+        const quarter = row.course.quarter;
+        return row.course.name + " " + asHumanQuarter(quarter);
     }
-    const renderEmail = (row) => row.tutorAssignment.tutor.email;
+    const renderEmail = (row) => row.tutor.email;
   
     const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
