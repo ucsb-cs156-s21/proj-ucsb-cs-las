@@ -2,7 +2,6 @@ import React from "react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
-import {asHumanQuarter} from "main/utils/quarter.ts"
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
@@ -19,7 +18,7 @@ export default ({upcomingOfficeHours}) => {
     }
 
     const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
-    const renderCourseNameYear = (row) => row.tutorAssignment.coursenameYear;
+    const renderCourseNameYear = (row) => row.tutorAssignment.courseNameYear;
     const renderEmail = (row) => row.tutorAssignment.tutor.email;
   
     const { data: roleInfo } = useSWR(
