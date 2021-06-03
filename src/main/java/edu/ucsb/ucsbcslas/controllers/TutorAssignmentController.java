@@ -5,14 +5,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import edu.ucsb.ucsbcslas.services.CSVToObjectService;
+import edu.ucsb.ucsbcslas.entities.AppUser;
+import edu.ucsb.ucsbcslas.models.TutorAssignmentModel;
 
 import org.json.JSONObject;
 
@@ -26,8 +36,6 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,6 +59,8 @@ public class TutorAssignmentController {
     private CourseRepository courseRepository;
     @Autowired
     private TutorRepository tutorRepository;
+    @Autowired
+    CSVToObjectService<TutorAssignmentModel> csvToObjectService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -150,9 +160,10 @@ public class TutorAssignmentController {
         }
         return getUnauthorizedResponse("member");
     }
-    
+
     @GetMapping(value = "/api/public/tutorAssignment/{course_id}", produces = "application/json")
-    public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("course_id") Long course_id) throws JsonProcessingException {
+    public ResponseEntity<String> getTutorAssignmentByCourseID(@PathVariable("course_id") Long course_id)
+            throws JsonProcessingException {
         List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAllByCourseId(course_id);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -208,8 +219,7 @@ public class TutorAssignmentController {
         return ResponseEntity.ok().body(body);
 
     }
-  
-  
+
     @GetMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
     public ResponseEntity<String> getTutorAssignment(@PathVariable("id") Long id) throws JsonProcessingException {
         Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
@@ -221,10 +231,120 @@ public class TutorAssignmentController {
         String body = mapper.writeValueAsString(tutorAssignment.get());
         return ResponseEntity.ok().body(body);
     }
-  
+
     @PutMapping(value = "/api/member/tutorAssignments/{id}", produces = "application/json")
     public ResponseEntity<String> updateTutorAssignment(@RequestHeader("Authorization") String authorization,
-        @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment) throws JsonProcessingException {
+            @PathVariable("id") Long id, @RequestBody @Valid String incomingTutorAssignment)
+            throws JsonProcessingException {
+
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Optional<TutorAssignment> tutorAssignment = tutorAssignmentRepository.findById(id);
+        if (!tutorAssignment.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        logger.info(incomingTutorAssignment);
+        JSONObject ta = new JSONObject(incomingTutorAssignment);
+        TutorAssignment newAssignment = new TutorAssignment();
+        logger.info("ta: ", ta.toString());
+        JSONObject cInfo = new JSONObject(ta.get("course").toString());
+        logger.info("cInfo: ", cInfo.toString());
+        Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"),
+                cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"),
+                cInfo.getString("instructorEmail"));
+        newAssignment.setCourse(c);
+
+        logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
+        logger.info("ta: ", ta.getString("tutorEmail"));
+        if (!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))) {
+            Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
+            logger.info("tutor: ", tutor);
+            if (tutor.isPresent()) {
+                newAssignment.setTutor(tutor.get());
+            } else {
+                return getIncorrectInputResponse();
+            }
+        } else {
+
+            JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
+            Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"), tInfo.getString("lastName"),
+                    tInfo.getString("email"));
+            newAssignment.setTutor(t);
+
+        }
+        newAssignment.setAssignmentType(ta.getString("assignmentType"));
+
+        newAssignment.setId(id);
+        tutorAssignmentRepository.save(newAssignment);
+        String body = mapper.writeValueAsString(newAssignment);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // Controller to upload CSV for tutorAssignment Service
+
+    @PostMapping(value = "/api/member/tutorAssignments/upload", produces = "application/json")
+    public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv,
+            @RequestHeader("Authorization") String authorization) throws IOException {
+        logger.info("Starting upload CSV");
+        Reader reader = new InputStreamReader(csv.getInputStream());
+        logger.info(new String(csv.getInputStream().readAllBytes()));
+
+        String empty = new String(csv.getInputStream().readAllBytes());
+        if ((authControllerAdvice.getIsAdmin(authorization))) {
+            try {
+                if (empty.isEmpty()) {
+                    throw new RuntimeException();
+                }
+                    List<TutorAssignmentModel> uploadedTutorAssignments = csvToObjectService.parse(reader,
+                            TutorAssignmentModel.class);
+                    List<TutorAssignment> tutorAssignmentList = new ArrayList<TutorAssignment>();
+
+                    for (TutorAssignmentModel i : uploadedTutorAssignments) {
+                        Course currentCourse;
+                        Tutor currentTutor;
+                        TutorAssignment currentTutorAssignment;
+
+                        List<Course> courseList = courseRepository.findByNameAndQuarterAndInstructorEmail(
+                                i.getCourseName(), i.getQuarter(), i.getInstructorEmail());
+                        if (courseList.isEmpty()) {
+                            currentCourse = new Course(i.getCourseName(), i.getQuarter(), i.getInstructorFirstName(),
+                                    i.getInstructorLastName(), i.getInstructorEmail());
+                            courseRepository.save(currentCourse);
+                        } else {
+                            currentCourse = courseList.get(0);
+                        }
+                        Optional<Tutor> tutorList = tutorRepository.findByEmail(i.getTutorEmail());
+                        if (tutorList.isEmpty()) {
+                            currentTutor = new Tutor(i.getTutorFirstName(), i.getTutorLastName(), i.getTutorEmail());
+                            tutorRepository.save(currentTutor);
+                        } else {
+                            currentTutor = tutorList.get();
+                        }
+                        tutorAssignmentList = tutorAssignmentRepository.findAllByTutor(currentTutor);
+                        if (tutorAssignmentList.isEmpty()) {
+                            currentTutorAssignment = new TutorAssignment(currentCourse, currentTutor,
+                                    i.getAssignmentType());
+                            tutorAssignmentRepository.save(currentTutorAssignment);
+                        }
+                    }
+
+                    List<TutorAssignment> savedTutorAssignments = (List<TutorAssignment>) tutorAssignmentRepository
+                            .saveAll(tutorAssignmentList);
+                    String body = mapper.writeValueAsString(savedTutorAssignments);
+                    System.out.print(savedTutorAssignments.toString());
+                    return ResponseEntity.ok().body(body);
+            } catch (RuntimeException e) {
+                logger.error("Error Uploading CSV", e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authorized user");
+        }
+    }
+    
+    @DeleteMapping (value = "/api/member/tutorAssignments/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteTutorAssignment(@RequestHeader("Authorization") String authorization,
+        @PathVariable("id") Long id) throws JsonProcessingException {
 
       if (!authControllerAdvice.getIsAdmin(authorization))
         return getUnauthorizedResponse("admin");
@@ -232,44 +352,8 @@ public class TutorAssignmentController {
       if (!tutorAssignment.isPresent()) {
         return ResponseEntity.notFound().build();
       }
-      logger.info(incomingTutorAssignment);
-      JSONObject ta = new JSONObject(incomingTutorAssignment);
-      TutorAssignment newAssignment = new TutorAssignment();
-      logger.info("ta: ", ta.toString());
-      JSONObject cInfo = new JSONObject(ta.get("course").toString());
-      logger.info("cInfo: ", cInfo.toString());
-      Course c = new Course(cInfo.getLong("id"), cInfo.getString("name"), cInfo.getString("quarter"), 
-        cInfo.getString("instructorFirstName"), cInfo.getString("instructorLastName"), cInfo.getString("instructorEmail"));
-      newAssignment.setCourse(c);
-
-
-      logger.info("tutorAssignment: ", tutorAssignment.get().getTutor().getEmail());
-      logger.info("ta: ", ta.getString("tutorEmail"));
-      if(!(ta.getString("tutorEmail").equals(tutorAssignment.get().getTutor().getEmail()))){
-        Optional<Tutor> tutor = tutorRepository.findByEmail(ta.getString("tutorEmail"));
-        logger.info("tutor: ", tutor);
-        if(tutor.isPresent()){
-          newAssignment.setTutor(tutor.get());
-        }
-        else{
-          return getIncorrectInputResponse();
-        }
-      } else {
-
-        JSONObject tInfo = new JSONObject(ta.get("tutor").toString());
-        Tutor t = new Tutor(tInfo.getLong("id"), tInfo.getString("firstName"), tInfo.getString("lastName"), 
-        tInfo.getString("email"));
-        newAssignment.setTutor(t);
-
-
-      }
-      newAssignment.setAssignmentType(ta.getString("assignmentType"));
-
-
-      newAssignment.setId(id);
-      tutorAssignmentRepository.save(newAssignment);
-      String body = mapper.writeValueAsString(newAssignment);
-      return ResponseEntity.ok().body(body);
+    
+      tutorAssignmentRepository.deleteById(id);
+      return ResponseEntity.noContent().build();
     }
-  
 }

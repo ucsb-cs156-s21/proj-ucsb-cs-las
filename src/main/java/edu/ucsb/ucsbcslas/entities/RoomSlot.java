@@ -5,12 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalTime;
 import java.time.DayOfWeek;
@@ -25,9 +22,8 @@ public class RoomSlot {
     @Column(nullable = false)
     private String location;
 
-    @ManyToOne
-    @JoinColumn(name = "quarter")
-    public ActiveQuarter quarter;
+    @Column(nullable = false)
+    public String quarter;
 
     @Column(nullable = false)
     private DayOfWeek dayOfWeek;
@@ -45,7 +41,7 @@ public class RoomSlot {
     }
 
     public RoomSlot(Long id, String location,
-        ActiveQuarter quarter, DayOfWeek dayOfWeek,
+        String quarter, DayOfWeek dayOfWeek,
         LocalTime startTime, LocalTime endTime) 
     {
         this.id = id;
@@ -72,11 +68,11 @@ public class RoomSlot {
         this.location = location;
     }
 
-    public ActiveQuarter getQuarter() {
+    public String getQuarter() {
         return this.quarter;
     }
 
-    public void setQuarter(ActiveQuarter quarter) {
+    public void setQuarter(String quarter) {
         this.quarter = quarter;
     }
 

@@ -59,7 +59,7 @@ public class RoomSlotControllerTests {
     @Test
     public void testGetRoomSlot() throws Exception {
       List<RoomSlot> expectedRoomSlots = new ArrayList<RoomSlot>();
-      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      String activeQuarter = "20212";
       DayOfWeek dayofWeek = DayOfWeek.of(1);
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);
@@ -81,7 +81,7 @@ public class RoomSlotControllerTests {
 
     @Test
     public void testGetASingleRoomSlot() throws Exception {
-      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      String activeQuarter = "20212";
       DayOfWeek dayofWeek = DayOfWeek.of(1);
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);
@@ -109,7 +109,7 @@ public class RoomSlotControllerTests {
     //Need admin in the path of api or not??
     @Test
     public void testSaveRoomSlot() throws Exception {
-      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      String activeQuarter = "20212";
       DayOfWeek dayofWeek = DayOfWeek.of(1);
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);
@@ -131,7 +131,7 @@ public class RoomSlotControllerTests {
     
     @Test
     public void test_saveRoomSlot_unauthorizedIfNotAdmin() throws Exception {
-      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      String activeQuarter = "20212";
       DayOfWeek dayofWeek = DayOfWeek.of(1);
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);    
@@ -146,7 +146,7 @@ public class RoomSlotControllerTests {
     //same here
     @Test
     public void testDeleteRoomSlot_RoomSlotExists() throws Exception {
-      ActiveQuarter activeQuarter = new ActiveQuarter(1L, "s21");
+      String activeQuarter = "20212";
       DayOfWeek dayofWeek = DayOfWeek.of(1);
       LocalTime startTime = LocalTime.of(8, 00, 00);
       LocalTime endTime = LocalTime.of(10, 00, 00);
