@@ -12,18 +12,6 @@ export default ({upcomingOfficeHours}) => {
         return user;
     };
 
-    function zoomRoomLinkFormatter(cell) {
-        return (
-            <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
-        );
-    }
-
-    const renderTutorName = (row) => row.tutor.firstName + " " + row.tutor.lastName;
-    const renderCourseNameYear = (row) => {
-        const quarter = row.course.quarter;
-        return row.course.name + " " + asHumanQuarter(quarter);
-    }
-  
     const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
         fetchWithToken
@@ -31,8 +19,18 @@ export default ({upcomingOfficeHours}) => {
     const { data: memberList } = useSWR(
         [`/api/member/courses/forInstructor/${email}`, getToken],
         fetchWithToken
-      );
+    );
     const isMember = roleInfo && roleInfo.role && memberList && (memberList.length > 0 || roleInfo.role.toLowerCase() !== "guest" || roleInfo.role.toLowerCase() === "admin" || roleInfo.role.toLowerCase() === "member");
+
+    function zoomRoomLinkFormatter(cell) {
+        return (
+            <div><a target="_blank" rel = "noopener noreferrer" href={cell}> { cell } </a></div>
+        );
+    }
+
+    const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
+    const renderCourseNameYear = (row) => row.tutorAssignment.course.name + " " + asHumanQuarter(row.tutorAssignment.course.quarter);
+    const renderEmail = (row) => row.tutorAssignment.tutor.email;
    
     const columns = [{
         dataField: 'id',
@@ -56,19 +54,10 @@ export default ({upcomingOfficeHours}) => {
         text: 'Course',
         formatter: (_cell, row) => renderCourseNameYear(row),
         sortValue: (_cell, row) => renderCourseNameYear(row)
-    }, {
-        dataField: 'email',
-        text: 'Email',
-        hidden: !isMember
-    }, {
-        dataField: 'zoomRoomLink',
-        text: 'Zoom Room',
-        hidden: !isMember,
-        formatter: zoomRoomLinkFormatter
     },
     ];
 
-    /*if (isMember) {
+    if (isMember) {
         columns.push({
                 dataField: 'email',
                 text: 'email',
@@ -80,7 +69,7 @@ export default ({upcomingOfficeHours}) => {
                 formatter: zoomRoomLinkFormatter
             }
         );
-    }*/
+    }
 
     return (
         <BootstrapTable 
