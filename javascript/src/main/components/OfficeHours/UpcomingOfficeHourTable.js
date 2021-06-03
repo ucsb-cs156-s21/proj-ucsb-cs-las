@@ -2,6 +2,7 @@ import React from "react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
+import {asHumanQuarter} from "main/utils/quarter.ts"
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
@@ -18,7 +19,10 @@ export default ({upcomingOfficeHours}) => {
     }
 
     const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
-    const renderCourseNameYear = (row) => row.tutorAssignment.courseNameYear;
+    const renderCourseNameYear = (row) => {
+        const quarter = row.tutorAssignment.course.quarter;
+        return row.tutorAssignment.course.name + " " + asHumanQuarter(quarter);
+    }
     const renderEmail = (row) => row.tutorAssignment.tutor.email;
   
     const { data: roleInfo } = useSWR(
@@ -53,10 +57,21 @@ export default ({upcomingOfficeHours}) => {
         text: 'Course',
         formatter: (_cell, row) => renderCourseNameYear(row),
         sortValue: (_cell, row) => renderCourseNameYear(row)
+    }, {
+        dataField: 'email',
+        text: 'email',
+        hidden: isMember,
+        formatter: (_cell, row) => renderEmail(row),
+        sortValue: (_cell, row) => renderEmail(row)
+    }, {
+        dataField: 'zoomRoomLink',
+        text: 'Zoom Room',
+        hidden: isMember,
+        formatter: zoomRoomLinkFormatter
     },
     ];
 
-    if (isMember) {
+    /*if (isMember) {
         columns.push({
                 dataField: 'email',
                 text: 'email',
@@ -68,7 +83,7 @@ export default ({upcomingOfficeHours}) => {
                 formatter: zoomRoomLinkFormatter
             }
         );
-    }
+    }*/
 
     return (
         <BootstrapTable 
