@@ -28,9 +28,9 @@ export default ({upcomingOfficeHours}) => {
         );
     }
 
-    const renderTutorName = (row) => row.tutorAssignment.tutor.firstName + " " + row.tutorAssignment.tutor.lastName;
-    const renderCourseNameYear = (row) => row.tutorAssignment.course.name + " " + asHumanQuarter(row.tutorAssignment.course.quarter);
-    const renderEmail = (row) => row.tutorAssignment.tutor.email;
+    const renderTutorName = (row) => row.tutor.firstName + " " + row.tutor.lastName;
+    const renderCourseNameYear = (row) => row.course.name + " " + asHumanQuarter(row.course.quarter);
+    const renderEmail = (row) => row.tutor.email;
    
     const columns = [{
         dataField: 'id',
