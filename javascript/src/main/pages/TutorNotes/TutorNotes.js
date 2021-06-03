@@ -41,10 +41,10 @@ const TutorNotes = () => {
     getToken,
     () => {
       mutateTutorNotes();
-      addToast("CSV Uploaded", { appearance: "success" });
+      addToast("Tutor Note Deleted", { appearance: "success" });
     },
     () => {
-      addToast("Error Uploading CSV", { appearance: "error" });
+      addToast("Error Deleting Tutor Note", { appearance: "error" });
     }
     );
 
