@@ -8,7 +8,7 @@ export default ({tutorNotes, isInstructor, deleteTutorNotes}) => {
 
     const renderDeleteButton = (id) => {
         return (
-            <Button variant="danger" data-testid="delete-button" onClick={() => deleteTutorNotes(id)}>Delete</Button>
+            <Button variant="danger" data-testid={`delete-button-${id}`} onClick={() => deleteTutorNotes(id)}>Delete</Button>
         )
     }
 
