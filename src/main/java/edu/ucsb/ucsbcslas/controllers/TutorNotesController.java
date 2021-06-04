@@ -72,7 +72,6 @@ public class TutorNotesController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-  
     @PostMapping(value = "/api/member/tutorNotes", produces = "application/json")
     public ResponseEntity<String> createTutorNotes(@RequestHeader("Authorization") String authorization,
             @RequestBody @Valid String tutorNotes) throws JsonProcessingException {
@@ -94,8 +93,6 @@ public class TutorNotesController {
 
         Optional<OnlineOfficeHours> ooh = onlineOfficeHoursRepository.findById(officeHoursId);
 
-       
-
         if (!ooh.get().getTutorAssignment().getTutor().getEmail().equals(currentUserEmail)) {
             return new ResponseEntity<>(
                     "Unauthorized Request: Email of current user does not match email of office hours selected",
@@ -116,26 +113,24 @@ public class TutorNotesController {
     @GetMapping(value = "/api/member/tutorNotes", produces = "application/json")
     public ResponseEntity<String> getTutorNotes(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
-        List<TutorNotes> tutorNotesList = null;
-        if (!authControllerAdvice.getIsMember(authorization)) {
-            return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
-        }
-        String thisUsersEmail = authControllerAdvice.getUser(authorization).getEmail();
-        if (authControllerAdvice.getIsAdmin(authorization)) {
-            tutorNotesList = tutorNotesRepository.findAll();
-
-        } else {
-            tutorNotesList = tutorNotesRepository
-                    .findAllByOnlineOfficeHoursTutorAssignmentCourseInstructorEmail(thisUsersEmail);
-        }
-
-        List<TutorNotes> tutorNotes = tutorNotesRepository
-                .findAllByOnlineOfficeHoursTutorAssignmentTutorEmail(thisUsersEmail);
-        tutorNotesList.addAll(tutorNotes);
-
-        ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(tutorNotesList);
-        return ResponseEntity.ok().body(body);
+                Set<TutorNotes> tutorNotesSet = new HashSet<>();
+                if (!authControllerAdvice.getIsMember(authorization)) {
+                    return new ResponseEntity<>("Unauthorized Request", HttpStatus.UNAUTHORIZED);
+                }
+                String thisUsersEmail = authControllerAdvice.getUser(authorization).getEmail();
+                if (authControllerAdvice.getIsAdmin(authorization)) {
+                    tutorNotesSet.addAll( tutorNotesRepository.findAll());
+                }
+        
+                tutorNotesSet.addAll(tutorNotesRepository
+                            .findAllByOnlineOfficeHoursTutorAssignmentCourseInstructorEmail(thisUsersEmail));
+              
+                 tutorNotesSet.addAll( tutorNotesRepository
+                        .findAllByOnlineOfficeHoursTutorAssignmentTutorEmail(thisUsersEmail));
+        
+                ObjectMapper mapper = new ObjectMapper();
+                String body = mapper.writeValueAsString(tutorNotesSet);
+                return ResponseEntity.ok().body(body);
     }
 
     @DeleteMapping(value = "/api/admin/tutorNotes/{id}", produces = "application/json")
