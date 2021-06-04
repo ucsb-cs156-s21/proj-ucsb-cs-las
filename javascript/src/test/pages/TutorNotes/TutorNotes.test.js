@@ -3,17 +3,23 @@ import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import TutorNotes from "main/pages/TutorNotes/TutorNotes";
+import { useToasts } from "react-toast-notifications";
+import { buildDeleteTutorNotes } from "main/services/TutorNotes/TutorNotesService";
 import userEvent from "@testing-library/user-event";
 import { useHistory } from "react-router-dom";
+
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 
 jest.mock("main/services/TutorNotes/TutorNotesService", () => ({
   buildCreateTutorNotes: jest.fn(),
-  buildUpdateTutorNotes: jest.fn()
+  buildDeleteTutorNotes: jest.fn()
 }) );
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
+}));
+jest.mock("react-toast-notifications", () => ({
+  useToasts: jest.fn()
 }));
 
 describe("TutorNotes page test", () => {
@@ -52,6 +58,7 @@ describe("TutorNotes page test", () => {
   };
   const getAccessTokenSilentlySpy = jest.fn();
   const mutateSpy = jest.fn();
+  const addToast = jest.fn();
 
   beforeEach(() => {
     useAuth0.mockReturnValue({
@@ -63,6 +70,9 @@ describe("TutorNotes page test", () => {
       data: {role: "admin"},
       error: undefined,
       mutate: mutateSpy,
+    });
+    useToasts.mockReturnValue({
+      addToast: addToast
     });
   });
 
@@ -101,7 +111,8 @@ describe("TutorNotes page test", () => {
       error: new Error("this is an error"),
       mutate: mutateSpy,
     });
-
+    const fakeDeleteFunction = jest.fn();
+    buildDeleteTutorNotes.mockReturnValue(fakeDeleteFunction);
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
       push: pushSpy
@@ -115,6 +126,25 @@ describe("TutorNotes page test", () => {
     userEvent.click(newTutorNotesButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
+  });
+
+  test("can delete a tutorNote", async () => {
+    useSWR.mockReturnValueOnce({
+      data: { role: "admin" },
+      error: undefined,
+      mutate: mutateSpy
+    });
+    useSWR.mockReturnValue({
+      data: [sampleTutorNotes],
+      error: undefined,
+      mutate: mutateSpy
+    });
+    const fakeDeleteFunction = jest.fn();
+    buildDeleteTutorNotes.mockReturnValue(fakeDeleteFunction);
+    const { getAllByTestId } = render(<TutorNotes />);
+    const deleteButtons = getAllByTestId("delete-button-123");
+    userEvent.click(deleteButtons[0]);
+    await waitFor(() => expect(fakeDeleteFunction).toHaveBeenCalledTimes(1));
   });
 
 });

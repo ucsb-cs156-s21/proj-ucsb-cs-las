@@ -5,6 +5,9 @@ import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import TutorNotesTable from "main/components/TutorNotes/TutorNotesTable"
+import { buildDeleteTutorNotes } from "../../services/TutorNotes/TutorNotesService";
+import { useToasts } from "react-toast-notifications";
+
 
 import {useHistory} from "react-router-dom";
 
@@ -13,6 +16,7 @@ const TutorNotes = () => {
   const history = useHistory();
   const { user, getAccessTokenSilently: getToken } = useAuth0();
   const { email } = user;
+  const { addToast } = useToasts();
 
   const { data: roleInfo } = useSWR(
       ["/api/myRole", getToken],
@@ -28,10 +32,21 @@ const TutorNotes = () => {
 
   const isAdmin = roleInfo && roleInfo.role && roleInfo.role.toLowerCase() === "admin";
 
-  const { data: tutorNotesList, error } = useSWR(
+  const { data: tutorNotesList, error, mutate: mutateTutorNotes } = useSWR(
     ["/api/member/tutorNotes", getToken],
     fetchWithToken
   );
+
+  const deleteTutorNotes = buildDeleteTutorNotes(
+    getToken,
+    () => {
+      mutateTutorNotes();
+      addToast("Tutor Note Deleted", { appearance: "success" });
+    },
+    () => {
+      addToast("Error Deleting Tutor Note", { appearance: "error" });
+    }
+    );
 
   const newTutorNotesButton = <Button className="mb-3" onClick={()=>history.push("/tutorNotes/new")}>New Tutor Notes</Button>;
 
@@ -52,7 +67,7 @@ const TutorNotes = () => {
   return (
     <>
       {(newTutorNotesButton)}
-      <TutorNotesTable tutorNotes={tutorNotesList} isInstructor={isInstructor || isAdmin}/>
+      <TutorNotesTable tutorNotes={tutorNotesList} isInstructor={isInstructor || isAdmin} deleteTutorNotes={deleteTutorNotes}/>
     </>
   );
 };

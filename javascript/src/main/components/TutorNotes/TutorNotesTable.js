@@ -1,14 +1,14 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
-import {asHumanQuarter} from "main/utils/quarter.ts"
+import {asHumanQuarter} from "main/utils/quarter.ts";
 
-export default ({tutorNotes, isInstructor}) => {
+export default ({tutorNotes, isInstructor, deleteTutorNotes}) => {
     console.log("tutorNotes",tutorNotes);
 
-    const renderDeleteButton = (_id) => {
+    const renderDeleteButton = (id) => {
         return (
-            <Button variant="danger" data-testid="delete-button" >Delete</Button>
+            <Button variant="danger" data-testid={`delete-button-${id}`} onClick={() => deleteTutorNotes(id)}>Delete</Button>
         )
     }
 
